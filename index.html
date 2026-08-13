@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Java Basecamp — a friendly, visual roadmap for mastering Java from syntax to interview-ready data structures."
+    />
+    <meta name="theme-color" content="#f5efe4" />
+    <title>Java Basecamp — Learn Java, one clear step at a time</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Young+Serif&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#curriculum">Skip to curriculum</a>
+
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Java Basecamp home">
+        <span class="brand-mark" aria-hidden="true">
+          <span class="brand-steam">~</span>
+          <span class="brand-cup">J</span>
+        </span>
+        <span>Java<span class="brand-muted">Basecamp</span></span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="active" href="#roadmap">Roadmap</a>
+        <a href="#curriculum">Modules</a>
+        <a href="#about">How it works</a>
+      </nav>
+
+      <button class="progress-pill" id="progressButton" type="button" aria-label="View course progress">
+        <span class="mini-ring" aria-hidden="true"><span id="miniProgress">0</span></span>
+        <span><strong id="headerProgress">0%</strong><small>Your progress</small></span>
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="hero" id="roadmap">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> The complete developer path</p>
+          <h1>Java, without<br />the <em>jargon jungle.</em></h1>
+          <p class="hero-lede">
+            A visual, hands-on path from your first variable to production-ready Java. Clear lessons,
+            tiny wins, and no mystery gaps.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#curriculum">
+              Start the journey
+              <span aria-hidden="true">↗</span>
+            </a>
+            <button class="button button-ghost" id="resumeButton" type="button">
+              <span class="play-icon" aria-hidden="true">▶</span>
+              Preview a lesson
+            </button>
+          </div>
+
+          <div class="hero-proof" aria-label="Course highlights">
+            <div><strong>17</strong><span>Focused modules</span></div>
+            <div><strong>90+</strong><span>Core concepts</span></div>
+            <div><strong>∞</strong><span>Learn at your pace</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="A dimensional Java learning desk illustration">
+          <div class="orbit orbit-one" aria-hidden="true"></div>
+          <div class="orbit orbit-two" aria-hidden="true"></div>
+          <span class="float-code code-a" aria-hidden="true">{ }</span>
+          <span class="float-code code-b" aria-hidden="true">01</span>
+          <span class="float-code code-c" aria-hidden="true">;</span>
+
+          <div class="lesson-card-3d">
+            <div class="card-topline">
+              <span class="tiny-dots"><i></i><i></i><i></i></span>
+              <span>JAVA.BASE</span>
+            </div>
+            <div class="code-preview" aria-hidden="true">
+              <span><b class="code-pink">public class</b> <b>Adventure</b> {</span>
+              <span class="indent"><b class="code-blue">String</b> goal = <b class="code-green">"learn"</b>;</span>
+              <span class="indent"><b class="code-pink">while</b> (curious) {</span>
+              <span class="indent-two">practice();</span>
+              <span class="indent">}</span>
+              <span>}</span>
+            </div>
+            <div class="lesson-status">
+              <span><i></i> LESSON 01</span>
+              <strong>Ready when you are</strong>
+            </div>
+          </div>
+
+          <div class="java-cup" aria-hidden="true">
+            <span class="steam steam-a"></span>
+            <span class="steam steam-b"></span>
+            <span class="steam steam-c"></span>
+            <div class="cup-body"><span>J</span></div>
+            <div class="cup-handle"></div>
+            <div class="cup-shadow"></div>
+          </div>
+
+          <div class="floating-chip chip-one" aria-hidden="true"><span>✓</span> Syntax unlocked</div>
+          <div class="floating-chip chip-two" aria-hidden="true"><span>⌁</span> Keep building</div>
+        </div>
+      </section>
+
+      <section class="curriculum" id="curriculum">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span></span> Your learning map</p>
+            <h2>One path. Every Java essential.</h2>
+            <p>Start at the beginning or jump to the gap you want to close.</p>
+          </div>
+          <div class="section-progress" aria-live="polite">
+            <div class="section-progress-copy">
+              <span>Course progress</span>
+              <strong id="progressLabel">0 of 17 complete</strong>
+            </div>
+            <div class="progress-track"><span id="progressBar"></span></div>
+          </div>
+        </div>
+
+        <div class="toolbar" aria-label="Curriculum tools">
+          <label class="search-box">
+            <span aria-hidden="true">⌕</span>
+            <span class="sr-only">Search the curriculum</span>
+            <input id="searchInput" type="search" placeholder="Search topics, e.g. threads" autocomplete="off" />
+            <kbd>/</kbd>
+          </label>
+
+          <div class="filter-group" id="filterGroup" aria-label="Filter learning modules">
+            <button class="filter active" type="button" data-filter="all">All <span>17</span></button>
+            <button class="filter" type="button" data-filter="foundation">Foundation</button>
+            <button class="filter" type="button" data-filter="core">Core Java</button>
+            <button class="filter" type="button" data-filter="backend">Backend</button>
+            <button class="filter" type="button" data-filter="advanced">Advanced</button>
+          </div>
+        </div>
+
+        <div class="module-grid" id="moduleGrid" aria-live="polite"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <span aria-hidden="true">⌕</span>
+          <h3>No matching lessons</h3>
+          <p>Try a broader search or another learning stage.</p>
+          <button type="button" id="clearSearch">Clear search</button>
+        </div>
+      </section>
+
+      <section class="how-it-works" id="about">
+        <div class="how-copy">
+          <p class="eyebrow light"><span></span> Built for momentum</p>
+          <h2>Learn it. Try it.<br /><em>Make it stick.</em></h2>
+          <p>Each module turns an intimidating topic into a small, practical next step.</p>
+        </div>
+        <div class="steps">
+          <article>
+            <span class="step-number">01</span>
+            <div class="step-icon">◎</div>
+            <h3>Understand</h3>
+            <p>Get the mental model in plain English before touching the details.</p>
+          </article>
+          <article>
+            <span class="step-number">02</span>
+            <div class="step-icon">⌘</div>
+            <h3>Explore</h3>
+            <p>See the important concepts grouped into one scannable lesson.</p>
+          </article>
+          <article>
+            <span class="step-number">03</span>
+            <div class="step-icon">↗</div>
+            <h3>Apply</h3>
+            <p>Finish with a compact challenge and save your progress locally.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand footer-brand" href="#top">
+        <span class="brand-mark" aria-hidden="true"><span class="brand-cup">J</span></span>
+        <span>Java<span class="brand-muted">Basecamp</span></span>
+      </a>
+      <p>Made for curious developers. Keep learning, one concept at a time.</p>
+      <a href="#top">Back to top ↑</a>
+    </footer>
+
+    <dialog class="lesson-dialog" id="lessonDialog" aria-labelledby="dialogTitle">
+      <div class="dialog-shell">
+        <button class="dialog-close" id="dialogClose" type="button" aria-label="Close lesson">×</button>
+        <div class="dialog-sidebar">
+          <span class="dialog-index" id="dialogIndex">01</span>
+          <span class="dialog-stage" id="dialogStage">Foundation</span>
+          <div class="dialog-side-line"></div>
+          <p>Module preview</p>
+        </div>
+        <div class="dialog-content">
+          <p class="eyebrow"><span></span> Your next module</p>
+          <h2 id="dialogTitle">Java Basics</h2>
+          <p class="dialog-description" id="dialogDescription"></p>
+
+          <div class="dialog-block">
+            <div class="dialog-block-heading"><span>01</span><h3>What you’ll cover</h3></div>
+            <div class="concept-list" id="dialogConcepts"></div>
+          </div>
+
+          <div class="dialog-block challenge-block">
+            <div class="dialog-block-heading"><span>02</span><h3>Tiny challenge</h3></div>
+            <p id="dialogChallenge"></p>
+          </div>
+
+          <button class="button button-primary complete-button" id="completeButton" type="button">
+            <span id="completeButtonText">Mark module complete</span>
+            <span aria-hidden="true">✓</span>
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">
+      <span>✓</span>
+      <div><strong>Module complete</strong><small>Your progress was saved.</small></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
