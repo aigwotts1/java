@@ -8,6 +8,7 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-java_basecamp}:${POSTGRES_PASSWORD:-change-this-in-production}@db:5432/${POSTGRES_DB:-java_basecamp}
       SESSION_DAYS: ${SESSION_DAYS:-30}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      ENFORCE_HTTPS: ${ENFORCE_HTTPS:-false}
       APP_ORIGIN: ${APP_ORIGIN:-}
       PUBLIC_APP_URL: ${PUBLIC_APP_URL:-}
     ports:

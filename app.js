@@ -991,16 +991,28 @@ const authSubmit = document.querySelector("#authSubmit");
 const authSwitchButton = document.querySelector("#authSwitchButton");
 const userMenu = document.querySelector("#userMenu");
 const logoutButton = document.querySelector("#logoutButton");
+const accountSettingsButton = document.querySelector("#accountSettingsButton");
+const accountDialog = document.querySelector("#accountDialog");
+const accountClose = document.querySelector("#accountClose");
+const profileForm = document.querySelector("#profileForm");
+const deleteAccountForm = document.querySelector("#deleteAccountForm");
 const certificateMenuButton = document.querySelector("#certificateMenuButton");
 const certificateDialog = document.querySelector("#certificateDialog");
 const certificateClose = document.querySelector("#certificateClose");
 const certificateCopyButton = document.querySelector("#certificateCopyButton");
+const certificateClaimButton = document.querySelector("#certificateClaimButton");
+const certificateUnpublishButton = document.querySelector("#certificateUnpublishButton");
+const certificateSaveNameButton = document.querySelector("#certificateSaveNameButton");
+const certificatePublicName = document.querySelector("#certificatePublicName");
+const certificateConsent = document.querySelector("#certificateConsent");
 
 let activeFilter = "all";
 let activeModuleId = null;
 let completed = new Set();
 let currentUser = null;
 let currentCertificate = null;
+let certificateEligible = false;
+let certificateConsentVersion = null;
 let authMode = "login";
 let isSavingProgress = false;
 let toastTimer;
@@ -1102,9 +1114,16 @@ function updateAuthUI() {
   authButton.setAttribute("aria-label", loggedIn ? `Open account menu for ${currentUser.name}` : "Sign in or create an account");
   document.querySelector("#authAvatar").textContent = loggedIn ? initials(currentUser.name) : "→";
   document.querySelector("#authLabel").textContent = loggedIn ? currentUser.name.split(" ")[0] : "Sign in";
-  document.querySelector("#headerProgressCaption").textContent = currentCertificate ? "Certificate earned" : loggedIn ? "Synced progress" : "Sign in to save";
+  document.querySelector("#headerProgressCaption").textContent = currentCertificate?.isPublic
+    ? "Certificate published"
+    : certificateEligible
+      ? currentCertificate ? "Certificate private" : "Certificate ready"
+      : loggedIn ? "Synced progress" : "Sign in to save";
   document.querySelector("#progressOwnerLabel").textContent = loggedIn ? `${currentUser.name}'s course progress` : "Sign in to save your progress";
-  certificateMenuButton.hidden = !currentCertificate;
+  certificateMenuButton.hidden = !certificateEligible;
+  document.querySelector("#certificateMenuLabel").textContent = currentCertificate?.isPublic
+    ? "View certificate"
+    : currentCertificate ? "Republish certificate" : "Claim certificate";
 
   if (loggedIn) {
     document.querySelector("#userMenuName").textContent = currentUser.name;
@@ -1127,35 +1146,45 @@ async function loadUserProgress() {
 async function loadCertificate() {
   if (!currentUser) {
     currentCertificate = null;
-    return false;
+    certificateEligible = false;
+    certificateConsentVersion = null;
+    return null;
   }
 
   const status = await apiRequest("/api/certificate");
   currentCertificate = status.certificate;
-
-  if (!currentCertificate && status.eligible) {
-    const claimed = await apiRequest("/api/certificate/claim", { method: "POST" });
-    currentCertificate = claimed.certificate;
-    return claimed.newlyIssued;
-  }
-
-  return false;
+  certificateEligible = status.eligible;
+  certificateConsentVersion = status.consentVersion;
+  return status;
 }
 
 function showCertificateCelebration(certificate = currentCertificate) {
-  if (!certificate) return;
-  currentCertificate = certificate;
+  if (!certificateEligible) return;
+  if (certificate) currentCertificate = certificate;
   if (dialog.open) closeLesson();
   if (authDialog.open) closeAuth();
+  if (accountDialog.open) closeAccountSettings();
   userMenu.hidden = true;
   authButton.setAttribute("aria-expanded", "false");
 
-  document.querySelector("#certificateLearnerName").textContent = certificate.name;
-  document.querySelector("#certificatePreviewName").textContent = certificate.name;
-  document.querySelector("#certificateCredentialId").textContent = certificate.credentialId;
-  document.querySelector("#certificateViewLink").href = certificate.shareUrl;
-  document.querySelector("#certificateLinkedInLink").href = certificate.linkedInShareUrl;
-  certificateDialog.showModal();
+  const publicName = currentCertificate?.name || currentUser.name;
+  const isPublic = Boolean(currentCertificate?.isPublic);
+  document.querySelector("#certificateLearnerName").textContent = publicName;
+  document.querySelector("#certificatePreviewName").textContent = publicName;
+  certificatePublicName.value = publicName;
+  document.querySelector("#certificateCredentialId").textContent = currentCertificate?.credentialId || "Issued after consent";
+  document.querySelector("#certificateStatusPill").textContent = isPublic ? "PUBLIC" : "PRIVATE";
+  document.querySelector("#certificateClaimPanel").hidden = isPublic;
+  document.querySelector("#certificatePublishedPanel").hidden = !isPublic;
+  document.querySelector("#certificateError").hidden = true;
+  certificateConsent.checked = false;
+  certificateClaimButton.innerHTML = `${currentCertificate ? "Republish" : "Claim &amp; publish"} certificate <span aria-hidden="true">↗</span>`;
+
+  if (isPublic) {
+    document.querySelector("#certificateViewLink").href = currentCertificate.shareUrl;
+    document.querySelector("#certificateLinkedInLink").href = currentCertificate.linkedInShareUrl;
+  }
+  if (!certificateDialog.open) certificateDialog.showModal();
   document.body.classList.add("dialog-open");
   updateAuthUI();
 }
@@ -1166,7 +1195,7 @@ function closeCertificateCelebration() {
 }
 
 async function copyPublicCertificateLink() {
-  if (!currentCertificate) return;
+  if (!currentCertificate?.isPublic) return;
   try {
     await navigator.clipboard.writeText(currentCertificate.shareUrl);
   } catch {
@@ -1183,13 +1212,115 @@ async function copyPublicCertificateLink() {
   showToastMessage("Certificate link copied", "Anyone with the link can verify your achievement.", "◆");
 }
 
+async function saveDisplayName(name) {
+  const data = await apiRequest("/api/profile", {
+    method: "PATCH",
+    body: JSON.stringify({ name })
+  });
+  currentUser = data.user;
+  if (currentCertificate) currentCertificate = { ...currentCertificate, name: currentUser.name };
+  updateAuthUI();
+  document.querySelector("#certificateLearnerName").textContent = currentUser.name;
+  document.querySelector("#certificatePreviewName").textContent = currentUser.name;
+  certificatePublicName.value = currentUser.name;
+  return data.user;
+}
+
+async function claimCertificate() {
+  const errorBox = document.querySelector("#certificateError");
+  const publicName = certificatePublicName.value.trim();
+  errorBox.hidden = true;
+
+  if (!certificatePublicName.reportValidity()) return;
+  if (!certificateConsent.checked) {
+    errorBox.textContent = "Check the consent box before publishing your certificate.";
+    errorBox.hidden = false;
+    return;
+  }
+
+  certificateClaimButton.disabled = true;
+  certificateClaimButton.textContent = "Publishing safely...";
+  try {
+    const data = await apiRequest("/api/certificate/claim", {
+      method: "POST",
+      body: JSON.stringify({
+        consent: true,
+        consentVersion: certificateConsentVersion,
+        publicName
+      })
+    });
+    currentUser = data.user;
+    currentCertificate = data.certificate;
+    certificateEligible = true;
+    showCertificateCelebration(currentCertificate);
+    showToastMessage(
+      data.newlyIssued ? "Certificate earned" : "Certificate republished",
+      "Public verification is active and your email remains private.",
+      "◆"
+    );
+  } catch (error) {
+    errorBox.textContent = error.message;
+    errorBox.hidden = false;
+  } finally {
+    certificateClaimButton.disabled = false;
+    certificateClaimButton.innerHTML = `${currentCertificate ? "Republish" : "Claim &amp; publish"} certificate <span aria-hidden="true">↗</span>`;
+  }
+}
+
+async function unpublishCertificate() {
+  if (!currentCertificate?.isPublic) return;
+  const confirmed = window.confirm("Make this certificate private? Its public link will stop working until you republish it.");
+  if (!confirmed) return;
+
+  certificateUnpublishButton.disabled = true;
+  try {
+    const data = await apiRequest("/api/certificate/publication", { method: "DELETE" });
+    currentCertificate = data.certificate;
+    showCertificateCelebration(currentCertificate);
+    showToastMessage("Certificate is private", "The public verification link is now disabled.", "◇");
+  } catch (error) {
+    showToastMessage("Privacy update failed", error.message, "!");
+  } finally {
+    certificateUnpublishButton.disabled = false;
+  }
+}
+
+async function saveCertificateName() {
+  if (!certificatePublicName.reportValidity()) return;
+  certificateSaveNameButton.disabled = true;
+  try {
+    await saveDisplayName(certificatePublicName.value.trim());
+    showToastMessage("Certificate name updated", "The public verification page now shows the corrected name.");
+  } catch (error) {
+    showToastMessage("Name not updated", error.message, "!");
+  } finally {
+    certificateSaveNameButton.disabled = false;
+  }
+}
+
+function openAccountSettings() {
+  if (!currentUser) return;
+  userMenu.hidden = true;
+  authButton.setAttribute("aria-expanded", "false");
+  document.querySelector("#profileName").value = currentUser.name;
+  document.querySelector("#profileMessage").hidden = true;
+  deleteAccountForm.reset();
+  document.querySelector("#deleteAccountError").hidden = true;
+  accountDialog.showModal();
+  document.body.classList.add("dialog-open");
+}
+
+function closeAccountSettings() {
+  accountDialog.close();
+  document.body.classList.remove("dialog-open");
+}
+
 async function initializeSession() {
-  let certificateNewlyIssued = false;
   try {
     const data = await apiRequest("/api/auth/me");
     currentUser = data.user;
     await loadUserProgress();
-    certificateNewlyIssued = await loadCertificate();
+    await loadCertificate();
   } catch (error) {
     currentUser = null;
     completed = new Set();
@@ -1200,7 +1331,6 @@ async function initializeSession() {
     updateProgress();
     renderModules();
   }
-  if (certificateNewlyIssued) showCertificateCelebration(currentCertificate);
 }
 
 function conceptLessons(module) {
@@ -1376,8 +1506,10 @@ async function toggleComplete() {
       body: JSON.stringify({ completed: !wasComplete })
     });
     if (result.certificate) currentCertificate = result.certificate;
+    certificateEligible = result.certificateEligible;
+    certificateConsentVersion = result.consentVersion;
     updateAuthUI();
-    if (result.certificateNewlyIssued) showCertificateCelebration(result.certificate);
+    if (!wasComplete && certificateEligible && !currentCertificate?.isPublic) showCertificateCelebration(currentCertificate);
     else showToast(!wasComplete);
   } catch (error) {
     if (wasComplete) completed.add(moduleId);
@@ -1448,7 +1580,74 @@ certificateDialog.addEventListener("click", (event) => {
   if (event.target === certificateDialog) closeCertificateCelebration();
 });
 certificateCopyButton.addEventListener("click", copyPublicCertificateLink);
+certificateClaimButton.addEventListener("click", claimCertificate);
+certificateUnpublishButton.addEventListener("click", unpublishCertificate);
+certificateSaveNameButton.addEventListener("click", saveCertificateName);
 certificateMenuButton.addEventListener("click", () => showCertificateCelebration());
+certificatePublicName.addEventListener("input", () => {
+  document.querySelector("#certificatePreviewName").textContent = certificatePublicName.value.trim() || "Your name";
+});
+
+accountSettingsButton.addEventListener("click", openAccountSettings);
+accountClose.addEventListener("click", closeAccountSettings);
+accountDialog.addEventListener("close", () => document.body.classList.remove("dialog-open"));
+accountDialog.addEventListener("click", (event) => {
+  if (event.target === accountDialog) closeAccountSettings();
+});
+
+profileForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const button = document.querySelector("#profileSaveButton");
+  const message = document.querySelector("#profileMessage");
+  if (!profileForm.reportValidity()) return;
+  button.disabled = true;
+  message.hidden = true;
+  try {
+    await saveDisplayName(document.querySelector("#profileName").value.trim());
+    message.textContent = "Your display name has been updated.";
+    message.classList.remove("error");
+    message.hidden = false;
+  } catch (error) {
+    message.textContent = error.message;
+    message.classList.add("error");
+    message.hidden = false;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+deleteAccountForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const button = document.querySelector("#deleteAccountButton");
+  const errorBox = document.querySelector("#deleteAccountError");
+  if (!deleteAccountForm.reportValidity()) return;
+  button.disabled = true;
+  errorBox.hidden = true;
+  try {
+    await apiRequest("/api/account", {
+      method: "DELETE",
+      body: JSON.stringify({
+        password: document.querySelector("#deletePassword").value,
+        confirmation: document.querySelector("#deleteConfirmation").value
+      })
+    });
+    closeAccountSettings();
+    currentUser = null;
+    completed = new Set();
+    currentCertificate = null;
+    certificateEligible = false;
+    certificateConsentVersion = null;
+    updateAuthUI();
+    updateProgress();
+    renderModules();
+    showToastMessage("Account deleted", "Your profile, progress, sessions, and certificate were permanently removed.", "✓");
+  } catch (error) {
+    errorBox.textContent = error.message;
+    errorBox.hidden = false;
+  } finally {
+    button.disabled = false;
+  }
+});
 
 document.querySelectorAll("[data-auth-mode]").forEach((tab) => {
   tab.addEventListener("click", () => setAuthMode(tab.dataset.authMode));
@@ -1474,19 +1673,15 @@ authForm.addEventListener("submit", async (event) => {
     const data = await apiRequest(endpoint, { method: "POST", body: JSON.stringify(payload) });
     currentUser = data.user;
     await loadUserProgress();
-    const certificateNewlyIssued = await loadCertificate();
+    await loadCertificate();
     updateAuthUI();
     updateProgress();
     renderModules();
     closeAuth();
-    if (certificateNewlyIssued) {
-      showCertificateCelebration(currentCertificate);
-    } else {
-      showToastMessage(
-        authMode === "register" ? "Account ready" : "Welcome back",
-        `Your progress is now synced as ${currentUser.name}.`
-      );
-    }
+    showToastMessage(
+      authMode === "register" ? "Account ready" : "Welcome back",
+      `Your progress is now synced as ${currentUser.name}.`
+    );
   } catch (error) {
     errorBox.textContent = error.message;
     errorBox.hidden = false;
@@ -1506,6 +1701,8 @@ logoutButton.addEventListener("click", async () => {
     currentUser = null;
     completed = new Set();
     currentCertificate = null;
+    certificateEligible = false;
+    certificateConsentVersion = null;
     userMenu.hidden = true;
     logoutButton.disabled = false;
     updateAuthUI();

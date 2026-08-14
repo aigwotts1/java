@@ -12,9 +12,12 @@ const screenshots = {
   auth: path.join(process.cwd(), "qa-auth.png"),
   lesson: path.join(process.cwd(), "qa-rest-methods.png"),
   mobile: path.join(process.cwd(), "qa-mobile-rest.png"),
+  consent: path.join(process.cwd(), "qa-certificate-consent.png"),
+  account: path.join(process.cwd(), "qa-account-privacy.png"),
   celebration: path.join(process.cwd(), "qa-certificate-celebration.png"),
   certificate: path.join(process.cwd(), "qa-certificate-public.png"),
   certificateMobile: path.join(process.cwd(), "qa-certificate-mobile.png"),
+  privacyMobile: path.join(process.cwd(), "qa-privacy-mobile.png"),
 };
 
 function delay(milliseconds) {
@@ -349,6 +352,33 @@ async function run() {
 
     await navigate(1440, 1000, false, "Avery");
     await waitFor(`document.querySelector("#progressLabel").textContent.trim() === "17 of 18 complete"`);
+    await evaluate(`document.querySelector("#authButton").click()`);
+    await waitFor(`!document.querySelector("#userMenu").hidden`);
+    await evaluate(`document.querySelector("#accountSettingsButton").click()`);
+    await waitFor(`document.querySelector("#accountDialog").open`);
+    const accountSettings = await evaluate(`(() => {
+      const dialog = document.querySelector("#accountDialog");
+      const bounds = dialog.getBoundingClientRect();
+      return {
+        open: dialog.open,
+        name: document.querySelector("#profileName").value,
+        hasPrivacyLink: document.querySelector(".account-policy-links").textContent.includes("Privacy notice"),
+        deletionExplained: document.querySelector(".danger-zone").textContent.includes("cannot be undone"),
+        requiresPassword: document.querySelector("#deletePassword").required,
+        requiresDeleteText: document.querySelector("#deleteConfirmation").pattern === "DELETE",
+        insideViewport: bounds.left >= 0 && bounds.right <= innerWidth && bounds.top >= 0 && bounds.bottom <= innerHeight
+      };
+    })()`);
+    assert.equal(accountSettings.open, true);
+    assert.equal(accountSettings.name, certificateLearner.name);
+    assert.equal(accountSettings.hasPrivacyLink, true);
+    assert.equal(accountSettings.deletionExplained, true);
+    assert.equal(accountSettings.requiresPassword, true);
+    assert.equal(accountSettings.requiresDeleteText, true);
+    assert.equal(accountSettings.insideViewport, true);
+    await capture(screenshots.account);
+    await evaluate(`document.querySelector("#accountClose").click()`);
+    await waitFor(`!document.querySelector("#accountDialog").open`);
     await evaluate(`document.querySelector('.module-card[data-module-id="18"]').click()`);
     await waitFor(`document.querySelector("#lessonDialog").open`);
     await evaluate(`document.querySelector("#completeButton").click()`);
@@ -357,15 +387,18 @@ async function run() {
     const celebration = await evaluate(`(() => {
       const dialog = document.querySelector("#certificateDialog");
       const bounds = dialog.getBoundingClientRect();
-      const shareUrl = document.querySelector("#certificateViewLink").href;
       return {
         open: dialog.open,
         title: document.querySelector("#certificateCelebrationTitle").textContent.trim(),
         learnerName: document.querySelector("#certificateLearnerName").textContent.trim(),
         previewName: document.querySelector("#certificatePreviewName").textContent.trim(),
         credentialId: document.querySelector("#certificateCredentialId").textContent.trim(),
-        shareUrl,
-        linkedinUrl: document.querySelector("#certificateLinkedInLink").href,
+        status: document.querySelector("#certificateStatusPill").textContent.trim(),
+        claimPanelVisible: !document.querySelector("#certificateClaimPanel").hidden,
+        publishedPanelHidden: document.querySelector("#certificatePublishedPanel").hidden,
+        consentChecked: document.querySelector("#certificateConsent").checked,
+        explainsPublicData: document.querySelector("#certificateClaimPanel").textContent.includes("course title, issue date, credential ID"),
+        limitsCredentialClaim: document.querySelector("#certificateClaimPanel").textContent.includes("not professional certification"),
         confettiPieces: document.querySelectorAll(".confetti i").length,
         insideViewport: bounds.left >= 0 && bounds.right <= innerWidth && bounds.top >= 0 && bounds.bottom <= innerHeight,
         errors: window.__qaErrors
@@ -375,16 +408,41 @@ async function run() {
     assert.equal(celebration.title, "You did it. Seriously.");
     assert.equal(celebration.learnerName, certificateLearner.name);
     assert.equal(celebration.previewName, certificateLearner.name);
-    assert.match(celebration.credentialId, /^JBC-[A-Z0-9_-]{10}$/);
-    assert.match(celebration.shareUrl, /\/certificate\/[A-Za-z0-9_-]{24}$/);
-    assert.ok(celebration.linkedinUrl.includes(encodeURIComponent(celebration.shareUrl)));
+    assert.equal(celebration.credentialId, "Issued after consent");
+    assert.equal(celebration.status, "PRIVATE");
+    assert.equal(celebration.claimPanelVisible, true);
+    assert.equal(celebration.publishedPanelHidden, true);
+    assert.equal(celebration.consentChecked, false);
+    assert.equal(celebration.explainsPublicData, true);
+    assert.equal(celebration.limitsCredentialClaim, true);
     assert.equal(celebration.confettiPieces, 12);
     assert.equal(celebration.insideViewport, true);
     assert.deepEqual(celebration.errors, []);
+    await capture(screenshots.consent);
+
+    await evaluate(`(() => {
+      document.querySelector("#certificateConsent").checked = true;
+      document.querySelector("#certificateClaimButton").click();
+    })()`);
+    await waitFor(`!document.querySelector("#certificatePublishedPanel").hidden && document.querySelector("#certificateStatusPill").textContent.trim() === "PUBLIC"`);
+    const publishedCertificate = await evaluate(`({
+      credentialId: document.querySelector("#certificateCredentialId").textContent.trim(),
+      shareUrl: document.querySelector("#certificateViewLink").href,
+      linkedinUrl: document.querySelector("#certificateLinkedInLink").href,
+      claimPanelHidden: document.querySelector("#certificateClaimPanel").hidden,
+      publicNote: document.querySelector(".certificate-public-note").textContent.trim(),
+      errors: window.__qaErrors
+    })`);
+    assert.match(publishedCertificate.credentialId, /^JBC-[A-Z0-9_-]{10}$/);
+    assert.match(publishedCertificate.shareUrl, /\/certificate\/[A-Za-z0-9_-]{24}$/);
+    assert.ok(publishedCertificate.linkedinUrl.includes(encodeURIComponent(publishedCertificate.shareUrl)));
+    assert.equal(publishedCertificate.claimPanelHidden, true);
+    assert.ok(publishedCertificate.publicNote.includes("email stays private"));
+    assert.deepEqual(publishedCertificate.errors, []);
     await capture(screenshots.celebration);
 
     await setViewport(1440, 1000, false);
-    await client.send("Page.navigate", { url: celebration.shareUrl });
+    await client.send("Page.navigate", { url: publishedCertificate.shareUrl });
     await waitFor(`document.readyState === "complete" && document.querySelector(".certificate")`);
     const publicCertificate = await evaluate(`(() => {
       const certificate = document.querySelector(".certificate");
@@ -405,7 +463,7 @@ async function run() {
     assert.equal(publicCertificate.learnerName, certificateLearner.name);
     assert.equal(publicCertificate.verified, "Publicly verified");
     assert.match(publicCertificate.hash, /^[a-f0-9]{64}$/);
-    assert.ok(publicCertificate.linkedinUrl.includes(encodeURIComponent(celebration.shareUrl)));
+    assert.ok(publicCertificate.linkedinUrl.includes(encodeURIComponent(publishedCertificate.shareUrl)));
     assert.equal(publicCertificate.containsPrivateEmail, false);
     assert.equal(publicCertificate.fitsViewport, true);
     assert.deepEqual(publicCertificate.errors, []);
@@ -432,8 +490,24 @@ async function run() {
     assert.equal(mobileCertificate.learnerName, certificateLearner.name);
     await capture(screenshots.certificateMobile);
 
+    await client.send("Page.navigate", { url: `${baseUrl}/privacy` });
+    await waitFor(`document.readyState === "complete" && document.querySelector(".legal-page h1")`);
+    const privacyPage = await evaluate(`({
+      title: document.querySelector(".legal-page h1").textContent.trim(),
+      consentPromise: document.querySelector(".notice").textContent.includes("does not automatically make your information public"),
+      accountDeletion: document.documentElement.textContent.includes("permanently delete your account"),
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(privacyPage.title, "Privacy notice");
+    assert.equal(privacyPage.consentPromise, true);
+    assert.equal(privacyPage.accountDeletion, true);
+    assert.equal(privacyPage.noHorizontalOverflow, true);
+    assert.deepEqual(privacyPage.errors, []);
+    await capture(screenshots.privacyMobile);
+
     console.log("Browser smoke test passed.");
-    console.log(JSON.stringify({ desktop, auth, java8, restLesson, mobile, mobileRest, celebration, publicCertificate, mobileCertificate, screenshots }, null, 2));
+    console.log(JSON.stringify({ desktop, auth, java8, restLesson, mobile, mobileRest, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
     client?.close();
     chrome.kill();

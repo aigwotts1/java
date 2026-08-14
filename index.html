@@ -53,7 +53,8 @@
             <p>Signed in as</p>
             <strong id="userMenuName"></strong>
             <small id="userMenuEmail"></small>
-            <button class="certificate-menu-button" id="certificateMenuButton" type="button" hidden><span aria-hidden="true">◆</span> View certificate</button>
+            <button class="certificate-menu-button" id="certificateMenuButton" type="button" hidden><span aria-hidden="true">◆</span> <span id="certificateMenuLabel">Certificate</span></button>
+            <button id="accountSettingsButton" type="button"><span aria-hidden="true">⚙</span> Profile &amp; privacy</button>
             <button id="logoutButton" type="button"><span aria-hidden="true">↪</span> Log out</button>
           </div>
         </div>
@@ -204,8 +205,11 @@
         <span class="brand-mark" aria-hidden="true"><span class="brand-cup">J</span></span>
         <span>Java<span class="brand-muted">Basecamp</span></span>
       </a>
-      <p>Made for curious developers. Keep learning, one concept at a time.</p>
-      <a href="#top">Back to top ↑</a>
+      <div class="footer-copy">
+        <p>Made for curious developers. Keep learning, one concept at a time.</p>
+        <small>Independent educational project—not affiliated with or endorsed by Oracle. Java is a trademark of Oracle and/or its affiliates.</small>
+      </div>
+      <nav class="footer-links" aria-label="Policies"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/certificate-policy">Certificate policy</a><a href="#top">Back to top ↑</a></nav>
     </footer>
 
     <dialog class="lesson-dialog" id="lessonDialog" aria-labelledby="dialogTitle">
@@ -286,7 +290,41 @@
             <span id="authSwitchText">New to Basecamp?</span>
             <button id="authSwitchButton" type="button">Create an account</button>
           </p>
-          <p class="auth-privacy">Your password is salted and hashed. Your progress belongs only to your account.</p>
+          <p class="auth-privacy">Your password is salted and hashed. By creating an account, you agree to the <a href="/terms" target="_blank">Terms</a> and acknowledge the <a href="/privacy" target="_blank">Privacy notice</a>.</p>
+        </section>
+      </div>
+    </dialog>
+
+    <dialog class="account-dialog" id="accountDialog" aria-labelledby="accountDialogTitle">
+      <div class="account-shell">
+        <button class="dialog-close" id="accountClose" type="button" aria-label="Close profile and privacy settings">×</button>
+        <p class="eyebrow"><span></span> Your account</p>
+        <h2 id="accountDialogTitle">Profile &amp; privacy</h2>
+        <p>Control the name used by your account and public certificate.</p>
+
+        <form id="profileForm" class="account-form">
+          <label for="profileName">Display name</label>
+          <div class="account-inline-field"><input id="profileName" name="name" minlength="2" maxlength="60" required /><button type="submit" id="profileSaveButton">Save name</button></div>
+          <p class="account-message" id="profileMessage" role="status" hidden></p>
+        </form>
+
+        <section class="account-policy-links">
+          <h3>Your controls</h3>
+          <p>A public certificate can be made private from its certificate panel. You can review how data and completion records work at any time.</p>
+          <div><a href="/privacy" target="_blank">Privacy notice ↗</a><a href="/certificate-policy" target="_blank">Certificate policy ↗</a></div>
+        </section>
+
+        <section class="danger-zone">
+          <h3>Delete account permanently</h3>
+          <p>This deletes your account, sessions, progress, and certificate. It cannot be undone.</p>
+          <form id="deleteAccountForm">
+            <label for="deletePassword">Current password</label>
+            <input id="deletePassword" type="password" autocomplete="current-password" required />
+            <label for="deleteConfirmation">Type DELETE to confirm</label>
+            <input id="deleteConfirmation" autocomplete="off" pattern="DELETE" required />
+            <p class="account-message error" id="deleteAccountError" role="alert" hidden></p>
+            <button class="delete-account-button" id="deleteAccountButton" type="submit">Permanently delete my account</button>
+          </form>
         </section>
       </div>
     </dialog>
@@ -311,20 +349,39 @@
         </section>
 
         <section class="certificate-preview-card">
-          <div class="preview-topline"><span>Certificate of completion</span><i>VERIFIED</i></div>
+          <div class="preview-topline"><span>Certificate of completion</span><i id="certificateStatusPill">PRIVATE</i></div>
           <div class="preview-mark">J</div>
           <p>Complete Java<br />Developer Path</p>
           <strong id="certificatePreviewName">Your name</strong>
+          <label class="certificate-name-control" for="certificatePublicName">
+            <span>Name shown on the public certificate</span>
+            <input id="certificatePublicName" minlength="2" maxlength="60" required />
+          </label>
           <div class="preview-credential">
             <span>Credential ID</span>
-            <code id="certificateCredentialId">JBC-...</code>
+            <code id="certificateCredentialId">Issued after consent</code>
           </div>
-          <div class="certificate-actions">
-            <a class="button button-primary" id="certificateViewLink" href="#" target="_blank" rel="noopener">View certificate <span aria-hidden="true">↗</span></a>
-            <a class="linkedin-share" id="certificateLinkedInLink" href="#" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span> Share on LinkedIn</a>
-            <button id="certificateCopyButton" type="button">Copy public link</button>
+
+          <div class="certificate-claim-panel" id="certificateClaimPanel">
+            <label class="certificate-consent" for="certificateConsent">
+              <input id="certificateConsent" type="checkbox" />
+              <span>I consent to publish my chosen name, course title, issue date, credential ID, and database verification code at a URL anyone can open. My email stays private.</span>
+            </label>
+            <p>Review the <a href="/privacy" target="_blank">Privacy notice</a> and <a href="/certificate-policy" target="_blank">Certificate policy</a>. This records course completion—not professional certification.</p>
+            <button class="certificate-claim-button" id="certificateClaimButton" type="button">Claim &amp; publish certificate <span aria-hidden="true">↗</span></button>
+            <p class="certificate-error" id="certificateError" role="alert" hidden></p>
           </div>
-          <p class="certificate-public-note"><span aria-hidden="true">✓</span> Anyone with the link can verify it. Your email stays private.</p>
+
+          <div class="certificate-published-panel" id="certificatePublishedPanel" hidden>
+            <div class="certificate-actions">
+              <a class="button button-primary" id="certificateViewLink" href="#" target="_blank" rel="noopener">View certificate <span aria-hidden="true">↗</span></a>
+              <a class="linkedin-share" id="certificateLinkedInLink" href="#" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span> Share on LinkedIn</a>
+              <button id="certificateCopyButton" type="button">Copy public link</button>
+              <button id="certificateSaveNameButton" type="button">Save public name</button>
+              <button class="certificate-unpublish-button" id="certificateUnpublishButton" type="button">Make certificate private</button>
+            </div>
+            <p class="certificate-public-note"><span aria-hidden="true">✓</span> Public verification is active. Your email stays private.</p>
+          </div>
         </section>
       </div>
     </dialog>

@@ -5,6 +5,7 @@ const path = require("node:path");
 
 const appSource = fs.readFileSync(path.join(__dirname, "..", "app.js"), "utf8");
 const serverSource = fs.readFileSync(path.join(__dirname, "..", "server.js"), "utf8");
+const indexSource = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
 
 function readLiteral(startMarker, endMarker) {
   const start = appSource.indexOf(startMarker);
@@ -58,4 +59,19 @@ test("Java 8 and REST API coverage includes the requested concepts", () => {
     groupedExamples["HTTP methods: GET, POST, PUT, PATCH & DELETE"].map(([label]) => label),
     ["GET", "POST", "PUT", "PATCH", "DELETE"],
   );
+});
+
+test("certificate publication is consent-based and completion-only language is visible", () => {
+  assert.match(indexSource, /Claim &amp; publish certificate/);
+  assert.match(indexSource, /I consent to publish my chosen name/);
+  assert.match(indexSource, /not professional certification/);
+  assert.match(indexSource, /not affiliated with or endorsed by Oracle/);
+  assert.match(serverSource, /CERTIFICATE_CONSENT_VERSION/);
+  assert.match(serverSource, /is_public = FALSE/);
+
+  for (const filename of ["privacy.html", "terms.html", "certificate-policy.html"]) {
+    const legalSource = fs.readFileSync(path.join(__dirname, "..", filename), "utf8");
+    assert.match(legalSource, /Java Basecamp/);
+    assert.match(legalSource, /Oracle/);
+  }
 });

@@ -6,7 +6,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-COPY --chown=node:node server.js index.html styles.css app.js certificate.css certificate.js ./
+COPY --chown=node:node server.js index.html styles.css app.js certificate.css certificate.js \
+  legal.css privacy.html terms.html certificate-policy.html ./
 
 USER node
 EXPOSE 3000

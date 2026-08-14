@@ -132,7 +132,7 @@ test(
 );
 
 test(
-  "certificate is issued at 100%, remains unique, and is publicly verifiable",
+  "certificate requires consent, can be unpublished, and stays uniquely verifiable",
   { skip: !baseUrl },
   async () => {
     const nonce = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
@@ -150,10 +150,18 @@ test(
     assert.equal(initialStatus.data.completedCount, 0);
     assert.equal(initialStatus.data.requiredCount, 18);
     assert.equal(initialStatus.data.certificate, null);
+    assert.equal(initialStatus.data.consentVersion, "2026-08-14");
+
+    const missingConsent = await request("/api/certificate/claim", {
+      method: "POST",
+      cookie,
+    });
+    assert.equal(missingConsent.status, 400);
 
     const earlyClaim = await request("/api/certificate/claim", {
       method: "POST",
       cookie,
+      body: { consent: true, consentVersion: initialStatus.data.consentVersion },
     });
     assert.equal(earlyClaim.status, 409);
 
@@ -165,7 +173,7 @@ test(
       });
       assert.equal(saved.status, 200);
       assert.equal(saved.data.certificate, null);
-      assert.equal(saved.data.certificateNewlyIssued, false);
+      assert.equal(saved.data.certificateEligible, false);
     }
 
     const completion = await request("/api/progress/18", {
@@ -174,27 +182,48 @@ test(
       body: { completed: true },
     });
     assert.equal(completion.status, 200);
-    assert.equal(completion.data.certificateNewlyIssued, true);
-    assert.match(completion.data.certificate.publicId, /^[A-Za-z0-9_-]{24}$/);
-    assert.match(completion.data.certificate.verificationHash, /^[a-f0-9]{64}$/);
-    assert.match(completion.data.certificate.credentialId, /^JBC-[A-Z0-9_-]{10}$/);
-    assert.match(completion.data.certificate.shareUrl, /\/certificate\//);
-    assert.equal(completion.data.certificate.moduleCount, 18);
-    assert.equal(completion.data.certificate.conceptCount, 135);
+    assert.equal(completion.data.certificateEligible, true);
+    assert.equal(completion.data.certificate, null);
 
-    const certificate = completion.data.certificate;
-    const privateStatus = await request("/api/certificate", { cookie });
-    assert.equal(privateStatus.status, 200);
-    assert.equal(privateStatus.data.eligible, true);
-    assert.equal(privateStatus.data.completedCount, 18);
-    assert.equal(privateStatus.data.certificate.publicId, certificate.publicId);
+    const eligibleStatus = await request("/api/certificate", { cookie });
+    assert.equal(eligibleStatus.data.eligible, true);
+    assert.equal(eligibleStatus.data.completedCount, 18);
+    assert.equal(eligibleStatus.data.certificate, null);
+
+    const claim = await request("/api/certificate/claim", {
+      method: "POST",
+      cookie,
+      body: {
+        consent: true,
+        consentVersion: eligibleStatus.data.consentVersion,
+        publicName: "Katherine Johnson",
+      },
+    });
+    assert.equal(claim.status, 201);
+    assert.equal(claim.data.newlyIssued, true);
+    assert.equal(claim.data.newlyPublished, true);
+    assert.equal(claim.data.certificate.isPublic, true);
+    assert.match(claim.data.certificate.publicId, /^[A-Za-z0-9_-]{24}$/);
+    assert.match(claim.data.certificate.verificationHash, /^[a-f0-9]{64}$/);
+    assert.match(claim.data.certificate.credentialId, /^JBC-[A-Z0-9_-]{10}$/);
+    assert.match(claim.data.certificate.shareUrl, /\/certificate\//);
+    assert.equal(claim.data.certificate.moduleCount, 18);
+    assert.equal(claim.data.certificate.conceptCount, 135);
+
+    const certificate = claim.data.certificate;
 
     const repeatClaim = await request("/api/certificate/claim", {
       method: "POST",
       cookie,
+      body: {
+        consent: true,
+        consentVersion: eligibleStatus.data.consentVersion,
+        publicName: "Katherine Johnson",
+      },
     });
     assert.equal(repeatClaim.status, 200);
     assert.equal(repeatClaim.data.newlyIssued, false);
+    assert.equal(repeatClaim.data.newlyPublished, false);
     assert.equal(repeatClaim.data.certificate.publicId, certificate.publicId);
 
     const publicLookup = await request(`/api/certificates/${certificate.publicId}`);
@@ -214,7 +243,19 @@ test(
     assert.match(publicPage.data, /property="og:title"/);
     assert.match(publicPage.data, /linkedin\.com\/sharing\/share-offsite/);
     assert.match(publicPage.data, new RegExp(certificate.verificationHash));
+    assert.match(publicPage.data, /not a professional licence/);
+    assert.match(publicPage.data, /not affiliated with, endorsed by, or sponsored by Oracle/);
     assert.equal(publicPage.data.includes(email), false);
+
+    const renamed = await request("/api/profile", {
+      method: "PATCH",
+      cookie,
+      body: { name: "Katherine G. Johnson" },
+    });
+    assert.equal(renamed.status, 200);
+    assert.equal(renamed.data.user.name, "Katherine G. Johnson");
+    const renamedPublic = await request(`/api/certificates/${certificate.publicId}`);
+    assert.equal(renamedPublic.data.certificate.name, "Katherine G. Johnson");
 
     const uncompleted = await request("/api/progress/18", {
       method: "PUT",
@@ -226,7 +267,59 @@ test(
     assert.equal(stillPublic.status, 200);
     assert.equal(stillPublic.data.verified, true);
 
+    const unpublished = await request("/api/certificate/publication", {
+      method: "DELETE",
+      cookie,
+    });
+    assert.equal(unpublished.status, 200);
+    assert.equal(unpublished.data.certificate.isPublic, false);
+    assert.equal((await request(`/api/certificates/${certificate.publicId}`)).status, 404);
+    assert.equal((await request(`/api/certificates/verify/${certificate.verificationHash}`)).status, 404);
+    assert.equal((await request(`/certificate/${certificate.publicId}`)).status, 404);
+
+    const privateStatus = await request("/api/certificate", { cookie });
+    assert.equal(privateStatus.status, 200);
+    assert.equal(privateStatus.data.eligible, true);
+    assert.equal(privateStatus.data.certificate.publicId, certificate.publicId);
+    assert.equal(privateStatus.data.certificate.isPublic, false);
+
+    const republished = await request("/api/certificate/claim", {
+      method: "POST",
+      cookie,
+      body: {
+        consent: true,
+        consentVersion: privateStatus.data.consentVersion,
+        publicName: "Katherine G. Johnson",
+      },
+    });
+    assert.equal(republished.status, 200);
+    assert.equal(republished.data.newlyIssued, false);
+    assert.equal(republished.data.newlyPublished, true);
+    assert.equal(republished.data.certificate.publicId, certificate.publicId);
+    assert.equal((await request(`/api/certificates/${certificate.publicId}`)).status, 200);
+
+    for (const legalPath of ["/privacy", "/terms", "/certificate-policy"]) {
+      const legalPage = await request(legalPath);
+      assert.equal(legalPage.status, 200);
+    }
+
     const missing = await request("/api/certificates/000000000000000000000000");
     assert.equal(missing.status, 404);
+
+    const wrongDeletion = await request("/api/account", {
+      method: "DELETE",
+      cookie,
+      body: { confirmation: "DELETE", password: "wrong-password" },
+    });
+    assert.equal(wrongDeletion.status, 401);
+
+    const deletion = await request("/api/account", {
+      method: "DELETE",
+      cookie,
+      body: { confirmation: "DELETE", password: "LearnJava!42" },
+    });
+    assert.equal(deletion.status, 204);
+    assert.equal((await request(`/api/certificates/${certificate.publicId}`)).status, 404);
+    assert.equal((await request("/api/progress", { cookie })).status, 401);
   },
 );

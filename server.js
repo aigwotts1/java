@@ -15,6 +15,7 @@ const MODULE_COUNT = 18;
 const CONCEPT_COUNT = 135;
 const COURSE_CODE = "java-basecamp-complete";
 const COURSE_TITLE = "Complete Java Developer Path";
+const CERTIFICATE_CONSENT_VERSION = "2026-08-14";
 
 function databaseOptions() {
   if (!process.env.DATABASE_URL) {
@@ -33,12 +34,21 @@ function normalizeEmail(value) {
   return String(value || "").trim().toLowerCase();
 }
 
+function validateName(value) {
+  const name = String(value || "").trim().replace(/\s+/g, " ");
+  return {
+    name,
+    error: name.length < 2 || name.length > 60 ? "Name must be between 2 and 60 characters." : null
+  };
+}
+
 function validateRegistration({ name, email, password }) {
-  const cleanName = String(name || "").trim().replace(/\s+/g, " ");
+  const validatedName = validateName(name);
+  const cleanName = validatedName.name;
   const cleanEmail = normalizeEmail(email);
   const errors = [];
 
-  if (cleanName.length < 2 || cleanName.length > 60) errors.push("Name must be between 2 and 60 characters.");
+  if (validatedName.error) errors.push(validatedName.error);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail) || cleanEmail.length > 254) errors.push("Enter a valid email address.");
   if (typeof password !== "string" || password.length < 8 || password.length > 128) errors.push("Password must be between 8 and 128 characters.");
 
@@ -103,6 +113,9 @@ function certificatePayload(row, req) {
     courseCode: row.course_code,
     courseTitle: COURSE_TITLE,
     issuedAt: row.issued_at,
+    isPublic: Boolean(row.is_public),
+    publishedAt: row.published_at,
+    unpublishedAt: row.unpublished_at,
     moduleCount: MODULE_COUNT,
     conceptCount: CONCEPT_COUNT,
     shareUrl,
@@ -112,7 +125,8 @@ function certificatePayload(row, req) {
 
 async function findCertificate(client, userId) {
   const result = await client.query(
-    `SELECT c.id, c.public_id, c.verification_hash, c.course_code, c.issued_at, u.name AS user_name
+    `SELECT c.id, c.public_id, c.verification_hash, c.course_code, c.issued_at,
+            c.is_public, c.published_at, c.unpublished_at, u.name AS user_name
      FROM certificates c
      JOIN users u ON u.id = c.user_id
      WHERE c.user_id = $1 AND c.course_code = $2`,
@@ -121,26 +135,50 @@ async function findCertificate(client, userId) {
   return result.rows[0] || null;
 }
 
-async function issueCertificate(client, user) {
+async function issueCertificate(client, user, consentVersion = CERTIFICATE_CONSENT_VERSION) {
   const progress = await client.query(
     "SELECT COUNT(*)::int AS completed_count FROM learning_progress WHERE user_id = $1",
     [user.id]
   );
   const completedCount = progress.rows[0].completed_count;
-  if (completedCount < MODULE_COUNT) return { certificate: null, completedCount, eligible: false, newlyIssued: false };
-
   const existing = await findCertificate(client, user.id);
-  if (existing) return { certificate: existing, completedCount, eligible: true, newlyIssued: false };
+  if (existing) {
+    const republished = await client.query(
+      `UPDATE certificates
+       SET is_public = TRUE,
+           published_at = NOW(),
+           unpublished_at = NULL,
+           consented_at = NOW(),
+           consent_version = $3
+       WHERE user_id = $1 AND course_code = $2
+       RETURNING id, public_id, verification_hash, course_code, issued_at,
+                 is_public, published_at, unpublished_at`,
+      [user.id, COURSE_CODE, consentVersion]
+    );
+    return {
+      certificate: { ...republished.rows[0], user_name: user.name },
+      completedCount,
+      eligible: true,
+      newlyIssued: false,
+      newlyPublished: !existing.is_public
+    };
+  }
+
+  if (completedCount < MODULE_COUNT) return { certificate: null, completedCount, eligible: false, newlyIssued: false, newlyPublished: false };
 
   const id = crypto.randomUUID();
   const publicId = crypto.randomBytes(18).toString("base64url");
   const verificationHash = crypto.createHash("sha256").update(crypto.randomBytes(64)).digest("hex");
   const result = await client.query(
-    `INSERT INTO certificates (id, public_id, verification_hash, user_id, course_code)
-     VALUES ($1, $2, $3, $4, $5)
+    `INSERT INTO certificates (
+       id, public_id, verification_hash, user_id, course_code,
+       is_public, published_at, consented_at, consent_version
+     )
+     VALUES ($1, $2, $3, $4, $5, TRUE, NOW(), NOW(), $6)
      ON CONFLICT (user_id, course_code) DO NOTHING
-     RETURNING id, public_id, verification_hash, course_code, issued_at`,
-    [id, publicId, verificationHash, user.id, COURSE_CODE]
+     RETURNING id, public_id, verification_hash, course_code, issued_at,
+               is_public, published_at, unpublished_at`,
+    [id, publicId, verificationHash, user.id, COURSE_CODE, consentVersion]
   );
 
   if (result.rowCount) {
@@ -148,7 +186,8 @@ async function issueCertificate(client, user) {
       certificate: { ...result.rows[0], user_name: user.name },
       completedCount,
       eligible: true,
-      newlyIssued: true
+      newlyIssued: true,
+      newlyPublished: true
     };
   }
 
@@ -156,20 +195,27 @@ async function issueCertificate(client, user) {
     certificate: await findCertificate(client, user.id),
     completedCount,
     eligible: true,
-    newlyIssued: false
+    newlyIssued: false,
+    newlyPublished: false
   };
 }
 
-function createRateLimiter({ windowMs, limit }) {
+function createRateLimiter({ windowMs, limit, keyForRequest }) {
   const attempts = new Map();
 
   return (req, res, next) => {
-    const key = `${req.ip}:${normalizeEmail(req.body?.email)}`;
+    const key = keyForRequest ? keyForRequest(req) : `${req.ip}:${normalizeEmail(req.body?.email)}`;
     const now = Date.now();
     const current = attempts.get(key);
     const entry = !current || current.resetAt <= now ? { count: 0, resetAt: now + windowMs } : current;
     entry.count += 1;
     attempts.set(key, entry);
+
+    if (attempts.size > 10_000) {
+      for (const [attemptKey, attempt] of attempts) {
+        if (attempt.resetAt <= now) attempts.delete(attemptKey);
+      }
+    }
 
     if (entry.count > limit) {
       res.set("Retry-After", String(Math.ceil((entry.resetAt - now) / 1000)));
@@ -220,8 +266,19 @@ async function initializeDatabase(pool) {
       user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       course_code VARCHAR(80) NOT NULL,
       issued_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      is_public BOOLEAN NOT NULL DEFAULT FALSE,
+      published_at TIMESTAMPTZ,
+      unpublished_at TIMESTAMPTZ,
+      consented_at TIMESTAMPTZ,
+      consent_version VARCHAR(24),
       UNIQUE (user_id, course_code)
     );
+
+    ALTER TABLE certificates ADD COLUMN IF NOT EXISTS is_public BOOLEAN NOT NULL DEFAULT FALSE;
+    ALTER TABLE certificates ADD COLUMN IF NOT EXISTS published_at TIMESTAMPTZ;
+    ALTER TABLE certificates ADD COLUMN IF NOT EXISTS unpublished_at TIMESTAMPTZ;
+    ALTER TABLE certificates ADD COLUMN IF NOT EXISTS consented_at TIMESTAMPTZ;
+    ALTER TABLE certificates ADD COLUMN IF NOT EXISTS consent_version VARCHAR(24);
 
     CREATE INDEX IF NOT EXISTS certificates_user_id_idx ON certificates(user_id);
     CREATE INDEX IF NOT EXISTS certificates_issued_at_idx ON certificates(issued_at);
@@ -246,10 +303,11 @@ async function waitForDatabase(pool, attempts = 30) {
 async function findPublicCertificate(client, field, value) {
   const column = field === "verification_hash" ? "verification_hash" : "public_id";
   const result = await client.query(
-    `SELECT c.id, c.public_id, c.verification_hash, c.course_code, c.issued_at, u.name AS user_name
+    `SELECT c.id, c.public_id, c.verification_hash, c.course_code, c.issued_at,
+            c.is_public, c.published_at, c.unpublished_at, u.name AS user_name
      FROM certificates c
      JOIN users u ON u.id = c.user_id
-     WHERE c.${column} = $1`,
+     WHERE c.${column} = $1 AND c.is_public = TRUE`,
     [value]
   );
   return result.rows[0] || null;
@@ -274,6 +332,7 @@ function renderCertificatePage(certificate) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="${escapeHtml(description)}" />
+    <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#15386b" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Java Basecamp" />
@@ -309,9 +368,9 @@ function renderCertificatePage(certificate) {
           <div class="certificate-mark" aria-hidden="true">J</div>
           <div>
             <span>Java Basecamp</span>
-            <small>Verified learning credential</small>
+            <small>Verified course completion record</small>
           </div>
-          <div class="verified-pill"><i aria-hidden="true">✓</i> Authenticated</div>
+          <div class="verified-pill"><i aria-hidden="true">✓</i> Database verified</div>
         </header>
 
         <section class="certificate-body">
@@ -340,7 +399,12 @@ function renderCertificatePage(certificate) {
         </div>
       </article>
 
-      <p class="certificate-note">Anyone with this link can verify this achievement. No email address or private account information is displayed.</p>
+      <p class="certificate-note">Anyone with this link can verify this course completion. No email address or private account information is displayed.</p>
+      <footer class="certificate-legal">
+        <p>This is a course-completion record, not a professional licence, accredited qualification, or Oracle certification.</p>
+        <p>Java Basecamp is independent and is not affiliated with, endorsed by, or sponsored by Oracle. Java is a trademark of Oracle and/or its affiliates.</p>
+        <nav aria-label="Certificate policies"><a href="/certificate-policy">Certificate policy</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
+      </footer>
       <div class="copy-toast" id="copyToast" role="status" aria-live="polite">Certificate link copied</div>
     </main>
     <script src="/certificate.js" defer></script>
@@ -350,12 +414,50 @@ function renderCertificatePage(certificate) {
 
 function createApp(pool) {
   const app = express();
+  const enforceHttps = process.env.ENFORCE_HTTPS === "true";
+  const publicAppUrl = String(process.env.PUBLIC_APP_URL || "").replace(/\/$/, "");
+  if (publicAppUrl) {
+    let parsedPublicUrl;
+    try {
+      parsedPublicUrl = new URL(publicAppUrl);
+    } catch {
+      throw new Error("PUBLIC_APP_URL must be a valid http:// or https:// origin.");
+    }
+    if (
+      !["http:", "https:"].includes(parsedPublicUrl.protocol) ||
+      parsedPublicUrl.username || parsedPublicUrl.password ||
+      parsedPublicUrl.pathname !== "/" || parsedPublicUrl.search || parsedPublicUrl.hash
+    ) {
+      throw new Error("PUBLIC_APP_URL must be an http:// or https:// origin without a path.");
+    }
+  }
+  if (enforceHttps && (!publicAppUrl.startsWith("https://") || process.env.COOKIE_SECURE !== "true")) {
+    throw new Error("ENFORCE_HTTPS requires an https:// PUBLIC_APP_URL and COOKIE_SECURE=true.");
+  }
   const authLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, limit: 12 });
+  const verificationLimiter = createRateLimiter({
+    windowMs: 60 * 1000,
+    limit: 120,
+    keyForRequest: (req) => req.ip
+  });
+  const accountDeletionLimiter = createRateLimiter({
+    windowMs: 15 * 60 * 1000,
+    limit: 6,
+    keyForRequest: (req) => `${req.ip}:${req.user.id}`
+  });
   app.set("trust proxy", 1);
   app.disable("x-powered-by");
   app.use(express.json({ limit: "32kb" }));
 
   app.use((req, res, next) => {
+    if (!enforceHttps || req.secure) return next();
+    if (req.method === "GET" || req.method === "HEAD") return res.redirect(308, `${publicAppUrl}${req.originalUrl}`);
+    return res.status(426).json({ error: "Use HTTPS for this request." });
+  });
+
+  app.use((req, res, next) => {
+    if (req.secure) res.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    if (req.path.startsWith("/api/")) res.set("Cache-Control", "no-store");
     res.set({
       "X-Content-Type-Options": "nosniff",
       "X-Frame-Options": "DENY",
@@ -506,6 +608,41 @@ function createApp(pool) {
     }
   });
 
+  app.patch("/api/profile", authenticate, async (req, res, next) => {
+    const validated = validateName(req.body?.name);
+    if (validated.error) return res.status(400).json({ error: validated.error });
+
+    try {
+      const result = await pool.query(
+        "UPDATE users SET name = $1 WHERE id = $2 RETURNING id, name, email, created_at",
+        [validated.name, req.user.id]
+      );
+      res.json({ user: publicUser(result.rows[0]) });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.delete("/api/account", authenticate, accountDeletionLimiter, async (req, res, next) => {
+    if (req.body?.confirmation !== "DELETE") {
+      return res.status(400).json({ error: "Type DELETE to confirm permanent account deletion." });
+    }
+    const password = String(req.body?.password || "");
+    if (!password) return res.status(400).json({ error: "Enter your password to delete your account." });
+
+    try {
+      const result = await pool.query("SELECT password_hash FROM users WHERE id = $1", [req.user.id]);
+      if (!result.rowCount || !(await verifyPassword(password, result.rows[0].password_hash))) {
+        return res.status(401).json({ error: "Password is incorrect." });
+      }
+      await pool.query("DELETE FROM users WHERE id = $1", [req.user.id]);
+      clearSessionCookie(res);
+      res.status(204).end();
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.get("/api/progress", authenticate, async (req, res, next) => {
     try {
       const result = await pool.query("SELECT module_id FROM learning_progress WHERE user_id = $1 ORDER BY module_id", [req.user.id]);
@@ -524,9 +661,10 @@ function createApp(pool) {
       const completedCount = progress.rows[0].completed_count;
       res.json({
         certificate: certificatePayload(certificate, req),
-        eligible: completedCount >= MODULE_COUNT,
+        eligible: Boolean(certificate) || completedCount >= MODULE_COUNT,
         completedCount,
-        requiredCount: MODULE_COUNT
+        requiredCount: MODULE_COUNT,
+        consentVersion: CERTIFICATE_CONSENT_VERSION
       });
     } catch (error) {
       next(error);
@@ -534,25 +672,64 @@ function createApp(pool) {
   });
 
   app.post("/api/certificate/claim", authenticate, async (req, res, next) => {
+    if (req.body?.consent !== true || req.body?.consentVersion !== CERTIFICATE_CONSENT_VERSION) {
+      return res.status(400).json({
+        error: "Review and accept the current public certificate notice before publishing.",
+        consentVersion: CERTIFICATE_CONSENT_VERSION
+      });
+    }
+    const validated = validateName(req.body?.publicName || req.user.name);
+    if (validated.error) return res.status(400).json({ error: validated.error });
+
+    const client = await pool.connect();
     try {
-      const result = await issueCertificate(pool, req.user);
+      await client.query("BEGIN");
+      const userResult = await client.query(
+        "UPDATE users SET name = $1 WHERE id = $2 RETURNING id, name, email, created_at",
+        [validated.name, req.user.id]
+      );
+      const result = await issueCertificate(client, userResult.rows[0], CERTIFICATE_CONSENT_VERSION);
       if (!result.eligible) {
+        await client.query("ROLLBACK");
         return res.status(409).json({
           error: `Complete all ${MODULE_COUNT} modules before claiming your certificate.`,
           completedCount: result.completedCount,
           requiredCount: MODULE_COUNT
         });
       }
+      await client.query("COMMIT");
       res.status(result.newlyIssued ? 201 : 200).json({
         certificate: certificatePayload(result.certificate, req),
-        newlyIssued: result.newlyIssued
+        user: publicUser(userResult.rows[0]),
+        newlyIssued: result.newlyIssued,
+        newlyPublished: result.newlyPublished
       });
+    } catch (error) {
+      await client.query("ROLLBACK");
+      next(error);
+    } finally {
+      client.release();
+    }
+  });
+
+  app.delete("/api/certificate/publication", authenticate, async (req, res, next) => {
+    try {
+      const result = await pool.query(
+        `UPDATE certificates
+         SET is_public = FALSE, unpublished_at = NOW()
+         WHERE user_id = $1 AND course_code = $2
+         RETURNING id, public_id, verification_hash, course_code, issued_at,
+                   is_public, published_at, unpublished_at`,
+        [req.user.id, COURSE_CODE]
+      );
+      if (!result.rowCount) return res.status(404).json({ error: "Certificate not found." });
+      res.json({ certificate: certificatePayload({ ...result.rows[0], user_name: req.user.name }, req) });
     } catch (error) {
       next(error);
     }
   });
 
-  app.get("/api/certificates/:publicId", async (req, res, next) => {
+  app.get("/api/certificates/:publicId", verificationLimiter, async (req, res, next) => {
     if (!/^[A-Za-z0-9_-]{20,32}$/.test(req.params.publicId)) return res.status(404).json({ error: "Certificate not found." });
     try {
       const certificate = await findPublicCertificate(pool, "public_id", req.params.publicId);
@@ -563,7 +740,7 @@ function createApp(pool) {
     }
   });
 
-  app.get("/api/certificates/verify/:hash", async (req, res, next) => {
+  app.get("/api/certificates/verify/:hash", verificationLimiter, async (req, res, next) => {
     if (!/^[a-f0-9]{64}$/.test(req.params.hash)) return res.status(404).json({ error: "Certificate not found." });
     try {
       const certificate = await findPublicCertificate(pool, "verification_hash", req.params.hash);
@@ -592,14 +769,19 @@ function createApp(pool) {
       } else {
         await pool.query("DELETE FROM learning_progress WHERE user_id = $1 AND module_id = $2", [req.user.id, moduleId]);
       }
-      const achievement = req.body.completed
-        ? await issueCertificate(pool, req.user)
-        : { certificate: null, newlyIssued: false };
+      const [certificate, progress] = await Promise.all([
+        findCertificate(pool, req.user.id),
+        pool.query("SELECT COUNT(*)::int AS completed_count FROM learning_progress WHERE user_id = $1", [req.user.id])
+      ]);
+      const completedCount = progress.rows[0].completed_count;
       res.json({
         moduleId,
         completed: req.body.completed,
-        certificate: certificatePayload(achievement.certificate, req),
-        certificateNewlyIssued: achievement.newlyIssued
+        certificate: certificatePayload(certificate, req),
+        certificateEligible: Boolean(certificate) || completedCount >= MODULE_COUNT,
+        completedCount,
+        requiredCount: MODULE_COUNT,
+        consentVersion: CERTIFICATE_CONSENT_VERSION
       });
     } catch (error) {
       next(error);
@@ -611,7 +793,11 @@ function createApp(pool) {
   app.get("/app.js", (req, res) => res.sendFile(path.join(ROOT, "app.js")));
   app.get("/certificate.css", (req, res) => res.sendFile(path.join(ROOT, "certificate.css")));
   app.get("/certificate.js", (req, res) => res.sendFile(path.join(ROOT, "certificate.js")));
-  app.get("/certificate/:publicId", async (req, res, next) => {
+  app.get("/legal.css", (req, res) => res.sendFile(path.join(ROOT, "legal.css")));
+  app.get("/privacy", (req, res) => res.sendFile(path.join(ROOT, "privacy.html")));
+  app.get("/terms", (req, res) => res.sendFile(path.join(ROOT, "terms.html")));
+  app.get("/certificate-policy", (req, res) => res.sendFile(path.join(ROOT, "certificate-policy.html")));
+  app.get("/certificate/:publicId", verificationLimiter, async (req, res, next) => {
     if (!/^[A-Za-z0-9_-]{20,32}$/.test(req.params.publicId)) return res.status(404).send("Certificate not found.");
     try {
       const row = await findPublicCertificate(pool, "public_id", req.params.publicId);
@@ -652,6 +838,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  CERTIFICATE_CONSENT_VERSION,
   certificatePayload,
   createApp,
   escapeHtml,
@@ -662,5 +849,6 @@ module.exports = {
   renderCertificatePage,
   tokenHash,
   validateRegistration,
+  validateName,
   verifyPassword
 };

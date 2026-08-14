@@ -366,9 +366,7 @@ button {
   box-shadow: 0 3px 0 #091f41;
 }
 
-.user-menu .certificate-menu-button + #logoutButton {
-  margin-top: 8px;
-}
+.user-menu button + button { margin-top: 8px; }
 
 .hero {
   width: min(1180px, calc(100% - 48px));
@@ -1182,7 +1180,11 @@ footer {
 }
 
 .footer-brand { color: var(--ink); }
-footer > a:last-child { color: var(--blue); font-weight: 800; }
+.footer-copy { max-width: 440px; }
+.footer-copy p { margin: 0 0 5px; color: var(--ink); font-weight: 700; }
+.footer-copy small { display: block; font-size: 7px; line-height: 1.5; }
+.footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; }
+.footer-links a { color: var(--blue); font-weight: 800; }
 
 .lesson-dialog {
   width: min(800px, calc(100% - 28px));
@@ -1761,11 +1763,60 @@ footer > a:last-child { color: var(--blue); font-weight: 800; }
   text-align: center;
 }
 
+.auth-privacy a { color: var(--blue); font-weight: 800; }
+
+.account-dialog {
+  width: min(620px, calc(100% - 28px));
+  max-height: calc(100vh - 28px);
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 22px;
+  background: var(--paper);
+  box-shadow: 0 38px 100px rgba(20, 25, 36, .46);
+}
+
+.account-dialog::backdrop { background: rgba(17, 22, 30, .72); backdrop-filter: blur(7px); }
+.account-dialog[open] { animation: dialogIn 240ms cubic-bezier(.2,.8,.2,1); }
+
+.account-shell { position: relative; padding: clamp(31px, 6vw, 52px); }
+.account-shell > .dialog-close { top: 18px; right: 18px; color: var(--ink); background: var(--cream); }
+.account-shell > h2 { margin: 12px 0 8px; font-family: var(--display); font-size: clamp(38px, 7vw, 54px); font-weight: 400; }
+.account-shell > p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 10px; }
+
+.account-form,
+.account-policy-links,
+.danger-zone { margin-top: 30px; padding-top: 25px; border-top: 1px solid var(--line); }
+.account-form > label,
+.danger-zone label { display: block; margin: 0 0 7px; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .7px; }
+.account-inline-field { display: grid; grid-template-columns: 1fr auto; gap: 9px; }
+.account-inline-field input,
+.danger-zone input { width: 100%; min-height: 44px; padding: 0 13px; border: 1px solid var(--line); border-radius: 9px; outline: 0; background: #faf7f1; font-size: 10px; }
+.account-inline-field input:focus,
+.danger-zone input:focus { border-color: rgba(36, 88, 166, .55); box-shadow: 0 0 0 4px rgba(36, 88, 166, .08); }
+.account-inline-field button { padding: 0 18px; border: 0; border-radius: 9px; color: white; background: var(--blue); font-size: 9px; font-weight: 800; cursor: pointer; }
+.account-message { margin: 10px 0 0; color: var(--green); font-size: 8px; }
+.account-message.error { color: #a33124; }
+
+.account-policy-links h3,
+.danger-zone h3 { margin: 0 0 7px; font-family: var(--display); font-size: 23px; font-weight: 400; }
+.account-policy-links p,
+.danger-zone p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.6; }
+.account-policy-links div { margin-top: 13px; display: flex; gap: 16px; }
+.account-policy-links a { color: var(--blue); font-size: 8px; font-weight: 800; }
+.danger-zone { border-color: rgba(201, 66, 44, .3); }
+.danger-zone h3 { color: #a33124; }
+.danger-zone form { margin-top: 17px; display: grid; gap: 8px; }
+.danger-zone label:not(:first-child) { margin-top: 7px; }
+.delete-account-button { min-height: 44px; margin-top: 8px; border: 1px solid #a33124; border-radius: 9px; color: white; background: #a33124; font-size: 9px; font-weight: 800; cursor: pointer; }
+.account-form button:disabled,
+.delete-account-button:disabled { opacity: .6; cursor: wait; }
+
 .achievement-dialog {
   width: min(900px, calc(100% - 28px));
   max-height: calc(100vh - 28px);
   padding: 0;
-  overflow: hidden;
+  overflow: auto;
   border: 0;
   border-radius: 24px;
   background: var(--paper);
@@ -1974,6 +2025,28 @@ footer > a:last-child { color: var(--blue); font-weight: 800; }
 .preview-credential span { color: #91a7c4; font-family: var(--mono); font-size: 6px; letter-spacing: .8px; text-transform: uppercase; }
 .preview-credential code { color: #dce5f0; font-family: var(--mono); font-size: 8px; }
 
+.certificate-name-control {
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  display: grid;
+  gap: 7px;
+}
+
+.certificate-name-control > span { color: #aabbd0; font-family: var(--mono); font-size: 6px; letter-spacing: .7px; text-transform: uppercase; }
+.certificate-name-control input { width: 100%; min-height: 40px; padding: 0 11px; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; outline: 0; color: white; background: rgba(255,255,255,.08); font-size: 10px; }
+.certificate-name-control input:focus { border-color: #f6d384; box-shadow: 0 0 0 3px rgba(246,211,132,.12); }
+
+.certificate-claim-panel,
+.certificate-published-panel { position: relative; z-index: 1; margin-top: 22px; }
+.certificate-consent { display: grid; grid-template-columns: auto 1fr; align-items: flex-start; gap: 9px; color: #d5dfeb; font-size: 7px; line-height: 1.5; cursor: pointer; }
+.certificate-consent input { width: 15px; height: 15px; margin: 1px 0 0; accent-color: var(--orange); }
+.certificate-claim-panel > p { margin: 10px 0 0; color: #9db0c9; font-size: 6.5px; line-height: 1.5; }
+.certificate-claim-panel a { color: #f6d384; font-weight: 800; }
+.certificate-claim-button { width: 100%; min-height: 44px; margin-top: 14px; border: 0; border-radius: 9px; color: white; background: var(--orange); box-shadow: 0 5px 0 #b63f24; font-size: 9px; font-weight: 800; cursor: pointer; }
+.certificate-claim-button:disabled { opacity: .6; cursor: wait; }
+.certificate-claim-panel .certificate-error { padding: 8px 10px; color: #ffd6ca; border-left: 3px solid #ff8061; background: rgba(180,43,25,.25); }
+
 .certificate-actions {
   position: relative;
   z-index: 1;
@@ -2003,6 +2076,7 @@ footer > a:last-child { color: var(--blue); font-weight: 800; }
 
 .certificate-actions .linkedin-share { border-color: #4c96df; background: #0a66c2; }
 .certificate-actions .linkedin-share > span { width: 18px; height: 18px; display: grid; place-items: center; border-radius: 3px; background: white; color: #0a66c2; font-size: 8px; }
+.certificate-actions .certificate-unpublish-button { grid-column: 1 / -1; color: #ffd0c7; border-color: rgba(255,128,97,.45); background: rgba(180,43,25,.18); }
 
 .certificate-public-note {
   position: relative;
@@ -2136,6 +2210,7 @@ footer > a:last-child { color: var(--blue); font-weight: 800; }
   .steps article { min-height: 210px; }
   .steps article:nth-child(2), .steps article:nth-child(3) { transform: none; }
   footer { align-items: flex-start; flex-direction: column; }
+  .footer-links { justify-content: flex-start; }
   .dialog-shell {
     grid-template-columns: 1fr;
     grid-template-rows: auto minmax(0, 1fr);
@@ -2162,6 +2237,8 @@ footer > a:last-child { color: var(--blue); font-weight: 800; }
   .certificate-preview-card { margin: 0 18px 25px; padding: 31px 27px 25px; }
   .preview-mark { margin-top: 38px; }
   .certificate-preview-card > p:not(.certificate-public-note) { font-size: 31px; }
+  .account-inline-field { grid-template-columns: 1fr; }
+  .account-inline-field button { min-height: 43px; }
 }
 
 @media (max-width: 430px) {
