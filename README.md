@@ -1,6 +1,16 @@
-# Java Basecamp
+# QuickDevBase
 
-A friendly Java learning roadmap covering 18 modules and 135 concepts, now with secure accounts and database-backed learning progress.
+**Developer Knowledge, At a Glance.** QuickDevBase is a multi-technology learning portal that gives developers a fast mental map, plain-English explanations, tiny examples, and direct routes to the official documentation.
+
+Available paths:
+
+- **Java** — 18 modules and 135 concepts, from fundamentals to Spring Boot, REST APIs, JVM internals, and DSA.
+- **Docker** — 18 modules and 126 concepts, from architecture and container lifecycle to Compose, security, CI/CD, and Swarm.
+- **Generative AI Foundations** — 12 modules and 84 concepts, from transformers and tokens to multimodality, evaluation, and production safety.
+- **RAG Systems** — 12 modules and 84 concepts, from ingestion and chunking to hybrid retrieval, reranking, citations, and RAG evaluation.
+- **Agentic AI** — 12 modules and 84 concepts, from agent loops and tools to orchestration, MCP, human approval, tracing, and guardrails.
+
+The root page is the technology library. Java opens at `/java`, Docker at `/docker`, and the AI hub at `/ai`. The hub recommends Generative AI first, RAG second, and Agentic AI third, while keeping all three independently accessible.
 
 ## Quick start with Docker
 
@@ -32,16 +42,17 @@ docker compose down
 - Visitors can browse every lesson without an account.
 - Registering creates a user with a UUID and a salted `scrypt` password hash.
 - Login uses a random, server-side database session. The browser receives only an `HttpOnly`, `SameSite=Lax` cookie.
-- Completing or reopening a module updates the signed-in user's row in PostgreSQL.
+- Completing or reopening a module updates the signed-in user's course-specific row in PostgreSQL.
 - The same account restores its progress on another browser after login, while different account IDs remain isolated.
 - Logout revokes the current session in the database.
-- Completing all 18 modules makes the learner eligible for a certificate; it does not publish personal data automatically.
+- Java, Docker, Generative AI, RAG, and Agentic AI progress remain separate under the same account. The AI hub also summarizes progress across its three paths.
+- Completing all modules in one path—18 for Java or Docker and 12 for an AI path—makes the learner eligible for that path's certificate; it does not publish personal data automatically.
 - The learner reviews the disclosure, chooses the displayed name, and explicitly selects **Claim & publish** before a public link is activated.
 - Each certificate has an unguessable public link, a unique database verification code, LinkedIn sharing, and a print-to-PDF layout.
 - Learners can correct their public name, make a certificate private, republish it after fresh consent, or permanently delete their entire account.
-- Certificates are course-completion records, not professional licences, accredited qualifications, or Oracle certifications.
+- Certificates are path-completion records, not professional licences, accredited qualifications, or vendor certifications.
 
-The schema contains four tables: `users`, `sessions`, `learning_progress`, and `certificates`. A composite key on `(user_id, module_id)` prevents duplicate completion records, while `(user_id, course_code)` ensures one certificate per completed course.
+The schema contains four tables: `users`, `sessions`, `learning_progress`, and `certificates`. A composite key on `(user_id, course_code, module_id)` prevents duplicate completion records while keeping technologies isolated; `(user_id, course_code)` ensures one certificate per path. Existing Java progress is migrated automatically to the Java course code.
 
 ## Production deployment
 
@@ -109,13 +120,14 @@ npm run test:browser
 ## Features
 
 - Responsive dimensional UI built with HTML, CSS, and JavaScript
-- Search and stage filters across 135 concepts
+- Search and stage filters across 513 concepts in five independent learning paths
 - Plain-English explanations and labeled tiny examples for every topic
 - Beginner comments explaining what each example operation does
+- Per-module links to primary Oracle, Docker, OpenAI, Google Cloud, Hugging Face, Elastic, and MCP documentation for deeper study
 - Keyboard-accessible lesson and account dialogs
 - PostgreSQL-backed per-user progress with secure session cookies
 - Consent-gated certificate publication, unpublishing, name correction, and account deletion
-- Plain-language privacy, terms, certificate-scope, and Oracle independence notices
+- Plain-language privacy, terms, certificate-scope, and vendor-independence notices
 - Rate-limited public certificate verification and optional HTTPS enforcement
 - Docker health checks, persistent storage, and production configuration
 - Reduced-motion support

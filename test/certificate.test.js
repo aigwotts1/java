@@ -21,7 +21,8 @@ test("certificate payload creates a stable public identity without exposing emai
 
   try {
     const payload = certificatePayload(row, { protocol: "http", get: () => "localhost:3000" });
-    assert.equal(payload.credentialId, "JBC-ABCDEFGHIJ");
+    assert.equal(payload.credentialId, "QDB-JAV-ABCDEFGHIJ");
+    assert.equal(payload.courseKey, "java");
     assert.equal(payload.shareUrl, `https://learn.example.com/certificate/${row.public_id}`);
     assert.equal(payload.verificationHash, row.verification_hash);
     assert.equal(payload.moduleCount, 18);
@@ -48,10 +49,45 @@ test("public certificate page escapes learner data and includes verification met
   assert.match(html, /name="robots" content="noindex, nofollow"/);
   assert.match(html, /Verified course completion record/);
   assert.match(html, /not a professional licence/);
-  assert.match(html, /not affiliated with, endorsed by, or sponsored by Oracle/);
+  assert.match(html, /not affiliated with or endorsed by Oracle/);
   assert.match(html, new RegExp(row.verification_hash));
   assert.match(html, /id="printCertificate"/);
   assert.match(html, /src="\/certificate\.js"/);
+});
+
+test("Docker certificate payload uses Docker-specific scope and counts", () => {
+  const dockerPayload = certificatePayload(
+    { ...row, course_code: "docker-developer-knowledge" },
+    { protocol: "http", get: () => "localhost:3000" },
+  );
+  assert.equal(dockerPayload.courseKey, "docker");
+  assert.equal(dockerPayload.courseTitle, "Docker Developer Knowledge Path");
+  assert.equal(dockerPayload.conceptCount, 126);
+  assert.match(dockerPayload.credentialId, /^QDB-DOC-/);
+  const html = renderCertificatePage(dockerPayload);
+  assert.match(html, /Docker at a Glance/);
+  assert.match(html, /not affiliated with or endorsed by Docker, Inc/);
+});
+
+test("each AI certificate uses its own course identity, scope, and credential prefix", () => {
+  const cases = [
+    ["generative-ai-foundations", "generative-ai", "Generative AI Foundations Knowledge Path", "GEN"],
+    ["rag-systems-knowledge", "rag", "RAG Systems Knowledge Path", "RAG"],
+    ["agentic-ai-knowledge", "agentic-ai", "Agentic AI Knowledge Path", "AGE"],
+  ];
+
+  for (const [courseCode, courseKey, title, prefix] of cases) {
+    const payload = certificatePayload(
+      { ...row, course_code: courseCode },
+      { protocol: "http", get: () => "localhost:3000" },
+    );
+    assert.equal(payload.courseKey, courseKey);
+    assert.equal(payload.courseTitle, title);
+    assert.equal(payload.moduleCount, 12);
+    assert.equal(payload.conceptCount, 84);
+    assert.match(payload.credentialId, new RegExp("^QDB-" + prefix + "-"));
+    assert.match(renderCertificatePage(payload), new RegExp(title));
+  }
 });
 
 test("certificate consent version and public-name validation are explicit", () => {

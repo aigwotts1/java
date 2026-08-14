@@ -1,4 +1,4 @@
-const modules = [
+const javaModules = [
   {
     id: 1,
     title: "Java Basics",
@@ -307,7 +307,7 @@ const modules = [
 
 // Notes are kept in the same order as each module's topics. This makes every
 // curriculum item a small, readable lesson without bloating the overview cards.
-const quickNotes = {
+const javaQuickNotes = {
   1: [
     ["Java programs live inside classes; braces group code and comments leave notes the compiler ignores.", `class Hello {\n  // Program starts here\n  public static void main(String[] args) {}\n}`],
     ["Keywords are reserved Java words. Identifiers are the names you choose for classes, methods, and variables.", `int score = 90; // int = keyword, score = identifier`],
@@ -483,7 +483,7 @@ const quickNotes = {
 
 // Grouped headings get one labeled example per named idea. Single-concept
 // headings continue to use their compact example from quickNotes above.
-const groupedExamples = {
+const javaGroupedExamples = {
   "Syntax, structure & comments": [
     ["Syntax", `int total = 2 + 3;`],
     ["Structure", `class App {\n  public static void main(String[] args) {}\n}`],
@@ -792,7 +792,7 @@ const groupedExamples = {
   ]
 };
 
-const exampleComments = {
+const javaExampleComments = {
   "Predicate": "test(20) checks the rule and returns true because 20 is at least 18.",
   "Function": "apply() converts the Java text into its integer character count.",
   "Consumer": "accept() passes Hello to the print action and returns no result.",
@@ -958,12 +958,64 @@ const exampleComments = {
   "wait": "Releases the lock and pauses this thread until another thread signals it."
 };
 
-const stageLabels = {
+const javaStageLabels = {
   foundation: "Foundation",
   core: "Core Java",
   backend: "Backend",
   advanced: "Advanced"
 };
+
+const javaOfficialDocs = [
+  "https://docs.oracle.com/en/java/javase/21/language/",
+  "https://docs.oracle.com/javase/tutorial/java/concepts/",
+  "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/package-summary.html",
+  "https://docs.oracle.com/javase/tutorial/essential/concurrency/",
+  "https://docs.oracle.com/en/java/javase/21/core/java-io.html",
+  "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/package-summary.html",
+  "https://docs.oracle.com/javase/tutorial/jdbc/basics/",
+  "https://jakarta.ee/specifications/platform/",
+  "https://docs.spring.io/spring-boot/reference/",
+  "https://hibernate.org/orm/documentation/",
+  "https://docs.oracle.com/en/java/javase/21/docs/specs/man/jar.html",
+  "https://docs.oracle.com/en/java/javase/21/vm/java-virtual-machine-technology-overview.html",
+  "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/class-use/AssertionError.html",
+  "https://docs.oracle.com/en/java/javase/21/language/",
+  "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/package-summary.html",
+  "https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html",
+  "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/package-summary.html",
+  "https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/package-summary.html"
+];
+
+javaModules.forEach((module, index) => {
+  module.officialUrl = javaOfficialDocs[index];
+  module.officialLabel = index === 7 ? "Jakarta EE specification" : index === 8 ? "Spring Boot reference" : index === 9 ? "Hibernate ORM documentation" : "Oracle Java documentation";
+});
+
+const aiPathCourseKey = location.pathname === "/ai/rag"
+  ? "rag"
+  : location.pathname === "/ai/agents"
+    ? "agentic-ai"
+    : location.pathname === "/ai/generative-ai"
+      ? "generative-ai"
+      : null;
+const suppliedCourse = (aiPathCourseKey && window.QUICKDEV_AI_COURSES?.[aiPathCourseKey]) || window.QUICKDEV_COURSE;
+const courseConfig = suppliedCourse || {
+  key: "java",
+  name: "Java",
+  modules: javaModules,
+  quickNotes: javaQuickNotes,
+  groupedExamples: javaGroupedExamples,
+  exampleComments: javaExampleComments,
+  stageLabels: javaStageLabels,
+  fallbackNote: "A key Java concept worth understanding before you move to the next module.",
+  fallbackCode: "// Try this concept in a small Java program."
+};
+const modules = courseConfig.modules;
+const quickNotes = courseConfig.quickNotes;
+const groupedExamples = courseConfig.groupedExamples || {};
+const exampleComments = courseConfig.exampleComments || {};
+const stageLabels = courseConfig.stageLabels;
+const courseQuery = `?course=${encodeURIComponent(courseConfig.key)}`;
 
 const cardThemes = [
   { accent: "#e65e39", soft: "rgba(230,94,57,.10)", bg: "#fbf4ea", edge: "#ddcdbd" },
@@ -1059,7 +1111,50 @@ function initials(name) {
     .slice(0, 2)
     .map((part) => part[0])
     .join("")
-    .toUpperCase() || "J";
+    .toUpperCase() || courseConfig.name.slice(0, 1).toUpperCase();
+}
+
+function applyCourseUI() {
+  document.documentElement.dataset.course = courseConfig.key;
+  document.querySelectorAll("[data-course-name]").forEach((element) => { element.textContent = courseConfig.name; });
+  document.querySelectorAll("[data-course-module-count]").forEach((element) => { element.textContent = modules.length; });
+  const conceptCount = modules.reduce((total, module) => total + module.topics.length, 0);
+  document.querySelectorAll("[data-course-concept-count]").forEach((element) => { element.textContent = conceptCount; });
+  document.querySelectorAll("[data-course-mark]").forEach((element) => { element.textContent = courseConfig.mark || courseConfig.name[0]; });
+  if (courseConfig.pageTitle) document.title = courseConfig.pageTitle;
+  if (courseConfig.pageDescription) document.querySelector('meta[name="description"]')?.setAttribute("content", courseConfig.pageDescription);
+  if (courseConfig.heroEyebrow) document.querySelector(".hero-copy .eyebrow").innerHTML = `<span></span> ${courseConfig.heroEyebrow}`;
+  if (courseConfig.heroTitle) document.querySelector(".hero-copy h1").innerHTML = courseConfig.heroTitle;
+  if (courseConfig.heroLede) document.querySelector(".hero-lede").textContent = courseConfig.heroLede;
+  if (courseConfig.previewLabel) document.querySelector(".card-topline > span:last-child").textContent = courseConfig.previewLabel;
+  if (courseConfig.previewCode) document.querySelector(".code-preview").innerHTML = courseConfig.previewCode;
+  if (courseConfig.chipOne) document.querySelector(".chip-one").textContent = courseConfig.chipOne;
+  if (courseConfig.chipTwo) document.querySelector(".chip-two").textContent = courseConfig.chipTwo;
+  if (courseConfig.curriculumTitle) document.querySelector(".section-heading h2").textContent = courseConfig.curriculumTitle;
+  if (courseConfig.curriculumLede) document.querySelector(".section-heading > div > p:last-child").textContent = courseConfig.curriculumLede;
+  if (courseConfig.searchPlaceholder) searchInput.placeholder = courseConfig.searchPlaceholder;
+  document.querySelector(".cup-body span").textContent = courseConfig.mark || courseConfig.name[0];
+  document.querySelector(".achievement-medal span").textContent = courseConfig.mark || courseConfig.name[0];
+  document.querySelector(".preview-mark").textContent = courseConfig.mark || courseConfig.name[0];
+  document.querySelector(".auth-brand-mark").textContent = "Q";
+  if (courseConfig.certificateTitleHtml) document.querySelector(".certificate-preview-card > p").innerHTML = courseConfig.certificateTitleHtml;
+  if (courseConfig.completionNoun) {
+    document.querySelector("#certificateLearnerName").parentElement.innerHTML = `<strong id="certificateLearnerName">${escapeHtml(courseConfig.completionNoun)}</strong>, you completed the entire QuickDevBase ${escapeHtml(courseConfig.name)} path. That took consistency, curiosity, and a lot of tiny wins.`;
+  }
+  if (courseConfig.trademark) document.querySelector(".footer-copy small").textContent = courseConfig.trademark;
+  if (courseConfig.hubPath) {
+    const libraryLink = document.querySelector('.main-nav a[href="/"]');
+    if (libraryLink) {
+      libraryLink.href = courseConfig.hubPath;
+      libraryLink.textContent = courseConfig.hubLabel || "Path hub";
+    }
+  }
+  filterGroup.innerHTML = [
+    '<button class="filter active" type="button" data-filter="all">All <span>' + modules.length + '</span></button>',
+    ...Object.entries(stageLabels).map(([key, label]) =>
+      '<button class="filter" type="button" data-filter="' + escapeHtml(key) + '">' + escapeHtml(label) + '</button>'
+    )
+  ].join("");
 }
 
 function setAuthMode(mode) {
@@ -1079,10 +1174,10 @@ function setAuthMode(mode) {
   passwordInput.autocomplete = registering ? "new-password" : "current-password";
   document.querySelector("#authTitle").textContent = registering ? "Create your account" : "Welcome back";
   document.querySelector("#authSubtitle").textContent = registering
-    ? "Save every completed module to your own learning profile."
-    : "Sign in to continue your Java journey from any device.";
+    ? `Save every completed ${courseConfig.name} module to your QuickDevBase profile.`
+    : `Sign in to continue your ${courseConfig.name} path from any device.`;
   document.querySelector("#authSubmitText").textContent = registering ? "Create account" : "Sign in";
-  document.querySelector("#authSwitchText").textContent = registering ? "Already have an account?" : "New to Basecamp?";
+  document.querySelector("#authSwitchText").textContent = registering ? "Already have an account?" : "New to QuickDevBase?";
   authSwitchButton.textContent = registering ? "Sign in instead" : "Create an account";
   document.querySelector("#authError").hidden = true;
 }
@@ -1139,7 +1234,7 @@ async function loadUserProgress() {
     completed = new Set();
     return;
   }
-  const data = await apiRequest("/api/progress");
+  const data = await apiRequest(`/api/progress${courseQuery}`);
   completed = new Set(data.completed);
 }
 
@@ -1151,7 +1246,7 @@ async function loadCertificate() {
     return null;
   }
 
-  const status = await apiRequest("/api/certificate");
+  const status = await apiRequest(`/api/certificate${courseQuery}`);
   currentCertificate = status.certificate;
   certificateEligible = status.eligible;
   certificateConsentVersion = status.consentVersion;
@@ -1241,7 +1336,7 @@ async function claimCertificate() {
   certificateClaimButton.disabled = true;
   certificateClaimButton.textContent = "Publishing safely...";
   try {
-    const data = await apiRequest("/api/certificate/claim", {
+    const data = await apiRequest(`/api/certificate/claim${courseQuery}`, {
       method: "POST",
       body: JSON.stringify({
         consent: true,
@@ -1274,7 +1369,7 @@ async function unpublishCertificate() {
 
   certificateUnpublishButton.disabled = true;
   try {
-    const data = await apiRequest("/api/certificate/publication", { method: "DELETE" });
+    const data = await apiRequest(`/api/certificate/publication${courseQuery}`, { method: "DELETE" });
     currentCertificate = data.certificate;
     showCertificateCelebration(currentCertificate);
     showToastMessage("Certificate is private", "The public verification link is now disabled.", "◇");
@@ -1338,8 +1433,8 @@ function conceptLessons(module) {
 
   return module.topics.map((topic, index) => {
     const [plain, code] = notes[index] || [
-      "A key Java concept worth understanding before you move to the next module.",
-      `// Try this concept in a small Java program.`
+      courseConfig.fallbackNote,
+      courseConfig.fallbackCode
     ];
     const examples = groupedExamples[topic] || [["Example", code]];
 
@@ -1448,6 +1543,11 @@ function openModule(id) {
   document.querySelector("#dialogDescription").textContent = module.description;
   document.querySelector("#dialogConcepts").innerHTML = conceptLessons(module);
   document.querySelector("#dialogChallenge").textContent = module.challenge;
+  const officialLink = document.querySelector("#dialogOfficialLink");
+  if (officialLink) {
+    officialLink.href = module.officialUrl;
+    officialLink.querySelector("span").textContent = module.officialLabel || `Official ${courseConfig.name} documentation`;
+  }
   updateCompleteButton();
 
   dialog.showModal();
@@ -1501,7 +1601,7 @@ async function toggleComplete() {
   renderModules();
 
   try {
-    const result = await apiRequest(`/api/progress/${moduleId}`, {
+    const result = await apiRequest(`/api/progress/${moduleId}${courseQuery}`, {
       method: "PUT",
       body: JSON.stringify({ completed: !wasComplete })
     });
@@ -1752,6 +1852,7 @@ if ("IntersectionObserver" in window) {
   observedSections.forEach((section) => observer.observe(section));
 }
 
+applyCourseUI();
 renderModules();
 updateProgress();
 updateAuthUI();

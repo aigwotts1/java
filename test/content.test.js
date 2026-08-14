@@ -6,6 +6,10 @@ const path = require("node:path");
 const appSource = fs.readFileSync(path.join(__dirname, "..", "app.js"), "utf8");
 const serverSource = fs.readFileSync(path.join(__dirname, "..", "server.js"), "utf8");
 const indexSource = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+const homeSource = fs.readFileSync(path.join(__dirname, "..", "home.html"), "utf8");
+const dockerSource = fs.readFileSync(path.join(__dirname, "..", "docker-data.js"), "utf8");
+const aiSource = fs.readFileSync(path.join(__dirname, "..", "ai-data.js"), "utf8");
+const aiHubSource = fs.readFileSync(path.join(__dirname, "..", "ai.html"), "utf8");
 
 function readLiteral(startMarker, endMarker) {
   const start = appSource.indexOf(startMarker);
@@ -16,16 +20,54 @@ function readLiteral(startMarker, endMarker) {
   return Function(`"use strict"; return (${literal});`)();
 }
 
-const modules = readLiteral("const modules = ", ";\n\n// Notes are kept");
-const quickNotes = readLiteral("const quickNotes = ", ";\n\n// Grouped headings");
-const groupedExamples = readLiteral("const groupedExamples = ", ";\n\nconst exampleComments");
-const exampleComments = readLiteral("const exampleComments = ", ";\n\nconst stageLabels");
+const modules = readLiteral("const javaModules = ", ";\n\n// Notes are kept");
+const quickNotes = readLiteral("const javaQuickNotes = ", ";\n\n// Grouped headings");
+const groupedExamples = readLiteral("const javaGroupedExamples = ", ";\n\nconst javaExampleComments");
+const exampleComments = readLiteral("const javaExampleComments = ", ";\n\nconst javaStageLabels");
+const aiCourses = Function("window", aiSource + "; return window.QUICKDEV_AI_COURSES;")({});
+const dockerCourse = Function("window", `${dockerSource}; return window.QUICKDEV_COURSE;`)({});
 
 test("curriculum IDs, topic totals, and backend module limit stay aligned", () => {
   assert.equal(modules.length, 18);
   assert.deepEqual(modules.map((module) => module.id), Array.from({ length: 18 }, (_, index) => index + 1));
   assert.equal(modules.reduce((total, module) => total + module.topics.length, 0), 135);
-  assert.match(serverSource, /const MODULE_COUNT = 18;/);
+  assert.match(serverSource, /moduleCount: 18/);
+});
+
+test("Docker path covers a complete 18-module, 126-concept official-doc map", () => {
+  assert.equal(dockerCourse.modules.length, 18);
+  assert.deepEqual(dockerCourse.modules.map((module) => module.id), Array.from({ length: 18 }, (_, index) => index + 1));
+  assert.equal(dockerCourse.modules.reduce((total, module) => total + module.topics.length, 0), 126);
+  for (const module of dockerCourse.modules) {
+    assert.equal(dockerCourse.quickNotes[module.id].length, module.topics.length);
+    assert.match(module.officialUrl, /^https:\/\/docs\.docker\.com\//);
+  }
+  assert.ok(dockerCourse.modules.some((module) => module.topics.includes("Named volumes")));
+  assert.ok(dockerCourse.modules.some((module) => module.topics.includes("Compose Watch")));
+  assert.ok(dockerCourse.modules.some((module) => module.topics.includes("Rootless mode")));
+  assert.ok(dockerCourse.modules.some((module) => module.topics.includes("Multi-platform publishing")));
+});
+
+test("AI hub contains three complete, independently trackable 12-module paths", () => {
+  assert.deepEqual(Object.keys(aiCourses), ["generative-ai", "rag", "agentic-ai"]);
+  for (const [key, course] of Object.entries(aiCourses)) {
+    assert.equal(course.key, key);
+    assert.equal(course.modules.length, 12);
+    assert.deepEqual(course.modules.map((module) => module.id), Array.from({ length: 12 }, (_, index) => index + 1));
+    assert.equal(course.modules.reduce((total, module) => total + module.topics.length, 0), 84);
+    for (const module of course.modules) {
+      assert.equal(course.quickNotes[module.id].length, module.topics.length);
+      assert.match(module.officialUrl, /^https:\/\//);
+    }
+  }
+
+  assert.ok(aiCourses["generative-ai"].modules.some((module) => module.topics.includes("Transformer architecture")));
+  assert.ok(aiCourses.rag.modules.some((module) => module.topics.includes("Reciprocal rank fusion")));
+  assert.ok(aiCourses["agentic-ai"].modules.some((module) => module.topics.includes("Model Context Protocol")));
+  assert.ok(aiCourses["agentic-ai"].modules.some((module) => module.topics.includes("Indirect prompt injection")));
+  assert.match(aiHubSource, /Generative AI Foundations/);
+  assert.match(aiHubSource, /RAG Systems/);
+  assert.match(aiHubSource, /Agentic AI/);
 });
 
 test("every curriculum topic has a matching quick explanation", () => {
@@ -66,12 +108,28 @@ test("certificate publication is consent-based and completion-only language is v
   assert.match(indexSource, /I consent to publish my chosen name/);
   assert.match(indexSource, /not professional certification/);
   assert.match(indexSource, /not affiliated with or endorsed by Oracle/);
+  assert.match(homeSource, /QuickDevBase/);
+  assert.match(homeSource, /Developer knowledge, at a glance/i);
+  assert.match(homeSource, /href="\/java"/);
+  assert.match(homeSource, /href="\/docker"/);
+  assert.match(homeSource, /href="\/ai"/);
+  assert.match(homeSource, /class="team-link" href="\/team"/);
+  assert.doesNotMatch(homeSource, /Abhinav Vashishth/);
+  assert.match(homeSource, /rel="icon" type="image\/png" href="\/quickdevbase-logo\.png"/);
+  const teamSource = fs.readFileSync(path.join(__dirname, "..", "team.html"), "utf8");
+  assert.match(teamSource, /Abhinav Vashishth/);
+  assert.match(teamSource, /mailto:vashishthabhinav9@gmail\.com/);
+  assert.match(teamSource, /full-stack and backend development/);
+  assert.match(teamSource, /generative AI, RAG, and agentic systems/);
   assert.match(serverSource, /CERTIFICATE_CONSENT_VERSION/);
   assert.match(serverSource, /is_public = FALSE/);
 
   for (const filename of ["privacy.html", "terms.html", "certificate-policy.html"]) {
     const legalSource = fs.readFileSync(path.join(__dirname, "..", filename), "utf8");
-    assert.match(legalSource, /Java Basecamp/);
+    assert.match(legalSource, /QuickDevBase/);
     assert.match(legalSource, /Oracle/);
+    assert.match(legalSource, /Docker/);
+    assert.match(legalSource, /OpenAI/);
+    assert.match(legalSource, /rel="icon" type="image\/png" href="\/quickdevbase-logo\.png"/);
   }
 });

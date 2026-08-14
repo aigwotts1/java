@@ -59,21 +59,12 @@ a { color: inherit; text-decoration: none; }
   font-weight: 800;
 }
 
-.certificate-brand > span {
-  width: 37px;
-  height: 37px;
-  display: grid;
-  place-items: center;
-  color: white;
-  border-radius: 10px;
-  background: var(--orange);
-  box-shadow: 0 4px 0 var(--orange-dark);
-  font-family: var(--display);
-  font-size: 21px;
-  transform: rotate(-3deg);
-}
+.certificate-brand .brand-logo,
+.certificate-footer-brand .brand-logo { width: 56px; height: 56px; flex: none; object-fit: contain; filter: drop-shadow(0 7px 9px rgba(21, 58, 111, .18)); }
 
-.certificate-brand strong { color: var(--orange); }
+.certificate-brand strong { color: #155fc2; }
+.certificate-brand .brand-wordmark,
+.certificate-footer-brand .brand-wordmark { display: inline; }
 
 .certificate-nav > div {
   display: flex;
@@ -371,6 +362,9 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.55;
   text-align: center;
 }
+.certificate-footer-brand { display: inline-flex; align-items: center; gap: 3px; margin-bottom: 7px; color: var(--ink); font-weight: 800; text-decoration: none; }
+.certificate-footer-brand .brand-logo { width: 50px; height: 50px; }
+.certificate-footer-brand strong { color: #155fc2; }
 
 .certificate-legal p { margin: 3px 0; }
 .certificate-legal nav { margin-top: 7px; display: flex; justify-content: center; gap: 12px; }

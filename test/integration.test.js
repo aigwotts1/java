@@ -114,6 +114,17 @@ test(
     });
     assert.deepEqual(firstProgress.data.completed, [1, 3, 18]);
 
+    const dockerSaved = await request("/api/progress/2?course=docker", {
+      method: "PUT",
+      cookie: loggedInAgain.cookie,
+      body: { completed: true },
+    });
+    assert.equal(dockerSaved.status, 200);
+    assert.equal(dockerSaved.data.course, "docker");
+    const dockerProgress = await request("/api/progress?course=docker", { cookie: loggedInAgain.cookie });
+    assert.deepEqual(dockerProgress.data.completed, [2]);
+    assert.deepEqual((await request("/api/progress?course=java", { cookie: loggedInAgain.cookie })).data.completed, [1, 3, 18]);
+
     const secondProgress = await request("/api/progress", {
       cookie: secondCookie,
     });
@@ -128,6 +139,15 @@ test(
       },
     });
     assert.equal(duplicate.status, 409);
+
+    for (const cleanupCookie of [loggedInAgain.cookie, secondCookie]) {
+      const cleanup = await request("/api/account", {
+        method: "DELETE",
+        cookie: cleanupCookie,
+        body: { confirmation: "DELETE", password },
+      });
+      assert.equal(cleanup.status, 204);
+    }
   },
 );
 
@@ -205,7 +225,7 @@ test(
     assert.equal(claim.data.certificate.isPublic, true);
     assert.match(claim.data.certificate.publicId, /^[A-Za-z0-9_-]{24}$/);
     assert.match(claim.data.certificate.verificationHash, /^[a-f0-9]{64}$/);
-    assert.match(claim.data.certificate.credentialId, /^JBC-[A-Z0-9_-]{10}$/);
+    assert.match(claim.data.certificate.credentialId, /^QDB-JAV-[A-Z0-9_-]{10}$/);
     assert.match(claim.data.certificate.shareUrl, /\/certificate\//);
     assert.equal(claim.data.certificate.moduleCount, 18);
     assert.equal(claim.data.certificate.conceptCount, 135);
@@ -239,12 +259,12 @@ test(
     const publicPage = await request(`/certificate/${certificate.publicId}`);
     assert.equal(publicPage.status, 200);
     assert.match(publicPage.data, /Katherine Johnson/);
-    assert.match(publicPage.data, /Complete Java Developer Path/);
+    assert.match(publicPage.data, /Java Developer Knowledge Path/);
     assert.match(publicPage.data, /property="og:title"/);
     assert.match(publicPage.data, /linkedin\.com\/sharing\/share-offsite/);
     assert.match(publicPage.data, new RegExp(certificate.verificationHash));
     assert.match(publicPage.data, /not a professional licence/);
-    assert.match(publicPage.data, /not affiliated with, endorsed by, or sponsored by Oracle/);
+    assert.match(publicPage.data, /not affiliated with or endorsed by Oracle/);
     assert.equal(publicPage.data.includes(email), false);
 
     const renamed = await request("/api/profile", {
@@ -321,5 +341,120 @@ test(
     assert.equal(deletion.status, 204);
     assert.equal((await request(`/api/certificates/${certificate.publicId}`)).status, 404);
     assert.equal((await request("/api/progress", { cookie })).status, 401);
+  },
+);
+
+test(
+  "Docker completion earns a Docker-scoped certificate without changing Java progress",
+  { skip: !baseUrl },
+  async () => {
+    const nonce = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const password = "LearnDocker!42";
+    const registration = await request("/api/auth/register", {
+      method: "POST",
+      body: { name: "Docker Learner", email: `docker-${nonce}@example.com`, password },
+    });
+    assert.equal(registration.status, 201);
+    const cookie = registration.cookie;
+
+    for (let moduleId = 1; moduleId <= 18; moduleId += 1) {
+      const saved = await request(`/api/progress/${moduleId}?course=docker`, {
+        method: "PUT",
+        cookie,
+        body: { completed: true },
+      });
+      assert.equal(saved.status, 200);
+    }
+
+    assert.deepEqual((await request("/api/progress?course=java", { cookie })).data.completed, []);
+    const status = await request("/api/certificate?course=docker", { cookie });
+    assert.equal(status.data.eligible, true);
+    assert.equal(status.data.completedCount, 18);
+
+    const claim = await request("/api/certificate/claim?course=docker", {
+      method: "POST",
+      cookie,
+      body: {
+        consent: true,
+        consentVersion: status.data.consentVersion,
+        publicName: "Docker Learner",
+      },
+    });
+    assert.equal(claim.status, 201);
+    assert.equal(claim.data.certificate.courseKey, "docker");
+    assert.equal(claim.data.certificate.courseTitle, "Docker Developer Knowledge Path");
+    assert.equal(claim.data.certificate.conceptCount, 126);
+    assert.match(claim.data.certificate.credentialId, /^QDB-DOC-/);
+
+    const publicPage = await request(`/certificate/${claim.data.certificate.publicId}`);
+    assert.equal(publicPage.status, 200);
+    assert.match(publicPage.data, /Docker Developer Knowledge Path/);
+    assert.match(publicPage.data, /not affiliated with or endorsed by Docker, Inc/);
+
+    const cleanup = await request("/api/account", {
+      method: "DELETE",
+      cookie,
+      body: { confirmation: "DELETE", password },
+    });
+    assert.equal(cleanup.status, 204);
+  },
+);
+
+test(
+  "Agentic AI completion earns its own 12-module certificate and leaves the other AI paths untouched",
+  { skip: !baseUrl },
+  async () => {
+    const nonce = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const password = "LearnAgents!42";
+    const registration = await request("/api/auth/register", {
+      method: "POST",
+      body: { name: "Agent Learner", email: `agent-${nonce}@example.com`, password },
+    });
+    assert.equal(registration.status, 201);
+    const cookie = registration.cookie;
+
+    for (let moduleId = 1; moduleId <= 12; moduleId += 1) {
+      const saved = await request(`/api/progress/${moduleId}?course=agentic-ai`, {
+        method: "PUT",
+        cookie,
+        body: { completed: true },
+      });
+      assert.equal(saved.status, 200);
+    }
+
+    assert.deepEqual((await request("/api/progress?course=generative-ai", { cookie })).data.completed, []);
+    assert.deepEqual((await request("/api/progress?course=rag", { cookie })).data.completed, []);
+    const status = await request("/api/certificate?course=agentic-ai", { cookie });
+    assert.equal(status.data.eligible, true);
+    assert.equal(status.data.completedCount, 12);
+    assert.equal(status.data.requiredCount, 12);
+
+    const claim = await request("/api/certificate/claim?course=agentic-ai", {
+      method: "POST",
+      cookie,
+      body: {
+        consent: true,
+        consentVersion: status.data.consentVersion,
+        publicName: "Agent Learner",
+      },
+    });
+    assert.equal(claim.status, 201);
+    assert.equal(claim.data.certificate.courseKey, "agentic-ai");
+    assert.equal(claim.data.certificate.courseTitle, "Agentic AI Knowledge Path");
+    assert.equal(claim.data.certificate.moduleCount, 12);
+    assert.equal(claim.data.certificate.conceptCount, 84);
+    assert.match(claim.data.certificate.credentialId, /^QDB-AGE-/);
+
+    const publicPage = await request(`/certificate/${claim.data.certificate.publicId}`);
+    assert.equal(publicPage.status, 200);
+    assert.match(publicPage.data, /Agentic AI Knowledge Path/);
+    assert.match(publicPage.data, /no vendor endorses this completion record/);
+
+    const cleanup = await request("/api/account", {
+      method: "DELETE",
+      cookie,
+      body: { confirmation: "DELETE", password },
+    });
+    assert.equal(cleanup.status, 204);
   },
 );

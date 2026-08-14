@@ -8,7 +8,22 @@ const chromePath = process.env.CHROME_PATH || "C:\\Program Files\\Google\\Chrome
 const debugPort = Number(process.env.CHROME_DEBUG_PORT || 9331);
 const profilePath = path.join(process.cwd(), ".browser-qa", String(process.pid));
 const screenshots = {
-  home: path.join(process.cwd(), "qa-home.png"),
+  library: path.join(process.cwd(), "qa-quickdev-home.png"),
+  team: path.join(process.cwd(), "qa-quickdev-team.png"),
+  brandFooter: path.join(process.cwd(), "qa-quickdev-footer.png"),
+  libraryMobile: path.join(process.cwd(), "qa-quickdev-mobile.png"),
+  teamMobile: path.join(process.cwd(), "qa-quickdev-team-mobile.png"),
+  aiHub: path.join(process.cwd(), "qa-ai-hub.png"),
+  aiHubMobile: path.join(process.cwd(), "qa-ai-hub-mobile.png"),
+  generativeAi: path.join(process.cwd(), "qa-generative-ai.png"),
+  rag: path.join(process.cwd(), "qa-rag.png"),
+  ragMobileDialog: path.join(process.cwd(), "qa-rag-mobile-dialog.png"),
+  agenticAi: path.join(process.cwd(), "qa-agentic-ai.png"),
+  agentLesson: path.join(process.cwd(), "qa-agent-security.png"),
+  home: path.join(process.cwd(), "qa-java-home.png"),
+  docker: path.join(process.cwd(), "qa-docker-home.png"),
+  dockerMobile: path.join(process.cwd(), "qa-docker-mobile.png"),
+  dockerLesson: path.join(process.cwd(), "qa-docker-compose.png"),
   auth: path.join(process.cwd(), "qa-auth.png"),
   lesson: path.join(process.cwd(), "qa-rest-methods.png"),
   mobile: path.join(process.cwd(), "qa-mobile-rest.png"),
@@ -208,10 +223,10 @@ async function run() {
       });
     };
 
-    const navigate = async (width, height, mobile = false, expectedAuthLabel = "Sign in") => {
+    const navigate = async (width, height, mobile = false, expectedAuthLabel = "Sign in", pathname = "/java", expectedModules = 18) => {
       await setViewport(width, height, mobile);
-      await client.send("Page.navigate", { url: baseUrl });
-      await waitFor(`document.readyState === "complete" && document.querySelectorAll(".module-card").length === 18`);
+      await client.send("Page.navigate", { url: `${baseUrl}${pathname}` });
+      await waitFor(`document.readyState === "complete" && document.querySelectorAll(".module-card").length === ${expectedModules}`);
       await waitFor(`document.querySelector("#authLabel").textContent.trim() === ${JSON.stringify(expectedAuthLabel)}`);
     };
 
@@ -224,17 +239,126 @@ async function run() {
       await fs.writeFile(filename, Buffer.from(image.data, "base64"));
     };
 
+    await setViewport(1440, 1000, false);
+    await client.send("Page.navigate", { url: baseUrl });
+    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 3`);
+    const library = await evaluate(`({
+      title: document.title,
+      technologyCards: document.querySelectorAll("[data-course-card]").length,
+      javaPath: document.querySelector('[data-course-card="java"]').getAttribute("href"),
+      dockerPath: document.querySelector('[data-course-card="docker"]').getAttribute("href"),
+      aiPath: document.querySelector('[data-course-card="ai"]').getAttribute("href"),
+      brandLogos: document.querySelectorAll(".brand-logo").length,
+      logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
+      logoPath: new URL(document.querySelector(".brand-logo").src).pathname,
+      faviconPath: new URL(document.querySelector('link[rel="icon"]').href).pathname,
+      teamPath: document.querySelector('footer a[href="/team"]').getAttribute("href"),
+      founderOnHomepage: Boolean(document.querySelector("#founderName")),
+      taglineVisible: document.documentElement.textContent.includes("Developer knowledge, at a glance"),
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(library.title, "QuickDevBase — Developer Knowledge, At a Glance");
+    assert.equal(library.technologyCards, 3);
+    assert.equal(library.javaPath, "/java");
+    assert.equal(library.dockerPath, "/docker");
+    assert.equal(library.aiPath, "/ai");
+    assert.equal(library.brandLogos, 2);
+    assert.equal(library.logosLoaded, true);
+    assert.equal(library.logoPath, "/quickdevbase-logo.png");
+    assert.equal(library.faviconPath, "/quickdevbase-logo.png");
+    assert.equal(library.teamPath, "/team");
+    assert.equal(library.founderOnHomepage, false);
+    assert.equal(library.taglineVisible, true);
+    assert.equal(library.noHorizontalOverflow, true);
+    assert.deepEqual(library.errors, []);
+    await capture(screenshots.library);
+    await evaluate(`document.documentElement.style.scrollBehavior = "auto"; scrollTo(0, document.documentElement.scrollHeight)`);
+    await delay(150);
+    await capture(screenshots.brandFooter);
+
+    await client.send("Page.navigate", { url: `${baseUrl}/team` });
+    await waitFor(`document.readyState === "complete" && document.querySelector("#founderName")`);
+    const teamDesktop = await evaluate(`(() => {
+      const section = document.querySelector("#teamProfile");
+      const portrait = section.querySelector("img");
+      const bounds = section.getBoundingClientRect();
+      return {
+        title: document.title,
+        founderName: document.querySelector("#founderName").textContent.trim(),
+        founderEmail: section.querySelector(".founder-email").getAttribute("href"),
+        visible: bounds.bottom > 0 && bounds.top < innerHeight,
+        portraitLoaded: portrait.complete && portrait.naturalWidth > 0,
+        emailVisible: section.querySelector(".founder-email").getBoundingClientRect().bottom <= innerHeight,
+        noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth
+      };
+    })()`);
+    assert.equal(teamDesktop.title, "Team | QuickDevBase");
+    assert.equal(teamDesktop.founderName, "Abhinav Vashishth");
+    assert.equal(teamDesktop.founderEmail, "mailto:vashishthabhinav9@gmail.com");
+    assert.equal(teamDesktop.visible, true);
+    assert.equal(teamDesktop.portraitLoaded, true);
+    assert.equal(teamDesktop.emailVisible, true);
+    assert.equal(teamDesktop.noHorizontalOverflow, true);
+    await capture(screenshots.team);
+
+    await setViewport(390, 844, false);
+    await client.send("Page.navigate", { url: baseUrl });
+    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 3`);
+    const libraryMobile = await evaluate(`({
+      cards: document.querySelectorAll("[data-course-card]").length,
+      responsiveLayout: matchMedia("(max-width: 680px)").matches,
+      logoLoaded: document.querySelector("header .brand-logo").complete && document.querySelector("header .brand-logo").naturalWidth > 0,
+      logoWidth: document.querySelector("header .brand-logo").getBoundingClientRect().width,
+      horizontalScrollPrevented: getComputedStyle(document.body).overflowX === "hidden",
+      errors: window.__qaErrors
+    })`);
+    assert.equal(libraryMobile.cards, 3);
+    assert.equal(libraryMobile.responsiveLayout, true);
+    assert.equal(libraryMobile.logoLoaded, true);
+    assert.ok(libraryMobile.logoWidth <= 56);
+    assert.equal(libraryMobile.horizontalScrollPrevented, true);
+    assert.deepEqual(libraryMobile.errors, []);
+    await capture(screenshots.libraryMobile);
+
+    await client.send("Page.navigate", { url: `${baseUrl}/team` });
+    await waitFor(`document.readyState === "complete" && document.querySelector("#founderName")`);
+    const teamMobile = await evaluate(`(() => {
+      const section = document.querySelector("#teamProfile");
+      const portrait = section.querySelector("img").getBoundingClientRect();
+      const bounds = section.getBoundingClientRect();
+      return {
+        narrowLayout: matchMedia("(max-width: 680px)").matches,
+        portraitInsideSection: portrait.left >= bounds.left && portrait.right <= bounds.right,
+        emailMatches: section.querySelector(".founder-email").getAttribute("href") === "mailto:vashishthabhinav9@gmail.com",
+        viewportWidth: innerWidth,
+        documentWidth: document.documentElement.scrollWidth,
+        noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+        errors: window.__qaErrors
+      };
+    })()`);
+    assert.equal(teamMobile.narrowLayout, true);
+    assert.equal(teamMobile.portraitInsideSection, true);
+    assert.equal(teamMobile.emailMatches, true);
+    assert.equal(teamMobile.noHorizontalOverflow, true, JSON.stringify(teamMobile));
+    assert.deepEqual(teamMobile.errors, []);
+    await capture(screenshots.teamMobile);
+
     await navigate(1440, 1000);
     const desktop = await evaluate(`({
       title: document.title,
       modules: document.querySelectorAll(".module-card").length,
       authLabel: document.querySelector("#authLabel").textContent.trim(),
+      brandLogos: document.querySelectorAll(".brand-logo").length,
+      logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
       errors: window.__qaErrors,
       horizontalScrollPrevented: getComputedStyle(document.body).overflowX === "hidden"
     })`);
-    assert.equal(desktop.title, "Java Basecamp — Learn Java, one clear step at a time");
+    assert.equal(desktop.title, "Java at a Glance | QuickDevBase");
     assert.equal(desktop.modules, 18);
     assert.equal(desktop.authLabel, "Sign in");
+    assert.equal(desktop.brandLogos, 2);
+    assert.equal(desktop.logosLoaded, true);
     assert.deepEqual(desktop.errors, []);
     assert.equal(desktop.horizontalScrollPrevented, true);
     await capture(screenshots.home);
@@ -340,6 +464,253 @@ async function run() {
     assert.equal(mobileRest.scrollable, true);
     assert.equal(mobileRest.methodExamples, 5);
 
+    await navigate(1440, 1000, false, "Sign in", "/docker");
+    const docker = await evaluate(`({
+      title: document.title,
+      modules: document.querySelectorAll(".module-card").length,
+      concepts: [...document.querySelectorAll(".module-footer > span:first-child")]
+        .reduce((total, item) => total + Number.parseInt(item.textContent, 10), 0),
+      searchPlaceholder: document.querySelector("#searchInput").placeholder,
+      hasCompose: document.documentElement.textContent.includes("Docker Compose"),
+      brandLogos: document.querySelectorAll(".brand-logo").length,
+      logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
+      brandAccent: getComputedStyle(document.querySelector(".brand-muted")).color,
+      avatarColor: getComputedStyle(document.querySelector(".auth-avatar")).backgroundColor,
+      navigationAccent: getComputedStyle(document.querySelector(".main-nav .active"), "::after").backgroundColor,
+      errors: window.__qaErrors,
+      horizontalScrollPrevented: getComputedStyle(document.body).overflowX === "hidden"
+    })`);
+    assert.equal(docker.title, "Docker at a Glance | QuickDevBase");
+    assert.equal(docker.modules, 18);
+    assert.equal(docker.concepts, 126);
+    assert.equal(docker.searchPlaceholder, "Search topics, e.g. volumes");
+    assert.equal(docker.hasCompose, true);
+    assert.equal(docker.brandLogos, 2);
+    assert.equal(docker.logosLoaded, true);
+    assert.equal(docker.brandAccent, "rgb(21, 95, 194)");
+    assert.equal(docker.avatarColor, "rgb(22, 132, 194)");
+    assert.equal(docker.navigationAccent, "rgb(22, 132, 194)");
+    assert.equal(docker.horizontalScrollPrevented, true);
+    assert.deepEqual(docker.errors, []);
+    await capture(screenshots.docker);
+
+    await navigate(390, 844, false, "Sign in", "/docker");
+    const dockerMobile = await evaluate(`({
+      responsiveLayout: matchMedia("(max-width: 700px)").matches,
+      logoLoaded: document.querySelector(".site-header .brand-logo").complete && document.querySelector(".site-header .brand-logo").naturalWidth > 0,
+      logoPath: new URL(document.querySelector(".site-header .brand-logo").src).pathname,
+      brandAccent: getComputedStyle(document.querySelector(".brand-muted")).color,
+      avatarColor: getComputedStyle(document.querySelector(".auth-avatar")).backgroundColor,
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(dockerMobile.responsiveLayout, true);
+    assert.equal(dockerMobile.logoLoaded, true);
+    assert.equal(dockerMobile.logoPath, "/quickdevbase-logo.png");
+    assert.equal(dockerMobile.brandAccent, "rgb(21, 95, 194)");
+    assert.equal(dockerMobile.avatarColor, "rgb(22, 132, 194)");
+    assert.equal(dockerMobile.noHorizontalOverflow, true);
+    assert.deepEqual(dockerMobile.errors, []);
+    await capture(screenshots.dockerMobile);
+
+    await navigate(1440, 1000, false, "Sign in", "/docker");
+    await evaluate(`document.querySelector('.module-card[data-module-id="11"]').click()`);
+    await waitFor(`document.querySelector("#lessonDialog").open`);
+    const dockerLesson = await evaluate(`(() => {
+      const content = document.querySelector(".dialog-content");
+      content.scrollTop = content.scrollHeight;
+      const official = document.querySelector("#dialogOfficialLink");
+      return {
+        title: document.querySelector("#dialogTitle").textContent.trim(),
+        concepts: document.querySelectorAll("#dialogConcepts .concept-item").length,
+        officialUrl: official.href,
+        officialLabel: official.textContent.trim(),
+        scrollable: content.scrollHeight > content.clientHeight,
+        overflowY: getComputedStyle(content).overflowY
+      };
+    })()`);
+    assert.equal(dockerLesson.title, "Docker Compose");
+    assert.equal(dockerLesson.concepts, 7);
+    assert.match(dockerLesson.officialUrl, /^https:\/\/docs\.docker\.com\/compose\/?$/);
+    assert.ok(dockerLesson.officialLabel.includes("Official Docker documentation"));
+    assert.equal(dockerLesson.scrollable, true);
+    assert.equal(dockerLesson.overflowY, "auto");
+    await capture(screenshots.dockerLesson);
+
+    await setViewport(1440, 1000, false);
+    await client.send("Page.navigate", { url: `${baseUrl}/ai` });
+    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-ai-path]").length === 3`);
+    const aiHub = await evaluate(`({
+      title: document.title,
+      paths: document.querySelectorAll("[data-ai-path]").length,
+      genPath: document.querySelector('[data-ai-path="generative-ai"]').getAttribute("href"),
+      ragPath: document.querySelector('[data-ai-path="rag"]').getAttribute("href"),
+      agentPath: document.querySelector('[data-ai-path="agentic-ai"]').getAttribute("href"),
+      hasSequence: document.querySelector("#routeMap").textContent.includes("First, understand generation"),
+      brandLogos: document.querySelectorAll(".brand-logo").length,
+      logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(aiHub.title, "AI Knowledge Hub | QuickDevBase");
+    assert.equal(aiHub.paths, 3);
+    assert.equal(aiHub.genPath, "/ai/generative-ai");
+    assert.equal(aiHub.ragPath, "/ai/rag");
+    assert.equal(aiHub.agentPath, "/ai/agents");
+    assert.equal(aiHub.hasSequence, true);
+    assert.equal(aiHub.brandLogos, 2);
+    assert.equal(aiHub.logosLoaded, true);
+    assert.equal(aiHub.noHorizontalOverflow, true);
+    assert.deepEqual(aiHub.errors, []);
+    await capture(screenshots.aiHub);
+
+    await setViewport(390, 844, false);
+    await client.send("Page.navigate", { url: `${baseUrl}/ai` });
+    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-ai-path]").length === 3`);
+    const aiHubMobile = await evaluate(`({
+      paths: document.querySelectorAll("[data-ai-path]").length,
+      responsiveLayout: matchMedia("(max-width: 700px)").matches,
+      logoLoaded: document.querySelector("header .brand-logo").complete && document.querySelector("header .brand-logo").naturalWidth > 0,
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(aiHubMobile.paths, 3);
+    assert.equal(aiHubMobile.responsiveLayout, true);
+    assert.equal(aiHubMobile.logoLoaded, true);
+    assert.equal(aiHubMobile.noHorizontalOverflow, true);
+    assert.deepEqual(aiHubMobile.errors, []);
+    await capture(screenshots.aiHubMobile);
+
+    await navigate(1440, 1000, false, "Sign in", "/ai/generative-ai", 12);
+    const genAi = await evaluate(`({
+      title: document.title,
+      course: document.documentElement.dataset.course,
+      modules: document.querySelectorAll(".module-card").length,
+      concepts: [...document.querySelectorAll(".module-footer > span:first-child")]
+        .reduce((total, item) => total + Number.parseInt(item.textContent, 10), 0),
+      hubLink: document.querySelector(".main-nav a").getAttribute("href"),
+      filters: [...document.querySelectorAll("#filterGroup .filter")].map((item) => item.textContent.trim()),
+      errors: window.__qaErrors
+    })`);
+    assert.equal(genAi.title, "Generative AI at a Glance | QuickDevBase");
+    assert.equal(genAi.course, "generative-ai");
+    assert.equal(genAi.modules, 12);
+    assert.equal(genAi.concepts, 84);
+    assert.equal(genAi.hubLink, "/ai");
+    assert.deepEqual(genAi.filters, ["All 12", "Foundations", "Building Blocks", "Quality & Production"]);
+    assert.deepEqual(genAi.errors, []);
+    await capture(screenshots.generativeAi);
+
+    await navigate(1440, 1000, false, "Sign in", "/ai/rag", 12);
+    const ragPath = await evaluate(`({
+      title: document.title,
+      course: document.documentElement.dataset.course,
+      modules: document.querySelectorAll(".module-card").length,
+      concepts: [...document.querySelectorAll(".module-footer > span:first-child")]
+        .reduce((total, item) => total + Number.parseInt(item.textContent, 10), 0),
+      hasReranking: document.documentElement.textContent.includes("Reranking"),
+      errors: window.__qaErrors
+    })`);
+    assert.equal(ragPath.title, "RAG Systems at a Glance | QuickDevBase");
+    assert.equal(ragPath.course, "rag");
+    assert.equal(ragPath.modules, 12);
+    assert.equal(ragPath.concepts, 84);
+    assert.equal(ragPath.hasReranking, true);
+    assert.deepEqual(ragPath.errors, []);
+    await capture(screenshots.rag);
+
+    await evaluate(`document.querySelector('.module-card[data-module-id="1"]').click()`);
+    await waitFor(`document.querySelector("#lessonDialog").open`);
+    const responsiveDialog = [];
+    for (const width of [430, 390, 360, 320]) {
+      await setViewport(width, 844, false);
+      await delay(120);
+      const metrics = await evaluate(`(() => {
+        const dialog = document.querySelector("#lessonDialog");
+        const shell = dialog.querySelector(".dialog-shell");
+        const sidebar = dialog.querySelector(".dialog-sidebar");
+        const content = dialog.querySelector(".dialog-content");
+        const title = dialog.querySelector("#dialogTitle");
+        const firstConcept = dialog.querySelector(".concept-item");
+        const rect = (element) => {
+          const bounds = element.getBoundingClientRect();
+          return { left: bounds.left, right: bounds.right, width: bounds.width };
+        };
+        return {
+          viewportWidth: innerWidth,
+          documentWidth: document.documentElement.scrollWidth,
+          dialog: rect(dialog),
+          shell: rect(shell),
+          sidebar: rect(sidebar),
+          content: rect(content),
+          title: rect(title),
+          firstConcept: rect(firstConcept),
+          dialogScrollLeft: dialog.scrollLeft,
+          shellScrollLeft: shell.scrollLeft,
+          contentScrollLeft: content.scrollLeft,
+          errors: window.__qaErrors
+        };
+      })()`);
+      responsiveDialog.push(metrics);
+      if (width === 430) await capture(screenshots.ragMobileDialog);
+    }
+    for (const metrics of responsiveDialog) {
+      assert.equal(metrics.documentWidth <= metrics.viewportWidth, true, JSON.stringify(metrics));
+      assert.equal(metrics.dialog.left >= 0 && metrics.dialog.right <= metrics.viewportWidth, true);
+      assert.equal(metrics.shell.left >= metrics.dialog.left - 1 && metrics.shell.right <= metrics.dialog.right + 1, true);
+      assert.equal(metrics.sidebar.left >= metrics.dialog.left - 1 && metrics.sidebar.right <= metrics.dialog.right + 1, true);
+      assert.equal(metrics.content.left >= metrics.dialog.left - 1 && metrics.content.right <= metrics.dialog.right + 1, true);
+      assert.equal(metrics.title.left >= metrics.content.left && metrics.title.right <= metrics.content.right, true);
+      assert.equal(metrics.firstConcept.left >= metrics.content.left && metrics.firstConcept.right <= metrics.content.right, true);
+      assert.equal(metrics.dialogScrollLeft, 0);
+      assert.equal(metrics.shellScrollLeft, 0);
+      assert.equal(metrics.contentScrollLeft, 0);
+      assert.deepEqual(metrics.errors, []);
+    }
+
+    await navigate(1440, 1000, false, "Sign in", "/ai/agents", 12);
+    const agentPath = await evaluate(`({
+      title: document.title,
+      course: document.documentElement.dataset.course,
+      modules: document.querySelectorAll(".module-card").length,
+      concepts: [...document.querySelectorAll(".module-footer > span:first-child")]
+        .reduce((total, item) => total + Number.parseInt(item.textContent, 10), 0),
+      hasMcp: document.documentElement.textContent.includes("MCP"),
+      errors: window.__qaErrors
+    })`);
+    assert.equal(agentPath.title, "Agentic AI at a Glance | QuickDevBase");
+    assert.equal(agentPath.course, "agentic-ai");
+    assert.equal(agentPath.modules, 12);
+    assert.equal(agentPath.concepts, 84);
+    assert.equal(agentPath.hasMcp, true);
+    assert.deepEqual(agentPath.errors, []);
+    await capture(screenshots.agenticAi);
+
+    await evaluate(`document.querySelector('.module-card[data-module-id="12"]').click()`);
+    await waitFor(`document.querySelector("#lessonDialog").open`);
+    const agentLesson = await evaluate(`(() => {
+      const content = document.querySelector(".dialog-content");
+      content.scrollTop = content.scrollHeight;
+      const comments = [...document.querySelectorAll("#dialogConcepts .snippet-comment")].map((item) => item.textContent.trim());
+      return {
+        title: document.querySelector("#dialogTitle").textContent.trim(),
+        concepts: document.querySelectorAll("#dialogConcepts .concept-item").length,
+        hasPromptInjection: document.querySelector("#dialogConcepts").textContent.includes("Indirect prompt injection"),
+        allCommented: comments.length === 7 && comments.every((comment) => comment.length > 30),
+        officialUrl: document.querySelector("#dialogOfficialLink").href,
+        scrollable: content.scrollHeight > content.clientHeight,
+        overflowY: getComputedStyle(content).overflowY
+      };
+    })()`);
+    assert.equal(agentLesson.title, "Guardrails & Agent Security");
+    assert.equal(agentLesson.concepts, 7);
+    assert.equal(agentLesson.hasPromptInjection, true);
+    assert.equal(agentLesson.allCommented, true);
+    assert.match(agentLesson.officialUrl, /^https:\/\/openai\.github\.io\/openai-agents-js\/guides\/guardrails\/?$/);
+    assert.equal(agentLesson.scrollable, true);
+    assert.equal(agentLesson.overflowY, "auto");
+    await capture(screenshots.agentLesson);
+
     const [sessionCookieName, sessionCookieValue] = certificateLearner.cookie.split("=", 2);
     const cookieResult = await client.send("Network.setCookie", {
       name: sessionCookieName,
@@ -433,7 +804,7 @@ async function run() {
       publicNote: document.querySelector(".certificate-public-note").textContent.trim(),
       errors: window.__qaErrors
     })`);
-    assert.match(publishedCertificate.credentialId, /^JBC-[A-Z0-9_-]{10}$/);
+    assert.match(publishedCertificate.credentialId, /^QDB-JAV-[A-Z0-9_-]{10}$/);
     assert.match(publishedCertificate.shareUrl, /\/certificate\/[A-Za-z0-9_-]{24}$/);
     assert.ok(publishedCertificate.linkedinUrl.includes(encodeURIComponent(publishedCertificate.shareUrl)));
     assert.equal(publishedCertificate.claimPanelHidden, true);
@@ -454,6 +825,8 @@ async function run() {
         verified: document.querySelector(".verification-strip strong").textContent.trim(),
         hash,
         linkedinUrl: document.querySelector(".linkedin-button").href,
+        brandLogos: document.querySelectorAll(".brand-logo").length,
+        logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
         containsPrivateEmail: document.documentElement.textContent.includes(${JSON.stringify(certificateLearner.email)}),
         fitsViewport: bounds.left >= 0 && bounds.right <= innerWidth,
         errors: window.__qaErrors
@@ -464,6 +837,8 @@ async function run() {
     assert.equal(publicCertificate.verified, "Publicly verified");
     assert.match(publicCertificate.hash, /^[a-f0-9]{64}$/);
     assert.ok(publicCertificate.linkedinUrl.includes(encodeURIComponent(publishedCertificate.shareUrl)));
+    assert.equal(publicCertificate.brandLogos, 2);
+    assert.equal(publicCertificate.logosLoaded, true);
     assert.equal(publicCertificate.containsPrivateEmail, false);
     assert.equal(publicCertificate.fitsViewport, true);
     assert.deepEqual(publicCertificate.errors, []);
@@ -496,19 +871,42 @@ async function run() {
       title: document.querySelector(".legal-page h1").textContent.trim(),
       consentPromise: document.querySelector(".notice").textContent.includes("does not automatically make your information public"),
       accountDeletion: document.documentElement.textContent.includes("permanently delete your account"),
+      brandLogos: document.querySelectorAll(".brand-logo").length,
+      logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
       noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
       errors: window.__qaErrors
     })`);
     assert.equal(privacyPage.title, "Privacy notice");
     assert.equal(privacyPage.consentPromise, true);
     assert.equal(privacyPage.accountDeletion, true);
+    assert.equal(privacyPage.brandLogos, 2);
+    assert.equal(privacyPage.logosLoaded, true);
     assert.equal(privacyPage.noHorizontalOverflow, true);
     assert.deepEqual(privacyPage.errors, []);
     await capture(screenshots.privacyMobile);
 
+    await appRequest("/api/account", {
+      method: "DELETE",
+      cookie: certificateLearner.cookie,
+      body: { confirmation: "DELETE", password: "LearnJava!42" },
+    });
+
     console.log("Browser smoke test passed.");
-    console.log(JSON.stringify({ desktop, auth, java8, restLesson, mobile, mobileRest, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
+    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, teamMobile, desktop, auth, java8, restLesson, mobile, mobileRest, docker, dockerLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
+    try {
+      await fetch(`${baseUrl}/api/account`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: certificateLearner.cookie,
+          Origin: baseUrl,
+        },
+        body: JSON.stringify({ confirmation: "DELETE", password: "LearnJava!42" }),
+      });
+    } catch {
+      // Best-effort cleanup also removes the synthetic learner after a failed assertion.
+    }
     client?.close();
     chrome.kill();
     const meaningfulChromeErrors = chromeError

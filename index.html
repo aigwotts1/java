@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Java Basecamp — a friendly, visual roadmap for mastering Java from syntax to interview-ready data structures."
+      content="QuickDevBase Java — fast, practical explanations for Java essentials, with links to official documentation for deeper study."
     />
     <meta name="theme-color" content="#f5efe4" />
-    <title>Java Basecamp — Learn Java, one clear step at a time</title>
+    <link rel="icon" type="image/png" href="/quickdevbase-logo.png" />
+    <link rel="apple-touch-icon" href="/quickdevbase-logo.png" />
+    <title>Java at a Glance | QuickDevBase</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -24,15 +26,13 @@
     <div class="ambient ambient-two" aria-hidden="true"></div>
 
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="Java Basecamp home">
-        <span class="brand-mark" aria-hidden="true">
-          <span class="brand-steam">~</span>
-          <span class="brand-cup">J</span>
-        </span>
-        <span>Java<span class="brand-muted">Basecamp</span></span>
+      <a class="brand" href="/" aria-label="QuickDevBase technology library">
+        <img class="brand-logo" src="/quickdevbase-logo.png" alt="" />
+        <span>QuickDev<span class="brand-muted">Base</span></span>
       </a>
 
       <nav class="main-nav" aria-label="Main navigation">
+        <a href="/">All technologies</a>
         <a class="active" href="#roadmap">Roadmap</a>
         <a href="#curriculum">Modules</a>
         <a href="#about">How it works</a>
@@ -64,11 +64,11 @@
     <main id="top">
       <section class="hero" id="roadmap">
         <div class="hero-copy">
-          <p class="eyebrow"><span></span> The complete developer path</p>
+          <p class="eyebrow"><span></span> Java knowledge, at a glance</p>
           <h1>Java, without<br />the <em>jargon jungle.</em></h1>
           <p class="hero-lede">
-            A visual, hands-on path from your first variable to production-ready Java. Clear lessons,
-            tiny wins, and no mystery gaps.
+            Scan the essentials, see a tiny example, and know what to study next. For full detail,
+            every module links to the respective official documentation.
           </p>
 
           <div class="hero-actions">
@@ -83,9 +83,9 @@
           </div>
 
           <div class="hero-proof" aria-label="Course highlights">
-            <div><strong>18</strong><span>Focused modules</span></div>
-            <div><strong>135</strong><span>Core concepts</span></div>
-            <div><strong>∞</strong><span>Learn at your pace</span></div>
+            <div><strong data-course-module-count>18</strong><span>Focused modules</span></div>
+            <div><strong data-course-concept-count>135</strong><span>Core concepts</span></div>
+            <div><strong>↗</strong><span>Official docs linked</span></div>
           </div>
         </div>
 
@@ -133,8 +133,8 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow"><span></span> Your learning map</p>
-            <h2>One path. Every Java essential.</h2>
-            <p>Start at the beginning or jump to the gap you want to close.</p>
+            <h2>One glance. Every Java essential.</h2>
+            <p>Start anywhere, learn the mental model, then use the official docs when you need depth.</p>
           </div>
           <div class="section-progress" aria-live="polite">
             <div class="section-progress-copy">
@@ -174,8 +174,8 @@
       <section class="how-it-works" id="about">
         <div class="how-copy">
           <p class="eyebrow light"><span></span> Built for momentum</p>
-          <h2>Learn it. Try it.<br /><em>Make it stick.</em></h2>
-          <p>Each module turns an intimidating topic into a small, practical next step.</p>
+          <h2>Scan it. Try it.<br /><em>Go deeper.</em></h2>
+          <p>QuickDevBase is your map—not a replacement for the complete official documentation.</p>
         </div>
         <div class="steps">
           <article>
@@ -201,15 +201,15 @@
     </main>
 
     <footer>
-      <a class="brand footer-brand" href="#top">
-        <span class="brand-mark" aria-hidden="true"><span class="brand-cup">J</span></span>
-        <span>Java<span class="brand-muted">Basecamp</span></span>
+      <a class="brand footer-brand" href="/">
+        <img class="brand-logo" src="/quickdevbase-logo.png" alt="" />
+        <span>QuickDev<span class="brand-muted">Base</span></span>
       </a>
       <div class="footer-copy">
-        <p>Made for curious developers. Keep learning, one concept at a time.</p>
+        <p>Developer knowledge, at a glance. Use the map here; use official docs for the full story.</p>
         <small>Independent educational project—not affiliated with or endorsed by Oracle. Java is a trademark of Oracle and/or its affiliates.</small>
       </div>
-      <nav class="footer-links" aria-label="Policies"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/certificate-policy">Certificate policy</a><a href="#top">Back to top ↑</a></nav>
+      <nav class="footer-links" aria-label="Footer navigation"><a class="team-link" href="/team">Team</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/certificate-policy">Certificate policy</a><a href="#top">Back to top ↑</a></nav>
     </footer>
 
     <dialog class="lesson-dialog" id="lessonDialog" aria-labelledby="dialogTitle">
@@ -237,6 +237,10 @@
             <p id="dialogChallenge"></p>
           </div>
 
+          <a class="official-doc-link" id="dialogOfficialLink" href="https://docs.oracle.com/en/java/javase/21/" target="_blank" rel="noopener noreferrer">
+            <span>Oracle Java documentation</span><small>Continue with the official source</small><b aria-hidden="true">↗</b>
+          </a>
+
           <button class="button button-primary complete-button" id="completeButton" type="button">
             <span id="completeButtonText">Mark module complete</span>
             <span aria-hidden="true">✓</span>
@@ -258,9 +262,9 @@
 
         <section class="auth-content">
           <button class="dialog-close auth-close" id="authClose" type="button" aria-label="Close account dialog">×</button>
-          <p class="eyebrow"><span></span> Java Basecamp account</p>
+          <p class="eyebrow"><span></span> QuickDevBase account</p>
           <h2 id="authTitle">Welcome back</h2>
-          <p class="auth-subtitle" id="authSubtitle">Sign in to continue your Java journey from any device.</p>
+          <p class="auth-subtitle" id="authSubtitle">Sign in to continue your Java path from any device.</p>
 
           <div class="auth-tabs" role="tablist" aria-label="Account action">
             <button class="active" id="loginTab" type="button" role="tab" aria-selected="true" data-auth-mode="login">Sign in</button>
@@ -287,7 +291,7 @@
           </form>
 
           <p class="auth-switch">
-            <span id="authSwitchText">New to Basecamp?</span>
+            <span id="authSwitchText">New to QuickDevBase?</span>
             <button id="authSwitchButton" type="button">Create an account</button>
           </p>
           <p class="auth-privacy">Your password is salted and hashed. By creating an account, you agree to the <a href="/terms" target="_blank">Terms</a> and acknowledge the <a href="/privacy" target="_blank">Privacy notice</a>.</p>
@@ -340,10 +344,10 @@
           <div class="achievement-medal" aria-hidden="true"><span>J</span><small>100%</small></div>
           <p class="eyebrow"><span></span> Every module complete</p>
           <h2 id="certificateCelebrationTitle">You did it.<br /> <em>Seriously.</em></h2>
-          <p><strong id="certificateLearnerName">Java developer</strong>, you completed the entire Java Basecamp path. That took consistency, curiosity, and a lot of tiny wins.</p>
+          <p><strong id="certificateLearnerName">Java developer</strong>, you completed the entire QuickDevBase Java path. That took consistency, curiosity, and a lot of tiny wins.</p>
           <div class="achievement-stats">
-            <span><strong>18</strong><small>Modules</small></span>
-            <span><strong>135</strong><small>Concepts</small></span>
+            <span><strong data-course-module-count>18</strong><small>Modules</small></span>
+            <span><strong data-course-concept-count>135</strong><small>Concepts</small></span>
             <span><strong>100%</strong><small>Complete</small></span>
           </div>
         </section>
@@ -351,7 +355,7 @@
         <section class="certificate-preview-card">
           <div class="preview-topline"><span>Certificate of completion</span><i id="certificateStatusPill">PRIVATE</i></div>
           <div class="preview-mark">J</div>
-          <p>Complete Java<br />Developer Path</p>
+          <p>Java Developer<br />Knowledge Path</p>
           <strong id="certificatePreviewName">Your name</strong>
           <label class="certificate-name-control" for="certificatePublicName">
             <span>Name shown on the public certificate</span>

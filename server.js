@@ -1,6 +1,7 @@
 "use strict";
 
 const crypto = require("node:crypto");
+const fs = require("node:fs");
 const path = require("node:path");
 const { promisify } = require("node:util");
 const express = require("express");
@@ -10,11 +11,71 @@ const scrypt = promisify(crypto.scrypt);
 const ROOT = __dirname;
 const PORT = Number(process.env.PORT || 3000);
 const SESSION_DAYS = Math.max(1, Number(process.env.SESSION_DAYS || 30));
+// Keep the original cookie name so existing learners stay signed in after the rebrand.
 const COOKIE_NAME = "java_basecamp_session";
-const MODULE_COUNT = 18;
-const CONCEPT_COUNT = 135;
-const COURSE_CODE = "java-basecamp-complete";
-const COURSE_TITLE = "Complete Java Developer Path";
+const LEGACY_COURSE_CODE = "java-basecamp-complete";
+const COURSES = {
+  java: {
+    key: "java",
+    code: LEGACY_COURSE_CODE,
+    title: "Java Developer Knowledge Path",
+    shortTitle: "Java at a Glance",
+    mark: "J",
+    moduleCount: 18,
+    conceptCount: 135,
+    path: "/java",
+    summary: "Java fundamentals, OOP, collections, Spring Boot, REST APIs, JVM internals, testing, and DSA.",
+    trademark: "Java is a trademark of Oracle and/or its affiliates. QuickDevBase is not affiliated with or endorsed by Oracle."
+  },
+  docker: {
+    key: "docker",
+    code: "docker-developer-knowledge",
+    title: "Docker Developer Knowledge Path",
+    shortTitle: "Docker at a Glance",
+    mark: "D",
+    moduleCount: 18,
+    conceptCount: 126,
+    path: "/docker",
+    summary: "Docker architecture, containers, images, Dockerfiles, BuildKit, storage, networking, Compose, security, CI/CD, and Swarm.",
+    trademark: "Docker and the Docker logo are trademarks or registered trademarks of Docker, Inc. QuickDevBase is not affiliated with or endorsed by Docker, Inc."
+  },
+  "generative-ai": {
+    key: "generative-ai",
+    code: "generative-ai-foundations",
+    title: "Generative AI Foundations Knowledge Path",
+    shortTitle: "Generative AI at a Glance",
+    mark: "G",
+    moduleCount: 12,
+    conceptCount: 84,
+    path: "/ai/generative-ai",
+    summary: "AI foundations, transformers, tokens, embeddings, prompting, structured outputs, multimodality, customization, evaluation, safety, and production trade-offs.",
+    trademark: "QuickDevBase is an independent educational project and is not affiliated with or endorsed by OpenAI, Google, Anthropic, Hugging Face, or any model provider."
+  },
+  rag: {
+    key: "rag",
+    code: "rag-systems-knowledge",
+    title: "RAG Systems Knowledge Path",
+    shortTitle: "RAG at a Glance",
+    mark: "R",
+    moduleCount: 12,
+    conceptCount: 84,
+    path: "/ai/rag",
+    summary: "document ingestion, chunking, metadata, embeddings, vector search, hybrid retrieval, query transformation, reranking, grounded generation, evaluation, and production operations.",
+    trademark: "QuickDevBase is an independent educational project. Provider names and product marks belong to their respective owners; no vendor endorses this completion record."
+  },
+  "agentic-ai": {
+    key: "agentic-ai",
+    code: "agentic-ai-knowledge",
+    title: "Agentic AI Knowledge Path",
+    shortTitle: "Agentic AI at a Glance",
+    mark: "A",
+    moduleCount: 12,
+    conceptCount: 84,
+    path: "/ai/agents",
+    summary: "agent loops, tools, state, memory, planning, workflow patterns, multi-agent orchestration, MCP, human approval, reliability, tracing, evaluation, and guardrails.",
+    trademark: "QuickDevBase is an independent educational project. Provider names and product marks belong to their respective owners; no vendor endorses this completion record."
+  }
+};
 const CERTIFICATE_CONSENT_VERSION = "2026-08-14";
 
 function databaseOptions() {
@@ -102,46 +163,61 @@ function appOrigin(req) {
   return String(process.env.PUBLIC_APP_URL || process.env.APP_ORIGIN || `${req.protocol}://${req.get("host")}`).replace(/\/$/, "");
 }
 
+function courseFromKey(value) {
+  return COURSES[String(value || "java").toLowerCase()] || null;
+}
+
+function courseFromCode(value) {
+  return Object.values(COURSES).find((course) => course.code === value) || null;
+}
+
+function requestCourse(req) {
+  return courseFromKey(req.query.course) || COURSES.java;
+}
+
 function certificatePayload(row, req) {
   if (!row) return null;
+  const course = courseFromCode(row.course_code) || COURSES.java;
   const shareUrl = `${appOrigin(req)}/certificate/${encodeURIComponent(row.public_id)}`;
   return {
-    credentialId: `JBC-${row.public_id.slice(0, 10).toUpperCase()}`,
+    credentialId: `QDB-${course.key.slice(0, 3).toUpperCase()}-${row.public_id.slice(0, 10).toUpperCase()}`,
     publicId: row.public_id,
     verificationHash: row.verification_hash,
     name: row.user_name || row.name,
     courseCode: row.course_code,
-    courseTitle: COURSE_TITLE,
+    courseKey: course.key,
+    courseTitle: course.title,
+    coursePath: course.path,
     issuedAt: row.issued_at,
     isPublic: Boolean(row.is_public),
     publishedAt: row.published_at,
     unpublishedAt: row.unpublished_at,
-    moduleCount: MODULE_COUNT,
-    conceptCount: CONCEPT_COUNT,
+    moduleCount: course.moduleCount,
+    conceptCount: course.conceptCount,
     shareUrl,
     linkedInShareUrl: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`
   };
 }
 
-async function findCertificate(client, userId) {
+async function findCertificate(client, userId, course = COURSES.java) {
   const result = await client.query(
     `SELECT c.id, c.public_id, c.verification_hash, c.course_code, c.issued_at,
             c.is_public, c.published_at, c.unpublished_at, u.name AS user_name
      FROM certificates c
      JOIN users u ON u.id = c.user_id
      WHERE c.user_id = $1 AND c.course_code = $2`,
-    [userId, COURSE_CODE]
+    [userId, course.code]
   );
   return result.rows[0] || null;
 }
 
-async function issueCertificate(client, user, consentVersion = CERTIFICATE_CONSENT_VERSION) {
+async function issueCertificate(client, user, course = COURSES.java, consentVersion = CERTIFICATE_CONSENT_VERSION) {
   const progress = await client.query(
-    "SELECT COUNT(*)::int AS completed_count FROM learning_progress WHERE user_id = $1",
-    [user.id]
+    "SELECT COUNT(*)::int AS completed_count FROM learning_progress WHERE user_id = $1 AND course_code = $2",
+    [user.id, course.code]
   );
   const completedCount = progress.rows[0].completed_count;
-  const existing = await findCertificate(client, user.id);
+  const existing = await findCertificate(client, user.id, course);
   if (existing) {
     const republished = await client.query(
       `UPDATE certificates
@@ -153,7 +229,7 @@ async function issueCertificate(client, user, consentVersion = CERTIFICATE_CONSE
        WHERE user_id = $1 AND course_code = $2
        RETURNING id, public_id, verification_hash, course_code, issued_at,
                  is_public, published_at, unpublished_at`,
-      [user.id, COURSE_CODE, consentVersion]
+      [user.id, course.code, consentVersion]
     );
     return {
       certificate: { ...republished.rows[0], user_name: user.name },
@@ -164,7 +240,7 @@ async function issueCertificate(client, user, consentVersion = CERTIFICATE_CONSE
     };
   }
 
-  if (completedCount < MODULE_COUNT) return { certificate: null, completedCount, eligible: false, newlyIssued: false, newlyPublished: false };
+  if (completedCount < course.moduleCount) return { certificate: null, completedCount, eligible: false, newlyIssued: false, newlyPublished: false };
 
   const id = crypto.randomUUID();
   const publicId = crypto.randomBytes(18).toString("base64url");
@@ -178,7 +254,7 @@ async function issueCertificate(client, user, consentVersion = CERTIFICATE_CONSE
      ON CONFLICT (user_id, course_code) DO NOTHING
      RETURNING id, public_id, verification_hash, course_code, issued_at,
                is_public, published_at, unpublished_at`,
-    [id, publicId, verificationHash, user.id, COURSE_CODE, consentVersion]
+    [id, publicId, verificationHash, user.id, course.code, consentVersion]
   );
 
   if (result.rowCount) {
@@ -192,7 +268,7 @@ async function issueCertificate(client, user, consentVersion = CERTIFICATE_CONSE
   }
 
   return {
-    certificate: await findCertificate(client, user.id),
+    certificate: await findCertificate(client, user.id, course),
     completedCount,
     eligible: true,
     newlyIssued: false,
@@ -247,17 +323,27 @@ async function initializeDatabase(pool) {
 
     CREATE TABLE IF NOT EXISTS learning_progress (
       user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      course_code VARCHAR(80) NOT NULL DEFAULT '${LEGACY_COURSE_CODE}',
       module_id SMALLINT NOT NULL,
       completed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      PRIMARY KEY (user_id, module_id)
+      PRIMARY KEY (user_id, course_code, module_id)
     );
+
+    ALTER TABLE learning_progress
+      ADD COLUMN IF NOT EXISTS course_code VARCHAR(80) NOT NULL DEFAULT '${LEGACY_COURSE_CODE}';
+
+    ALTER TABLE learning_progress DROP CONSTRAINT IF EXISTS learning_progress_pkey;
+    ALTER TABLE learning_progress ADD PRIMARY KEY (user_id, course_code, module_id);
 
     ALTER TABLE learning_progress
       DROP CONSTRAINT IF EXISTS learning_progress_module_id_check;
 
     ALTER TABLE learning_progress
       ADD CONSTRAINT learning_progress_module_id_check
-      CHECK (module_id BETWEEN 1 AND ${MODULE_COUNT});
+      CHECK (module_id BETWEEN 1 AND 18);
+
+    CREATE INDEX IF NOT EXISTS learning_progress_user_course_idx
+      ON learning_progress(user_id, course_code);
 
     CREATE TABLE IF NOT EXISTS certificates (
       id UUID PRIMARY KEY,
@@ -323,8 +409,9 @@ function formatCertificateDate(value) {
 }
 
 function renderCertificatePage(certificate) {
+  const course = courseFromKey(certificate.courseKey) || COURSES.java;
   const title = `${certificate.name} — ${certificate.courseTitle}`;
-  const description = `${certificate.name} completed all ${certificate.moduleCount} Java Basecamp modules and ${certificate.conceptCount} concepts.`;
+  const description = `${certificate.name} completed all ${certificate.moduleCount} ${course.shortTitle} modules and ${certificate.conceptCount} concepts.`;
   const issuedDate = formatCertificateDate(certificate.issuedAt);
   return `<!doctype html>
 <html lang="en">
@@ -334,8 +421,10 @@ function renderCertificatePage(certificate) {
     <meta name="description" content="${escapeHtml(description)}" />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#15386b" />
+    <link rel="icon" type="image/png" href="/quickdevbase-logo.png" />
+    <link rel="apple-touch-icon" href="/quickdevbase-logo.png" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Java Basecamp" />
+    <meta property="og:site_name" content="QuickDevBase" />
     <meta property="og:title" content="${escapeHtml(title)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:url" content="${escapeHtml(certificate.shareUrl)}" />
@@ -350,7 +439,7 @@ function renderCertificatePage(certificate) {
   <body data-certificate-url="${escapeHtml(certificate.shareUrl)}">
     <main class="certificate-page">
       <nav class="certificate-nav" aria-label="Certificate actions">
-        <a class="certificate-brand" href="/" aria-label="Java Basecamp home"><span>J</span> Java<strong>Basecamp</strong></a>
+        <a class="certificate-brand" href="/" aria-label="QuickDevBase home"><img class="brand-logo" src="/quickdevbase-logo.png" alt="" /><span class="brand-wordmark">QuickDev<strong>Base</strong></span></a>
         <div>
           <button id="copyCertificateLink" type="button">Copy link</button>
           <button id="printCertificate" type="button">Print / save PDF</button>
@@ -365,9 +454,9 @@ function renderCertificatePage(certificate) {
         <div class="certificate-corner corner-two" aria-hidden="true"></div>
 
         <header class="certificate-header">
-          <div class="certificate-mark" aria-hidden="true">J</div>
+          <div class="certificate-mark" aria-hidden="true">${escapeHtml(course.mark)}</div>
           <div>
-            <span>Java Basecamp</span>
+            <span>QuickDevBase · ${escapeHtml(course.shortTitle)}</span>
             <small>Verified course completion record</small>
           </div>
           <div class="verified-pill"><i aria-hidden="true">✓</i> Database verified</div>
@@ -375,10 +464,10 @@ function renderCertificatePage(certificate) {
 
         <section class="certificate-body">
           <p class="certificate-kicker"><span></span> Certificate of completion <span></span></p>
-          <h1 id="certificateTitle">Complete Java<br />Developer Path</h1>
+          <h1 id="certificateTitle">${escapeHtml(course.title)}</h1>
           <p class="presented">This credential is proudly presented to</p>
           <h2>${escapeHtml(certificate.name)}</h2>
-          <p class="achievement">for completing the full Java Basecamp curriculum—<strong>${certificate.moduleCount} modules</strong> and <strong>${certificate.conceptCount} concepts</strong>, from Java fundamentals and OOP to Spring Boot, REST APIs, JVM internals, testing, and DSA.</p>
+          <p class="achievement">for completing the full ${escapeHtml(course.shortTitle)} curriculum—<strong>${certificate.moduleCount} modules</strong> and <strong>${certificate.conceptCount} concepts</strong>, covering ${escapeHtml(course.summary)}</p>
 
           <div class="certificate-metrics" aria-label="Achievement details">
             <div><strong>100%</strong><span>Course progress</span></div>
@@ -389,21 +478,22 @@ function renderCertificatePage(certificate) {
 
         <footer class="certificate-footer">
           <div class="issued-block"><span>Issued on</span><strong>${escapeHtml(issuedDate)}</strong></div>
-          <div class="seal" aria-label="Java Basecamp verified seal"><span>J</span><small>VERIFIED</small></div>
+          <div class="seal" aria-label="QuickDevBase verified seal"><span>${escapeHtml(course.mark)}</span><small>VERIFIED</small></div>
           <div class="credential-block"><span>Credential ID</span><strong>${escapeHtml(certificate.credentialId)}</strong></div>
         </footer>
 
         <div class="verification-strip">
-          <div><i aria-hidden="true">✓</i><span><strong>Publicly verified</strong><small>This record matches the Java Basecamp certificate database.</small></span></div>
+          <div><i aria-hidden="true">✓</i><span><strong>Publicly verified</strong><small>This record matches the QuickDevBase completion database.</small></span></div>
           <code>${escapeHtml(certificate.verificationHash)}</code>
         </div>
       </article>
 
       <p class="certificate-note">Anyone with this link can verify this course completion. No email address or private account information is displayed.</p>
       <footer class="certificate-legal">
-        <p>This is a course-completion record, not a professional licence, accredited qualification, or Oracle certification.</p>
-        <p>Java Basecamp is independent and is not affiliated with, endorsed by, or sponsored by Oracle. Java is a trademark of Oracle and/or its affiliates.</p>
-        <nav aria-label="Certificate policies"><a href="/certificate-policy">Certificate policy</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
+        <a class="certificate-footer-brand" href="/" aria-label="QuickDevBase home"><img class="brand-logo" src="/quickdevbase-logo.png" alt="" /><span class="brand-wordmark">QuickDev<strong>Base</strong></span></a>
+        <p>This is an independent knowledge-path completion record, not a professional licence, accredited qualification, or vendor certification.</p>
+        <p>${escapeHtml(course.trademark)}</p>
+        <nav aria-label="Certificate policies"><a class="team-link" href="/team">Team</a><a href="/certificate-policy">Certificate policy</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
       </footer>
       <div class="copy-toast" id="copyToast" role="status" aria-live="polite">Certificate link copied</div>
     </main>
@@ -644,26 +734,35 @@ function createApp(pool) {
   });
 
   app.get("/api/progress", authenticate, async (req, res, next) => {
+    const course = requestCourse(req);
     try {
-      const result = await pool.query("SELECT module_id FROM learning_progress WHERE user_id = $1 ORDER BY module_id", [req.user.id]);
-      res.json({ completed: result.rows.map((row) => row.module_id) });
+      const result = await pool.query(
+        "SELECT module_id FROM learning_progress WHERE user_id = $1 AND course_code = $2 ORDER BY module_id",
+        [req.user.id, course.code]
+      );
+      res.json({ course: course.key, completed: result.rows.map((row) => row.module_id) });
     } catch (error) {
       next(error);
     }
   });
 
   app.get("/api/certificate", authenticate, async (req, res, next) => {
+    const course = requestCourse(req);
     try {
       const [certificate, progress] = await Promise.all([
-        findCertificate(pool, req.user.id),
-        pool.query("SELECT COUNT(*)::int AS completed_count FROM learning_progress WHERE user_id = $1", [req.user.id])
+        findCertificate(pool, req.user.id, course),
+        pool.query(
+          "SELECT COUNT(*)::int AS completed_count FROM learning_progress WHERE user_id = $1 AND course_code = $2",
+          [req.user.id, course.code]
+        )
       ]);
       const completedCount = progress.rows[0].completed_count;
       res.json({
         certificate: certificatePayload(certificate, req),
-        eligible: Boolean(certificate) || completedCount >= MODULE_COUNT,
+        course: course.key,
+        eligible: Boolean(certificate) || completedCount >= course.moduleCount,
         completedCount,
-        requiredCount: MODULE_COUNT,
+        requiredCount: course.moduleCount,
         consentVersion: CERTIFICATE_CONSENT_VERSION
       });
     } catch (error) {
@@ -672,6 +771,7 @@ function createApp(pool) {
   });
 
   app.post("/api/certificate/claim", authenticate, async (req, res, next) => {
+    const course = requestCourse(req);
     if (req.body?.consent !== true || req.body?.consentVersion !== CERTIFICATE_CONSENT_VERSION) {
       return res.status(400).json({
         error: "Review and accept the current public certificate notice before publishing.",
@@ -688,13 +788,13 @@ function createApp(pool) {
         "UPDATE users SET name = $1 WHERE id = $2 RETURNING id, name, email, created_at",
         [validated.name, req.user.id]
       );
-      const result = await issueCertificate(client, userResult.rows[0], CERTIFICATE_CONSENT_VERSION);
+      const result = await issueCertificate(client, userResult.rows[0], course, CERTIFICATE_CONSENT_VERSION);
       if (!result.eligible) {
         await client.query("ROLLBACK");
         return res.status(409).json({
-          error: `Complete all ${MODULE_COUNT} modules before claiming your certificate.`,
+          error: `Complete all ${course.moduleCount} modules before claiming your certificate.`,
           completedCount: result.completedCount,
-          requiredCount: MODULE_COUNT
+          requiredCount: course.moduleCount
         });
       }
       await client.query("COMMIT");
@@ -713,6 +813,7 @@ function createApp(pool) {
   });
 
   app.delete("/api/certificate/publication", authenticate, async (req, res, next) => {
+    const course = requestCourse(req);
     try {
       const result = await pool.query(
         `UPDATE certificates
@@ -720,7 +821,7 @@ function createApp(pool) {
          WHERE user_id = $1 AND course_code = $2
          RETURNING id, public_id, verification_hash, course_code, issued_at,
                    is_public, published_at, unpublished_at`,
-        [req.user.id, COURSE_CODE]
+        [req.user.id, course.code]
       );
       if (!result.rowCount) return res.status(404).json({ error: "Certificate not found." });
       res.json({ certificate: certificatePayload({ ...result.rows[0], user_name: req.user.name }, req) });
@@ -752,8 +853,9 @@ function createApp(pool) {
   });
 
   app.put("/api/progress/:moduleId", authenticate, async (req, res, next) => {
+    const course = requestCourse(req);
     const moduleId = Number(req.params.moduleId);
-    if (!Number.isInteger(moduleId) || moduleId < 1 || moduleId > MODULE_COUNT) {
+    if (!Number.isInteger(moduleId) || moduleId < 1 || moduleId > course.moduleCount) {
       return res.status(400).json({ error: "Unknown learning module." });
     }
     if (typeof req.body?.completed !== "boolean") return res.status(400).json({ error: "completed must be true or false." });
@@ -761,26 +863,33 @@ function createApp(pool) {
     try {
       if (req.body.completed) {
         await pool.query(
-          `INSERT INTO learning_progress (user_id, module_id)
-           VALUES ($1, $2)
-           ON CONFLICT (user_id, module_id) DO UPDATE SET completed_at = NOW()`,
-          [req.user.id, moduleId]
+          `INSERT INTO learning_progress (user_id, course_code, module_id)
+           VALUES ($1, $2, $3)
+           ON CONFLICT (user_id, course_code, module_id) DO UPDATE SET completed_at = NOW()`,
+          [req.user.id, course.code, moduleId]
         );
       } else {
-        await pool.query("DELETE FROM learning_progress WHERE user_id = $1 AND module_id = $2", [req.user.id, moduleId]);
+        await pool.query(
+          "DELETE FROM learning_progress WHERE user_id = $1 AND course_code = $2 AND module_id = $3",
+          [req.user.id, course.code, moduleId]
+        );
       }
       const [certificate, progress] = await Promise.all([
-        findCertificate(pool, req.user.id),
-        pool.query("SELECT COUNT(*)::int AS completed_count FROM learning_progress WHERE user_id = $1", [req.user.id])
+        findCertificate(pool, req.user.id, course),
+        pool.query(
+          "SELECT COUNT(*)::int AS completed_count FROM learning_progress WHERE user_id = $1 AND course_code = $2",
+          [req.user.id, course.code]
+        )
       ]);
       const completedCount = progress.rows[0].completed_count;
       res.json({
         moduleId,
         completed: req.body.completed,
         certificate: certificatePayload(certificate, req),
-        certificateEligible: Boolean(certificate) || completedCount >= MODULE_COUNT,
+        course: course.key,
+        certificateEligible: Boolean(certificate) || completedCount >= course.moduleCount,
         completedCount,
-        requiredCount: MODULE_COUNT,
+        requiredCount: course.moduleCount,
         consentVersion: CERTIFICATE_CONSENT_VERSION
       });
     } catch (error) {
@@ -788,9 +897,33 @@ function createApp(pool) {
     }
   });
 
-  app.get("/", (req, res) => res.sendFile(path.join(ROOT, "index.html")));
+  app.get("/", (req, res) => res.sendFile(path.join(ROOT, "home.html")));
+  app.get("/team", (req, res) => res.sendFile(path.join(ROOT, "team.html")));
+  app.get("/java", (req, res) => res.sendFile(path.join(ROOT, "index.html")));
+  app.get("/docker", (req, res) => {
+    const portal = fs.readFileSync(path.join(ROOT, "index.html"), "utf8")
+      .replace('<script src="app.js"></script>', '<script src="docker-data.js"></script><script src="app.js"></script>');
+    res.type("html").send(portal);
+  });
+  app.get("/ai", (req, res) => res.sendFile(path.join(ROOT, "ai.html")));
+  ["/ai/generative-ai", "/ai/rag", "/ai/agents"].forEach((route) => {
+    app.get(route, (req, res) => {
+      const portal = fs.readFileSync(path.join(ROOT, "index.html"), "utf8")
+        .replace('href="styles.css"', 'href="/styles.css"')
+        .replace('<script src="app.js"></script>', '<script src="/ai-data.js"></script><script src="/app.js"></script>');
+      res.type("html").send(portal);
+    });
+  });
   app.get("/styles.css", (req, res) => res.sendFile(path.join(ROOT, "styles.css")));
+  app.get("/quickdevbase-logo.png", (req, res) => res.sendFile(path.join(ROOT, "quickdevbase-logo.png")));
+  app.get("/founder-abhinav.png", (req, res) => res.sendFile(path.join(ROOT, "founder-abhinav.png")));
   app.get("/app.js", (req, res) => res.sendFile(path.join(ROOT, "app.js")));
+  app.get("/docker-data.js", (req, res) => res.sendFile(path.join(ROOT, "docker-data.js")));
+  app.get("/ai-data.js", (req, res) => res.sendFile(path.join(ROOT, "ai-data.js")));
+  app.get("/ai.css", (req, res) => res.sendFile(path.join(ROOT, "ai.css")));
+  app.get("/ai.js", (req, res) => res.sendFile(path.join(ROOT, "ai.js")));
+  app.get("/home.css", (req, res) => res.sendFile(path.join(ROOT, "home.css")));
+  app.get("/home.js", (req, res) => res.sendFile(path.join(ROOT, "home.js")));
   app.get("/certificate.css", (req, res) => res.sendFile(path.join(ROOT, "certificate.css")));
   app.get("/certificate.js", (req, res) => res.sendFile(path.join(ROOT, "certificate.js")));
   app.get("/legal.css", (req, res) => res.sendFile(path.join(ROOT, "legal.css")));
@@ -823,7 +956,7 @@ async function start() {
   await waitForDatabase(pool);
   await initializeDatabase(pool);
   const app = createApp(pool);
-  const server = app.listen(PORT, "0.0.0.0", () => console.log(`Java Basecamp running on port ${PORT}`));
+  const server = app.listen(PORT, "0.0.0.0", () => console.log(`QuickDevBase running on port ${PORT}`));
 
   const shutdown = () => server.close(() => pool.end().finally(() => process.exit(0)));
   process.on("SIGTERM", shutdown);
@@ -832,13 +965,14 @@ async function start() {
 
 if (require.main === module) {
   start().catch((error) => {
-    console.error("Unable to start Java Basecamp:", error);
+    console.error("Unable to start QuickDevBase:", error);
     process.exit(1);
   });
 }
 
 module.exports = {
   CERTIFICATE_CONSENT_VERSION,
+  COURSES,
   certificatePayload,
   createApp,
   escapeHtml,

@@ -6,8 +6,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-COPY --chown=node:node server.js index.html styles.css app.js certificate.css certificate.js \
-  legal.css privacy.html terms.html certificate-policy.html ./
+COPY --chown=node:node server.js index.html styles.css app.js docker-data.js ai-data.js ai.html ai.css ai.js home.html home.css home.js team.html \
+  certificate.css certificate.js legal.css privacy.html terms.html certificate-policy.html quickdevbase-logo.png founder-abhinav.png ./
 
 USER node
 EXPOSE 3000
