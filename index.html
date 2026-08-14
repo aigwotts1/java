@@ -38,10 +38,26 @@
         <a href="#about">How it works</a>
       </nav>
 
-      <button class="progress-pill" id="progressButton" type="button" aria-label="View course progress">
-        <span class="mini-ring" aria-hidden="true"><span id="miniProgress">0</span></span>
-        <span><strong id="headerProgress">0%</strong><small>Your progress</small></span>
-      </button>
+      <div class="header-actions">
+        <button class="progress-pill" id="progressButton" type="button" aria-label="View course progress">
+          <span class="mini-ring" aria-hidden="true"><span id="miniProgress">0</span></span>
+          <span><strong id="headerProgress">0%</strong><small id="headerProgressCaption">Sign in to save</small></span>
+        </button>
+
+        <div class="auth-area">
+          <button class="auth-trigger" id="authButton" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="auth-avatar" id="authAvatar" aria-hidden="true">→</span>
+            <span id="authLabel">Sign in</span>
+          </button>
+          <div class="user-menu" id="userMenu" hidden>
+            <p>Signed in as</p>
+            <strong id="userMenuName"></strong>
+            <small id="userMenuEmail"></small>
+            <button class="certificate-menu-button" id="certificateMenuButton" type="button" hidden><span aria-hidden="true">◆</span> View certificate</button>
+            <button id="logoutButton" type="button"><span aria-hidden="true">↪</span> Log out</button>
+          </div>
+        </div>
+      </div>
     </header>
 
     <main id="top">
@@ -66,8 +82,8 @@
           </div>
 
           <div class="hero-proof" aria-label="Course highlights">
-            <div><strong>17</strong><span>Focused modules</span></div>
-            <div><strong>90+</strong><span>Core concepts</span></div>
+            <div><strong>18</strong><span>Focused modules</span></div>
+            <div><strong>135</strong><span>Core concepts</span></div>
             <div><strong>∞</strong><span>Learn at your pace</span></div>
           </div>
         </div>
@@ -121,8 +137,8 @@
           </div>
           <div class="section-progress" aria-live="polite">
             <div class="section-progress-copy">
-              <span>Course progress</span>
-              <strong id="progressLabel">0 of 17 complete</strong>
+              <span id="progressOwnerLabel">Sign in to save your progress</span>
+              <strong id="progressLabel">0 of 18 complete</strong>
             </div>
             <div class="progress-track"><span id="progressBar"></span></div>
           </div>
@@ -137,7 +153,7 @@
           </label>
 
           <div class="filter-group" id="filterGroup" aria-label="Filter learning modules">
-            <button class="filter active" type="button" data-filter="all">All <span>17</span></button>
+            <button class="filter active" type="button" data-filter="all">All <span>18</span></button>
             <button class="filter" type="button" data-filter="foundation">Foundation</button>
             <button class="filter" type="button" data-filter="core">Core Java</button>
             <button class="filter" type="button" data-filter="backend">Backend</button>
@@ -177,7 +193,7 @@
             <span class="step-number">03</span>
             <div class="step-icon">↗</div>
             <h3>Apply</h3>
-            <p>Finish with a compact challenge and save your progress locally.</p>
+            <p>Finish with a compact challenge and sync your progress securely to your account.</p>
           </article>
         </div>
       </section>
@@ -207,7 +223,8 @@
           <p class="dialog-description" id="dialogDescription"></p>
 
           <div class="dialog-block">
-            <div class="dialog-block-heading"><span>01</span><h3>What you’ll cover</h3></div>
+            <div class="dialog-block-heading"><span>01</span><h3>Quick explanations</h3></div>
+            <p class="concept-hint">Read the simple idea first, then open any topic for a tiny example.</p>
             <div class="concept-list" id="dialogConcepts"></div>
           </div>
 
@@ -221,6 +238,94 @@
             <span aria-hidden="true">✓</span>
           </button>
         </div>
+      </div>
+    </dialog>
+
+    <dialog class="auth-dialog" id="authDialog" aria-labelledby="authTitle">
+      <div class="auth-shell">
+        <aside class="auth-visual" aria-hidden="true">
+          <div class="auth-brand-mark">J</div>
+          <p>One account.<br />Every tiny win.</p>
+          <div class="auth-code-card">
+            <span>progress.save();</span>
+            <i></i><i></i><i></i>
+          </div>
+        </aside>
+
+        <section class="auth-content">
+          <button class="dialog-close auth-close" id="authClose" type="button" aria-label="Close account dialog">×</button>
+          <p class="eyebrow"><span></span> Java Basecamp account</p>
+          <h2 id="authTitle">Welcome back</h2>
+          <p class="auth-subtitle" id="authSubtitle">Sign in to continue your Java journey from any device.</p>
+
+          <div class="auth-tabs" role="tablist" aria-label="Account action">
+            <button class="active" id="loginTab" type="button" role="tab" aria-selected="true" data-auth-mode="login">Sign in</button>
+            <button id="registerTab" type="button" role="tab" aria-selected="false" data-auth-mode="register">Create account</button>
+          </div>
+
+          <form class="auth-form" id="authForm" novalidate>
+            <label id="nameField" hidden>
+              <span>Your name</span>
+              <input id="authName" name="name" type="text" minlength="2" maxlength="60" autocomplete="name" placeholder="Ada Lovelace" />
+            </label>
+            <label>
+              <span>Email address</span>
+              <input id="authEmail" name="email" type="email" maxlength="254" autocomplete="email" placeholder="you@example.com" required />
+            </label>
+            <label>
+              <span>Password</span>
+              <input id="authPassword" name="password" type="password" minlength="8" maxlength="128" autocomplete="current-password" placeholder="At least 8 characters" required />
+            </label>
+            <p class="auth-error" id="authError" role="alert" hidden></p>
+            <button class="button button-primary auth-submit" id="authSubmit" type="submit">
+              <span id="authSubmitText">Sign in</span><span aria-hidden="true">→</span>
+            </button>
+          </form>
+
+          <p class="auth-switch">
+            <span id="authSwitchText">New to Basecamp?</span>
+            <button id="authSwitchButton" type="button">Create an account</button>
+          </p>
+          <p class="auth-privacy">Your password is salted and hashed. Your progress belongs only to your account.</p>
+        </section>
+      </div>
+    </dialog>
+
+    <dialog class="achievement-dialog" id="certificateDialog" aria-labelledby="certificateCelebrationTitle">
+      <div class="achievement-shell">
+        <button class="dialog-close achievement-close" id="certificateClose" type="button" aria-label="Close certificate celebration">×</button>
+        <div class="confetti" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+
+        <section class="achievement-copy">
+          <div class="achievement-medal" aria-hidden="true"><span>J</span><small>100%</small></div>
+          <p class="eyebrow"><span></span> Every module complete</p>
+          <h2 id="certificateCelebrationTitle">You did it.<br /> <em>Seriously.</em></h2>
+          <p><strong id="certificateLearnerName">Java developer</strong>, you completed the entire Java Basecamp path. That took consistency, curiosity, and a lot of tiny wins.</p>
+          <div class="achievement-stats">
+            <span><strong>18</strong><small>Modules</small></span>
+            <span><strong>135</strong><small>Concepts</small></span>
+            <span><strong>100%</strong><small>Complete</small></span>
+          </div>
+        </section>
+
+        <section class="certificate-preview-card">
+          <div class="preview-topline"><span>Certificate of completion</span><i>VERIFIED</i></div>
+          <div class="preview-mark">J</div>
+          <p>Complete Java<br />Developer Path</p>
+          <strong id="certificatePreviewName">Your name</strong>
+          <div class="preview-credential">
+            <span>Credential ID</span>
+            <code id="certificateCredentialId">JBC-...</code>
+          </div>
+          <div class="certificate-actions">
+            <a class="button button-primary" id="certificateViewLink" href="#" target="_blank" rel="noopener">View certificate <span aria-hidden="true">↗</span></a>
+            <a class="linkedin-share" id="certificateLinkedInLink" href="#" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span> Share on LinkedIn</a>
+            <button id="certificateCopyButton" type="button">Copy public link</button>
+          </div>
+          <p class="certificate-public-note"><span aria-hidden="true">✓</span> Anyone with the link can verify it. Your email stays private.</p>
+        </section>
       </div>
     </dialog>
 

@@ -1,0 +1,43 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-java_basecamp}:${POSTGRES_PASSWORD:-change-this-in-production}@db:5432/${POSTGRES_DB:-java_basecamp}
+      SESSION_DAYS: ${SESSION_DAYS:-30}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      APP_ORIGIN: ${APP_ORIGIN:-}
+      PUBLIC_APP_URL: ${PUBLIC_APP_URL:-}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-java_basecamp}
+      POSTGRES_USER: ${POSTGRES_USER:-java_basecamp}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-in-production}
+    volumes:
+      - java_basecamp_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-java_basecamp} -d ${POSTGRES_DB:-java_basecamp}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  java_basecamp_data:
