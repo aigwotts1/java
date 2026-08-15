@@ -6,11 +6,12 @@ Available paths:
 
 - **Java** — 18 modules and 135 concepts, from fundamentals to Spring Boot, REST APIs, JVM internals, and DSA.
 - **Docker** — 18 modules and 126 concepts, from architecture and container lifecycle to Compose, security, CI/CD, and Swarm.
+- **Python** — 18 modules and 126 concepts, from fundamentals and object protocols to typing, testing, asyncio, SQLite, HTTP APIs, packaging, and security.
 - **Generative AI Foundations** — 12 modules and 84 concepts, from transformers and tokens to multimodality, evaluation, and production safety.
 - **RAG Systems** — 12 modules and 84 concepts, from ingestion and chunking to hybrid retrieval, reranking, citations, and RAG evaluation.
 - **Agentic AI** — 12 modules and 84 concepts, from agent loops and tools to orchestration, MCP, human approval, tracing, and guardrails.
 
-The root page is the technology library. Java opens at `/java`, Docker at `/docker`, and the AI hub at `/ai`. The hub recommends Generative AI first, RAG second, and Agentic AI third, while keeping all three independently accessible.
+The root page is the technology library. Java opens at `/java`, Docker at `/docker`, Python at `/python`, and the AI hub at `/ai`. The hub recommends Generative AI first, RAG second, and Agentic AI third, while keeping all three independently accessible.
 
 ## Quick start with Docker
 
@@ -45,8 +46,8 @@ docker compose down
 - Completing or reopening a module updates the signed-in user's course-specific row in PostgreSQL.
 - The same account restores its progress on another browser after login, while different account IDs remain isolated.
 - Logout revokes the current session in the database.
-- Java, Docker, Generative AI, RAG, and Agentic AI progress remain separate under the same account. The AI hub also summarizes progress across its three paths.
-- Completing all modules in one path—18 for Java or Docker and 12 for an AI path—makes the learner eligible for that path's certificate; it does not publish personal data automatically.
+- Java, Docker, Python, Generative AI, RAG, and Agentic AI progress remain separate under the same account. The AI hub also summarizes progress across its three paths.
+- Completing all modules in one path—18 for Java, Docker, or Python and 12 for an AI path—makes the learner eligible for that path's certificate; it does not publish personal data automatically.
 - The learner reviews the disclosure, chooses the displayed name, and explicitly selects **Claim & publish** before a public link is activated.
 - Each certificate has an unguessable public link, a unique database verification code, LinkedIn sharing, and a print-to-PDF layout.
 - Learners can correct their public name, make a certificate private, republish it after fresh consent, or permanently delete their entire account.

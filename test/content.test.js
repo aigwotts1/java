@@ -8,6 +8,7 @@ const serverSource = fs.readFileSync(path.join(__dirname, "..", "server.js"), "u
 const indexSource = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
 const homeSource = fs.readFileSync(path.join(__dirname, "..", "home.html"), "utf8");
 const dockerSource = fs.readFileSync(path.join(__dirname, "..", "docker-data.js"), "utf8");
+const pythonSource = fs.readFileSync(path.join(__dirname, "..", "python-data.js"), "utf8");
 const aiSource = fs.readFileSync(path.join(__dirname, "..", "ai-data.js"), "utf8");
 const aiHubSource = fs.readFileSync(path.join(__dirname, "..", "ai.html"), "utf8");
 
@@ -26,6 +27,7 @@ const groupedExamples = readLiteral("const javaGroupedExamples = ", ";\n\nconst 
 const exampleComments = readLiteral("const javaExampleComments = ", ";\n\nconst javaStageLabels");
 const aiCourses = Function("window", aiSource + "; return window.QUICKDEV_AI_COURSES;")({});
 const dockerCourse = Function("window", `${dockerSource}; return window.QUICKDEV_COURSE;`)({});
+const pythonCourse = Function("window", `${pythonSource}; return window.QUICKDEV_COURSE;`)({});
 
 test("curriculum IDs, topic totals, and backend module limit stay aligned", () => {
   assert.equal(modules.length, 18);
@@ -46,6 +48,34 @@ test("Docker path covers a complete 18-module, 126-concept official-doc map", ()
   assert.ok(dockerCourse.modules.some((module) => module.topics.includes("Compose Watch")));
   assert.ok(dockerCourse.modules.some((module) => module.topics.includes("Rootless mode")));
   assert.ok(dockerCourse.modules.some((module) => module.topics.includes("Multi-platform publishing")));
+});
+
+test("Python path covers a complete 18-module, 126-concept official-doc map", () => {
+  assert.equal(pythonCourse.modules.length, 18);
+  assert.deepEqual(pythonCourse.modules.map((module) => module.id), Array.from({ length: 18 }, (_, index) => index + 1));
+  assert.equal(pythonCourse.modules.reduce((total, module) => total + module.topics.length, 0), 126);
+  for (const module of pythonCourse.modules) {
+    assert.equal(pythonCourse.quickNotes[module.id].length, module.topics.length);
+    assert.match(module.officialUrl, /^https:\/\/(docs\.python\.org\/3\/|packaging\.python\.org\/)/);
+  }
+  assert.ok(pythonCourse.modules.some((module) => module.topics.includes("Generator functions & yield")));
+  assert.ok(pythonCourse.modules.some((module) => module.topics.includes("Protocols")));
+  assert.ok(pythonCourse.modules.some((module) => module.topics.includes("REST methods: GET, POST, PUT, PATCH & DELETE")));
+  assert.ok(pythonCourse.modules.some((module) => module.topics.includes("Virtual environments")));
+  assert.deepEqual(
+    pythonCourse.groupedExamples["REST methods: GET, POST, PUT, PATCH & DELETE"].map(([label]) => label),
+    ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  );
+  assert.match(pythonCourse.exampleComments.GET, /return a resource/);
+  assert.match(pythonCourse.exampleComments.POST, /create a resource/);
+  assert.match(pythonCourse.exampleComments.PUT, /complete replacement/);
+  assert.match(pythonCourse.exampleComments.PATCH, /only the fields/);
+  assert.match(pythonCourse.exampleComments.DELETE, /remove the resource/);
+  for (const [topic, examples] of Object.entries(pythonCourse.groupedExamples)) {
+    for (const [label] of examples) {
+      assert.ok(pythonCourse.exampleComments[label], `${topic} / ${label} is missing its beginner comment.`);
+    }
+  }
 });
 
 test("AI hub contains three complete, independently trackable 12-module paths", () => {
@@ -112,6 +142,7 @@ test("certificate publication is consent-based and completion-only language is v
   assert.match(homeSource, /Developer knowledge, at a glance/i);
   assert.match(homeSource, /href="\/java"/);
   assert.match(homeSource, /href="\/docker"/);
+  assert.match(homeSource, /href="\/python"/);
   assert.match(homeSource, /href="\/ai"/);
   assert.match(homeSource, /class="team-link" href="\/team"/);
   assert.doesNotMatch(homeSource, /Abhinav Vashishth/);
@@ -129,6 +160,7 @@ test("certificate publication is consent-based and completion-only language is v
     assert.match(legalSource, /QuickDevBase/);
     assert.match(legalSource, /Oracle/);
     assert.match(legalSource, /Docker/);
+    assert.match(legalSource, /Python Software Foundation/);
     assert.match(legalSource, /OpenAI/);
     assert.match(legalSource, /rel="icon" type="image\/png" href="\/quickdevbase-logo\.png"/);
   }

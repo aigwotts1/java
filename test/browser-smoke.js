@@ -24,6 +24,9 @@ const screenshots = {
   docker: path.join(process.cwd(), "qa-docker-home.png"),
   dockerMobile: path.join(process.cwd(), "qa-docker-mobile.png"),
   dockerLesson: path.join(process.cwd(), "qa-docker-compose.png"),
+  python: path.join(process.cwd(), "qa-python-home.png"),
+  pythonMobile: path.join(process.cwd(), "qa-python-mobile.png"),
+  pythonLesson: path.join(process.cwd(), "qa-python-rest.png"),
   auth: path.join(process.cwd(), "qa-auth.png"),
   lesson: path.join(process.cwd(), "qa-rest-methods.png"),
   mobile: path.join(process.cwd(), "qa-mobile-rest.png"),
@@ -241,12 +244,13 @@ async function run() {
 
     await setViewport(1440, 1000, false);
     await client.send("Page.navigate", { url: baseUrl });
-    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 3`);
+    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 4`);
     const library = await evaluate(`({
       title: document.title,
       technologyCards: document.querySelectorAll("[data-course-card]").length,
       javaPath: document.querySelector('[data-course-card="java"]').getAttribute("href"),
       dockerPath: document.querySelector('[data-course-card="docker"]').getAttribute("href"),
+      pythonPath: document.querySelector('[data-course-card="python"]').getAttribute("href"),
       aiPath: document.querySelector('[data-course-card="ai"]').getAttribute("href"),
       brandLogos: document.querySelectorAll(".brand-logo").length,
       logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
@@ -259,9 +263,10 @@ async function run() {
       errors: window.__qaErrors
     })`);
     assert.equal(library.title, "QuickDevBase — Developer Knowledge, At a Glance");
-    assert.equal(library.technologyCards, 3);
+    assert.equal(library.technologyCards, 4);
     assert.equal(library.javaPath, "/java");
     assert.equal(library.dockerPath, "/docker");
+    assert.equal(library.pythonPath, "/python");
     assert.equal(library.aiPath, "/ai");
     assert.equal(library.brandLogos, 2);
     assert.equal(library.logosLoaded, true);
@@ -304,7 +309,7 @@ async function run() {
 
     await setViewport(390, 844, false);
     await client.send("Page.navigate", { url: baseUrl });
-    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 3`);
+    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 4`);
     const libraryMobile = await evaluate(`({
       cards: document.querySelectorAll("[data-course-card]").length,
       responsiveLayout: matchMedia("(max-width: 680px)").matches,
@@ -313,7 +318,7 @@ async function run() {
       horizontalScrollPrevented: getComputedStyle(document.body).overflowX === "hidden",
       errors: window.__qaErrors
     })`);
-    assert.equal(libraryMobile.cards, 3);
+    assert.equal(libraryMobile.cards, 4);
     assert.equal(libraryMobile.responsiveLayout, true);
     assert.equal(libraryMobile.logoLoaded, true);
     assert.ok(libraryMobile.logoWidth <= 56);
@@ -536,6 +541,75 @@ async function run() {
     assert.equal(dockerLesson.scrollable, true);
     assert.equal(dockerLesson.overflowY, "auto");
     await capture(screenshots.dockerLesson);
+
+    await navigate(1440, 1000, false, "Sign in", "/python");
+    const python = await evaluate(`({
+      title: document.title,
+      modules: document.querySelectorAll(".module-card").length,
+      concepts: [...document.querySelectorAll(".module-footer > span:first-child")]
+        .reduce((total, item) => total + Number.parseInt(item.textContent, 10), 0),
+      searchPlaceholder: document.querySelector("#searchInput").placeholder,
+      hasAsyncio: document.documentElement.textContent.includes("Concurrency & Asyncio"),
+      hasProtocols: document.documentElement.textContent.includes("Python's Object Protocols"),
+      avatarColor: getComputedStyle(document.querySelector(".auth-avatar")).backgroundColor,
+      navigationAccent: getComputedStyle(document.querySelector(".main-nav .active"), "::after").backgroundColor,
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(python.title, "Python at a Glance | QuickDevBase");
+    assert.equal(python.modules, 18);
+    assert.equal(python.concepts, 126);
+    assert.equal(python.searchPlaceholder, "Search topics, e.g. generators");
+    assert.equal(python.hasAsyncio, true);
+    assert.equal(python.hasProtocols, true);
+    assert.equal(python.avatarColor, "rgb(55, 118, 171)");
+    assert.equal(python.navigationAccent, "rgb(55, 118, 171)");
+    assert.equal(python.noHorizontalOverflow, true);
+    assert.deepEqual(python.errors, []);
+    await capture(screenshots.python);
+
+    await navigate(390, 844, false, "Sign in", "/python");
+    const pythonMobile = await evaluate(`({
+      responsiveLayout: matchMedia("(max-width: 700px)").matches,
+      logoLoaded: document.querySelector(".site-header .brand-logo").complete && document.querySelector(".site-header .brand-logo").naturalWidth > 0,
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(pythonMobile.responsiveLayout, true);
+    assert.equal(pythonMobile.logoLoaded, true);
+    assert.equal(pythonMobile.noHorizontalOverflow, true);
+    assert.deepEqual(pythonMobile.errors, []);
+    await capture(screenshots.pythonMobile);
+
+    await navigate(1440, 1000, false, "Sign in", "/python");
+    await evaluate(`document.querySelector('.module-card[data-module-id="17"]').click()`);
+    await waitFor(`document.querySelector("#lessonDialog").open`);
+    const pythonLesson = await evaluate(`(() => {
+      const content = document.querySelector(".dialog-content");
+      const methodLesson = [...document.querySelectorAll("#dialogConcepts .concept-item")]
+        .find((item) => item.textContent.includes("REST methods: GET, POST, PUT, PATCH & DELETE"));
+      methodLesson.open = true;
+      content.scrollTop = methodLesson.offsetTop - 20;
+      const official = document.querySelector("#dialogOfficialLink");
+      return {
+        title: document.querySelector("#dialogTitle").textContent.trim(),
+        concepts: document.querySelectorAll("#dialogConcepts .concept-item").length,
+        methodExamples: methodLesson.querySelectorAll(".concept-snippet").length,
+        allExamplesCommented: [...methodLesson.querySelectorAll(".concept-snippet")]
+          .every((item) => item.querySelector(".snippet-comment").textContent.trim().length > 3),
+        officialUrl: official.href,
+        scrollable: content.scrollHeight > content.clientHeight,
+        overflowY: getComputedStyle(content).overflowY
+      };
+    })()`);
+    assert.equal(pythonLesson.title, "HTTP, APIs & Networking");
+    assert.equal(pythonLesson.concepts, 7);
+    assert.equal(pythonLesson.methodExamples, 5);
+    assert.equal(pythonLesson.allExamplesCommented, true);
+    assert.match(pythonLesson.officialUrl, /^https:\/\/docs\.python\.org\/3\/library\/internet\.html$/);
+    assert.equal(pythonLesson.scrollable, true);
+    assert.equal(pythonLesson.overflowY, "auto");
+    await capture(screenshots.pythonLesson);
 
     await setViewport(1440, 1000, false);
     await client.send("Page.navigate", { url: `${baseUrl}/ai` });
@@ -892,7 +966,7 @@ async function run() {
     });
 
     console.log("Browser smoke test passed.");
-    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, teamMobile, desktop, auth, java8, restLesson, mobile, mobileRest, docker, dockerLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
+    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, teamMobile, desktop, auth, java8, restLesson, mobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
     try {
       await fetch(`${baseUrl}/api/account`, {

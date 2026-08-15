@@ -2,7 +2,7 @@
   "name": "quickdevbase",
   "version": "1.0.0",
   "private": true,
-  "description": "Developer knowledge at a glance, with Java, Docker, and three focused AI paths plus account-based progress tracking.",
+  "description": "Developer knowledge at a glance, with Java, Docker, Python, and three focused AI paths plus account-based progress tracking.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

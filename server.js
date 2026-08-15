@@ -39,6 +39,18 @@ const COURSES = {
     summary: "Docker architecture, containers, images, Dockerfiles, BuildKit, storage, networking, Compose, security, CI/CD, and Swarm.",
     trademark: "Docker and the Docker logo are trademarks or registered trademarks of Docker, Inc. QuickDevBase is not affiliated with or endorsed by Docker, Inc."
   },
+  python: {
+    key: "python",
+    code: "python-developer-knowledge",
+    title: "Python Developer Knowledge Path",
+    shortTitle: "Python at a Glance",
+    mark: "Py",
+    moduleCount: 18,
+    conceptCount: 126,
+    path: "/python",
+    summary: "Python fundamentals, collections, functions, object protocols, files, typing, testing, concurrency, SQLite, HTTP APIs, packaging, performance, and security.",
+    trademark: "Python and the Python logos are trademarks or registered trademarks of the Python Software Foundation. QuickDevBase is not affiliated with or endorsed by the Python Software Foundation."
+  },
   "generative-ai": {
     key: "generative-ai",
     code: "generative-ai-foundations",
@@ -905,6 +917,11 @@ function createApp(pool) {
       .replace('<script src="app.js"></script>', '<script src="docker-data.js"></script><script src="app.js"></script>');
     res.type("html").send(portal);
   });
+  app.get("/python", (req, res) => {
+    const portal = fs.readFileSync(path.join(ROOT, "index.html"), "utf8")
+      .replace('<script src="app.js"></script>', '<script src="python-data.js"></script><script src="app.js"></script>');
+    res.type("html").send(portal);
+  });
   app.get("/ai", (req, res) => res.sendFile(path.join(ROOT, "ai.html")));
   ["/ai/generative-ai", "/ai/rag", "/ai/agents"].forEach((route) => {
     app.get(route, (req, res) => {
@@ -919,6 +936,7 @@ function createApp(pool) {
   app.get("/founder-abhinav.png", (req, res) => res.sendFile(path.join(ROOT, "founder-abhinav.png")));
   app.get("/app.js", (req, res) => res.sendFile(path.join(ROOT, "app.js")));
   app.get("/docker-data.js", (req, res) => res.sendFile(path.join(ROOT, "docker-data.js")));
+  app.get("/python-data.js", (req, res) => res.sendFile(path.join(ROOT, "python-data.js")));
   app.get("/ai-data.js", (req, res) => res.sendFile(path.join(ROOT, "ai-data.js")));
   app.get("/ai.css", (req, res) => res.sendFile(path.join(ROOT, "ai.css")));
   app.get("/ai.js", (req, res) => res.sendFile(path.join(ROOT, "ai.js")));

@@ -69,6 +69,21 @@ test("Docker certificate payload uses Docker-specific scope and counts", () => {
   assert.match(html, /not affiliated with or endorsed by Docker, Inc/);
 });
 
+test("Python certificate payload uses Python-specific scope and counts", () => {
+  const pythonPayload = certificatePayload(
+    { ...row, course_code: "python-developer-knowledge" },
+    { protocol: "http", get: () => "localhost:3000" },
+  );
+  assert.equal(pythonPayload.courseKey, "python");
+  assert.equal(pythonPayload.courseTitle, "Python Developer Knowledge Path");
+  assert.equal(pythonPayload.moduleCount, 18);
+  assert.equal(pythonPayload.conceptCount, 126);
+  assert.match(pythonPayload.credentialId, /^QDB-PYT-/);
+  const html = renderCertificatePage(pythonPayload);
+  assert.match(html, /Python at a Glance/);
+  assert.match(html, /not affiliated with or endorsed by the Python Software Foundation/);
+});
+
 test("each AI certificate uses its own course identity, scope, and credential prefix", () => {
   const cases = [
     ["generative-ai-foundations", "generative-ai", "Generative AI Foundations Knowledge Path", "GEN"],
