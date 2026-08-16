@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" th:content="${description}" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#15386b" />
+    <link rel="icon" type="image/png" href="/quickdevbase-logo.png" />
+    <link rel="apple-touch-icon" href="/quickdevbase-logo.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="QuickDevBase" />
+    <meta property="og:title" th:content="${pageTitle}" />
+    <meta property="og:description" th:content="${description}" />
+    <meta property="og:url" th:content="${certificate.shareUrl}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" th:href="${certificate.shareUrl}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Manrope:wght@400;600;700;800&amp;family=Young+Serif&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/certificate.css" />
+    <title th:text="${pageTitle + ' | Verified Certificate'}">Verified Certificate</title>
+  </head>
+  <body th:attr="data-certificate-url=${certificate.shareUrl}">
+    <main class="certificate-page">
+      <nav class="certificate-nav" aria-label="Certificate actions">
+        <a class="certificate-brand" href="/" aria-label="QuickDevBase home"><img class="brand-logo" src="/quickdevbase-logo.png" alt="" /><span class="brand-wordmark">QuickDev<strong>Base</strong></span></a>
+        <div>
+          <button id="copyCertificateLink" type="button">Copy link</button>
+          <button id="printCertificate" type="button">Print / save PDF</button>
+          <a class="linkedin-button" th:href="${certificate.linkedInShareUrl}" target="_blank" rel="noopener noreferrer">Share on LinkedIn <span aria-hidden="true">↗</span></a>
+        </div>
+      </nav>
+
+      <article class="certificate" aria-labelledby="certificateTitle">
+        <div class="certificate-orbit orbit-one" aria-hidden="true"></div>
+        <div class="certificate-orbit orbit-two" aria-hidden="true"></div>
+        <div class="certificate-corner corner-one" aria-hidden="true"></div>
+        <div class="certificate-corner corner-two" aria-hidden="true"></div>
+
+        <header class="certificate-header">
+          <div class="certificate-mark" aria-hidden="true" th:text="${course.mark}">J</div>
+          <div>
+            <span th:text="${'QuickDevBase · ' + course.shortTitle}">QuickDevBase</span>
+            <small>Verified course completion record</small>
+          </div>
+          <div class="verified-pill"><i aria-hidden="true">✓</i> Database verified</div>
+        </header>
+
+        <section class="certificate-body">
+          <p class="certificate-kicker"><span></span> Certificate of completion <span></span></p>
+          <h1 id="certificateTitle" th:text="${course.title}">Knowledge Path</h1>
+          <p class="presented">This credential is proudly presented to</p>
+          <h2 th:text="${certificate.name}">Learner</h2>
+          <p class="achievement">for completing the full <span th:text="${course.shortTitle}">course</span> curriculum—<strong th:text="${certificate.moduleCount + ' modules'}">18 modules</strong> and <strong th:text="${certificate.conceptCount + ' concepts'}">135 concepts</strong>, covering <span th:text="${course.summary}">the curriculum</span></p>
+
+          <div class="certificate-metrics" aria-label="Achievement details">
+            <div><strong>100%</strong><span>Course progress</span></div>
+            <div><strong th:text="${certificate.moduleCount}">18</strong><span>Modules completed</span></div>
+            <div><strong th:text="${certificate.conceptCount}">135</strong><span>Concepts covered</span></div>
+          </div>
+        </section>
+
+        <footer class="certificate-footer">
+          <div class="issued-block"><span>Issued on</span><strong th:text="${issuedDate}">01 January 2026</strong></div>
+          <div class="seal" aria-label="QuickDevBase verified seal"><span th:text="${course.mark}">J</span><small>VERIFIED</small></div>
+          <div class="credential-block"><span>Credential ID</span><strong th:text="${certificate.credentialId}">QDB</strong></div>
+        </footer>
+
+        <div class="verification-strip">
+          <div><i aria-hidden="true">✓</i><span><strong>Publicly verified</strong><small>This record matches the QuickDevBase completion database.</small></span></div>
+          <code th:text="${certificate.verificationHash}">verification</code>
+        </div>
+      </article>
+
+      <p class="certificate-note">Anyone with this link can verify this course completion. No email address or private account information is displayed.</p>
+      <footer class="certificate-legal">
+        <a class="certificate-footer-brand" href="/" aria-label="QuickDevBase home"><img class="brand-logo" src="/quickdevbase-logo.png" alt="" /><span class="brand-wordmark">QuickDev<strong>Base</strong></span></a>
+        <p>This is an independent knowledge-path completion record, not a professional licence, accredited qualification, or vendor certification.</p>
+        <p th:text="${course.trademark}">Independent project notice.</p>
+        <nav aria-label="Certificate policies"><a class="team-link" href="/team">Team</a><a href="/certificate-policy">Certificate policy</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
+      </footer>
+      <div class="copy-toast" id="copyToast" role="status" aria-live="polite">Certificate link copied</div>
+    </main>
+    <script src="/certificate.js" defer></script>
+  </body>
+</html>

@@ -1057,6 +1057,15 @@ const certificateUnpublishButton = document.querySelector("#certificateUnpublish
 const certificateSaveNameButton = document.querySelector("#certificateSaveNameButton");
 const certificatePublicName = document.querySelector("#certificatePublicName");
 const certificateConsent = document.querySelector("#certificateConsent");
+const aiGuideStatus = document.querySelector("#aiGuideStatus");
+const aiGuideStatusText = document.querySelector("#aiGuideStatusText");
+const aiGuideLogin = document.querySelector("#aiGuideLogin");
+const aiQuestionForm = document.querySelector("#aiQuestionForm");
+const aiQuestionInput = document.querySelector("#aiQuestion");
+const aiQuestionSubmit = document.querySelector("#aiQuestionSubmit");
+const aiGuideAnswer = document.querySelector("#aiGuideAnswer");
+const aiGuideAnswerText = document.querySelector("#aiGuideAnswerText");
+const aiGuideAnswerMeta = document.querySelector("#aiGuideAnswerMeta");
 
 let activeFilter = "all";
 let activeModuleId = null;
@@ -1068,13 +1077,28 @@ let certificateConsentVersion = null;
 let authMode = "login";
 let isSavingProgress = false;
 let toastTimer;
+let aiStatus = null;
+let isAskingAi = false;
+
+function cookieValue(name) {
+  const prefix = `${encodeURIComponent(name)}=`;
+  const cookie = document.cookie.split("; ").find((entry) => entry.startsWith(prefix));
+  return cookie ? decodeURIComponent(cookie.slice(prefix.length)) : null;
+}
 
 async function apiRequest(url, options = {}) {
+  const method = String(options.method || "GET").toUpperCase();
+  const needsCsrf = !["GET", "HEAD", "OPTIONS"].includes(method);
+  if (needsCsrf && !cookieValue("XSRF-TOKEN")) {
+    await fetch("/api/auth/me", { credentials: "same-origin" });
+  }
+  const csrfToken = needsCsrf ? cookieValue("XSRF-TOKEN") : null;
   const response = await fetch(url, {
     credentials: "same-origin",
     ...options,
     headers: {
       ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(csrfToken ? { "X-XSRF-TOKEN": csrfToken } : {}),
       ...options.headers
     }
   });
@@ -1549,9 +1573,126 @@ function openModule(id) {
     officialLink.querySelector("span").textContent = module.officialLabel || `Official ${courseConfig.name} documentation`;
   }
   updateCompleteButton();
+  resetAiGuide();
 
   dialog.showModal();
   document.body.classList.add("dialog-open");
+  loadAiStatus();
+}
+
+function activeModule() {
+  return modules.find((module) => module.id === activeModuleId) || null;
+}
+
+function lessonContext(module) {
+  const notes = quickNotes[module.id] || [];
+  const topicText = module.topics.map((topic, index) => {
+    const [plain, fallbackCode] = notes[index] || [courseConfig.fallbackNote, courseConfig.fallbackCode];
+    const examples = groupedExamples[topic] || [["Example", fallbackCode]];
+    const exampleText = examples.map(([label, code]) =>
+      `${label}: ${exampleComments[label] || plain}\n${code}`
+    ).join("\n");
+    return `${index + 1}. ${topic}\n${plain}\n${exampleText}`;
+  }).join("\n\n");
+  return `Module summary: ${module.description}\n\nTopics and examples:\n${topicText}\n\nTiny challenge: ${module.challenge}`.slice(0, 16000);
+}
+
+function setAiControlsDisabled(disabled) {
+  document.querySelectorAll("[data-ai-mode]").forEach((button) => { button.disabled = disabled; });
+  aiQuestionInput.disabled = disabled;
+  aiQuestionSubmit.disabled = disabled;
+}
+
+function resetAiGuide() {
+  aiStatus = null;
+  isAskingAi = false;
+  aiQuestionForm.reset();
+  aiGuideAnswer.hidden = true;
+  aiGuideAnswerText.textContent = "";
+  aiGuideAnswerMeta.textContent = "";
+  aiGuideStatus.className = "ai-guide-status";
+  if (!currentUser) {
+    aiGuideStatusText.textContent = "Sign in to use the AI lesson guide.";
+    aiGuideLogin.hidden = false;
+    setAiControlsDisabled(true);
+  } else {
+    aiGuideStatusText.textContent = "Checking AI guide availability...";
+    aiGuideLogin.hidden = true;
+    setAiControlsDisabled(true);
+  }
+}
+
+async function loadAiStatus() {
+  if (!currentUser || !dialog.open) return;
+  try {
+    aiStatus = await apiRequest("/api/ai/status");
+    if (!dialog.open) return;
+    aiGuideStatus.className = `ai-guide-status ${aiStatus.enabled ? "ready" : "error"}`;
+    aiGuideStatusText.textContent = aiStatus.enabled
+      ? `${aiStatus.remainingToday} of ${aiStatus.dailyLimit} AI requests left today.`
+      : "AI guide is not configured on this server yet.";
+    setAiControlsDisabled(!aiStatus.enabled);
+  } catch (error) {
+    if (!dialog.open) return;
+    if (error.status === 401) {
+      currentUser = null;
+      updateAuthUI();
+      resetAiGuide();
+      return;
+    }
+    aiGuideStatus.className = "ai-guide-status error";
+    aiGuideStatusText.textContent = error.message;
+    setAiControlsDisabled(true);
+  }
+}
+
+async function askQuickDev(mode, question = "") {
+  if (!currentUser) {
+    openAuth("login", "Sign in to use Ask QuickDev with a safe daily allowance.");
+    return;
+  }
+  const module = activeModule();
+  if (!module || isAskingAi || !aiStatus?.enabled) return;
+
+  isAskingAi = true;
+  setAiControlsDisabled(true);
+  aiGuideStatus.className = "ai-guide-status busy";
+  aiGuideStatusText.textContent = "Building a short, lesson-grounded answer...";
+  aiGuideAnswer.hidden = true;
+
+  try {
+    const result = await apiRequest("/api/ai/ask", {
+      method: "POST",
+      body: JSON.stringify({
+        course: courseConfig.key,
+        moduleId: module.id,
+        moduleTitle: module.title,
+        mode,
+        question,
+        context: lessonContext(module),
+        officialUrl: module.officialUrl
+      })
+    });
+    aiStatus.remainingToday = result.remainingToday;
+    aiGuideAnswerText.textContent = result.answer;
+    aiGuideAnswerMeta.textContent = result.cached
+      ? `Cached answer · ${result.remainingToday} left`
+      : `${result.remainingToday} left today`;
+    aiGuideAnswer.hidden = false;
+    aiGuideStatus.className = "ai-guide-status ready";
+    aiGuideStatusText.textContent = `${result.remainingToday} of ${aiStatus.dailyLimit} AI requests left today.`;
+  } catch (error) {
+    aiGuideStatus.className = "ai-guide-status error";
+    aiGuideStatusText.textContent = error.message;
+    if (error.status === 401) {
+      currentUser = null;
+      updateAuthUI();
+      aiGuideLogin.hidden = false;
+    }
+  } finally {
+    isAskingAi = false;
+    setAiControlsDisabled(!currentUser || !aiStatus?.enabled);
+  }
 }
 
 function updateCompleteButton() {
@@ -1654,6 +1795,15 @@ clearSearch.addEventListener("click", () => {
 
 closeDialog.addEventListener("click", closeLesson);
 completeButton.addEventListener("click", toggleComplete);
+aiGuideLogin.addEventListener("click", () => openAuth("login", "Sign in to use Ask QuickDev with a safe daily allowance."));
+document.querySelectorAll("[data-ai-mode]").forEach((button) => {
+  button.addEventListener("click", () => askQuickDev(button.dataset.aiMode));
+});
+aiQuestionForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (!aiQuestionForm.reportValidity()) return;
+  askQuickDev("ask", aiQuestionInput.value.trim());
+});
 dialog.addEventListener("close", () => document.body.classList.remove("dialog-open"));
 dialog.addEventListener("click", (event) => {
   if (event.target === dialog) closeLesson();

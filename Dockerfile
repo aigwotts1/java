@@ -1,18 +1,23 @@
-FROM node:22-alpine AS production
+FROM maven:3.9-eclipse-temurin-17-alpine AS build
 
-ENV NODE_ENV=production
+WORKDIR /workspace
+COPY pom.xml ./
+RUN mvn -q -DskipTests dependency:go-offline
+
+COPY src ./src
+COPY *.html *.css *.js *.png ./
+RUN mvn -q -DskipTests package
+
+FROM eclipse-temurin:17-jre-alpine AS production
+
+RUN addgroup -S quickdevbase && adduser -S quickdevbase -G quickdevbase
 WORKDIR /app
+COPY --from=build --chown=quickdevbase:quickdevbase /workspace/target/quickdevbase-1.0.0.jar app.jar
 
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev && npm cache clean --force
-
-COPY --chown=node:node server.js index.html styles.css app.js docker-data.js python-data.js ai-data.js ai.html ai.css ai.js home.html home.css home.js team.html \
-  certificate.css certificate.js legal.css privacy.html terms.html certificate-policy.html quickdevbase-logo.png founder-abhinav.png ./
-
-USER node
+USER quickdevbase
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD node -e "fetch('http://127.0.0.1:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD wget -q -O - http://127.0.0.1:3000/health >/dev/null || exit 1
 
-CMD ["node", "server.js"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

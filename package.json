@@ -3,19 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "description": "Developer knowledge at a glance, with Java, Docker, Python, and three focused AI paths plus account-based progress tracking.",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
-    "test": "node --test test/auth.test.js test/certificate.test.js test/content.test.js test/integration.test.js",
+    "start": "mvn spring-boot:run",
+    "dev": "mvn spring-boot:run",
+    "build": "mvn package",
+    "test": "mvn test && node --test test/content.test.js test/integration.test.js",
+    "test:unit": "mvn test",
+    "test:content": "node --test test/content.test.js",
     "test:integration": "node --test test/integration.test.js",
     "test:browser": "node test/browser-smoke.js"
   },
   "engines": {
     "node": ">=22"
-  },
-  "dependencies": {
-    "express": "^5.1.0",
-    "pg": "^8.16.3"
   }
 }

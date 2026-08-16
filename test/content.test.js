@@ -4,7 +4,10 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const appSource = fs.readFileSync(path.join(__dirname, "..", "app.js"), "utf8");
-const serverSource = fs.readFileSync(path.join(__dirname, "..", "server.js"), "utf8");
+const courseCatalogSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "course", "CourseCatalog.java"), "utf8");
+const settingsSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "config", "AppSettings.java"), "utf8");
+const certificateServiceSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "certificate", "CertificateService.java"), "utf8");
+const securitySource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "security", "SecurityConfig.java"), "utf8");
 const indexSource = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
 const homeSource = fs.readFileSync(path.join(__dirname, "..", "home.html"), "utf8");
 const dockerSource = fs.readFileSync(path.join(__dirname, "..", "docker-data.js"), "utf8");
@@ -29,11 +32,11 @@ const aiCourses = Function("window", aiSource + "; return window.QUICKDEV_AI_COU
 const dockerCourse = Function("window", `${dockerSource}; return window.QUICKDEV_COURSE;`)({});
 const pythonCourse = Function("window", `${pythonSource}; return window.QUICKDEV_COURSE;`)({});
 
-test("curriculum IDs, topic totals, and backend module limit stay aligned", () => {
+test("curriculum IDs, topic totals, and Spring backend module limit stay aligned", () => {
   assert.equal(modules.length, 18);
   assert.deepEqual(modules.map((module) => module.id), Array.from({ length: 18 }, (_, index) => index + 1));
   assert.equal(modules.reduce((total, module) => total + module.topics.length, 0), 135);
-  assert.match(serverSource, /moduleCount: 18/);
+  assert.match(courseCatalogSource, /"java-basecamp-complete"[\s\S]*?18, 135/);
 });
 
 test("Docker path covers a complete 18-module, 126-concept official-doc map", () => {
@@ -133,6 +136,27 @@ test("Java 8 and REST API coverage includes the requested concepts", () => {
   );
 });
 
+test("Ask QuickDev stays lesson-scoped, authenticated, bounded, and privacy-aware", () => {
+  const aiSettingsSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "ai", "AiSettings.java"), "utf8");
+  const aiPromptSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "ai", "AiPromptFactory.java"), "utf8");
+  const migrationSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "db", "migration", "V2__ai_guide.sql"), "utf8");
+  const privacySource = fs.readFileSync(path.join(__dirname, "..", "privacy.html"), "utf8");
+
+  assert.match(indexSource, /id="aiGuideTitle">Ask QuickDev/);
+  assert.match(indexSource, /Your name, email, progress, and certificate are not sent/);
+  assert.match(appSource, /context: lessonContext\(module\)/);
+  assert.match(appSource, /textContent = result\.answer/);
+  assert.doesNotMatch(appSource, /innerHTML = result\.answer/);
+  assert.match(securitySource, /"\/api\/ai\/\*\*"/);
+  assert.match(aiSettingsSource, /AI_DAILY_LIMIT/);
+  assert.match(aiSettingsSource, /AI_GLOBAL_DAILY_LIMIT/);
+  assert.match(aiSettingsSource, /AI_MAX_OUTPUT_TOKENS/);
+  assert.match(aiPromptSource, /untrusted quoted data/);
+  assert.match(migrationSource, /CREATE TABLE ai_usage_daily/);
+  assert.match(migrationSource, /CREATE TABLE ai_answer_cache/);
+  assert.match(privacySource, /unpaid-service content may be used to improve its products/);
+});
+
 test("certificate publication is consent-based and completion-only language is visible", () => {
   assert.match(indexSource, /Claim &amp; publish certificate/);
   assert.match(indexSource, /I consent to publish my chosen name/);
@@ -152,8 +176,10 @@ test("certificate publication is consent-based and completion-only language is v
   assert.match(teamSource, /mailto:vashishthabhinav9@gmail\.com/);
   assert.match(teamSource, /full-stack and backend development/);
   assert.match(teamSource, /generative AI, RAG, and agentic systems/);
-  assert.match(serverSource, /CERTIFICATE_CONSENT_VERSION/);
-  assert.match(serverSource, /is_public = FALSE/);
+  assert.match(settingsSource, /CONSENT_VERSION = "2026-08-14"/);
+  assert.match(certificateServiceSource, /is_public = FALSE/);
+  assert.match(securitySource, /CookieCsrfTokenRepository/);
+  assert.match(appSource, /X-XSRF-TOKEN/);
 
   for (const filename of ["privacy.html", "terms.html", "certificate-policy.html"]) {
     const legalSource = fs.readFileSync(path.join(__dirname, "..", filename), "utf8");

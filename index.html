@@ -232,8 +232,43 @@
             <div class="concept-list" id="dialogConcepts"></div>
           </div>
 
+          <section class="dialog-block ai-guide-block" aria-labelledby="aiGuideTitle">
+            <div class="dialog-block-heading">
+              <span>02</span>
+              <h3 id="aiGuideTitle">Ask QuickDev</h3>
+              <small class="ai-guide-label">AI lesson guide</small>
+            </div>
+            <p class="concept-hint">Get a short explanation grounded in this module. AI can make mistakes, so use the official link for full detail.</p>
+
+            <div class="ai-guide-status" id="aiGuideStatus" role="status">
+              <i aria-hidden="true"></i>
+              <span id="aiGuideStatusText">Sign in to use the AI lesson guide.</span>
+              <button id="aiGuideLogin" type="button">Sign in</button>
+            </div>
+
+            <div class="ai-guide-actions" aria-label="Quick AI questions">
+              <button type="button" data-ai-mode="simplify">Explain simply</button>
+              <button type="button" data-ai-mode="example">Another example</button>
+              <button type="button" data-ai-mode="quiz">Quiz me</button>
+            </div>
+
+            <form class="ai-question-form" id="aiQuestionForm">
+              <label for="aiQuestion">Or ask about this module</label>
+              <div>
+                <input id="aiQuestion" name="question" type="text" minlength="2" maxlength="500" autocomplete="off" placeholder="What should I remember most?" />
+                <button id="aiQuestionSubmit" type="submit">Ask <span aria-hidden="true">&#8599;</span></button>
+              </div>
+            </form>
+
+            <div class="ai-guide-answer" id="aiGuideAnswer" hidden>
+              <div><strong>QuickDev answer</strong><small id="aiGuideAnswerMeta"></small></div>
+              <pre id="aiGuideAnswerText"></pre>
+            </div>
+            <p class="ai-privacy-note">Only this lesson and your question are sent to Gemini. Your name, email, progress, and certificate are not sent. Do not include personal, confidential, or sensitive information.</p>
+          </section>
+
           <div class="dialog-block challenge-block">
-            <div class="dialog-block-heading"><span>02</span><h3>Tiny challenge</h3></div>
+            <div class="dialog-block-heading"><span>03</span><h3>Tiny challenge</h3></div>
             <p id="dialogChallenge"></p>
           </div>
 

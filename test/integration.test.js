@@ -3,19 +3,52 @@ const assert = require("node:assert/strict");
 
 const baseUrl = process.env.TEST_BASE_URL;
 
-async function request(path, { method = "GET", body, cookie } = {}) {
+function cookieMap(cookie = "") {
+  return new Map(cookie.split(/;\s*/).filter(Boolean).map((entry) => {
+    const separator = entry.indexOf("=");
+    return [entry.slice(0, separator), entry.slice(separator + 1)];
+  }));
+}
+
+function responseCookies(headers) {
+  if (typeof headers.getSetCookie === "function") return headers.getSetCookie();
+  const value = headers.get("set-cookie");
+  return value ? [value] : [];
+}
+
+function mergeCookies(existing, setCookies) {
+  const jar = cookieMap(existing);
+  for (const setCookie of setCookies) {
+    const [pair] = setCookie.split(";", 1);
+    const separator = pair.indexOf("=");
+    const name = pair.slice(0, separator);
+    const value = pair.slice(separator + 1);
+    if (/max-age=0/i.test(setCookie)) jar.delete(name);
+    else jar.set(name, value);
+  }
+  return [...jar].map(([name, value]) => `${name}=${value}`).join("; ");
+}
+
+async function request(path, { method = "GET", body, cookie, csrf = true } = {}) {
+  let activeCookie = cookie || "";
+  const unsafe = method !== "GET" && method !== "HEAD" && method !== "OPTIONS";
+  if (unsafe && csrf && !cookieMap(activeCookie).has("XSRF-TOKEN")) {
+    activeCookie = (await request("/api/auth/me", { cookie: activeCookie, csrf: false })).cookie;
+  }
   const headers = {};
 
   if (body !== undefined) {
     headers["Content-Type"] = "application/json";
   }
 
-  if (cookie) {
-    headers.Cookie = cookie;
+  if (activeCookie) {
+    headers.Cookie = activeCookie;
   }
 
-  if (method !== "GET" && method !== "HEAD") {
+  if (unsafe) {
     headers.Origin = baseUrl;
+    const csrfToken = cookieMap(activeCookie).get("XSRF-TOKEN");
+    if (csrfToken) headers["X-XSRF-TOKEN"] = decodeURIComponent(csrfToken);
   }
 
   const response = await fetch(`${baseUrl}${path}`, {
@@ -26,13 +59,14 @@ async function request(path, { method = "GET", body, cookie } = {}) {
   const text = await response.text();
   const contentType = response.headers.get("content-type") || "";
   const data = text && contentType.includes("application/json") ? JSON.parse(text) : text || null;
-  const setCookie = response.headers.get("set-cookie");
+  const setCookies = responseCookies(response.headers);
+  const setCookie = setCookies.length ? setCookies.join(", ") : null;
 
   return {
     status: response.status,
     data,
     setCookie,
-    cookie: setCookie ? setCookie.split(";", 1)[0] : cookie,
+    cookie: mergeCookies(activeCookie, setCookies),
   };
 }
 
@@ -148,6 +182,74 @@ test(
       });
       assert.equal(cleanup.status, 204);
     }
+  },
+);
+
+test(
+  "AI guide is authenticated and safely reports whether a server key is configured",
+  { skip: !baseUrl },
+  async () => {
+    assert.equal((await request("/api/ai/status")).status, 401);
+
+    const nonce = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const password = "LearnAiGuide!42";
+    const registration = await request("/api/auth/register", {
+      method: "POST",
+      body: { name: "AI Guide Learner", email: `ai-guide-${nonce}@example.com`, password },
+    });
+    assert.equal(registration.status, 201);
+    const cookie = registration.cookie;
+
+    const status = await request("/api/ai/status", { cookie });
+    assert.equal(status.status, 200);
+    assert.equal(typeof status.data.enabled, "boolean");
+    assert.equal(typeof status.data.dailyLimit, "number");
+    assert.equal(status.data.remainingToday, status.data.dailyLimit);
+
+    if (!status.data.enabled) {
+      const disabled = await request("/api/ai/ask", {
+        method: "POST",
+        cookie,
+        body: {
+          course: "java",
+          moduleId: 1,
+          moduleTitle: "Java Basics",
+          mode: "simplify",
+          question: "",
+          context: "A bounded Java lesson context with enough content for validation.",
+          officialUrl: "https://docs.oracle.com/en/java/",
+        },
+      });
+      assert.equal(disabled.status, 503);
+      assert.match(disabled.data.error, /not configured/i);
+    } else if (process.env.TEST_AI_LIVE === "true") {
+      const answer = await request("/api/ai/ask", {
+        method: "POST",
+        cookie,
+        body: {
+          course: "java",
+          moduleId: 1,
+          moduleTitle: "Java Basics",
+          mode: "simplify",
+          question: "",
+          context: "Java syntax uses classes and methods. Variables hold values, and comments explain intent without changing execution.",
+          officialUrl: "https://docs.oracle.com/en/java/javase/21/language/",
+        },
+      });
+      assert.equal(answer.status, 200);
+      assert.equal(typeof answer.data.answer, "string");
+      assert.ok(answer.data.answer.length >= 40);
+      assert.match(answer.data.model, /^gemini-/);
+      assert.equal(typeof answer.data.remainingToday, "number");
+      assert.equal(typeof answer.data.cached, "boolean");
+    }
+
+    const cleanup = await request("/api/account", {
+      method: "DELETE",
+      cookie,
+      body: { confirmation: "DELETE", password },
+    });
+    assert.equal(cleanup.status, 204);
   },
 );
 

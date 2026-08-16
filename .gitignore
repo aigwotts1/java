@@ -1,5 +1,6 @@
 .env
 node_modules/
+target/
 npm-debug.log*
 qa-*.png
 .*-qa/

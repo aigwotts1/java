@@ -3,21 +3,30 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      NODE_ENV: production
       PORT: 3000
-      DATABASE_URL: postgresql://${POSTGRES_USER:-java_basecamp}:${POSTGRES_PASSWORD:-change-this-in-production}@db:5432/${POSTGRES_DB:-java_basecamp}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-java_basecamp}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-java_basecamp}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-change-this-in-production}
       SESSION_DAYS: ${SESSION_DAYS:-30}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
       ENFORCE_HTTPS: ${ENFORCE_HTTPS:-false}
       APP_ORIGIN: ${APP_ORIGIN:-}
       PUBLIC_APP_URL: ${PUBLIC_APP_URL:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.5-flash-lite}
+      AI_DAILY_LIMIT: ${AI_DAILY_LIMIT:-20}
+      AI_MINUTE_LIMIT: ${AI_MINUTE_LIMIT:-5}
+      AI_GLOBAL_DAILY_LIMIT: ${AI_GLOBAL_DAILY_LIMIT:-200}
+      AI_MAX_OUTPUT_TOKENS: ${AI_MAX_OUTPUT_TOKENS:-450}
+      AI_CACHE_DAYS: ${AI_CACHE_DAYS:-7}
+      AI_TIMEOUT_SECONDS: ${AI_TIMEOUT_SECONDS:-20}
     ports:
       - "${APP_PORT:-3000}:3000"
     depends_on:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3000/health"]
       interval: 15s
       timeout: 5s
       retries: 5

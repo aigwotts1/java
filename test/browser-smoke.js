@@ -30,6 +30,8 @@ const screenshots = {
   auth: path.join(process.cwd(), "qa-auth.png"),
   lesson: path.join(process.cwd(), "qa-rest-methods.png"),
   mobile: path.join(process.cwd(), "qa-mobile-rest.png"),
+  aiGuide: path.join(process.cwd(), "qa-ai-guide.png"),
+  aiGuideMobile: path.join(process.cwd(), "qa-ai-guide-mobile.png"),
   consent: path.join(process.cwd(), "qa-certificate-consent.png"),
   account: path.join(process.cwd(), "qa-account-privacy.png"),
   celebration: path.join(process.cwd(), "qa-certificate-celebration.png"),
@@ -42,11 +44,46 @@ function delay(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-async function appRequest(pathname, { method = "GET", body, cookie } = {}) {
+function cookieMap(cookie = "") {
+  return new Map(cookie.split(/;\s*/).filter(Boolean).map((entry) => {
+    const separator = entry.indexOf("=");
+    return [entry.slice(0, separator), entry.slice(separator + 1)];
+  }));
+}
+
+function responseCookies(headers) {
+  if (typeof headers.getSetCookie === "function") return headers.getSetCookie();
+  const value = headers.get("set-cookie");
+  return value ? [value] : [];
+}
+
+function mergeCookies(existing, setCookies) {
+  const jar = cookieMap(existing);
+  for (const setCookie of setCookies) {
+    const [pair] = setCookie.split(";", 1);
+    const separator = pair.indexOf("=");
+    const name = pair.slice(0, separator);
+    const value = pair.slice(separator + 1);
+    if (/max-age=0/i.test(setCookie)) jar.delete(name);
+    else jar.set(name, value);
+  }
+  return [...jar].map(([name, value]) => `${name}=${value}`).join("; ");
+}
+
+async function appRequest(pathname, { method = "GET", body, cookie, csrf = true } = {}) {
+  let activeCookie = cookie || "";
+  const unsafe = method !== "GET" && method !== "HEAD" && method !== "OPTIONS";
+  if (unsafe && csrf && !cookieMap(activeCookie).has("XSRF-TOKEN")) {
+    activeCookie = (await appRequest("/api/auth/me", { cookie: activeCookie, csrf: false })).cookie;
+  }
   const headers = {};
   if (body !== undefined) headers["Content-Type"] = "application/json";
-  if (cookie) headers.Cookie = cookie;
-  if (method !== "GET" && method !== "HEAD") headers.Origin = baseUrl;
+  if (activeCookie) headers.Cookie = activeCookie;
+  if (unsafe) {
+    headers.Origin = baseUrl;
+    const csrfToken = cookieMap(activeCookie).get("XSRF-TOKEN");
+    if (csrfToken) headers["X-XSRF-TOKEN"] = decodeURIComponent(csrfToken);
+  }
 
   const response = await fetch(`${baseUrl}${pathname}`, {
     method,
@@ -55,8 +92,8 @@ async function appRequest(pathname, { method = "GET", body, cookie } = {}) {
   });
   const data = response.status === 204 ? null : await response.json();
   assert.ok(response.ok, `${method} ${pathname} failed: ${data?.error || response.status}`);
-  const setCookie = response.headers.get("set-cookie");
-  return { data, cookie: setCookie ? setCookie.split(";", 1)[0] : cookie };
+  const setCookies = responseCookies(response.headers);
+  return { data, cookie: mergeCookies(activeCookie, setCookies) };
 }
 
 async function createNearlyCompleteLearner() {
@@ -423,7 +460,12 @@ async function run() {
         methodLabels: labels,
         commentedExamples: comments.length,
         allCommentsExplainWork: comments.every((comment) => comment.length > 24),
-        hasSpringMappings: methodLesson.textContent.includes("@GetMapping") && methodLesson.textContent.includes("@DeleteMapping")
+        hasSpringMappings: methodLesson.textContent.includes("@GetMapping") && methodLesson.textContent.includes("@DeleteMapping"),
+        aiTitle: document.querySelector("#aiGuideTitle").textContent.trim(),
+        aiSignInVisible: !document.querySelector("#aiGuideLogin").hidden,
+        aiPresetButtonsDisabled: [...document.querySelectorAll("[data-ai-mode]")].every((button) => button.disabled),
+        aiAnswerHidden: document.querySelector("#aiGuideAnswer").hidden,
+        aiStatus: document.querySelector("#aiGuideStatusText").textContent.trim()
       };
     })()`);
     assert.equal(restLesson.title, "REST APIs with Spring Boot");
@@ -435,7 +477,15 @@ async function run() {
     assert.equal(restLesson.commentedExamples, 5);
     assert.equal(restLesson.allCommentsExplainWork, true);
     assert.equal(restLesson.hasSpringMappings, true);
+    assert.equal(restLesson.aiTitle, "Ask QuickDev");
+    assert.equal(restLesson.aiSignInVisible, true);
+    assert.equal(restLesson.aiPresetButtonsDisabled, true);
+    assert.equal(restLesson.aiAnswerHidden, true);
+    assert.match(restLesson.aiStatus, /Sign in/);
     await capture(screenshots.lesson);
+    await evaluate(`document.querySelector(".dialog-content").scrollTop = document.querySelector("#aiGuideTitle").offsetTop - 50`);
+    await delay(100);
+    await capture(screenshots.aiGuide);
 
     await navigate(390, 844, false);
     const mobile = await evaluate(`({
@@ -451,23 +501,32 @@ async function run() {
       const bounds = dialog.getBoundingClientRect();
       const content = document.querySelector(".dialog-content");
       const methodLesson = document.querySelectorAll("#dialogConcepts .concept-item")[1];
+      const aiBlock = document.querySelector(".ai-guide-block");
       methodLesson.open = true;
-      content.scrollTop = methodLesson.offsetTop - 20;
+      content.scrollTop = aiBlock.offsetTop - 20;
+      const aiBounds = aiBlock.getBoundingClientRect();
+      const contentBounds = content.getBoundingClientRect();
       return {
         width: bounds.width,
         viewportWidth: innerWidth,
         narrowLayoutActive: matchMedia("(max-width: 700px)").matches,
         insideViewport: bounds.left >= 0 && bounds.right <= innerWidth && bounds.top >= 0 && bounds.bottom <= innerHeight,
         scrollable: content.scrollHeight > content.clientHeight,
-        methodExamples: methodLesson.querySelectorAll(".concept-snippet").length
+        methodExamples: methodLesson.querySelectorAll(".concept-snippet").length,
+        aiInsideContent: aiBounds.left >= contentBounds.left && aiBounds.right <= contentBounds.right,
+        aiButtonsStacked: getComputedStyle(document.querySelector(".ai-guide-actions")).gridTemplateColumns.split(" ").length === 1,
+        aiQuestionButtonFullWidth: Math.abs(document.querySelector("#aiQuestionSubmit").getBoundingClientRect().width - document.querySelector("#aiQuestionForm > div").getBoundingClientRect().width) < 2
       };
     })()`);
-    await capture(screenshots.mobile);
+    await capture(screenshots.aiGuideMobile);
     assert.equal(mobileRest.narrowLayoutActive, true);
     assert.ok(mobileRest.width <= mobileRest.viewportWidth);
     assert.equal(mobileRest.insideViewport, true);
     assert.equal(mobileRest.scrollable, true);
     assert.equal(mobileRest.methodExamples, 5);
+    assert.equal(mobileRest.aiInsideContent, true);
+    assert.equal(mobileRest.aiButtonsStacked, true);
+    assert.equal(mobileRest.aiQuestionButtonFullWidth, true);
 
     await navigate(1440, 1000, false, "Sign in", "/docker");
     const docker = await evaluate(`({
@@ -785,7 +844,9 @@ async function run() {
     assert.equal(agentLesson.overflowY, "auto");
     await capture(screenshots.agentLesson);
 
-    const [sessionCookieName, sessionCookieValue] = certificateLearner.cookie.split("=", 2);
+    const sessionCookieName = "java_basecamp_session";
+    const sessionCookieValue = cookieMap(certificateLearner.cookie).get(sessionCookieName);
+    assert.ok(sessionCookieValue, "The synthetic learner session cookie is missing.");
     const cookieResult = await client.send("Network.setCookie", {
       name: sessionCookieName,
       value: sessionCookieValue,
@@ -826,6 +887,16 @@ async function run() {
     await waitFor(`!document.querySelector("#accountDialog").open`);
     await evaluate(`document.querySelector('.module-card[data-module-id="18"]').click()`);
     await waitFor(`document.querySelector("#lessonDialog").open`);
+    await waitFor(`!document.querySelector("#aiGuideStatusText").textContent.includes("Checking")`);
+    const signedInAi = await evaluate(`({
+      loginHidden: document.querySelector("#aiGuideLogin").hidden,
+      status: document.querySelector("#aiGuideStatusText").textContent.trim(),
+      disabled: [...document.querySelectorAll("[data-ai-mode]")].every((button) => button.disabled),
+      errorState: document.querySelector("#aiGuideStatus").classList.contains("error")
+    })`);
+    assert.equal(signedInAi.loginHidden, true);
+    assert.match(signedInAi.status, /not configured|requests left today/i);
+    assert.equal(signedInAi.disabled, signedInAi.errorState);
     await evaluate(`document.querySelector("#completeButton").click()`);
     await waitFor(`document.querySelector("#certificateDialog").open`);
 
@@ -969,14 +1040,10 @@ async function run() {
     console.log(JSON.stringify({ library, teamDesktop, libraryMobile, teamMobile, desktop, auth, java8, restLesson, mobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
     try {
-      await fetch(`${baseUrl}/api/account`, {
+      await appRequest("/api/account", {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: certificateLearner.cookie,
-          Origin: baseUrl,
-        },
-        body: JSON.stringify({ confirmation: "DELETE", password: "LearnJava!42" }),
+        cookie: certificateLearner.cookie,
+        body: { confirmation: "DELETE", password: "LearnJava!42" },
       });
     } catch {
       // Best-effort cleanup also removes the synthetic learner after a failed assertion.
