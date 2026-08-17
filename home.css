@@ -262,7 +262,9 @@ footer nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 1.2
 
 @media (max-width: 680px) {
   header, main, footer { width: min(100% - 2rem, 1440px); }
-  header { min-height: 76px; }.account-status { font-size: 0; }.account-status i { display: block; }
+  header { min-height: 76px; }
+  .account-status.signed-in { font-size: 0; }
+  .account-status.signed-in i { display: block; }
   .brand b { font-size: .95rem; }.brand-logo { width: 56px; height: 56px; }
   .hero { min-height: auto; padding: 4rem 0 3rem; gap: 2.25rem; }.hero h1 { font-size: 3.55rem; }
   .hero-actions { align-items: flex-start; flex-direction: column; }

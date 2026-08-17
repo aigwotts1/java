@@ -33,25 +33,15 @@ function updateCollection(totalCompleted) {
     : totalCompleted + " of " + total + " AI modules complete";
 }
 
-async function initializeAiHub() {
-  const accountStatus = document.querySelector("#accountStatus");
-  try {
-    const { user } = await readJson("/api/auth/me");
-    if (!user) return;
-    accountStatus.classList.add("signed-in");
-    accountStatus.querySelector("span").textContent = "Welcome back, " + user.name.split(" ")[0];
-
-    const progress = await Promise.all(AI_PATHS.map((path) => readJson("/api/progress?course=" + encodeURIComponent(path))));
-    let totalCompleted = 0;
-    progress.forEach((result, index) => {
-      const count = result.completed.length;
-      totalCompleted += count;
-      updatePathCard(AI_PATHS[index], count);
-    });
-    updateCollection(totalCompleted);
-  } catch {
-    accountStatus.querySelector("span").textContent = "Progress sync reconnecting";
-  }
+async function loadAiProgress() {
+  const progress = await Promise.all(AI_PATHS.map((path) => readJson("/api/progress?course=" + encodeURIComponent(path))));
+  let totalCompleted = 0;
+  progress.forEach((result, index) => {
+    const count = result.completed.length;
+    totalCompleted += count;
+    updatePathCard(AI_PATHS[index], count);
+  });
+  updateCollection(totalCompleted);
 }
 
-initializeAiHub();
+initializeLibraryAuth(loadAiProgress);

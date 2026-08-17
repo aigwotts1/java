@@ -42,6 +42,8 @@ header nav a:hover { color: var(--purple-dark); }
 .account-status { justify-self: end; display: flex; align-items: center; gap: .55rem; color: #656168; font-size: .76rem; font-weight: 700; }
 .account-status i { width: 8px; height: 8px; border-radius: 50%; background: #a6a19e; box-shadow: 0 0 0 5px rgba(120,113,128,.1); }
 .account-status.signed-in i { background: var(--mint); box-shadow: 0 0 0 5px rgba(46,143,129,.13); }
+.header-login { background: var(--purple); box-shadow: 0 4px 0 var(--purple-dark); }
+.header-login:hover { box-shadow: 0 5px 0 var(--purple-dark); }
 
 main { width: min(1440px, calc(100% - 5rem)); margin: 0 auto; }
 .hero { min-height: 720px; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 4rem; padding: 5rem 2vw; }
@@ -147,7 +149,9 @@ footer nav a { color: #2458a6; font-size: .7rem; font-weight: 700; text-decorati
 
 @media (max-width: 700px) {
   header, main, footer { width: min(100% - 2rem, 1440px); }
-  header { min-height: 76px; }.account-status { font-size: 0; }.account-status i { display: block; }
+  header { min-height: 76px; }
+  .account-status.signed-in { font-size: 0; }
+  .account-status.signed-in i { display: block; }
   .brand b { font-size: .95rem; }.brand-logo { width: 56px; height: 56px; }
   .hero { min-height: auto; padding: 4rem 0 2rem; gap: 1rem; }.hero h1 { font-size: 3.4rem; }
   .hero-actions { align-items: flex-start; flex-direction: column; }.hero-proof { flex-wrap: wrap; gap: 1rem; }.hero-proof div { min-width: 95px; margin-right: 0; }

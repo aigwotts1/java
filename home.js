@@ -15,28 +15,20 @@ function updateCard(course, completed, total) {
   card.querySelector(".progress-track i").style.width = percent + "%";
 }
 
-async function initializeHome() {
-  const accountStatus = document.querySelector("#accountStatus");
-  try {
-    const { user } = await readJson("/api/auth/me");
-    if (!user) return;
-    accountStatus.classList.add("signed-in");
-    accountStatus.querySelector("span").textContent = "Welcome back, " + user.name.split(" ")[0];
-    const [java, docker, python, generativeAi, rag, agenticAi] = await Promise.all([
-      readJson("/api/progress?course=java"),
-      readJson("/api/progress?course=docker"),
-      readJson("/api/progress?course=python"),
-      readJson("/api/progress?course=generative-ai"),
-      readJson("/api/progress?course=rag"),
-      readJson("/api/progress?course=agentic-ai")
-    ]);
-    updateCard("java", java.completed.length, 18);
-    updateCard("docker", docker.completed.length, 18);
-    updateCard("python", python.completed.length, 18);
-    updateCard("ai", generativeAi.completed.length + rag.completed.length + agenticAi.completed.length, 36);
-  } catch {
-    accountStatus.querySelector("span").textContent = "Progress sync reconnecting";
-  }
+async function loadHomeProgress() {
+  if (!document.querySelector("[data-course-card]")) return;
+  const [java, docker, python, generativeAi, rag, agenticAi] = await Promise.all([
+    readJson("/api/progress?course=java"),
+    readJson("/api/progress?course=docker"),
+    readJson("/api/progress?course=python"),
+    readJson("/api/progress?course=generative-ai"),
+    readJson("/api/progress?course=rag"),
+    readJson("/api/progress?course=agentic-ai")
+  ]);
+  updateCard("java", java.completed.length, 18);
+  updateCard("docker", docker.completed.length, 18);
+  updateCard("python", python.completed.length, 18);
+  updateCard("ai", generativeAi.completed.length + rag.completed.length + agenticAi.completed.length, 36);
 }
 
 function initializeHeroDepth() {
@@ -102,5 +94,5 @@ function initializeHeroDepth() {
   window.addEventListener("blur", resetTilt);
 }
 
-initializeHome();
+initializeLibraryAuth(loadHomeProgress);
 initializeHeroDepth();
