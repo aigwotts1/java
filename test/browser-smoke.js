@@ -333,17 +333,19 @@ async function run() {
       return {
         title: document.title,
         founderName: document.querySelector("#founderName").textContent.trim(),
-        founderEmail: section.querySelector(".founder-email").getAttribute("href"),
+        linkedinUrl: section.querySelector('.founder-connect[href*="linkedin.com"]').getAttribute("href"),
+        founderEmail: section.querySelector('.founder-connect[href^="mailto:"]').getAttribute("href"),
         footerLinkColors: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).color),
         footerLinkDecorations: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).textDecorationLine),
         visible: bounds.bottom > 0 && bounds.top < innerHeight,
         portraitLoaded: portrait.complete && portrait.naturalWidth > 0,
-        emailVisible: section.querySelector(".founder-email").getBoundingClientRect().bottom <= innerHeight,
+        emailVisible: section.querySelector('.founder-connect[href^="mailto:"]').getBoundingClientRect().bottom <= innerHeight,
         noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth
       };
     })()`);
     assert.equal(teamDesktop.title, "Team | QuickDevBase");
     assert.equal(teamDesktop.founderName, "Abhinav Vashishth");
+    assert.equal(teamDesktop.linkedinUrl, "https://www.linkedin.com/in/abhinavvashishth/");
     assert.equal(teamDesktop.founderEmail, "mailto:vashishthabhinav9@gmail.com");
     assert.deepEqual([...new Set(teamDesktop.footerLinkColors)], ["rgb(36, 88, 166)"]);
     assert.deepEqual([...new Set(teamDesktop.footerLinkDecorations)], ["none"]);
@@ -452,7 +454,8 @@ async function run() {
       return {
         narrowLayout: matchMedia("(max-width: 680px)").matches,
         portraitInsideSection: portrait.left >= bounds.left && portrait.right <= bounds.right,
-        emailMatches: section.querySelector(".founder-email").getAttribute("href") === "mailto:vashishthabhinav9@gmail.com",
+        emailMatches: section.querySelector('.founder-connect[href^="mailto:"]').getAttribute("href") === "mailto:vashishthabhinav9@gmail.com",
+        linkedinMatches: section.querySelector('.founder-connect[href*="linkedin.com"]').getAttribute("href") === "https://www.linkedin.com/in/abhinavvashishth/",
         viewportWidth: innerWidth,
         documentWidth: document.documentElement.scrollWidth,
         noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
@@ -462,6 +465,7 @@ async function run() {
     assert.equal(teamMobile.narrowLayout, true);
     assert.equal(teamMobile.portraitInsideSection, true);
     assert.equal(teamMobile.emailMatches, true);
+    assert.equal(teamMobile.linkedinMatches, true);
     assert.equal(teamMobile.noHorizontalOverflow, true, JSON.stringify(teamMobile));
     assert.deepEqual(teamMobile.errors, []);
     await capture(screenshots.teamMobile);
