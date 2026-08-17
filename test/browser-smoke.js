@@ -12,6 +12,7 @@ const screenshots = {
   team: path.join(process.cwd(), "qa-quickdev-team.png"),
   brandFooter: path.join(process.cwd(), "qa-quickdev-footer.png"),
   libraryMobile: path.join(process.cwd(), "qa-quickdev-mobile.png"),
+  libraryMobileDeck: path.join(process.cwd(), "qa-quickdev-mobile-deck.png"),
   teamMobile: path.join(process.cwd(), "qa-quickdev-team-mobile.png"),
   aiHub: path.join(process.cwd(), "qa-ai-hub.png"),
   aiHubMobile: path.join(process.cwd(), "qa-ai-hub-mobile.png"),
@@ -294,6 +295,8 @@ async function run() {
       logoPath: new URL(document.querySelector(".brand-logo").src).pathname,
       faviconPath: new URL(document.querySelector('link[rel="icon"]').href).pathname,
       teamPath: document.querySelector('footer a[href="/team"]').getAttribute("href"),
+      footerLinkColors: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).color),
+      footerLinkDecorations: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).textDecorationLine),
       founderOnHomepage: Boolean(document.querySelector("#founderName")),
       taglineVisible: document.documentElement.textContent.includes("Developer knowledge, at a glance"),
       noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
@@ -310,6 +313,8 @@ async function run() {
     assert.equal(library.logoPath, "/quickdevbase-logo.png");
     assert.equal(library.faviconPath, "/quickdevbase-logo.png");
     assert.equal(library.teamPath, "/team");
+    assert.deepEqual([...new Set(library.footerLinkColors)], ["rgb(36, 88, 166)"]);
+    assert.deepEqual([...new Set(library.footerLinkDecorations)], ["none"]);
     assert.equal(library.founderOnHomepage, false);
     assert.equal(library.taglineVisible, true);
     assert.equal(library.noHorizontalOverflow, true);
@@ -329,6 +334,8 @@ async function run() {
         title: document.title,
         founderName: document.querySelector("#founderName").textContent.trim(),
         founderEmail: section.querySelector(".founder-email").getAttribute("href"),
+        footerLinkColors: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).color),
+        footerLinkDecorations: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).textDecorationLine),
         visible: bounds.bottom > 0 && bounds.top < innerHeight,
         portraitLoaded: portrait.complete && portrait.naturalWidth > 0,
         emailVisible: section.querySelector(".founder-email").getBoundingClientRect().bottom <= innerHeight,
@@ -338,6 +345,8 @@ async function run() {
     assert.equal(teamDesktop.title, "Team | QuickDevBase");
     assert.equal(teamDesktop.founderName, "Abhinav Vashishth");
     assert.equal(teamDesktop.founderEmail, "mailto:vashishthabhinav9@gmail.com");
+    assert.deepEqual([...new Set(teamDesktop.footerLinkColors)], ["rgb(36, 88, 166)"]);
+    assert.deepEqual([...new Set(teamDesktop.footerLinkDecorations)], ["none"]);
     assert.equal(teamDesktop.visible, true);
     assert.equal(teamDesktop.portraitLoaded, true);
     assert.equal(teamDesktop.emailVisible, true);
@@ -352,16 +361,87 @@ async function run() {
       responsiveLayout: matchMedia("(max-width: 680px)").matches,
       logoLoaded: document.querySelector("header .brand-logo").complete && document.querySelector("header .brand-logo").naturalWidth > 0,
       logoWidth: document.querySelector("header .brand-logo").getBoundingClientRect().width,
+      proofUsesThreeColumns: getComputedStyle(document.querySelector(".trust-line")).gridTemplateColumns.split(" ").length === 3,
+      compactDeck: document.querySelector(".hero-visual").getBoundingClientRect().height <= 410,
+      deckFits: (() => {
+        const visual = document.querySelector(".hero-visual").getBoundingClientRect();
+        const deck = document.querySelector(".knowledge-stack").getBoundingClientRect();
+        return deck.left >= visual.left && deck.right <= visual.right;
+      })(),
+      notesFit: (() => {
+        const visual = document.querySelector(".hero-visual").getBoundingClientRect();
+        return [...document.querySelectorAll(".floating-note")].every((note) => {
+          const bounds = note.getBoundingClientRect();
+          return bounds.left >= visual.left && bounds.right <= visual.right && bounds.top >= visual.top && bounds.bottom <= visual.bottom;
+        });
+      })(),
+      conceptBadgeClearsCardCopy: (() => {
+        const badge = document.querySelector(".note-one").getBoundingClientRect();
+        return [...document.querySelectorAll(".stack-card-java strong, .stack-card-java small")].every((copy) => {
+          const bounds = copy.getBoundingClientRect();
+          return badge.right <= bounds.left || badge.left >= bounds.right || badge.bottom <= bounds.top || badge.top >= bounds.bottom;
+        });
+      })(),
       horizontalScrollPrevented: getComputedStyle(document.body).overflowX === "hidden",
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
       errors: window.__qaErrors
     })`);
     assert.equal(libraryMobile.cards, 4);
     assert.equal(libraryMobile.responsiveLayout, true);
     assert.equal(libraryMobile.logoLoaded, true);
     assert.ok(libraryMobile.logoWidth <= 56);
+    assert.equal(libraryMobile.proofUsesThreeColumns, true);
+    assert.equal(libraryMobile.compactDeck, true);
+    assert.equal(libraryMobile.deckFits, true, JSON.stringify(libraryMobile));
+    assert.equal(libraryMobile.notesFit, true, JSON.stringify(libraryMobile));
+    assert.equal(libraryMobile.conceptBadgeClearsCardCopy, true, JSON.stringify(libraryMobile));
     assert.equal(libraryMobile.horizontalScrollPrevented, true);
+    assert.equal(libraryMobile.noHorizontalOverflow, true, JSON.stringify(libraryMobile));
     assert.deepEqual(libraryMobile.errors, []);
     await capture(screenshots.libraryMobile);
+    await evaluate(`scrollTo(0, document.querySelector(".hero-visual").offsetTop - 150)`);
+    await delay(150);
+    await capture(screenshots.libraryMobileDeck);
+
+    const libraryResponsiveWidths = [];
+    for (const width of [320, 500]) {
+      await setViewport(width, 844, false);
+      await client.send("Page.navigate", { url: baseUrl });
+      await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 4`);
+      const metrics = await evaluate(`(() => {
+        const visual = document.querySelector(".hero-visual").getBoundingClientRect();
+        const notes = [...document.querySelectorAll(".floating-note")].map((item) => item.getBoundingClientRect());
+        const cards = [...document.querySelectorAll(".stack-card")].map((item) => item.getBoundingClientRect());
+        const badge = document.querySelector(".note-one").getBoundingClientRect();
+        const copy = [...document.querySelectorAll(".stack-card-java strong, .stack-card-java small")]
+          .map((item) => item.getBoundingClientRect());
+        const inside = (bounds) => bounds.left >= visual.left && bounds.right <= visual.right
+          && bounds.top >= visual.top && bounds.bottom <= visual.bottom;
+        const separate = (first, second) => first.right <= second.left || first.left >= second.right
+          || first.bottom <= second.top || first.top >= second.bottom;
+        return {
+          viewportWidth: innerWidth,
+          proofColumns: getComputedStyle(document.querySelector(".trust-line")).gridTemplateColumns.split(" ").length,
+          compactDeck: visual.height <= 410,
+          cardsFit: cards.every(inside),
+          notesFit: notes.every(inside),
+          conceptBadgeClearsCardCopy: copy.every((bounds) => separate(badge, bounds)),
+          noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+          errors: window.__qaErrors
+        };
+      })()`);
+      libraryResponsiveWidths.push(metrics);
+    }
+    for (const metrics of libraryResponsiveWidths) {
+      assert.equal(metrics.proofColumns, 3, JSON.stringify(metrics));
+      assert.equal(metrics.compactDeck, true, JSON.stringify(metrics));
+      assert.equal(metrics.cardsFit, true, JSON.stringify(metrics));
+      assert.equal(metrics.notesFit, true, JSON.stringify(metrics));
+      assert.equal(metrics.conceptBadgeClearsCardCopy, true, JSON.stringify(metrics));
+      assert.equal(metrics.noHorizontalOverflow, true, JSON.stringify(metrics));
+      assert.deepEqual(metrics.errors, []);
+    }
+    await setViewport(390, 844, false);
 
     await client.send("Page.navigate", { url: `${baseUrl}/team` });
     await waitFor(`document.readyState === "complete" && document.querySelector("#founderName")`);
@@ -393,6 +473,8 @@ async function run() {
       authLabel: document.querySelector("#authLabel").textContent.trim(),
       brandLogos: document.querySelectorAll(".brand-logo").length,
       logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
+      footerLinkColors: [...document.querySelectorAll(".footer-links a")].map((link) => getComputedStyle(link).color),
+      footerLinkDecorations: [...document.querySelectorAll(".footer-links a")].map((link) => getComputedStyle(link).textDecorationLine),
       errors: window.__qaErrors,
       horizontalScrollPrevented: getComputedStyle(document.body).overflowX === "hidden"
     })`);
@@ -401,6 +483,8 @@ async function run() {
     assert.equal(desktop.authLabel, "Sign in");
     assert.equal(desktop.brandLogos, 2);
     assert.equal(desktop.logosLoaded, true);
+    assert.deepEqual([...new Set(desktop.footerLinkColors)], ["rgb(36, 88, 166)"]);
+    assert.deepEqual([...new Set(desktop.footerLinkDecorations)], ["none"]);
     assert.deepEqual(desktop.errors, []);
     assert.equal(desktop.horizontalScrollPrevented, true);
     await capture(screenshots.home);
@@ -538,6 +622,8 @@ async function run() {
       hasCompose: document.documentElement.textContent.includes("Docker Compose"),
       brandLogos: document.querySelectorAll(".brand-logo").length,
       logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
+      footerLinkColors: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).color),
+      footerLinkDecorations: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).textDecorationLine),
       brandAccent: getComputedStyle(document.querySelector(".brand-muted")).color,
       avatarColor: getComputedStyle(document.querySelector(".auth-avatar")).backgroundColor,
       navigationAccent: getComputedStyle(document.querySelector(".main-nav .active"), "::after").backgroundColor,
@@ -551,6 +637,8 @@ async function run() {
     assert.equal(docker.hasCompose, true);
     assert.equal(docker.brandLogos, 2);
     assert.equal(docker.logosLoaded, true);
+    assert.deepEqual([...new Set(docker.footerLinkColors)], ["rgb(36, 88, 166)"]);
+    assert.deepEqual([...new Set(docker.footerLinkDecorations)], ["none"]);
     assert.equal(docker.brandAccent, "rgb(21, 95, 194)");
     assert.equal(docker.avatarColor, "rgb(22, 132, 194)");
     assert.equal(docker.navigationAccent, "rgb(22, 132, 194)");
@@ -682,6 +770,8 @@ async function run() {
       hasSequence: document.querySelector("#routeMap").textContent.includes("First, understand generation"),
       brandLogos: document.querySelectorAll(".brand-logo").length,
       logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
+      footerLinkColors: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).color),
+      footerLinkDecorations: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).textDecorationLine),
       noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
       errors: window.__qaErrors
     })`);
@@ -693,6 +783,8 @@ async function run() {
     assert.equal(aiHub.hasSequence, true);
     assert.equal(aiHub.brandLogos, 2);
     assert.equal(aiHub.logosLoaded, true);
+    assert.deepEqual([...new Set(aiHub.footerLinkColors)], ["rgb(36, 88, 166)"]);
+    assert.deepEqual([...new Set(aiHub.footerLinkDecorations)], ["none"]);
     assert.equal(aiHub.noHorizontalOverflow, true);
     assert.deepEqual(aiHub.errors, []);
     await capture(screenshots.aiHub);
@@ -972,6 +1064,8 @@ async function run() {
         linkedinUrl: document.querySelector(".linkedin-button").href,
         brandLogos: document.querySelectorAll(".brand-logo").length,
         logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
+        footerLinkColors: [...document.querySelectorAll(".certificate-legal nav a")].map((link) => getComputedStyle(link).color),
+        footerLinkDecorations: [...document.querySelectorAll(".certificate-legal nav a")].map((link) => getComputedStyle(link).textDecorationLine),
         containsPrivateEmail: document.documentElement.textContent.includes(${JSON.stringify(certificateLearner.email)}),
         fitsViewport: bounds.left >= 0 && bounds.right <= innerWidth,
         errors: window.__qaErrors
@@ -984,6 +1078,8 @@ async function run() {
     assert.ok(publicCertificate.linkedinUrl.includes(encodeURIComponent(publishedCertificate.shareUrl)));
     assert.equal(publicCertificate.brandLogos, 2);
     assert.equal(publicCertificate.logosLoaded, true);
+    assert.deepEqual([...new Set(publicCertificate.footerLinkColors)], ["rgb(36, 88, 166)"]);
+    assert.deepEqual([...new Set(publicCertificate.footerLinkDecorations)], ["none"]);
     assert.equal(publicCertificate.containsPrivateEmail, false);
     assert.equal(publicCertificate.fitsViewport, true);
     assert.deepEqual(publicCertificate.errors, []);
@@ -1018,6 +1114,8 @@ async function run() {
       accountDeletion: document.documentElement.textContent.includes("permanently delete your account"),
       brandLogos: document.querySelectorAll(".brand-logo").length,
       logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
+      footerLinkColors: [...document.querySelectorAll(".legal-footer a:not(.footer-brand)")].map((link) => getComputedStyle(link).color),
+      footerLinkDecorations: [...document.querySelectorAll(".legal-footer a:not(.footer-brand)")].map((link) => getComputedStyle(link).textDecorationLine),
       noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
       errors: window.__qaErrors
     })`);
@@ -1026,6 +1124,8 @@ async function run() {
     assert.equal(privacyPage.accountDeletion, true);
     assert.equal(privacyPage.brandLogos, 2);
     assert.equal(privacyPage.logosLoaded, true);
+    assert.deepEqual([...new Set(privacyPage.footerLinkColors)], ["rgb(36, 88, 166)"]);
+    assert.deepEqual([...new Set(privacyPage.footerLinkDecorations)], ["none"]);
     assert.equal(privacyPage.noHorizontalOverflow, true);
     assert.deepEqual(privacyPage.errors, []);
     await capture(screenshots.privacyMobile);
@@ -1037,7 +1137,7 @@ async function run() {
     });
 
     console.log("Browser smoke test passed.");
-    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, teamMobile, desktop, auth, java8, restLesson, mobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
+    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, java8, restLesson, mobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
     try {
       await appRequest("/api/account", {

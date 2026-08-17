@@ -43,7 +43,8 @@ function initializeHeroDepth() {
   const visual = document.querySelector(".hero-visual");
   const interactionArea = document.querySelector(".hero");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  if (!visual || !interactionArea || prefersReducedMotion.matches) return;
+  const supportsDesktopPointer = window.matchMedia("(min-width: 681px) and (hover: hover) and (pointer: fine)");
+  if (!visual || !interactionArea || prefersReducedMotion.matches || !supportsDesktopPointer.matches) return;
 
   let frameId = 0;
   let pointerX = 0;
