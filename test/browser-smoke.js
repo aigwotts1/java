@@ -334,6 +334,7 @@ async function run() {
         title: document.title,
         founderName: document.querySelector("#founderName").textContent.trim(),
         linkedinUrl: section.querySelector('.founder-connect[href*="linkedin.com"]').getAttribute("href"),
+        portfolioUrl: section.querySelector('.founder-connect[href*="github.io/portfolio"]').getAttribute("href"),
         founderEmail: section.querySelector('.founder-connect[href^="mailto:"]').getAttribute("href"),
         footerLinkColors: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).color),
         footerLinkDecorations: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).textDecorationLine),
@@ -346,6 +347,7 @@ async function run() {
     assert.equal(teamDesktop.title, "Team | QuickDevBase");
     assert.equal(teamDesktop.founderName, "Abhinav Vashishth");
     assert.equal(teamDesktop.linkedinUrl, "https://www.linkedin.com/in/abhinavvashishth/");
+    assert.equal(teamDesktop.portfolioUrl, "https://aigwotts1.github.io/portfolio/");
     assert.equal(teamDesktop.founderEmail, "mailto:vashishthabhinav9@gmail.com");
     assert.deepEqual([...new Set(teamDesktop.footerLinkColors)], ["rgb(36, 88, 166)"]);
     assert.deepEqual([...new Set(teamDesktop.footerLinkDecorations)], ["none"]);
@@ -456,6 +458,7 @@ async function run() {
         portraitInsideSection: portrait.left >= bounds.left && portrait.right <= bounds.right,
         emailMatches: section.querySelector('.founder-connect[href^="mailto:"]').getAttribute("href") === "mailto:vashishthabhinav9@gmail.com",
         linkedinMatches: section.querySelector('.founder-connect[href*="linkedin.com"]').getAttribute("href") === "https://www.linkedin.com/in/abhinavvashishth/",
+        portfolioMatches: section.querySelector('.founder-connect[href*="github.io/portfolio"]').getAttribute("href") === "https://aigwotts1.github.io/portfolio/",
         viewportWidth: innerWidth,
         documentWidth: document.documentElement.scrollWidth,
         noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
@@ -466,6 +469,7 @@ async function run() {
     assert.equal(teamMobile.portraitInsideSection, true);
     assert.equal(teamMobile.emailMatches, true);
     assert.equal(teamMobile.linkedinMatches, true);
+    assert.equal(teamMobile.portfolioMatches, true);
     assert.equal(teamMobile.noHorizontalOverflow, true, JSON.stringify(teamMobile));
     assert.deepEqual(teamMobile.errors, []);
     await capture(screenshots.teamMobile);

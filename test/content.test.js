@@ -174,6 +174,7 @@ test("certificate publication is consent-based and completion-only language is v
   const teamSource = fs.readFileSync(path.join(__dirname, "..", "team.html"), "utf8");
   assert.match(teamSource, /Abhinav Vashishth/);
   assert.match(teamSource, /https:\/\/www\.linkedin\.com\/in\/abhinavvashishth\//);
+  assert.match(teamSource, /https:\/\/aigwotts1\.github\.io\/portfolio\//);
   assert.match(teamSource, /mailto:vashishthabhinav9@gmail\.com/);
   assert.match(teamSource, /full-stack and backend development/);
   assert.match(teamSource, /generative AI, RAG, and agentic systems/);
