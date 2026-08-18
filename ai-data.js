@@ -1,10 +1,29 @@
 (function () {
   "use strict";
 
-  const t = (name, note, code) => ({ name, note, code });
+  const t = (name, note, code, comment) => ({ name, note, code, comment });
   const m = (id, title, stage, description, officialUrl, challenge, topics, shortTitle) => ({
     id, title, stage, description, officialUrl, challenge, topics, shortTitle
   });
+
+  function defaultExampleComment(item) {
+    const concept = item.name.toLowerCase();
+    const code = item.code.trim();
+
+    if (code.includes("->")) {
+      return `Read this sketch from left to right: the input moves through the shown stages to demonstrate ${concept}.`;
+    }
+    if (/^if\b/m.test(code)) {
+      return `This condition is the decision point: the indented action runs only when the ${concept} check passes.`;
+    }
+    if (/^[A-Za-z_][\w.]*\s*=/.test(code)) {
+      return `The name on the left stores the value produced or configured on the right, making ${concept} concrete.`;
+    }
+    if (/[A-Za-z_][\w.]*\([^\n]*\)/.test(code)) {
+      return `This calls the shown operation with concrete inputs so you can see where ${concept} happens in the workflow.`;
+    }
+    return `This shorthand shows the concrete action, setting, or result an implementation uses for ${concept}.`;
+  }
 
   function buildCourse(meta, source) {
     const modules = source.map((module) => ({
@@ -20,7 +39,7 @@
     const exampleComments = {};
     source.forEach((module) => module.topics.forEach((item) => {
       groupedExamples[item.name] = [[item.name, item.code]];
-      exampleComments[item.name] = item.note;
+      exampleComments[item.name] = item.comment || defaultExampleComment(item);
     }));
     return {
       ...meta,
@@ -304,13 +323,13 @@
       "https://cloud.google.com/vertex-ai/generative-ai/docs/retrieval-and-ranking",
       "Retrieve 30 candidates, rerank them, deduplicate, and assemble a token-budgeted evidence block.",
       [
-        t("Candidate generation", "Fast first-stage retrieval favors recall and returns more candidates than the prompt will receive.", "retrieve top_50 candidates"),
-        t("Cross-encoder reranking", "A reranker jointly reads query and passage for a stronger relevance score at higher cost.", "score = reranker(query, passage)"),
-        t("LLM reranking", "An LLM can rank with nuanced instructions but adds latency, cost, and nondeterminism.", "rank passages by answer usefulness"),
-        t("Score thresholds", "A score threshold removes candidates that are not relevant enough and allows the system to report that no trustworthy evidence was found.", "if best_score < threshold: abstain"),
-        t("Deduplication", "Deduplication removes repeated or nearly identical passages so limited prompt space contains a wider range of useful evidence.", "dedupe by source section and semantic similarity"),
-        t("Context ordering", "Context ordering arranges selected evidence by relevance, source, time, or document structure so the model can combine it more reliably.", "context = highest relevance first"),
-        t("Token-budgeted packing", "Token-budgeted packing selects and fits the most useful evidence chunks into the model prompt without exceeding its token limit, while keeping citation details.", "pack(chunks, max_tokens=6000)")
+        t("Candidate generation", "Fast first-stage retrieval favors recall and returns more candidates than the prompt will receive.", "retrieve top_50 candidates", "This asks the retriever for 50 broad candidates first; reranking will later keep only the strongest evidence for the prompt."),
+        t("Cross-encoder reranking", "A reranker jointly reads query and passage for a stronger relevance score at higher cost.", "score = reranker(query, passage)", "This sends one query-passage pair through the reranker and stores its relevance score for sorting."),
+        t("LLM reranking", "An LLM can rank with nuanced instructions but adds latency, cost, and nondeterminism.", "rank passages by answer usefulness", "This instruction asks the model to reorder the retrieved passages by how directly they help answer the question."),
+        t("Score thresholds", "A score threshold removes candidates that are not relevant enough and allows the system to report that no trustworthy evidence was found.", "if best_score < threshold: abstain", "This checks the best available score and refuses to answer when even the strongest passage is below the trusted minimum."),
+        t("Deduplication", "Deduplication removes repeated or nearly identical passages so limited prompt space contains a wider range of useful evidence.", "dedupe by source section and semantic similarity", "This removes passages from the same section or with nearly identical meaning before they consume prompt space twice."),
+        t("Context ordering", "Context ordering arranges selected evidence by relevance, source, time, or document structure so the model can combine it more reliably.", "context = highest relevance first", "This places the strongest passage at the beginning of the context, followed by progressively less relevant evidence."),
+        t("Token-budgeted packing", "Token-budgeted packing selects and fits the most useful evidence chunks into the model prompt without exceeding its token limit, while keeping citation details.", "pack(chunks, max_tokens=6000)", "This adds the best chunks until the context reaches 6,000 tokens, while carrying their source details for later citations.")
       ]),
     m(10, "Grounded Generation & Citations", "retrieval",
       "Produce useful answers that stay faithful to evidence and reveal their sources.",

@@ -6,6 +6,34 @@
     id, title, stage, description, officialUrl, officialLabel: "Official Python documentation", challenge, topics, shortTitle
   });
 
+  function pythonExampleComment(item, label, code) {
+    const snippet = code.trim();
+    const concept = item.name.toLowerCase();
+
+    if (/^(?:from\s+\S+\s+)?import\s+/m.test(snippet)) {
+      return `The import makes the required module or name available; the following lines then use it to demonstrate ${concept}.`;
+    }
+    if (/^(?:async\s+)?def\s+/m.test(snippet)) {
+      return `This defines a function for ${concept}; its indented body is the work that runs each time the function is called.`;
+    }
+    if (/^class\s+/m.test(snippet)) {
+      return `This creates a class for ${concept}; the indented attributes and methods describe the behavior of its instances.`;
+    }
+    if (/\bawait\s+/.test(snippet)) {
+      return `await pauses this coroutine without blocking the event loop until the shown asynchronous operation completes.`;
+    }
+    if (/^[A-Za-z_]\w*\s*=/.test(snippet)) {
+      return `The assignment stores a concrete value or result under a name so the ${concept} behavior can be used on the next line.`;
+    }
+    if (/[A-Za-z_]\w*\.[A-Za-z_]\w*\([^\n]*\)/.test(snippet)) {
+      return `This calls the shown method on a specific object, which is the concrete operation being demonstrated for ${concept}.`;
+    }
+    if (/[A-Za-z_]\w*\([^\n]*\)/.test(snippet)) {
+      return `This calls the shown function with example inputs so you can see ${concept} in executable Python syntax.`;
+    }
+    return `This ${label.toLowerCase()} snippet turns ${concept} into a small piece of Python you can run and inspect.`;
+  }
+
   const source = [
     m(1, "Python Foundations", "foundation",
       "Understand how Python runs code and learn the small syntax rules used everywhere.",
@@ -261,8 +289,8 @@
   const exampleComments = {};
   source.forEach((module) => module.topics.forEach((item) => {
     groupedExamples[item.name] = item.examples || [[item.label, item.code]];
-    (item.examples || [[item.label, item.code]]).forEach(([label, , comment]) => {
-      exampleComments[label] = comment || item.note;
+    groupedExamples[item.name].forEach(([label, code, comment]) => {
+      exampleComments[label] = comment || pythonExampleComment(item, label, code);
     });
   }));
 

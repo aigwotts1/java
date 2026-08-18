@@ -6,6 +6,37 @@
     id, title, stage, description, officialUrl, officialLabel: "Official Docker documentation", challenge, topics, shortTitle
   });
 
+  function dockerExampleComment(item, label, code) {
+    const command = code.trim();
+    const concept = item.name.toLowerCase();
+
+    if (/^docker\s+run\b/.test(command)) {
+      return `docker run creates and starts a new container; the remaining flags and arguments configure this ${concept} example.`;
+    }
+    if (/^docker\s+(?:build\b|buildx\s+build\b)/.test(command)) {
+      return `This builds an image from the selected context, while the options demonstrate ${concept}.`;
+    }
+    if (/^docker\s+compose\b/.test(command)) {
+      return `This asks Compose to apply the shown operation to the services in the project, demonstrating ${concept}.`;
+    }
+    if (/^docker\s+pull\b/.test(command)) {
+      return `This downloads the named image and tag from a registry into the local image store.`;
+    }
+    if (/^docker\s+push\b/.test(command)) {
+      return `This uploads the named local image tag to its configured registry repository.`;
+    }
+    if (/^docker\s+(?:container\s+)?(?:ls|ps)\b/.test(command)) {
+      return `This lists containers so you can inspect the state relevant to ${concept}.`;
+    }
+    if (/^(?:FROM|RUN|COPY|ADD|ARG|ENV|WORKDIR|USER|EXPOSE|CMD|ENTRYPOINT|HEALTHCHECK)\b/m.test(command)) {
+      return `This ${label.toLowerCase()} snippet shows the Dockerfile instruction or setting that puts ${concept} into practice.`;
+    }
+    if (/^(?:services|volumes|networks):/m.test(command)) {
+      return `This Compose YAML declares the service or resource settings used for ${concept}.`;
+    }
+    return `This command applies ${concept} with concrete options you can inspect or adapt.`;
+  }
+
   const source = [
     m(1, "Docker Foundations", "foundation",
       "Understand what Docker solves and how its main parts work together.",
@@ -255,7 +286,9 @@
   const exampleComments = {};
   source.forEach((module) => module.topics.forEach((item) => {
     groupedExamples[item.name] = item.examples || [[item.label, item.code]];
-    exampleComments[item.label] = item.note;
+    groupedExamples[item.name].forEach(([label, code, comment]) => {
+      exampleComments[label] = comment || dockerExampleComment(item, label, code);
+    });
   }));
 
   window.QUICKDEV_COURSE = {

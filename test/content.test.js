@@ -122,6 +122,37 @@ test("every labeled tiny example has a beginner comment", () => {
   }
 });
 
+test("topic definitions and code comments remain separate learning layers", () => {
+  const normalize = (value) => value.trim().replace(/\s+/g, " ").toLowerCase();
+  const verifyCourse = (course) => {
+    for (const module of course.modules) {
+      module.topics.forEach((topic, index) => {
+        const definition = course.quickNotes[module.id][index][0];
+        for (const [label] of course.groupedExamples[topic] || []) {
+          const comment = course.exampleComments[label];
+          assert.ok(comment, `${course.key} / ${topic} / ${label} is missing its code comment.`);
+          assert.notEqual(
+            normalize(comment),
+            normalize(definition),
+            `${course.key} / ${topic} repeats its definition as the code comment.`,
+          );
+        }
+      });
+    }
+  };
+
+  verifyCourse({
+    key: "java",
+    modules,
+    quickNotes,
+    groupedExamples,
+    exampleComments,
+  });
+  verifyCourse(dockerCourse);
+  verifyCourse(pythonCourse);
+  Object.values(aiCourses).forEach(verifyCourse);
+});
+
 test("Java 8 and REST API coverage includes the requested concepts", () => {
   const java8 = modules.find((module) => module.id === 6);
   assert.ok(java8.topics.includes("Collectors, grouping & partitioning"));
