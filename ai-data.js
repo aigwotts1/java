@@ -106,11 +106,11 @@
       "https://platform.openai.com/docs/models",
       "Create a model-selection table for quality, latency, context, modality, privacy, and cost.",
       [
-        t("Model selection", "Choose the smallest model that reliably meets the task's quality, modality, context, and latency needs.", "simple extraction -> small model\nhard reasoning -> stronger model"),
+        t("Model selection", "Model selection means choosing the smallest affordable model that still meets the task's quality, input, context, and speed requirements.", "simple extraction -> small model\nhard reasoning -> stronger model"),
         t("Open vs hosted models", "Hosted APIs reduce operations; open-weight models offer more deployment control but require infrastructure.", "hosted: managed endpoint | open: operate weights"),
         t("Temperature", "Temperature changes sampling sharpness: lower is more focused, higher is more varied.", "temperature=0.1  # consistent extraction"),
         t("Top-p sampling", "Top-p samples only from the smallest token set whose cumulative probability reaches the threshold.", "top_p=0.9"),
-        t("Stop conditions", "Stop sequences and maximum output limits prevent generation from continuing beyond the required result.", "stop=[\"END\"], max_output_tokens=400"),
+        t("Stop conditions", "Stop conditions tell the model when to finish, preventing an answer from continuing past a marker or consuming unnecessary output tokens.", "stop=[\"END\"], max_output_tokens=400"),
         t("Latency & throughput", "Latency is time per response; throughput is work completed per unit time and improves with batching or concurrency.", "p95_latency=1.8s, requests_per_second=40"),
         t("Cost estimation", "Estimate cost from input/output token counts, model rates, tool calls, storage, and infrastructure.", "cost = input_tokens*rate_in + output_tokens*rate_out")
       ]),
@@ -120,12 +120,12 @@
       "Rewrite one ambiguous prompt with a role, task, input delimiters, rules, output format, and example.",
       [
         t("Instruction hierarchy", "System or developer rules set durable behavior, while user content supplies the current task and data.", "system: rules\nuser: request + input"),
-        t("Clear task definition", "State the desired action, audience, constraints, and definition of done explicitly.", "\"Summarize for a beginner in 5 bullets.\""),
+        t("Clear task definition", "A clear task definition tells the model exactly what to do, who the answer is for, which rules apply, and what completion looks like.", "\"Summarize for a beginner in 5 bullets.\""),
         t("Delimiters & data boundaries", "Delimit untrusted or variable content so the model can distinguish data from instructions.", "<document>user supplied text</document>"),
         t("Zero-shot prompting", "Zero-shot prompts describe the task without showing an example.", "\"Classify as bug, feature, or question.\""),
         t("Few-shot prompting", "Few-shot prompts demonstrate representative input-output pairs to teach format or judgment.", "Input: slow page -> Output: performance"),
-        t("Decomposition", "Break complex work into smaller explicit stages that can be checked independently.", "extract facts -> compare -> write conclusion"),
-        t("Prompt iteration", "Use a fixed evaluation set to compare prompt versions instead of tuning from one anecdote.", "prompt_v2 score 0.91 > prompt_v1 score 0.82")
+        t("Decomposition", "Decomposition breaks a complex request into smaller, clearly defined stages so each result can be checked before the next stage begins.", "extract facts -> compare -> write conclusion"),
+        t("Prompt iteration", "Prompt iteration improves instructions through measured revisions, using the same test cases to compare versions fairly instead of trusting one example.", "prompt_v2 score 0.91 > prompt_v1 score 0.82")
       ]),
     m(8, "Structured Outputs & Tools", "core",
       "Make model responses dependable enough for software to validate and consume.",
@@ -134,11 +134,11 @@
       [
         t("JSON output", "JSON is machine-readable, but plain JSON prompting alone does not guarantee a valid shape.", "{\"category\":\"billing\",\"urgent\":false}"),
         t("JSON Schema", "A schema defines required fields, types, enums, and nesting that a structured response must follow.", "{\"type\":\"object\",\"required\":[\"answer\"]}"),
-        t("Schema validation", "Validate every model-produced object before business logic or storage uses it.", "parsed = schema.parse(model_output)"),
+        t("Schema validation", "Schema validation checks that model-generated data has the required fields, types, and allowed values before the application uses or stores it.", "parsed = schema.parse(model_output)"),
         t("Function calling", "Function calling lets a model select a named operation and provide typed arguments; application code performs it.", "get_weather({\"city\":\"Delhi\"})"),
         t("Tool result messages", "After executing a tool, send its result back with the matching call identity so generation can continue.", "tool_call_id=call_7 -> {\"temp_c\":31}"),
-        t("Deterministic post-processing", "Use ordinary code for calculations, permissions, and irreversible actions rather than trusting generated text.", "total = items.reduce(sum)  # code calculates"),
-        t("Failure handling", "Handle refusal, malformed output, timeout, and tool errors as normal application states.", "if invalid: repair once; else fail clearly")
+        t("Deterministic post-processing", "Deterministic post-processing uses ordinary code for exact calculations, permission checks, and irreversible actions instead of trusting uncertain generated text.", "total = items.reduce(sum)  # code calculates"),
+        t("Failure handling", "Failure handling treats refusals, invalid output, timeouts, and tool errors as expected states with safe retries or clear messages.", "if invalid: repair once; else fail clearly")
       ]),
     m(9, "Multimodal Generation", "production",
       "Work with text, images, speech, and mixed inputs while respecting modality-specific limits.",
@@ -161,7 +161,7 @@
         t("Prompting vs RAG vs fine-tuning", "Prompting changes instructions, RAG supplies facts, and fine-tuning changes learned behavior patterns.", "fresh facts -> RAG | stable style -> fine-tune"),
         t("Supervised fine-tuning", "SFT trains on desired input-output examples to make a behavior more consistent.", "{input: support note, output: approved summary}"),
         t("Training data quality", "Small, accurate, representative examples often teach more than large noisy datasets.", "deduplicate -> review -> split -> train"),
-        t("Train, validation & test splits", "Separate datasets tune training, choose settings, and measure final generalization honestly.", "80% train | 10% validation | 10% test"),
+        t("Train, validation & test splits", "These splits keep model learning, tuning, and final evaluation on separate examples so reported performance reflects unseen data honestly.", "80% train | 10% validation | 10% test"),
         t("LoRA & adapters", "LoRA learns small low-rank updates while keeping base weights fixed, reducing training and storage cost.", "base weights frozen + trainable adapter"),
         t("Preference optimization", "Preference methods teach which of two responses better matches human or policy judgments.", "preferred answer > rejected answer"),
         t("Fine-tuning evaluation", "Compare the tuned model with a baseline on held-out quality, safety, latency, and regression tests.", "candidate must beat baseline and safety thresholds")
@@ -176,7 +176,7 @@
         t("Model-based graders", "A judge model can apply a rubric to open-ended output, but needs calibration against human ratings.", "judge(prompt, answer, rubric) -> score"),
         t("Human evaluation", "People remain essential for nuance, usefulness, risk, and validating automated graders.", "two reviewers + disagreement resolution"),
         t("Groundedness & factuality", "Groundedness asks whether claims follow supplied evidence; factuality asks whether claims are true.", "claim -> supporting passage or verified source"),
-        t("Regression testing", "Run the same eval suite after model, prompt, tool, or data changes to catch quality loss.", "release only if critical evals pass"),
+        t("Regression testing", "Regression testing reruns the same evaluation suite after model, prompt, tool, or data changes to detect quality that was accidentally lost.", "release only if critical evals pass"),
         t("Online monitoring", "Production metrics reveal latency, errors, user feedback, escalation rates, and distribution shifts.", "monitor p95 latency, refusal rate, helpfulness")
       ]),
     m(12, "Safety & Production", "production",
@@ -184,11 +184,11 @@
       "https://platform.openai.com/docs/guides/safety-best-practices",
       "Threat-model one AI feature and define input controls, output checks, human review, logging, and rollback.",
       [
-        t("Hallucination controls", "Use retrieval, constrained outputs, citations, deterministic checks, and abstention when unsupported answers are risky.", "if confidence low: \"I do not have enough evidence\""),
-        t("Prompt injection", "Treat external text as untrusted data that may try to override instructions or trigger unsafe tools.", "retrieved text = data, never authority"),
+        t("Hallucination controls", "Hallucination controls reduce unsupported claims by grounding answers in evidence, constraining output, checking facts, and refusing when evidence is insufficient.", "if confidence low: \"I do not have enough evidence\""),
+        t("Prompt injection", "Prompt injection is a malicious instruction hidden in user or retrieved content that tries to override rules or trigger unauthorized actions.", "retrieved text = data, never authority"),
         t("Content safety", "Layer provider filters, application policy, age/use context, and human escalation around generated content.", "input moderation -> model -> output moderation"),
         t("Privacy & data retention", "Minimize personal data, document retention, and understand whether a provider stores or trains on inputs.", "redact PII before model request"),
-        t("Rate limits & retries", "Use bounded exponential backoff with jitter and avoid retrying invalid or unsafe requests.", "retry_after = min(cap, base * 2^attempt) + jitter"),
+        t("Rate limits & retries", "Rate limits control request volume, while bounded retries with increasing delays recover from temporary failures without repeatedly sending invalid requests.", "retry_after = min(cap, base * 2^attempt) + jitter"),
         t("Caching & fallbacks", "Cache suitable results and define a smaller model, static response, or graceful failure for outages.", "cache key = model + prompt_version + safe_input_hash"),
         t("Production checklist", "Version prompts, pin models where possible, evaluate changes, observe costs, and keep a rollback path.", "eval -> canary -> monitor -> expand or rollback")
       ])
@@ -213,9 +213,9 @@
       "https://docs.cloud.google.com/document-ai/docs/overview",
       "Design loaders for HTML, PDF, database, and API sources while preserving ownership and timestamps.",
       [
-        t("Source inventory", "List every source, owner, format, update cadence, sensitivity, and authoritative status before ingestion.", "source_registry: uri, owner, cadence, classification"),
+        t("Source inventory", "A source inventory records where knowledge comes from, who owns it, its format, update schedule, sensitivity, and whether it is authoritative.", "source_registry: uri, owner, cadence, classification"),
         t("Document loaders", "A loader reads from a source and emits normalized documents plus provenance metadata.", "load(uri) -> {text, metadata}"),
-        t("HTML parsing", "Remove navigation and boilerplate while preserving headings, lists, tables, and canonical URLs.", "HTML -> main content + heading hierarchy"),
+        t("HTML parsing", "HTML parsing extracts the useful page content while removing menus and boilerplate, but keeps headings, lists, tables, and source URLs meaningful.", "HTML -> main content + heading hierarchy"),
         t("PDF extraction", "PDFs may contain positioned text, tables, images, or scans, so extraction quality must be checked.", "PDF -> pages -> blocks -> reading order"),
         t("OCR", "Optical character recognition turns scanned pixels into text and should retain confidence and page coordinates.", "page_image -> OCR text + bounding boxes"),
         t("Tables & structured data", "Represent tables so rows, headers, and units stay connected rather than flattening into ambiguous text.", "row: {quarter: Q2, revenue_usd: 420000}"),
@@ -229,10 +229,10 @@
         t("Chunk purpose", "A chunk is the unit retrieved and cited; it should answer a focused need while retaining essential context.", "document -> retrievable passages"),
         t("Fixed-size chunking", "Fixed windows are simple and predictable but may split sentences or logical sections.", "tokens[0:500], tokens[450:950]"),
         t("Recursive chunking", "Recursive splitters prefer larger boundaries such as sections, paragraphs, sentences, then words.", "split by heading -> paragraph -> sentence"),
-        t("Structure-aware chunking", "Use document structure such as Markdown headings, code symbols, or table rows to keep meaning intact.", "chunk = heading + section body"),
+        t("Structure-aware chunking", "Structure-aware chunking follows natural boundaries such as headings, functions, or table rows so each retrieved piece keeps its original meaning.", "chunk = heading + section body"),
         t("Chunk overlap", "Overlap repeats boundary context between adjacent chunks but increases index size and duplicates retrieval.", "chunk_size=500, overlap=75"),
         t("Parent-child retrieval", "Search small child chunks for precision, then return a larger parent section for sufficient context.", "match child -> fetch parent"),
-        t("Chunk-size experiments", "Choose size with retrieval and answer evals; there is no universal best token count.", "test 256 vs 512 vs 900 tokens")
+        t("Chunk-size experiments", "Chunk-size experiments compare retrieval and answer quality at several sizes because no single token count works best for every document collection.", "test 256 vs 512 vs 900 tokens")
       ]),
     m(4, "Metadata & Document Lifecycle", "foundation",
       "Keep chunks traceable, filterable, current, and safe throughout their lifecycle.",
@@ -241,7 +241,7 @@
       [
         t("Stable document identity", "A stable source ID connects updated chunks to the same logical document over time.", "document_id = canonical repository path"),
         t("Chunk identity", "A chunk ID should be deterministic or version-aware so updates and deletes are reliable.", "chunk_id = hash(document_id + version + section)"),
-        t("Provenance", "Store source URL, title, author, page or section, ingestion time, and parser version.", "{source_url, page, ingested_at, parser_version}"),
+        t("Provenance", "Provenance records where a chunk came from—such as its URL, author, page, ingestion time, and parser version—so it remains traceable.", "{source_url, page, ingested_at, parser_version}"),
         t("Filterable metadata", "Fields such as product, locale, date, tenant, and ACL narrow retrieval before ranking.", "filter: product=\"billing\" AND locale=\"en\""),
         t("Versioning", "Version metadata distinguishes current content from history and supports reproducible answers.", "effective_from <= now < effective_to"),
         t("Incremental updates", "Detect changed sources and reprocess only affected documents instead of rebuilding everything.", "content_hash changed -> reparse and reindex"),
@@ -252,13 +252,13 @@
       "https://platform.openai.com/docs/guides/embeddings",
       "Specify an embedding job with batching, retries, model version metadata, and migration support.",
       [
-        t("Document embeddings", "Embed the representation that should match user intent, often title plus chunk text and selected metadata.", "vector = embed(title + \"\\n\" + chunk_text)"),
-        t("Query embeddings", "Encode the query with the compatible model and any retrieval-specific query instruction.", "query_vector = embed(user_question)"),
+        t("Document embeddings", "Document embeddings turn each searchable chunk and its useful metadata into a meaning-based vector that can be compared with user questions.", "vector = embed(title + \"\\n\" + chunk_text)"),
+        t("Query embeddings", "A query embedding converts the user's question into a compatible vector so the search can find chunks with similar meaning.", "query_vector = embed(user_question)"),
         t("Model compatibility", "Vectors from different embedding models or dimensions cannot be compared directly.", "index.embedding_model == query.embedding_model"),
-        t("Batching & rate limits", "Batch inputs within token and request limits, and checkpoint work for safe retries.", "for batch in batches: embed(batch); save_checkpoint()"),
+        t("Batching & rate limits", "Batching groups embedding inputs into efficient requests while respecting provider limits and saving progress so interrupted jobs can resume safely.", "for batch in batches: embed(batch); save_checkpoint()"),
         t("Vector normalization", "Normalize consistently when the chosen distance metric expects unit vectors.", "v = v / norm(v)"),
-        t("Model migration", "Build a parallel index for a new embedding model, evaluate it, then switch traffic safely.", "index_v1 and index_v2 -> shadow test -> cutover"),
-        t("Embedding observability", "Track failures, latency, token volume, empty chunks, dimensions, and model/version metadata.", "metric: embedded_chunks_total by model_version")
+        t("Model migration", "Embedding-model migration builds and evaluates a separate index with the new model before traffic switches, avoiding incompatible vectors and sudden quality loss.", "index_v1 and index_v2 -> shadow test -> cutover"),
+        t("Embedding observability", "Embedding observability tracks failures, speed, token volume, empty chunks, dimensions, and model versions so ingestion problems can be diagnosed quickly.", "metric: embedded_chunks_total by model_version")
       ]),
     m(6, "Vector Search & Indexes", "core",
       "Understand similarity metrics, approximate indexes, and the recall-latency choices beneath retrieval.",
@@ -271,7 +271,7 @@
         t("Approximate nearest neighbors", "ANN indexes trade a small amount of recall for much faster search at scale.", "ANN(query, top_k=20)"),
         t("HNSW", "HNSW navigates a layered proximity graph and offers strong low-latency recall with memory trade-offs.", "search graph from upper layers to neighbors"),
         t("Top-k", "Top-k controls how many candidates retrieval returns; too few miss evidence, too many add noise.", "candidates = search(query, k=30)"),
-        t("Recall & latency tuning", "Measure whether known relevant chunks appear while varying index parameters and latency targets.", "recall@10 vs p95_search_ms")
+        t("Recall & latency tuning", "Recall-and-latency tuning balances how often relevant chunks are found against how quickly the vector index must return its results.", "recall@10 vs p95_search_ms")
       ]),
     m(7, "Hybrid Retrieval & Filtering", "core",
       "Combine semantic meaning, exact terms, metadata, and business constraints.",
@@ -291,13 +291,13 @@
       "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/rag-engine/rag-overview",
       "Create a query pipeline that detects filters, rewrites follow-ups, and decomposes multi-part questions.",
       [
-        t("Query rewriting", "Rewrite noisy language into a clear standalone search query without changing intent.", "\"what about its price?\" + history -> \"price of Product X\""),
+        t("Query rewriting", "Query rewriting converts vague or conversational wording into a clear standalone search request while preserving what the user actually meant.", "\"what about its price?\" + history -> \"price of Product X\""),
         t("Conversation condensation", "Resolve references from recent dialogue so retrieval does not depend on hidden conversational context.", "history + follow-up -> standalone question"),
-        t("Multi-query retrieval", "Generate several meaning-preserving searches and merge results to improve coverage.", "queries = [original, synonym version, technical version]"),
-        t("Query decomposition", "Split a question requiring multiple facts into focused subqueries that can be retrieved separately.", "\"compare A and B\" -> facts(A) + facts(B)"),
+        t("Multi-query retrieval", "Multi-query retrieval creates several equivalent searches and merges their results, improving the chance of finding relevant evidence expressed with different wording.", "queries = [original, synonym version, technical version]"),
+        t("Query decomposition", "Query decomposition splits a multi-part question into smaller searches so evidence for each required fact can be found independently.", "\"compare A and B\" -> facts(A) + facts(B)"),
         t("HyDE", "Hypothetical document embeddings search using an imagined answer-like passage rather than the short query alone.", "hypothetical_passage = LLM(query); embed(hypothetical_passage)"),
-        t("Entity & filter extraction", "Extract dates, products, people, locales, and tenants into validated metadata filters.", "\"EU policy after 2025\" -> region=EU, date>=2025"),
-        t("Query routing", "Route requests to the best collection, retriever, SQL tool, web source, or no-retrieval path.", "router(query) -> docs | database | web | direct")
+        t("Entity & filter extraction", "Entity and filter extraction turns details such as dates, products, regions, or tenants into validated filters that narrow the search correctly.", "\"EU policy after 2025\" -> region=EU, date>=2025"),
+        t("Query routing", "Query routing examines a request and sends it to the most suitable source—documents, vector search, SQL, the web, or a direct-answer path.", "router(query) -> docs | database | web | direct")
       ]),
     m(9, "Reranking & Context Assembly", "retrieval",
       "Turn a broad candidate set into a compact, ordered evidence package.",
@@ -307,23 +307,23 @@
         t("Candidate generation", "Fast first-stage retrieval favors recall and returns more candidates than the prompt will receive.", "retrieve top_50 candidates"),
         t("Cross-encoder reranking", "A reranker jointly reads query and passage for a stronger relevance score at higher cost.", "score = reranker(query, passage)"),
         t("LLM reranking", "An LLM can rank with nuanced instructions but adds latency, cost, and nondeterminism.", "rank passages by answer usefulness"),
-        t("Score thresholds", "Drop candidates below a calibrated relevance threshold and allow a no-evidence result.", "if best_score < threshold: abstain"),
-        t("Deduplication", "Remove repeated or near-identical passages so the context budget carries diverse evidence.", "dedupe by source section and semantic similarity"),
-        t("Context ordering", "Order evidence deliberately—by relevance, source, timeline, or document structure—to help synthesis.", "context = highest relevance first"),
-        t("Token-budgeted packing", "Add the most useful passages until the evidence budget is full, preserving citation metadata.", "pack(chunks, max_tokens=6000)")
+        t("Score thresholds", "A score threshold removes candidates that are not relevant enough and allows the system to report that no trustworthy evidence was found.", "if best_score < threshold: abstain"),
+        t("Deduplication", "Deduplication removes repeated or nearly identical passages so limited prompt space contains a wider range of useful evidence.", "dedupe by source section and semantic similarity"),
+        t("Context ordering", "Context ordering arranges selected evidence by relevance, source, time, or document structure so the model can combine it more reliably.", "context = highest relevance first"),
+        t("Token-budgeted packing", "Token-budgeted packing selects and fits the most useful evidence chunks into the model prompt without exceeding its token limit, while keeping citation details.", "pack(chunks, max_tokens=6000)")
       ]),
     m(10, "Grounded Generation & Citations", "retrieval",
       "Produce useful answers that stay faithful to evidence and reveal their sources.",
       "https://platform.openai.com/docs/guides/retrieval",
       "Write a grounded answer prompt with citation IDs, insufficient-evidence behavior, and claim-level attribution.",
       [
-        t("Grounding instructions", "Tell the model to answer from supplied sources, distinguish inference, and decline unsupported claims.", "\"Use only evidence below; say when evidence is insufficient.\""),
+        t("Grounding instructions", "Grounding instructions require the model to use supplied evidence, label its inferences, and decline claims that the sources cannot support.", "\"Use only evidence below; say when evidence is insufficient.\""),
         t("Citation identifiers", "Attach stable source IDs to passages so the output can reference evidence without inventing URLs.", "[S3] title, page, URL, passage"),
         t("Claim-level citations", "Place citations next to the specific factual claims they support rather than only at the end.", "\"Retention is 30 days [S2].\""),
-        t("Citation validation", "Verify every cited ID exists and ideally that the cited passage supports the associated claim.", "assert cited_ids subset of provided_source_ids"),
+        t("Citation validation", "Citation validation checks that every cited source exists and that its passage genuinely supports the nearby claim instead of merely looking credible.", "assert cited_ids subset of provided_source_ids"),
         t("Abstention", "A good RAG system says it lacks evidence rather than filling gaps with plausible language.", "no relevant passage -> ask or abstain"),
-        t("Conflicting sources", "Expose meaningful disagreement and use authority, date, and version rules instead of silently choosing.", "\"S1 says 30 days; newer policy S4 says 60.\""),
-        t("Conversational RAG", "Store conversation state separately and retrieve fresh evidence for each knowledge-dependent turn.", "history summary + current query + retrieved evidence")
+        t("Conflicting sources", "Conflicting-source handling shows meaningful disagreement and uses authority, date, and version rules rather than silently choosing one answer.", "\"S1 says 30 days; newer policy S4 says 60.\""),
+        t("Conversational RAG", "Conversational RAG uses recent dialogue to understand follow-up questions but retrieves fresh evidence for every turn that depends on external knowledge.", "history summary + current query + retrieved evidence")
       ]),
     m(11, "RAG Evaluation", "quality",
       "Locate quality failures in retrieval, context, generation, and end-to-end behavior.",
@@ -334,20 +334,20 @@
         t("Retrieval recall", "Recall measures how often at least one known relevant passage appears in the candidate set.", "recall@k = relevant_retrieved / relevant_total"),
         t("Retrieval precision", "Precision measures how much retrieved content is actually relevant and helps reveal noisy context.", "precision@k = relevant_retrieved / k"),
         t("Ranking metrics", "MRR and nDCG reward placing useful passages nearer the top, including graded relevance.", "MRR = mean(1 / first_relevant_rank)"),
-        t("Context relevance", "Check whether packed passages address the question without unrelated distractors.", "judge(question, context) -> relevance score"),
+        t("Context relevance", "Context relevance measures whether the passages placed in the prompt actually help answer the question without adding unrelated distractions.", "judge(question, context) -> relevance score"),
         t("Faithfulness & citation accuracy", "Score whether answer claims follow the evidence and whether citations support those claims.", "claims(answer) -> evidence entailment checks"),
-        t("End-to-end answer quality", "Measure usefulness, correctness, completeness, refusal behavior, latency, and cost together.", "release gate = quality + safety + latency + cost")
+        t("End-to-end answer quality", "End-to-end quality evaluates whether the complete RAG system gives useful, correct, complete, appropriately cautious answers at acceptable speed and cost.", "release gate = quality + safety + latency + cost")
       ]),
     m(12, "Production RAG", "quality",
       "Operate a secure, fresh, observable retrieval system as sources and usage evolve.",
       "https://docs.cloud.google.com/architecture/rag-capable-gen-ai-app-using-vertex-ai",
       "Design production controls for freshness, tenant isolation, monitoring, caching, and incident response.",
       [
-        t("Freshness SLAs", "Define how soon each changed source must become searchable and monitor ingestion lag.", "freshness_lag = indexed_at - source_updated_at"),
+        t("Freshness SLAs", "A freshness SLA defines how quickly changed source content must become searchable and measures whether the ingestion pipeline meets that target.", "freshness_lag = indexed_at - source_updated_at"),
         t("Tenant isolation", "Separate or filter indexes so one customer can never retrieve another customer's chunks.", "retrieval filter tenant_id = authenticated_tenant"),
         t("Prompt-injection defense", "Assume documents can contain malicious instructions; isolate content and restrict tools and secrets.", "document text cannot override system policy"),
-        t("Caching", "Cache embeddings, safe query results, or final answers with version- and permission-aware keys.", "cache_key includes corpus_version + ACL scope"),
-        t("Observability", "Trace query transforms, candidate IDs, scores, reranking, prompt size, citations, latency, and errors.", "trace: query -> chunks -> answer -> feedback"),
+        t("Caching", "RAG caching reuses embeddings, safe search results, or answers, while version and permission details prevent stale or unauthorized reuse.", "cache_key includes corpus_version + ACL scope"),
+        t("Observability", "RAG observability records each transformation, retrieved chunk, score, citation, delay, and error so weak or failed answers can be investigated.", "trace: query -> chunks -> answer -> feedback"),
         t("Graph & multimodal RAG", "Graphs add explicit relationships; multimodal RAG retrieves images, tables, audio, or video alongside text.", "entity graph + text passages + figure embeddings"),
         t("Cost & capacity", "Budget storage, embedding updates, search, reranking, generation, and peak concurrency.", "monthly cost = ingest + index + retrieve + rerank + generate")
       ])
@@ -361,11 +361,11 @@
       [
         t("What is an AI agent?", "An agent uses a model to decide which actions to take toward a goal and observes results before continuing.", "goal -> decide -> act -> observe -> repeat"),
         t("Agents vs workflows", "A workflow follows predefined transitions; an agent dynamically selects the next step.", "workflow: fixed graph | agent: model chooses"),
-        t("When not to use an agent", "Prefer ordinary code when steps are known, rules are deterministic, or errors carry unacceptable risk.", "known formula -> code, not an agent"),
+        t("When not to use an agent", "Ordinary code is safer than an agent when the steps are known, the rules are exact, or a wrong decision would create unacceptable risk.", "known formula -> code, not an agent"),
         t("Autonomy spectrum", "Systems range from suggestions to bounded tool use to longer-running autonomous execution.", "assist -> approve each action -> bounded autonomy"),
         t("Environment", "The environment is the external state an agent observes or changes through tools.", "environment = files + APIs + browser + database"),
         t("Goal & success criteria", "A useful goal states the desired outcome, constraints, and observable completion conditions.", "\"Resolve ticket with cited policy; never issue refund.\""),
-        t("Agent boundaries", "Limit time, steps, spend, data, permissions, and tools so autonomy stays inside an explicit envelope.", "max_turns=12, allowed_tools=[search, read]")
+        t("Agent boundaries", "Agent boundaries are explicit limits on time, steps, cost, data, permissions, and tools that keep autonomous behavior within an approved scope.", "max_turns=12, allowed_tools=[search, read]")
       ]),
     m(2, "The Agent Loop", "foundation",
       "Follow the reasoning-action-observation cycle and understand how runs terminate.",
@@ -378,7 +378,7 @@
         t("Observations", "A tool result becomes an observation the model can use for its next decision.", "tool result: {matches:[...]}"),
         t("Final output", "The run ends when the model returns the required output instead of requesting another action.", "final: {status:\"resolved\", summary:\"...\"}"),
         t("Maximum turns", "A turn limit prevents infinite loops and makes failure behavior predictable.", "run(agent, {maxTurns: 10})"),
-        t("Termination conditions", "Stop on success, explicit failure, limit exhaustion, cancellation, or a request for human input.", "if done || cancelled || limit_hit: stop")
+        t("Termination conditions", "Termination conditions define exactly when an agent run ends: success, known failure, exhausted limits, cancellation, or a need for human input.", "if done || cancelled || limit_hit: stop")
       ]),
     m(3, "Tools & Function Calling", "foundation",
       "Give agents typed capabilities while application code keeps authority over execution.",
@@ -386,24 +386,24 @@
       "Design a read-only order lookup tool and a refund tool that always requires approval.",
       [
         t("Tool definitions", "A tool has a clear name, purpose, input schema, output contract, and execution function.", "{name:\"lookup_order\", parameters: schema, execute}"),
-        t("Schema design", "Use narrow types, enums, required fields, descriptions, and bounded values to reduce ambiguous calls.", "{order_id:string, include_items:boolean}"),
-        t("Tool descriptions", "Describe when the tool should and should not be used, including important side effects.", "\"Read order status; does not modify the order.\""),
+        t("Schema design", "Tool schema design uses precise types, required fields, allowed values, and limits so the model produces arguments the application can validate reliably.", "{order_id:string, include_items:boolean}"),
+        t("Tool descriptions", "A tool description explains its purpose, appropriate use, restrictions, and side effects so the model can choose it correctly.", "\"Read order status; does not modify the order.\""),
         t("Tool execution", "The runtime—not the model—validates arguments, checks authorization, runs code, and returns data.", "authorize -> validate -> execute -> sanitize result"),
         t("Read vs write tools", "Read tools inspect state; write tools mutate it and deserve stricter confirmation and idempotency controls.", "search_docs=read | issue_refund=write"),
-        t("Tool errors", "Return structured, safe errors the agent can reason about without leaking stack traces or secrets.", "{error:\"ORDER_NOT_FOUND\", retryable:false}"),
-        t("Tool output design", "Return the minimum structured data needed for the next decision, with provenance where useful.", "{order_id, status, refundable, source_version}")
+        t("Tool errors", "Tool errors should return safe error codes and retry information that an agent can handle without exposing stack traces, credentials, or internal details.", "{error:\"ORDER_NOT_FOUND\", retryable:false}"),
+        t("Tool output design", "Tool output design returns only the structured facts needed for the next decision, including source information when traceability matters.", "{order_id, status, refundable, source_version}")
       ]),
     m(4, "State, Context & Memory", "foundation",
       "Separate run state, model-visible context, persistent memory, and authoritative application data.",
       "https://openai.github.io/openai-agents-js/guides/context/",
       "Design a support agent state object and decide exactly what enters model context.",
       [
-        t("Run context", "Run context carries dependencies and state for code and tools, and need not all be visible to the model.", "context = {userId, db, permissions, traceId}"),
+        t("Run context", "Run context stores application dependencies and state—such as identity, permissions, and database access—for code and tools without exposing everything to the model.", "context = {userId, db, permissions, traceId}"),
         t("Conversation state", "Conversation history preserves prior turns but should be trimmed or summarized as it grows.", "recent messages + verified summary"),
         t("Working memory", "Working memory holds temporary facts, plans, and intermediate results for the current task.", "state.notes = [verified fact A, pending question B]"),
         t("Long-term memory", "Persistent memory stores selected information across runs and requires consent, expiry, and correction controls.", "memory.write(user_id, preference, expires_at)"),
         t("Semantic memory retrieval", "Embeddings can recall relevant past facts, but retrieved memory must still be scoped and verified.", "retrieve memories where owner=user_id"),
-        t("Context engineering", "Select the smallest set of instructions, state, evidence, and tool results needed for the next decision.", "context = policy + goal + relevant state"),
+        t("Context engineering", "Context engineering selects and organizes the smallest useful set of instructions, state, evidence, and tool results for the model's next decision.", "context = policy + goal + relevant state"),
         t("Memory risks", "Stale, poisoned, cross-user, or sensitive memories can cause wrong or unsafe actions.", "validate owner, source, freshness, and sensitivity")
       ]),
     m(5, "Planning & Reasoning Patterns", "core",
@@ -411,12 +411,12 @@
       "https://huggingface.co/learn/agents-course/unit1/agent-steps-and-structure",
       "Break a research task into dependencies, evidence checks, and a concrete finish condition.",
       [
-        t("Task decomposition", "Split a broad goal into smaller outcomes whose dependencies and results can be checked.", "research -> compare -> verify -> summarize"),
-        t("Plan-and-execute", "Create a plan, execute steps, and revise it when observations invalidate assumptions.", "plan = make_plan(goal); execute(plan.next)"),
+        t("Task decomposition", "Task decomposition splits a broad goal into smaller outcomes with clear dependencies, making each result easier to execute and verify.", "research -> compare -> verify -> summarize"),
+        t("Plan-and-execute", "Plan-and-execute first creates a sequence of steps, then performs and revises them when real observations show that an assumption was wrong.", "plan = make_plan(goal); execute(plan.next)"),
         t("ReAct pattern", "ReAct interleaves model reasoning with actions and observations instead of planning everything upfront.", "reason -> action -> observation -> reason"),
         t("Reflection", "A reflection pass critiques a draft or trajectory against explicit criteria before finalizing.", "critique(draft, rubric) -> revise"),
         t("Self-correction limits", "A model can repeat the same misconception; correction works better with new evidence or deterministic feedback.", "failed test output -> targeted revision"),
-        t("Verification steps", "Use tools, tests, schemas, or independent sources to verify claims and actions before completion.", "draft code -> run tests -> inspect failures"),
+        t("Verification steps", "Verification steps use tests, schemas, tools, or independent sources to confirm that claims and actions are correct before the agent finishes.", "draft code -> run tests -> inspect failures"),
         t("Planning cost control", "Extra planning consumes tokens and latency, so scale reasoning depth with task uncertainty and impact.", "simple task: direct | complex task: bounded plan")
       ]),
     m(6, "Workflow Patterns", "core",
@@ -430,7 +430,7 @@
         t("Fan-out & fan-in", "Fan-out distributes subtasks; fan-in deduplicates, reconciles, and synthesizes their outputs.", "topics.map(research) -> merge evidence"),
         t("Evaluator-optimizer loop", "One stage produces, another scores against a rubric, and revision repeats within a limit.", "draft -> evaluate -> revise (max 2)"),
         t("State-machine workflows", "Explicit states and transitions make important business processes auditable and testable.", "DRAFT -> REVIEW -> APPROVED -> PUBLISHED"),
-        t("Deterministic gates", "Use code-based checks between model stages for schemas, permissions, budgets, and tests.", "if !schema.valid(output): stop")
+        t("Deterministic gates", "Deterministic gates are code-based checks between model stages that stop invalid schemas, missing permissions, exhausted budgets, or failed tests.", "if !schema.valid(output): stop")
       ]),
     m(7, "Multi-agent Orchestration", "orchestration",
       "Coordinate specialists through managers, handoffs, and shared protocols without needless complexity.",
@@ -440,9 +440,9 @@
         t("Manager pattern", "A central manager keeps control and invokes specialist agents as tools before producing the final result.", "manager -> specialist tools -> manager response"),
         t("Handoffs", "A handoff transfers control and selected context to a specialist that continues the conversation.", "triage -> handoff_to_billing(summary)"),
         t("Agents as tools", "A specialist can be wrapped as a callable tool so the orchestrator owns the user-facing run.", "research_agent({question}) -> findings"),
-        t("Specialist agents", "Give each specialist a narrow purpose, tool set, instructions, and output contract.", "security_agent tools=[scan, docs], output=RiskReport"),
+        t("Specialist agents", "A specialist agent has one narrow responsibility, a limited tool set, focused instructions, and a defined output that another component can use.", "security_agent tools=[scan, docs], output=RiskReport"),
         t("Context contracts", "Pass only the verified facts and identifiers the receiver needs, not an uncontrolled full transcript.", "{task, constraints, evidence_ids, open_questions}"),
-        t("Shared-state coordination", "Use a typed store with ownership and conflict rules instead of agents overwriting free-form notes.", "state.update(field, value, actor, version)"),
+        t("Shared-state coordination", "Shared-state coordination uses a structured store with ownership and conflict rules so several agents cannot silently overwrite one another's work.", "state.update(field, value, actor, version)"),
         t("Multi-agent trade-offs", "More agents add calls, latency, coordination failures, and security boundaries; use them for real specialization.", "benefit of specialization > orchestration overhead")
       ]),
     m(8, "MCP & External Integrations", "orchestration",
@@ -453,10 +453,10 @@
         t("Model Context Protocol", "MCP standardizes how AI applications discover and use external tools, resources, and prompts.", "client <-> MCP server <-> external system"),
         t("MCP clients & servers", "A client lives in the AI host; a server exposes capabilities backed by a local or remote system.", "host creates client connection to server"),
         t("Tools, resources & prompts", "Tools perform actions, resources expose readable context, and prompts provide reusable interaction templates.", "tools/list | resources/read | prompts/get"),
-        t("Capability discovery", "Clients negotiate protocol versions and request available capabilities instead of assuming them.", "initialize -> list capabilities -> call"),
+        t("Capability discovery", "Capability discovery lets an MCP client negotiate a compatible protocol version and ask a server which tools and resources are actually available.", "initialize -> list capabilities -> call"),
         t("Transport & authentication", "Local stdio and remote HTTP transports have different trust boundaries and credential needs.", "remote server -> TLS + scoped OAuth token"),
         t("Least-privilege integration", "Grant the minimum scopes, tenant access, and operations required for the agent's task.", "calendar.read != calendar.write"),
-        t("Untrusted server output", "Treat descriptions and returned content as untrusted; validate schemas and never expose unrelated secrets.", "validate result; isolate instructions inside returned text")
+        t("Untrusted server output", "MCP server output is untrusted external data, so the application must validate its structure and prevent embedded text from requesting unrelated secrets or actions.", "validate result; isolate instructions inside returned text")
       ]),
     m(9, "Human Control & Sandboxing", "orchestration",
       "Keep people in control of high-impact actions and isolate code or browsing environments.",
@@ -464,23 +464,23 @@
       "Create an approval matrix for read, draft, send, purchase, delete, and privilege-change actions.",
       [
         t("Human-in-the-loop", "HITL pauses a run so a person can inspect context and approve, reject, or edit a pending action.", "pending_action -> human decision -> resume or cancel"),
-        t("Approval boundaries", "Require approval based on impact, reversibility, value, audience, and data sensitivity.", "external send or delete -> approval required"),
+        t("Approval boundaries", "Approval boundaries specify which actions require a person to confirm them based on impact, reversibility, financial value, audience, and data sensitivity.", "external send or delete -> approval required"),
         t("Interrupt & resume", "Persist run state at an approval point so the same execution can safely resume later.", "save run_state + pending_tool_call"),
         t("Permission checks", "Authorize every tool call using the current user and resource, even if the model already requested it.", "can(user, \"refund\", order)"),
-        t("Sandboxed execution", "Run generated code with restricted filesystem, network, process, time, and resource access.", "sandbox(cpu=1, memory=256MB, network=off)"),
+        t("Sandboxed execution", "Sandboxed execution runs generated code in an isolated environment with strict filesystem, network, process, time, memory, and CPU limits.", "sandbox(cpu=1, memory=256MB, network=off)"),
         t("Dry runs & previews", "Show the exact effect of a mutation before execution and support a no-change simulation.", "preview: would update 17 records"),
-        t("Audit trails", "Record who requested, proposed, approved, executed, and observed each significant action.", "{actor, action, args_hash, approval, result, time}")
+        t("Audit trails", "An audit trail records who requested, proposed, approved, executed, and observed every significant action so incidents can be reconstructed.", "{actor, action, args_hash, approval, result, time}")
       ]),
     m(10, "Reliability & Long-running Work", "reliability",
       "Make loops, tool use, retries, background runs, and recovery predictable.",
       "https://openai.github.io/openai-agents-js/guides/running-agents/",
       "Design a resumable report agent with checkpoints, idempotent writes, timeouts, and cancellation.",
       [
-        t("Timeouts", "Set per-tool and overall deadlines so stuck dependencies cannot hold a run forever.", "tool_timeout=10s, run_deadline=2m"),
-        t("Retries with backoff", "Retry only transient failures with bounded exponential backoff and jitter.", "retry network 503; do not retry invalid schema forever"),
+        t("Timeouts", "Timeouts place deadlines on individual tools and the complete run so an unavailable dependency cannot leave the agent waiting forever.", "tool_timeout=10s, run_deadline=2m"),
+        t("Retries with backoff", "Retries with backoff repeat only temporary failures, waiting longer between attempts and stopping after a safe maximum instead of looping indefinitely.", "retry network 503; do not retry invalid schema forever"),
         t("Idempotency", "A repeated write with the same idempotency key should not apply the effect twice.", "create_payment(key=run_id + step_id)"),
         t("Checkpoints", "Persist validated progress after meaningful stages so a crashed run resumes without repeating completed work.", "checkpoint after fetch, analyze, and draft"),
-        t("Background runs", "Long jobs should expose status, cancellation, progress, and a durable result channel.", "queued -> running -> awaiting_approval -> completed"),
+        t("Background runs", "Background runs move long tasks outside the web request while exposing durable status, progress, cancellation, approval, and final-result states.", "queued -> running -> awaiting_approval -> completed"),
         t("Loop detection", "Detect repeated tool calls, unchanged state, or oscillating decisions and stop with diagnostics.", "same action + same args three times -> halt"),
         t("Graceful degradation", "When a tool or model is unavailable, fall back safely or return partial, clearly labeled work.", "search unavailable -> answer only from cached verified sources")
       ]),
@@ -493,9 +493,9 @@
         t("Correlation IDs", "Carry a stable ID through model, application, queue, and tool logs to reconstruct one run.", "trace_id propagated in every call"),
         t("Sensitive-data controls", "Redact or omit secrets and personal data from traces while retaining useful diagnostics.", "log argument shape, not access token"),
         t("Trajectory evaluation", "Judge whether the agent selected appropriate actions and recovered well, not only its final wording.", "score tool choice + arguments + ordering + outcome"),
-        t("Tool-call accuracy", "Measure correct tool selection, valid arguments, unnecessary calls, and side-effect errors.", "expected_tool == actual_tool and schema_valid"),
-        t("Outcome & task success", "Define observable success in the environment, such as a resolved record or passing artifact.", "success = ticket.status == \"resolved\""),
-        t("Token, latency & spend budgets", "Track per-run usage and set limits or model routing policies before costs grow unnoticed.", "budget: max_calls=20, max_tokens=50000")
+        t("Tool-call accuracy", "Tool-call accuracy measures whether the agent selected the right tool, supplied valid arguments, avoided unnecessary calls, and handled side effects safely.", "expected_tool == actual_tool and schema_valid"),
+        t("Outcome & task success", "Task success is an observable change in the environment—such as a resolved record or passing artifact—not merely a confident final message.", "success = ticket.status == \"resolved\""),
+        t("Token, latency & spend budgets", "These budgets cap calls, tokens, response time, and cost for each run so expensive loops or model choices are detected and stopped.", "budget: max_calls=20, max_tokens=50000")
       ]),
     m(12, "Guardrails & Agent Security", "reliability",
       "Layer input, output, tool, identity, and environment controls around non-deterministic decisions.",
@@ -503,12 +503,12 @@
       "Threat-model an agent exposed to public documents and write controls for injection, exfiltration, and unsafe actions.",
       [
         t("Input guardrails", "Check requests for policy violations, malformed scope, or unsupported use before expensive agent work.", "validate request -> allow, route, or reject"),
-        t("Output guardrails", "Validate final content for schema, policy, sensitive data, and required evidence before release.", "draft -> PII scan -> citation check -> return"),
-        t("Tool guardrails", "Inspect tool name, arguments, permissions, risk, and expected impact immediately before execution.", "authorize + validate + require approval"),
+        t("Output guardrails", "Output guardrails inspect final content for required structure, policy violations, sensitive data, and missing evidence before it reaches a user or external system.", "draft -> PII scan -> citation check -> return"),
+        t("Tool guardrails", "Tool guardrails recheck the requested operation, arguments, permissions, risk, and expected impact immediately before application code executes it.", "authorize + validate + require approval"),
         t("Indirect prompt injection", "Web pages, emails, and retrieved files may contain hostile instructions aimed at the agent.", "external content is evidence, never higher-priority policy"),
         t("Data exfiltration", "Prevent tools from sending secrets or cross-tenant data through destinations chosen from untrusted input.", "egress allowlist + data classification check"),
         t("Identity & authorization", "Bind every action to an authenticated principal and enforce resource-level authorization in code.", "actor=user_123; can(actor, action, resource)"),
-        t("Defense in depth", "Combine least privilege, isolation, approval, validation, monitoring, limits, and incident response.", "prevent + detect + contain + recover")
+        t("Defense in depth", "Defense in depth combines several independent protections—least privilege, isolation, approval, validation, monitoring, limits, and recovery—so one failure is not enough.", "prevent + detect + contain + recover")
       ])
   ];
 

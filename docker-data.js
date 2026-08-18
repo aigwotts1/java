@@ -38,9 +38,9 @@
       "https://docs.docker.com/reference/cli/docker/container/",
       "Run an Nginx container, inspect it, execute a command inside it, then stop and remove it.",
       [
-        t("docker run", "run creates a container from an image and starts its configured process.", "RUN", "docker run --name web -d nginx:alpine"),
-        t("create and start", "create prepares a stopped container; start runs that already-created container.", "CREATE / START", "docker create --name job alpine echo done\ndocker start -a job"),
-        t("stop and kill", "stop asks the main process to exit gracefully before a timeout; kill sends a signal immediately.", "STOP / KILL", "docker stop web\ndocker kill web"),
+        t("docker run", "docker run creates a new container from an image, applies the requested settings, and starts the image's configured process.", "RUN", "docker run --name web -d nginx:alpine"),
+        t("create and start", "docker create prepares a container without running it, while docker start launches that same prepared container later.", "CREATE / START", "docker create --name job alpine echo done\ndocker start -a job"),
+        t("stop and kill", "docker stop requests a graceful shutdown and waits for a timeout; docker kill sends a signal immediately when waiting is inappropriate.", "STOP / KILL", "docker stop web\ndocker kill web"),
         t("restart and remove", "restart cycles a container; rm deletes a stopped container and its writable layer.", "RESTART / RM", "docker restart web\ndocker rm -f web"),
         t("docker exec", "exec starts an additional command inside an already-running container.", "EXEC", "docker exec -it web sh"),
         t("logs and attach", "logs reads captured output; attach connects your terminal to the container's main process.", "LOGS / ATTACH", "docker logs --tail 50 -f web"),
@@ -96,7 +96,7 @@
         t("Cache ordering", "Place stable dependency steps before frequently changing source so more layers remain reusable.", "ORDER", "COPY package*.json ./\nRUN npm ci\nCOPY . ."),
         t("Pinned base images", "A version tag or digest reduces surprise changes; a digest gives exact reproducibility.", "PIN", "FROM eclipse-temurin:21-jre@sha256:<digest>"),
         t("Small runtime images", "A focused runtime base contains fewer packages, downloads faster, and exposes fewer components.", "RUNTIME BASE", "FROM eclipse-temurin:21-jre-alpine"),
-        t("Non-root runtime", "Create or select an unprivileged user so an exploited process has fewer host-facing powers.", "NON-ROOT", "RUN adduser -D -u 10001 app\nUSER 10001")
+        t("Non-root runtime", "A non-root runtime executes the application as an unprivileged user, reducing what a compromised container process can change or access.", "NON-ROOT", "RUN adduser -D -u 10001 app\nUSER 10001")
       ]),
     m(8, "Registries & Distribution", "core",
       "Name, authenticate, publish, and retrieve images safely across environments.",
@@ -106,7 +106,7 @@
         t("Docker Hub repositories", "A repository groups versions of an image under a registry namespace and name.", "REPOSITORY", "docker pull docker.io/library/postgres:17"),
         t("Image naming", "A complete reference can include registry host, namespace, repository, tag, and digest.", "REFERENCE", "registry.example.com/team/api:1.4.0"),
         t("docker login", "login stores or delegates registry credentials so pull and push can authenticate.", "LOGIN", "docker login registry.example.com --username alice"),
-        t("Access tokens", "Use scoped tokens instead of account passwords, especially in automation.", "TOKEN", "echo \"$REGISTRY_TOKEN\" | docker login -u alice --password-stdin"),
+        t("Access tokens", "Registry access tokens are limited credentials for pull or push operations and are safer for automation than exposing a user's main password.", "TOKEN", "echo \"$REGISTRY_TOKEN\" | docker login -u alice --password-stdin"),
         t("Private registries", "A private registry limits who may discover, pull, or push organization images.", "PRIVATE", "docker pull registry.example.com/team/api:1.4.0"),
         t("Credential stores", "A credential helper keeps registry secrets in an operating-system keychain instead of plain config.", "CREDENTIALS", "\"credsStore\": \"desktop\""),
         t("Registry mirrors", "A mirror caches upstream content closer to builders and can reduce latency or rate-limit pressure.", "MIRROR", "\"registry-mirrors\": [\"https://mirror.example.com\"]")
@@ -144,7 +144,7 @@
       [
         t("Compose application model", "Compose represents an application as services connected by networks and persistent resources.", "MODEL", "docker compose config"),
         t("services", "Each service defines how one application component is built or run.", "SERVICES", "services:\n  api:\n    image: example/api:1.0"),
-        t("build and image", "build creates an image from source; image names the image to run or the tag assigned after building.", "BUILD", "services:\n  api:\n    build: .\n    image: example/api:dev"),
+        t("build and image", "In Compose, build specifies how to create an image from source, while image identifies what to run and optionally names the built result.", "BUILD", "services:\n  api:\n    build: .\n    image: example/api:dev"),
         t("ports, volumes and networks", "These sections declare host exposure, persistent mounts, and communication boundaries.", "RESOURCES", "ports: [\"8080:8080\"]\nvolumes: [\"data:/data\"]\nnetworks: [\"backend\"]"),
         t("environment and env files", "environment passes explicit values; env_file loads container variables from a file.", "ENVIRONMENT", "environment:\n  LOG_LEVEL: info\nenv_file: .env"),
         t("depends_on and health", "depends_on controls creation order and can wait for a dependency healthcheck, not just process start.", "DEPENDENCY", "depends_on:\n  db:\n    condition: service_healthy"),
@@ -222,7 +222,7 @@
       [
         t("Pipeline stages", "Separate test, build, scan, and publish steps so failures stop promotion at the right boundary.", "PIPELINE", "test -> build -> scan -> push -> deploy"),
         t("Immutable version tags", "Tag releases with a commit or version; do not depend on latest as the only production identity.", "TAGGING", "docker tag api qdb/api:$GIT_SHA"),
-        t("Registry authentication in CI", "Use short-lived or scoped secrets and password-stdin so tokens do not appear in command arguments.", "CI LOGIN", "echo \"$TOKEN\" | docker login -u \"$USER\" --password-stdin"),
+        t("Registry authentication in CI", "CI registry authentication uses short-lived or narrowly scoped secrets, passed through standard input so credentials do not appear in command arguments or logs.", "CI LOGIN", "echo \"$TOKEN\" | docker login -u \"$USER\" --password-stdin"),
         t("Build cache in CI", "Export and import BuildKit cache so clean runners can reuse expensive dependency layers.", "CI CACHE", "docker buildx build --cache-from type=registry,ref=qdb/api:cache --cache-to type=registry,ref=qdb/api:cache,mode=max ."),
         t("Multi-platform publishing", "A buildx push can publish architecture variants and their manifest list in one operation.", "PUBLISH", "docker buildx build --platform linux/amd64,linux/arm64 --push -t qdb/api:1.0 ."),
         t("GitHub Actions integration", "Docker's maintained actions set up Buildx, authenticate, generate metadata, and build and push.", "ACTIONS", "uses: docker/build-push-action@v6"),
