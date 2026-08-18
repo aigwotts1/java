@@ -59,5 +59,9 @@ class CertificateTemplateTest {
         assertTrue(html.contains(certificate.verificationHash()));
         assertTrue(html.contains("noindex, nofollow"));
         assertTrue(html.contains("not a professional licence"));
+        assertTrue(html.contains("Verified by QuickDevBase.in"));
+        assertTrue(html.contains("reviewing every topic"));
+        assertFalse(html.contains("class=\"certificate-mark\""));
+        assertFalse(html.contains("class=\"seal\""));
     }
 }

@@ -90,9 +90,10 @@ const javaModules = [
   },
   {
     id: 6,
-    title: "Java 8 Features",
+    title: "Modern Java: 8, 11, 17 & 21",
+    shortTitle: "Java 8–21",
     stage: "core",
-    description: "Write expressive modern Java with functions, stream pipelines, async work, and a better date API.",
+    description: "Follow Java's evolution from lambdas and streams through the Java 11, 17, and 21 LTS eras.",
     topics: [
       "Lambda expressions",
       "Functional interfaces",
@@ -105,9 +106,23 @@ const javaModules = [
       "Optional",
       "Default & static interface methods",
       "Date & Time API",
-      "CompletableFuture"
+      "CompletableFuture",
+      "Java 10/11: local-variable type inference",
+      "Java 11: HTTP Client",
+      "Java 11: String & Files helpers",
+      "Java 11: single-file source launch",
+      "Switch expressions (Java 14+)",
+      "Text blocks (Java 15+)",
+      "Record classes (Java 16+)",
+      "Pattern matching for instanceof (Java 16+)",
+      "Sealed classes (Java 17)",
+      "Record patterns (Java 21)",
+      "Pattern matching for switch (Java 21)",
+      "Virtual threads (Java 21)",
+      "Sequenced collections (Java 21)",
+      "Structured concurrency & scoped values (Java 21 preview)"
     ],
-    challenge: "Use a Java 8 stream to filter orders, group them by customer, calculate totals, and load one extra result asynchronously."
+    challenge: "Modernize a small app with streams, records, a sealed result type, pattern matching, HttpClient, and virtual-thread tasks."
   },
   {
     id: 7,
@@ -233,7 +248,6 @@ const javaModules = [
       "Built-in & custom annotations",
       "Reflection API",
       "Enums",
-      "Records",
       "Java modules"
     ],
     challenge: "Create a generic result type, model its state with an enum, and expose the final data through an immutable record."
@@ -372,7 +386,21 @@ const javaQuickNotes = {
     ["Optional represents a value that may be missing and encourages explicit handling instead of surprise nulls.", `String name = optionalName.orElse("Guest");`],
     ["Default methods add interface behavior; static interface methods are utilities called on the interface itself.", `interface Loggable {\n  default void log() { System.out.println("ok"); }\n}`],
     ["java.time provides immutable, clear types for dates, times, durations, zones, and formatting.", `LocalDate launch = LocalDate.of(2026, 8, 13);`],
-    ["CompletableFuture represents a result that arrives later and lets you transform or combine async stages.", `CompletableFuture<String> name = CompletableFuture\n  .supplyAsync(this::loadUser)\n  .thenApply(User::name);`]
+    ["CompletableFuture represents a result that arrives later and lets you transform or combine async stages.", `CompletableFuture<String> name = CompletableFuture\n  .supplyAsync(this::loadUser)\n  .thenApply(User::name);`],
+    ["Local-variable type inference lets the compiler determine a local variable's static type from its initializer; Java 11 also permits var in implicitly typed lambda parameters.", `var names = List.of("Ana", "Mira");\nvar upper = names.stream()\n  .map((var name) -> name.toUpperCase())\n  .collect(Collectors.toList());`],
+    ["Java 11's standard HTTP Client sends HTTP/1.1 or HTTP/2 requests synchronously or asynchronously with immutable request and response types.", `HttpClient client = HttpClient.newHttpClient();\nHttpRequest request = HttpRequest.newBuilder(URI.create(url)).build();\nHttpResponse<String> response = client.send(\n  request, HttpResponse.BodyHandlers.ofString());`],
+    ["Java 11 added Unicode-aware String helpers and simple Files methods for reading or writing an entire text file.", `boolean empty = "   ".isBlank();\nString clean = "  Java 11  ".strip();\nFiles.writeString(path, clean);`],
+    ["Java 11 can compile and run a single source file directly, which is convenient for small programs, demos, and scripts.", `java Hello.java`],
+    ["Switch expressions return a value, support arrow labels without fall-through, and use yield when a case block must produce a result.", `String label = switch (status) {\n  case NEW -> "New";\n  case DONE -> "Complete";\n};`],
+    ["A text block is a multiline string literal that preserves readable layout without a chain of escaped newline characters.", `String json = """\n  { "course": "Java", "version": 21 }\n  """;`],
+    ["A record is a compact data-carrier class whose component accessors, constructor, equality, hash code, and text representation are generated.", `record User(long id, String name) {}`],
+    ["An instanceof type pattern tests the runtime type and creates a safely cast variable only inside the branch where the test succeeds.", `if (value instanceof String text) {\n  System.out.println(text.length());\n}`],
+    ["A sealed class or interface lists the types allowed to extend or implement it, making a domain hierarchy deliberately closed.", `sealed interface Result permits Success, Failure {}\nrecord Success(String value) implements Result {}\nrecord Failure(String message) implements Result {}`],
+    ["A record pattern checks a record's type and extracts its components directly, avoiding a separate cast and accessor calls.", `if (value instanceof Point(int x, int y)) {\n  System.out.println(x + y);\n}`],
+    ["Java 21 pattern matching for switch selects behavior by runtime type and can exhaustively cover a sealed hierarchy without an unrelated default branch.", `String message = switch (result) {\n  case Success(var value) -> value;\n  case Failure(var error) -> "Error: " + error;\n};`],
+    ["Virtual threads are lightweight Java threads designed to scale high-throughput workloads that spend much of their time waiting for blocking I/O.", `try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {\n  Future<String> page = executor.submit(this::fetchPage);\n  System.out.println(page.get());\n}`],
+    ["Sequenced collections give ordered collections one consistent API for first, last, and reversed views instead of type-specific workarounds.", `SequencedCollection<String> steps = new ArrayList<>();\nsteps.addFirst("compile");\nsteps.addLast("deploy");\nSequencedCollection<String> reverse = steps.reversed();`],
+    ["In Java 21, structured concurrency and scoped values were preview APIs for coordinating related subtasks and safely sharing immutable context; preview flags were required.", `// Java 21 preview APIs\ntry (var scope = new StructuredTaskScope.ShutdownOnFailure()) {\n  var user = scope.fork(this::loadUser);\n  scope.join().throwIfFailed();\n}`]
   ],
   7: [
     ["JDBC is the standard Java API that sends SQL to relational databases through a vendor driver.", `Connection -> PreparedStatement -> ResultSet`],
@@ -441,7 +469,6 @@ const javaQuickNotes = {
     ["Annotations attach metadata. Built-ins guide Java tools; custom annotations express rules specific to your app.", `@Deprecated\nvoid oldMethod() {}`],
     ["Reflection inspects or invokes classes at runtime; it is powerful but less safe and harder to refactor.", `Method method = User.class.getMethod("name");`],
     ["An enum defines a fixed, type-safe set of named values and can also contain fields and methods.", `enum Status { NEW, PAID, SHIPPED }`],
-    ["A record is a concise immutable data carrier with generated accessors, equality, hash code, and text output.", `record Point(int x, int y) {}`],
     ["Modules group packages, state required dependencies, and control which packages are exposed.", `module com.acme.app { requires java.sql; }`]
   ],
   15: [
@@ -625,6 +652,51 @@ const javaGroupedExamples = {
     ["thenApply", `CompletableFuture<String> name =\n  user.thenApply(User::name);`],
     ["thenCombine", `user.thenCombine(orders, UserSummary::new);`]
   ],
+  "Java 10/11: local-variable type inference": [
+    ["Local var", `var names = List.of("Ana", "Mira");`],
+    ["Lambda parameter var", `names.stream()\n  .map((var name) -> name.toUpperCase())\n  .collect(Collectors.toList());`]
+  ],
+  "Java 11: HTTP Client": [
+    ["HTTP request", `HttpClient client = HttpClient.newHttpClient();\nHttpRequest request = HttpRequest.newBuilder(URI.create(url)).build();\nHttpResponse<String> response = client.send(\n  request, HttpResponse.BodyHandlers.ofString());`]
+  ],
+  "Java 11: String & Files helpers": [
+    ["String helpers", `boolean empty = "   ".isBlank();\nString clean = "  Java 11  ".strip();\nlong lines = "one\\ntwo".lines().count();`],
+    ["Files text helpers", `Files.writeString(path, "Hello");\nString text = Files.readString(path);`]
+  ],
+  "Java 11: single-file source launch": [
+    ["Source launcher", `java Hello.java`]
+  ],
+  "Switch expressions (Java 14+)": [
+    ["Switch result", `String label = switch (status) {\n  case NEW -> "New";\n  case DONE -> "Complete";\n};`]
+  ],
+  "Text blocks (Java 15+)": [
+    ["Text block", `String json = """\n  { "course": "Java", "version": 21 }\n  """;`]
+  ],
+  "Record classes (Java 16+)": [
+    ["Record class", `record User(long id, String name) {}`]
+  ],
+  "Pattern matching for instanceof (Java 16+)": [
+    ["instanceof pattern", `if (value instanceof String text) {\n  System.out.println(text.length());\n}`]
+  ],
+  "Sealed classes (Java 17)": [
+    ["Sealed hierarchy", `sealed interface Result permits Success, Failure {}\nrecord Success(String value) implements Result {}\nrecord Failure(String message) implements Result {}`]
+  ],
+  "Record patterns (Java 21)": [
+    ["Record pattern", `if (value instanceof Point(int x, int y)) {\n  System.out.println(x + y);\n}`]
+  ],
+  "Pattern matching for switch (Java 21)": [
+    ["Type-pattern switch", `String message = switch (result) {\n  case Success(var value) -> value;\n  case Failure(var error) -> "Error: " + error;\n};`]
+  ],
+  "Virtual threads (Java 21)": [
+    ["Virtual-thread executor", `try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {\n  Future<String> page = executor.submit(this::fetchPage);\n  System.out.println(page.get());\n}`]
+  ],
+  "Sequenced collections (Java 21)": [
+    ["Sequenced collection", `SequencedCollection<String> steps = new ArrayList<>();\nsteps.addFirst("compile");\nsteps.addLast("deploy");\nSequencedCollection<String> reverse = steps.reversed();`]
+  ],
+  "Structured concurrency & scoped values (Java 21 preview)": [
+    ["Structured concurrency (preview)", `try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {\n  var user = scope.fork(this::loadUser);\n  scope.join().throwIfFailed();\n}`],
+    ["Scoped value (preview)", `static final ScopedValue<String> USER = ScopedValue.newInstance();\nScopedValue.where(USER, "Ada").run(this::handleRequest);`]
+  ],
   "Statement & PreparedStatement": [
     ["Statement", `Statement stmt = con.createStatement();\nstmt.executeQuery("SELECT * FROM users");`],
     ["PreparedStatement", `PreparedStatement ps = con.prepareStatement(\n  "SELECT * FROM users WHERE id = ?");\nps.setLong(1, id);`]
@@ -805,6 +877,23 @@ const javaExampleComments = {
   "supplyAsync": "Runs loadUser asynchronously and completes the future with the returned User.",
   "thenApply": "Transforms the future User into its name after the user becomes available.",
   "thenCombine": "Waits for both futures, then combines their results into one UserSummary.",
+  "Local var": "The compiler infers List<String> from List.of, but names still has a fixed static type; var is not dynamic typing.",
+  "Lambda parameter var": "Java 11 permits var on an implicitly typed lambda parameter, mainly so parameter annotations can be written consistently.",
+  "HTTP request": "newBuilder creates an immutable GET request, send performs it synchronously, and the body handler converts the response bytes into a String.",
+  "String helpers": "isBlank checks Unicode whitespace, strip removes surrounding Unicode whitespace, and lines lazily exposes the two text lines as a stream.",
+  "Files text helpers": "writeString saves the text to the path, and readString loads the whole text file back into one String.",
+  "Source launcher": "The java launcher compiles Hello.java in memory and immediately runs its main class without a separate javac command.",
+  "Switch result": "Each arrow case produces the String assigned to label, and arrow syntax prevents accidental fall-through into another case.",
+  "Text block": "The triple-quote delimiters keep the JSON on readable source lines while creating one ordinary String value.",
+  "Record class": "This single declaration creates the User constructor, id() and name() accessors, and value-based equals, hashCode, and toString methods.",
+  "instanceof pattern": "When value really is a String, Java creates the already-cast text variable and limits it to the branch where the type check is true.",
+  "Sealed hierarchy": "permits closes Result to Success and Failure, so no unrelated class can silently join this result hierarchy.",
+  "Record pattern": "The pattern first checks for Point and then extracts its x and y components into local variables in one step.",
+  "Type-pattern switch": "The switch deconstructs each permitted Result record and returns a message; covering both sealed alternatives makes the switch exhaustive.",
+  "Virtual-thread executor": "Each submitted fetch runs in its own lightweight virtual thread; get waits for that task's result, and closing the executor waits for its tasks.",
+  "Sequenced collection": "addFirst and addLast modify opposite ends through one common ordered-collection API, while reversed returns a reverse-order view.",
+  "Structured concurrency (preview)": "The preview scope treats forked subtasks as one unit: join waits for them, and throwIfFailed propagates a child failure before its result is used.",
+  "Scoped value (preview)": "where binds Ada only for the dynamic extent of handleRequest, allowing child work to read immutable request context without a mutable ThreadLocal.",
   "Resource URL": "Uses a plural noun for the books collection and 42 to identify one book.",
   "Nested resource": "Requests the books that belong specifically to author 7.",
   "GET": "Maps a read request to service.find(id) and returns the matching book without changing it.",
@@ -971,7 +1060,7 @@ const javaOfficialDocs = [
   "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/package-summary.html",
   "https://docs.oracle.com/javase/tutorial/essential/concurrency/",
   "https://docs.oracle.com/en/java/javase/21/core/java-io.html",
-  "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/package-summary.html",
+  "https://docs.oracle.com/en/java/javase/21/language/java-language-changes-summary.html",
   "https://docs.oracle.com/javase/tutorial/jdbc/basics/",
   "https://jakarta.ee/specifications/platform/",
   "https://docs.spring.io/spring-boot/reference/",
@@ -1158,12 +1247,10 @@ function applyCourseUI() {
   if (courseConfig.curriculumLede) document.querySelector(".section-heading > div > p:last-child").textContent = courseConfig.curriculumLede;
   if (courseConfig.searchPlaceholder) searchInput.placeholder = courseConfig.searchPlaceholder;
   document.querySelector(".cup-body span").textContent = courseConfig.mark || courseConfig.name[0];
-  document.querySelector(".achievement-medal span").textContent = courseConfig.mark || courseConfig.name[0];
-  document.querySelector(".preview-mark").textContent = courseConfig.mark || courseConfig.name[0];
   document.querySelector(".auth-brand-mark").textContent = "Q";
   if (courseConfig.certificateTitleHtml) document.querySelector(".certificate-preview-card > p").innerHTML = courseConfig.certificateTitleHtml;
   if (courseConfig.completionNoun) {
-    document.querySelector("#certificateLearnerName").parentElement.innerHTML = `<strong id="certificateLearnerName">${escapeHtml(courseConfig.completionNoun)}</strong>, you completed the entire QuickDevBase ${escapeHtml(courseConfig.name)} path. That took consistency, curiosity, and a lot of tiny wins.`;
+    document.querySelector("#certificateLearnerName").parentElement.innerHTML = `<strong id="certificateLearnerName">${escapeHtml(courseConfig.completionNoun)}</strong>, you reviewed every topic in the QuickDevBase.in ${escapeHtml(courseConfig.name)} at-a-glance path. That took consistency, curiosity, and a lot of tiny wins.`;
   }
   if (courseConfig.trademark) document.querySelector(".footer-copy small").textContent = courseConfig.trademark;
   if (courseConfig.hubPath) {

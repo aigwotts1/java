@@ -129,8 +129,8 @@ public class PageController {
         context.setVariable("course", course);
         context.setVariable("issuedDate", CERTIFICATE_DATE.format(record.issuedAt()));
         context.setVariable("pageTitle", certificate.name() + " — " + certificate.courseTitle());
-        context.setVariable("description", certificate.name() + " completed all " + certificate.moduleCount() + " "
-            + course.shortTitle() + " modules and " + certificate.conceptCount() + " concepts.");
+        context.setVariable("description", certificate.name() + " reviewed all " + certificate.moduleCount() + " "
+            + course.shortTitle() + " modules and " + certificate.conceptCount() + " concepts on QuickDevBase.in.");
         return html(templates.process("certificate", context));
     }
 

@@ -520,14 +520,22 @@ async function run() {
     await waitFor(`!document.querySelector("#authDialog").open`);
     await evaluate(`document.querySelector('.module-card[data-module-id="6"]').click()`);
     await waitFor(`document.querySelector("#lessonDialog").open`);
-    const java8 = await evaluate(`({
+    const modernJava = await evaluate(`({
       title: document.querySelector("#dialogTitle").textContent.trim(),
       concepts: document.querySelectorAll("#dialogConcepts .concept-item").length,
-      hasCompletableFuture: document.querySelector("#dialogConcepts").textContent.includes("CompletableFuture")
+      hasCompletableFuture: document.querySelector("#dialogConcepts").textContent.includes("CompletableFuture"),
+      hasJava11: document.querySelector("#dialogConcepts").textContent.includes("Java 11: HTTP Client"),
+      hasJava17: document.querySelector("#dialogConcepts").textContent.includes("Sealed classes (Java 17)"),
+      hasJava21: document.querySelector("#dialogConcepts").textContent.includes("Virtual threads (Java 21)"),
+      marksPreview: document.querySelector("#dialogConcepts").textContent.includes("Java 21 preview")
     })`);
-    assert.equal(java8.title, "Java 8 Features");
-    assert.equal(java8.concepts, 12);
-    assert.equal(java8.hasCompletableFuture, true);
+    assert.equal(modernJava.title, "Modern Java: 8, 11, 17 & 21");
+    assert.equal(modernJava.concepts, 26);
+    assert.equal(modernJava.hasCompletableFuture, true);
+    assert.equal(modernJava.hasJava11, true);
+    assert.equal(modernJava.hasJava17, true);
+    assert.equal(modernJava.hasJava21, true);
+    assert.equal(modernJava.marksPreview, true);
 
     await evaluate(`document.querySelector("#dialogClose").click()`);
     await waitFor(`!document.querySelector("#lessonDialog").open`);
@@ -1068,6 +1076,8 @@ async function run() {
         title: document.title,
         learnerName: document.querySelector(".certificate-body h2").textContent.trim(),
         verified: document.querySelector(".verification-strip strong").textContent.trim(),
+        courseLetterMarks: document.querySelectorAll(".certificate-mark, .seal").length,
+        describesTopicReview: document.querySelector(".achievement").textContent.includes("reviewing every topic"),
         hash,
         linkedinUrl: document.querySelector(".linkedin-button").href,
         brandLogos: document.querySelectorAll(".brand-logo").length,
@@ -1081,7 +1091,9 @@ async function run() {
     })()`);
     assert.ok(publicCertificate.title.includes("Verified Certificate"));
     assert.equal(publicCertificate.learnerName, certificateLearner.name);
-    assert.equal(publicCertificate.verified, "Publicly verified");
+    assert.equal(publicCertificate.verified, "Verified by QuickDevBase.in");
+    assert.equal(publicCertificate.courseLetterMarks, 0);
+    assert.equal(publicCertificate.describesTopicReview, true);
     assert.match(publicCertificate.hash, /^[a-f0-9]{64}$/);
     assert.ok(publicCertificate.linkedinUrl.includes(encodeURIComponent(publishedCertificate.shareUrl)));
     assert.equal(publicCertificate.brandLogos, 2);
@@ -1145,7 +1157,7 @@ async function run() {
     });
 
     console.log("Browser smoke test passed.");
-    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, java8, restLesson, mobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
+    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, modernJava, restLesson, mobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
     try {
       await appRequest("/api/account", {

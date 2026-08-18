@@ -320,8 +320,8 @@
     curriculumTitle: "One glance. Every Python essential.",
     curriculumLede: "Build the mental model first, test each tiny example, then continue into the official Python docs when you need the full contract.",
     searchPlaceholder: "Search topics, e.g. generators",
-    certificateTitleHtml: "Python Developer<br>Knowledge Path",
-    completionNoun: "Python developer",
+    certificateTitleHtml: "Python Topics<br>at a Glance",
+    completionNoun: "Python learner",
     trademark: "Independent educational project—not affiliated with or endorsed by the Python Software Foundation. Python and related marks belong to their respective owners.",
     stageLabels: {
       foundation: "Foundation",

@@ -2300,25 +2300,10 @@ html[data-course="agentic-ai"] .dialog-content::-webkit-scrollbar-thumb { backgr
   font-size: 6px;
 }
 
-.preview-mark {
-  position: relative;
-  z-index: 1;
-  width: 49px;
-  height: 49px;
-  margin-top: 52px;
-  display: grid;
-  place-items: center;
-  border: 5px double #f6d384;
-  border-radius: 50%;
-  background: var(--orange);
-  font-family: var(--display);
-  font-size: 24px;
-}
-
 .certificate-preview-card > p:not(.certificate-public-note) {
   position: relative;
   z-index: 1;
-  margin: 20px 0 18px;
+  margin: 52px 0 18px;
   font-family: var(--display);
   font-size: 35px;
   line-height: 1.02;
@@ -2578,8 +2563,7 @@ html[data-course="agentic-ai"] .dialog-content::-webkit-scrollbar-thumb { backgr
   .achievement-medal { margin-bottom: 29px; }
   .achievement-copy h2 { font-size: 47px; }
   .certificate-preview-card { margin: 0 18px 25px; padding: 31px 27px 25px; }
-  .preview-mark { margin-top: 38px; }
-  .certificate-preview-card > p:not(.certificate-public-note) { font-size: 31px; }
+  .certificate-preview-card > p:not(.certificate-public-note) { margin-top: 38px; font-size: 31px; }
   .account-inline-field { grid-template-columns: 1fr; }
   .account-inline-field button { min-height: 43px; }
 }

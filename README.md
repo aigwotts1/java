@@ -4,7 +4,7 @@
 
 Available paths:
 
-- **Java** — 18 modules and 135 concepts.
+- **Java** — 18 modules and 148 concepts, including Java 8, 11, 17, and 21 milestones.
 - **Docker** — 18 modules and 126 concepts.
 - **Python** — 18 modules and 126 concepts.
 - **Generative AI Foundations** — 12 modules and 84 concepts.
@@ -123,7 +123,7 @@ The database port is bound to `127.0.0.1`, so it is available to local tools wit
 - Certificate publication requires current, explicit consent and a chosen public name.
 - Public certificate IDs and verification hashes are random and unique.
 - Users can rename, unpublish a certificate, republish after fresh consent, or permanently delete their account.
-- Certificates are independent course-completion records, not professional licences, accredited qualifications, or vendor certifications.
+- Certificates record completion of every topic in a QuickDevBase.in at-a-glance overview; they are not professional licences, accredited qualifications, skills assessments, or vendor certifications.
 
 ## Production configuration
 

@@ -316,8 +316,8 @@
     curriculumTitle: "One glance. Every Docker essential.",
     curriculumLede: "Start anywhere, learn the mental model, then use the official Docker docs when you need depth.",
     searchPlaceholder: "Search topics, e.g. volumes",
-    certificateTitleHtml: "Docker Developer<br>Knowledge Path",
-    completionNoun: "Docker developer",
+    certificateTitleHtml: "Docker Topics<br>at a Glance",
+    completionNoun: "Docker learner",
     trademark: "Independent educational project—not affiliated with or endorsed by Docker, Inc. Docker and the Docker logo are trademarks or registered trademarks of Docker, Inc.",
     stageLabels: {
       foundation: "Foundation",

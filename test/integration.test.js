@@ -330,7 +330,7 @@ test(
     assert.match(claim.data.certificate.credentialId, /^QDB-JAV-[A-Z0-9_-]{10}$/);
     assert.match(claim.data.certificate.shareUrl, /\/certificate\//);
     assert.equal(claim.data.certificate.moduleCount, 18);
-    assert.equal(claim.data.certificate.conceptCount, 135);
+    assert.equal(claim.data.certificate.conceptCount, 148);
 
     const certificate = claim.data.certificate;
 
@@ -361,7 +361,7 @@ test(
     const publicPage = await request(`/certificate/${certificate.publicId}`);
     assert.equal(publicPage.status, 200);
     assert.match(publicPage.data, /Katherine Johnson/);
-    assert.match(publicPage.data, /Java Developer Knowledge Path/);
+    assert.match(publicPage.data, /Java Topics at a Glance/);
     assert.match(publicPage.data, /property="og:title"/);
     assert.match(publicPage.data, /linkedin\.com\/sharing\/share-offsite/);
     assert.match(publicPage.data, new RegExp(certificate.verificationHash));
@@ -484,13 +484,13 @@ test(
     });
     assert.equal(claim.status, 201);
     assert.equal(claim.data.certificate.courseKey, "docker");
-    assert.equal(claim.data.certificate.courseTitle, "Docker Developer Knowledge Path");
+    assert.equal(claim.data.certificate.courseTitle, "Docker Topics at a Glance");
     assert.equal(claim.data.certificate.conceptCount, 126);
     assert.match(claim.data.certificate.credentialId, /^QDB-DOC-/);
 
     const publicPage = await request(`/certificate/${claim.data.certificate.publicId}`);
     assert.equal(publicPage.status, 200);
-    assert.match(publicPage.data, /Docker Developer Knowledge Path/);
+    assert.match(publicPage.data, /Docker Topics at a Glance/);
     assert.match(publicPage.data, /not affiliated with or endorsed by Docker, Inc/);
 
     const cleanup = await request("/api/account", {
@@ -541,13 +541,13 @@ test(
     });
     assert.equal(claim.status, 201);
     assert.equal(claim.data.certificate.courseKey, "python");
-    assert.equal(claim.data.certificate.courseTitle, "Python Developer Knowledge Path");
+    assert.equal(claim.data.certificate.courseTitle, "Python Topics at a Glance");
     assert.equal(claim.data.certificate.conceptCount, 126);
     assert.match(claim.data.certificate.credentialId, /^QDB-PYT-/);
 
     const publicPage = await request(`/certificate/${claim.data.certificate.publicId}`);
     assert.equal(publicPage.status, 200);
-    assert.match(publicPage.data, /Python Developer Knowledge Path/);
+    assert.match(publicPage.data, /Python Topics at a Glance/);
     assert.match(publicPage.data, /not affiliated with or endorsed by the Python Software Foundation/);
 
     const cleanup = await request("/api/account", {
@@ -599,14 +599,14 @@ test(
     });
     assert.equal(claim.status, 201);
     assert.equal(claim.data.certificate.courseKey, "agentic-ai");
-    assert.equal(claim.data.certificate.courseTitle, "Agentic AI Knowledge Path");
+    assert.equal(claim.data.certificate.courseTitle, "Agentic AI Topics at a Glance");
     assert.equal(claim.data.certificate.moduleCount, 12);
     assert.equal(claim.data.certificate.conceptCount, 84);
     assert.match(claim.data.certificate.credentialId, /^QDB-AGE-/);
 
     const publicPage = await request(`/certificate/${claim.data.certificate.publicId}`);
     assert.equal(publicPage.status, 200);
-    assert.match(publicPage.data, /Agentic AI Knowledge Path/);
+    assert.match(publicPage.data, /Agentic AI Topics at a Glance/);
     assert.match(publicPage.data, /no vendor endorses this completion record/);
 
     const cleanup = await request("/api/account", {

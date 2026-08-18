@@ -35,8 +35,8 @@ const pythonCourse = Function("window", `${pythonSource}; return window.QUICKDEV
 test("curriculum IDs, topic totals, and Spring backend module limit stay aligned", () => {
   assert.equal(modules.length, 18);
   assert.deepEqual(modules.map((module) => module.id), Array.from({ length: 18 }, (_, index) => index + 1));
-  assert.equal(modules.reduce((total, module) => total + module.topics.length, 0), 135);
-  assert.match(courseCatalogSource, /"java-basecamp-complete"[\s\S]*?18, 135/);
+  assert.equal(modules.reduce((total, module) => total + module.topics.length, 0), 148);
+  assert.match(courseCatalogSource, /"java-basecamp-complete"[\s\S]*?18, 148/);
 });
 
 test("Docker path covers a complete 18-module, 126-concept official-doc map", () => {
@@ -101,6 +101,7 @@ test("AI hub contains three complete, independently trackable 12-module paths", 
   assert.match(aiHubSource, /Generative AI Foundations/);
   assert.match(aiHubSource, /RAG Systems/);
   assert.match(aiHubSource, /Agentic AI/);
+  assert.equal(aiCourses.rag.certificateTitleHtml, "RAG Systems Topics<br>at a Glance");
 });
 
 test("every curriculum topic has a matching quick explanation", () => {
@@ -153,10 +154,16 @@ test("topic definitions and code comments remain separate learning layers", () =
   Object.values(aiCourses).forEach(verifyCourse);
 });
 
-test("Java 8 and REST API coverage includes the requested concepts", () => {
-  const java8 = modules.find((module) => module.id === 6);
-  assert.ok(java8.topics.includes("Collectors, grouping & partitioning"));
-  assert.ok(java8.topics.includes("CompletableFuture"));
+test("modern Java and REST API coverage includes the requested concepts", () => {
+  const modernJava = modules.find((module) => module.id === 6);
+  assert.equal(modernJava.title, "Modern Java: 8, 11, 17 & 21");
+  assert.ok(modernJava.topics.includes("Collectors, grouping & partitioning"));
+  assert.ok(modernJava.topics.includes("CompletableFuture"));
+  assert.ok(modernJava.topics.includes("Java 11: HTTP Client"));
+  assert.ok(modernJava.topics.includes("Sealed classes (Java 17)"));
+  assert.ok(modernJava.topics.includes("Virtual threads (Java 21)"));
+  assert.ok(modernJava.topics.includes("Pattern matching for switch (Java 21)"));
+  assert.ok(modernJava.topics.includes("Structured concurrency & scoped values (Java 21 preview)"));
 
   const rest = modules.find((module) => module.id === 18);
   assert.equal(rest.title, "REST APIs with Spring Boot");

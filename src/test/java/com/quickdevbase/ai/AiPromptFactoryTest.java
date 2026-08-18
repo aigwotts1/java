@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 class AiPromptFactoryTest {
     private final AiPromptFactory prompts = new AiPromptFactory();
     private final Course course = new Course(
-        "java", "java-basecamp-complete", "Java path", "Java at a Glance", "J", 18, 135, "/java", "summary", "notice"
+        "java", "java-basecamp-complete", "Java path", "Java at a Glance", "J", 18, 148, "/java", "summary", "notice"
     );
 
     @Test

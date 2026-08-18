@@ -554,7 +554,7 @@
       curriculumTitle: "One glance. Generative AI explained.",
       curriculumLede: "Learn the vocabulary quickly, then follow each primary-source link for implementation details and updates.",
       searchPlaceholder: "Search topics, e.g. tokens",
-      certificateTitleHtml: "Generative AI Foundations<br>Knowledge Path",
+      certificateTitleHtml: "Generative AI Topics<br>at a Glance",
       completionNoun: "Generative AI learner",
       trademark: "Independent educational project—not affiliated with or endorsed by OpenAI, Google, Anthropic, Hugging Face, or any model provider.",
       stageLabels: { foundation: "Foundations", core: "Building Blocks", production: "Quality & Production" }
@@ -581,7 +581,7 @@
       curriculumTitle: "One glance. The full RAG pipeline.",
       curriculumLede: "See where retrieval quality comes from, then use the linked primary documentation to build each component in depth.",
       searchPlaceholder: "Search topics, e.g. reranking",
-      certificateTitleHtml: "RAG Systems<br>Knowledge Path",
+      certificateTitleHtml: "RAG Systems Topics<br>at a Glance",
       completionNoun: "RAG systems learner",
       trademark: "Independent educational project. Provider names and marks belong to their respective owners; no vendor endorses this path.",
       stageLabels: { foundation: "Foundations", core: "Index & Search", retrieval: "Retrieval Quality", quality: "Evaluation & Production" }
@@ -608,7 +608,7 @@
       curriculumTitle: "One glance. Agent systems mapped.",
       curriculumLede: "Learn the patterns and safety boundaries first, then follow official sources for framework-specific implementation.",
       searchPlaceholder: "Search topics, e.g. handoffs",
-      certificateTitleHtml: "Agentic AI<br>Knowledge Path",
+      certificateTitleHtml: "Agentic AI Topics<br>at a Glance",
       completionNoun: "Agentic AI learner",
       trademark: "Independent educational project. Provider names and marks belong to their respective owners; no vendor endorses this path.",
       stageLabels: { foundation: "Foundations", core: "Reasoning & Flow", orchestration: "Orchestration", reliability: "Reliability & Safety" }
