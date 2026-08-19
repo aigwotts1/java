@@ -89,6 +89,11 @@ public class PageController {
         return html(withDataScript(portal, "/python-data.js", false));
     }
 
+    @GetMapping("/sql")
+    ResponseEntity<String> sql() {
+        return html(withDataScript(portal, "/sql-data.js", false));
+    }
+
     @GetMapping("/ai")
     ResponseEntity<String> ai() {
         return html(aiHub);

@@ -17,10 +17,11 @@ function updateCard(course, completed, total) {
 
 async function loadHomeProgress() {
   if (!document.querySelector("[data-course-card]")) return;
-  const [java, docker, python, generativeAi, rag, agenticAi] = await Promise.all([
+  const [java, docker, python, sql, generativeAi, rag, agenticAi] = await Promise.all([
     readJson("/api/progress?course=java"),
     readJson("/api/progress?course=docker"),
     readJson("/api/progress?course=python"),
+    readJson("/api/progress?course=sql"),
     readJson("/api/progress?course=generative-ai"),
     readJson("/api/progress?course=rag"),
     readJson("/api/progress?course=agentic-ai")
@@ -28,6 +29,7 @@ async function loadHomeProgress() {
   updateCard("java", java.completed.length, 18);
   updateCard("docker", docker.completed.length, 18);
   updateCard("python", python.completed.length, 18);
+  updateCard("sql", sql.completed.length, 18);
   updateCard("ai", generativeAi.completed.length + rag.completed.length + agenticAi.completed.length, 36);
 }
 

@@ -33,6 +33,11 @@ html[data-course="python"] {
   --orange-dark: #24527a;
 }
 
+html[data-course="sql"] {
+  --orange: #2f7d64;
+  --orange-dark: #185443;
+}
+
 html[data-course="rag"] {
   --orange: #2e8f81;
   --orange-dark: #19665c;
@@ -1715,6 +1720,7 @@ footer {
 
 html[data-course="docker"] .ai-guide-block { --ai-color: #1684c2; }
 html[data-course="python"] .ai-guide-block { --ai-color: #3776ab; }
+html[data-course="sql"] .ai-guide-block { --ai-color: #2f7d64; }
 html[data-course="generative-ai"] .ai-guide-block { --ai-color: #7358ca; }
 html[data-course="rag"] .ai-guide-block { --ai-color: #2e8f81; }
 html[data-course="agentic-ai"] .ai-guide-block { --ai-color: #d75d48; }
@@ -1800,6 +1806,34 @@ html[data-course="python"] .cup-body::before { border-color: #d0a81d; background
 html[data-course="python"] .cup-handle { border-color: #3776ab; border-left: 0; }
 html[data-course="python"] .dialog-content::-webkit-scrollbar-thumb { background: #3776ab; }
 html[data-course="python"] .dialog-content::-webkit-scrollbar-thumb:hover { background: #24527a; }
+
+html[data-course="sql"] .official-doc-link {
+  color: #185443;
+  background: #edf8f4;
+  border-color: #a9d7c8;
+}
+
+html[data-course="sql"] .hero-copy .eyebrow,
+html[data-course="sql"] .hero h1 em {
+  color: #2f7d64;
+}
+
+html[data-course="sql"] .hero h1 em::after {
+  background-image: url("data:image/svg+xml,%3Csvg width='250' height='10' viewBox='0 0 250 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 7c40-8 72 2 115-2 46-5 84 2 131-3' fill='none' stroke='%232f7d64' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+html[data-course="sql"] .button-primary {
+  background: #2f7d64;
+  box-shadow: 0 6px 0 #185443, 0 14px 24px rgba(31, 100, 79, .22);
+}
+
+html[data-course="sql"] .button-primary:active { box-shadow: 0 2px 0 #185443; }
+html[data-course="sql"] .cup-body { background: linear-gradient(135deg, #49a487, #246950); border-color: #185443; }
+html[data-course="sql"] .cup-body::before { border-color: #185443; background: #173f34; }
+html[data-course="sql"] .cup-body span { font: 700 25px var(--mono); letter-spacing: -.08em; }
+html[data-course="sql"] .cup-handle { border-color: #246950; border-left: 0; }
+html[data-course="sql"] .dialog-content::-webkit-scrollbar-thumb { background: #2f7d64; }
+html[data-course="sql"] .dialog-content::-webkit-scrollbar-thumb:hover { background: #185443; }
 
 html[data-course="generative-ai"] .official-doc-link,
 html[data-course="rag"] .official-doc-link,

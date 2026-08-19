@@ -560,6 +560,63 @@ test(
 );
 
 test(
+  "SQL completion earns a SQL-scoped certificate without changing other progress",
+  { skip: !baseUrl },
+  async () => {
+    const nonce = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const password = "LearnSQL!42";
+    const registration = await request("/api/auth/register", {
+      method: "POST",
+      body: { name: "SQL Learner", email: `sql-${nonce}@example.com`, password },
+    });
+    assert.equal(registration.status, 201);
+    const cookie = registration.cookie;
+
+    for (let moduleId = 1; moduleId <= 18; moduleId += 1) {
+      const saved = await request(`/api/progress/${moduleId}?course=sql`, {
+        method: "PUT",
+        cookie,
+        body: { completed: true },
+      });
+      assert.equal(saved.status, 200);
+    }
+
+    assert.deepEqual((await request("/api/progress?course=java", { cookie })).data.completed, []);
+    assert.deepEqual((await request("/api/progress?course=python", { cookie })).data.completed, []);
+    const status = await request("/api/certificate?course=sql", { cookie });
+    assert.equal(status.data.eligible, true);
+    assert.equal(status.data.completedCount, 18);
+
+    const claim = await request("/api/certificate/claim?course=sql", {
+      method: "POST",
+      cookie,
+      body: {
+        consent: true,
+        consentVersion: status.data.consentVersion,
+        publicName: "SQL Learner",
+      },
+    });
+    assert.equal(claim.status, 201);
+    assert.equal(claim.data.certificate.courseKey, "sql");
+    assert.equal(claim.data.certificate.courseTitle, "SQL Topics at a Glance");
+    assert.equal(claim.data.certificate.conceptCount, 126);
+    assert.match(claim.data.certificate.credentialId, /^QDB-SQL-/);
+
+    const publicPage = await request(`/certificate/${claim.data.certificate.publicId}`);
+    assert.equal(publicPage.status, 200);
+    assert.match(publicPage.data, /SQL Topics at a Glance/);
+    assert.match(publicPage.data, /not affiliated with or endorsed by the PostgreSQL project/);
+
+    const cleanup = await request("/api/account", {
+      method: "DELETE",
+      cookie,
+      body: { confirmation: "DELETE", password },
+    });
+    assert.equal(cleanup.status, 204);
+  },
+);
+
+test(
   "Agentic AI completion earns its own 12-module certificate and leaves the other AI paths untouched",
   { skip: !baseUrl },
   async () => {

@@ -7,11 +7,12 @@ Available paths:
 - **Java** — 18 modules and 148 concepts, including Java 8, 11, 17, and 21 milestones.
 - **Docker** — 18 modules and 126 concepts.
 - **Python** — 18 modules and 126 concepts.
+- **SQL** — 18 modules and 126 concepts, with PostgreSQL-flavoured examples.
 - **Generative AI Foundations** — 12 modules and 84 concepts.
 - **RAG Systems** — 12 modules and 84 concepts.
 - **Agentic AI** — 12 modules and 84 concepts.
 
-The technology library is at `/`. Course paths open at `/java`, `/docker`, `/python`, `/ai/generative-ai`, `/ai/rag`, and `/ai/agents`.
+The technology library is at `/`. Course paths open at `/java`, `/docker`, `/python`, `/sql`, `/ai/generative-ai`, `/ai/rag`, and `/ai/agents`.
 
 ## Technology stack
 

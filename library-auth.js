@@ -112,7 +112,7 @@ function setLibraryAuthMode(mode) {
   passwordInput.autocomplete = registering ? "new-password" : "current-password";
   document.querySelector("#authTitle").textContent = registering ? "Create your account" : "Welcome back";
   document.querySelector("#authSubtitle").textContent = registering
-    ? "Save progress across Java, Docker, Python, and AI paths with one QuickDevBase account."
+    ? "Save progress across Java, Docker, Python, SQL, and AI paths with one QuickDevBase account."
     : "Sign in to sync progress across every technology path.";
   document.querySelector("#authSubmitText").textContent = registering ? "Create account" : "Sign in";
   document.querySelector("#authSwitchText").textContent = registering ? "Already have an account?" : "New to QuickDevBase?";

@@ -20,6 +20,9 @@ public class CourseCatalog {
         add(new Course("python", "python-developer-knowledge", "Python Topics at a Glance", "Python at a Glance", "Py", 18, 126, "/python",
             "Python fundamentals, collections, functions, object protocols, files, typing, testing, concurrency, SQLite, HTTP APIs, packaging, performance, and security.",
             "Python and the Python logos are trademarks or registered trademarks of the Python Software Foundation. QuickDevBase is not affiliated with or endorsed by the Python Software Foundation."));
+        add(new Course("sql", "sql-developer-knowledge", "SQL Topics at a Glance", "SQL at a Glance", "SQL", 18, 126, "/sql",
+            "SQL foundations, tables, constraints, filtering, joins, aggregates, CTEs, data modification, transactions, functions, indexes, query plans, windows, modeling, and security.",
+            "QuickDevBase is an independent educational project and is not affiliated with or endorsed by the PostgreSQL project. PostgreSQL and related marks belong to their respective owners."));
         add(new Course("generative-ai", "generative-ai-foundations", "Generative AI Topics at a Glance", "Generative AI at a Glance", "G", 12, 84, "/ai/generative-ai",
             "AI foundations, transformers, tokens, embeddings, prompting, structured outputs, multimodality, customization, evaluation, safety, and production trade-offs.",
             independentAiNotice()));

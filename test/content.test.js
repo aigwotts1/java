@@ -12,6 +12,7 @@ const indexSource = fs.readFileSync(path.join(__dirname, "..", "index.html"), "u
 const homeSource = fs.readFileSync(path.join(__dirname, "..", "home.html"), "utf8");
 const dockerSource = fs.readFileSync(path.join(__dirname, "..", "docker-data.js"), "utf8");
 const pythonSource = fs.readFileSync(path.join(__dirname, "..", "python-data.js"), "utf8");
+const sqlSource = fs.readFileSync(path.join(__dirname, "..", "sql-data.js"), "utf8");
 const aiSource = fs.readFileSync(path.join(__dirname, "..", "ai-data.js"), "utf8");
 const aiHubSource = fs.readFileSync(path.join(__dirname, "..", "ai.html"), "utf8");
 
@@ -31,6 +32,7 @@ const exampleComments = readLiteral("const javaExampleComments = ", ";\n\nconst 
 const aiCourses = Function("window", aiSource + "; return window.QUICKDEV_AI_COURSES;")({});
 const dockerCourse = Function("window", `${dockerSource}; return window.QUICKDEV_COURSE;`)({});
 const pythonCourse = Function("window", `${pythonSource}; return window.QUICKDEV_COURSE;`)({});
+const sqlCourse = Function("window", `${sqlSource}; return window.QUICKDEV_COURSE;`)({});
 
 test("curriculum IDs, topic totals, and Spring backend module limit stay aligned", () => {
   assert.equal(modules.length, 18);
@@ -77,6 +79,27 @@ test("Python path covers a complete 18-module, 126-concept official-doc map", ()
   for (const [topic, examples] of Object.entries(pythonCourse.groupedExamples)) {
     for (const [label] of examples) {
       assert.ok(pythonCourse.exampleComments[label], `${topic} / ${label} is missing its beginner comment.`);
+    }
+  }
+});
+
+test("SQL path covers a complete 18-module, 126-concept official-doc map", () => {
+  assert.equal(sqlCourse.modules.length, 18);
+  assert.deepEqual(sqlCourse.modules.map((module) => module.id), Array.from({ length: 18 }, (_, index) => index + 1));
+  assert.equal(sqlCourse.modules.reduce((total, module) => total + module.topics.length, 0), 126);
+  for (const module of sqlCourse.modules) {
+    assert.equal(sqlCourse.quickNotes[module.id].length, module.topics.length);
+    assert.match(module.officialUrl, /^https:\/\/www\.postgresql\.org\/docs\/current\//);
+  }
+  assert.ok(sqlCourse.modules.some((module) => module.topics.includes("PRIMARY KEY")));
+  assert.ok(sqlCourse.modules.some((module) => module.topics.includes("INNER JOIN")));
+  assert.ok(sqlCourse.modules.some((module) => module.topics.includes("Common table expressions")));
+  assert.ok(sqlCourse.modules.some((module) => module.topics.includes("Window frames")));
+  assert.ok(sqlCourse.modules.some((module) => module.topics.includes("EXPLAIN ANALYZE")));
+  assert.ok(sqlCourse.modules.some((module) => module.topics.includes("Row-level security")));
+  for (const [topic, examples] of Object.entries(sqlCourse.groupedExamples)) {
+    for (const [label] of examples) {
+      assert.ok(sqlCourse.exampleComments[label], `${topic} / ${label} is missing its query explanation.`);
     }
   }
 });
@@ -151,6 +174,7 @@ test("topic definitions and code comments remain separate learning layers", () =
   });
   verifyCourse(dockerCourse);
   verifyCourse(pythonCourse);
+  verifyCourse(sqlCourse);
   Object.values(aiCourses).forEach(verifyCourse);
 });
 
@@ -205,6 +229,7 @@ test("certificate publication is consent-based and completion-only language is v
   assert.match(homeSource, /href="\/java"/);
   assert.match(homeSource, /href="\/docker"/);
   assert.match(homeSource, /href="\/python"/);
+  assert.match(homeSource, /href="\/sql"/);
   assert.match(homeSource, /href="\/ai"/);
   assert.match(homeSource, /class="team-link" href="\/team"/);
   assert.doesNotMatch(homeSource, /Abhinav Vashishth/);

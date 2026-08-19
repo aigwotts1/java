@@ -28,6 +28,9 @@ const screenshots = {
   python: path.join(process.cwd(), "qa-python-home.png"),
   pythonMobile: path.join(process.cwd(), "qa-python-mobile.png"),
   pythonLesson: path.join(process.cwd(), "qa-python-rest.png"),
+  sql: path.join(process.cwd(), "qa-sql-home.png"),
+  sqlMobile: path.join(process.cwd(), "qa-sql-mobile.png"),
+  sqlLesson: path.join(process.cwd(), "qa-sql-joins.png"),
   auth: path.join(process.cwd(), "qa-auth.png"),
   lesson: path.join(process.cwd(), "qa-rest-methods.png"),
   mobile: path.join(process.cwd(), "qa-mobile-rest.png"),
@@ -282,13 +285,14 @@ async function run() {
 
     await setViewport(1440, 1000, false);
     await client.send("Page.navigate", { url: baseUrl });
-    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 4`);
+    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 5`);
     const library = await evaluate(`({
       title: document.title,
       technologyCards: document.querySelectorAll("[data-course-card]").length,
       javaPath: document.querySelector('[data-course-card="java"]').getAttribute("href"),
       dockerPath: document.querySelector('[data-course-card="docker"]').getAttribute("href"),
       pythonPath: document.querySelector('[data-course-card="python"]').getAttribute("href"),
+      sqlPath: document.querySelector('[data-course-card="sql"]').getAttribute("href"),
       aiPath: document.querySelector('[data-course-card="ai"]').getAttribute("href"),
       brandLogos: document.querySelectorAll(".brand-logo").length,
       logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
@@ -303,10 +307,11 @@ async function run() {
       errors: window.__qaErrors
     })`);
     assert.equal(library.title, "QuickDevBase — Developer Knowledge, At a Glance");
-    assert.equal(library.technologyCards, 4);
+    assert.equal(library.technologyCards, 5);
     assert.equal(library.javaPath, "/java");
     assert.equal(library.dockerPath, "/docker");
     assert.equal(library.pythonPath, "/python");
+    assert.equal(library.sqlPath, "/sql");
     assert.equal(library.aiPath, "/ai");
     assert.equal(library.brandLogos, 2);
     assert.equal(library.logosLoaded, true);
@@ -774,6 +779,76 @@ async function run() {
     assert.equal(pythonLesson.overflowY, "auto");
     await capture(screenshots.pythonLesson);
 
+    await navigate(1440, 1000, false, "Sign in", "/sql");
+    const sql = await evaluate(`({
+      title: document.title,
+      modules: document.querySelectorAll(".module-card").length,
+      concepts: [...document.querySelectorAll(".module-footer > span:first-child")]
+        .reduce((total, item) => total + Number.parseInt(item.textContent, 10), 0),
+      searchPlaceholder: document.querySelector("#searchInput").placeholder,
+      hasJoins: document.documentElement.textContent.includes("Joins"),
+      hasWindows: document.documentElement.textContent.includes("Window Functions"),
+      hasTransactions: document.documentElement.textContent.includes("Transactions & Concurrency"),
+      avatarColor: getComputedStyle(document.querySelector(".auth-avatar")).backgroundColor,
+      navigationAccent: getComputedStyle(document.querySelector(".main-nav .active"), "::after").backgroundColor,
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(sql.title, "SQL at a Glance | QuickDevBase");
+    assert.equal(sql.modules, 18);
+    assert.equal(sql.concepts, 126);
+    assert.equal(sql.searchPlaceholder, "Search topics, e.g. joins");
+    assert.equal(sql.hasJoins, true);
+    assert.equal(sql.hasWindows, true);
+    assert.equal(sql.hasTransactions, true);
+    assert.equal(sql.avatarColor, "rgb(47, 125, 100)");
+    assert.equal(sql.navigationAccent, "rgb(47, 125, 100)");
+    assert.equal(sql.noHorizontalOverflow, true);
+    assert.deepEqual(sql.errors, []);
+    await capture(screenshots.sql);
+
+    await navigate(390, 844, false, "Sign in", "/sql");
+    const sqlMobile = await evaluate(`({
+      responsiveLayout: matchMedia("(max-width: 700px)").matches,
+      logoLoaded: document.querySelector(".site-header .brand-logo").complete && document.querySelector(".site-header .brand-logo").naturalWidth > 0,
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(sqlMobile.responsiveLayout, true);
+    assert.equal(sqlMobile.logoLoaded, true);
+    assert.equal(sqlMobile.noHorizontalOverflow, true);
+    assert.deepEqual(sqlMobile.errors, []);
+    await capture(screenshots.sqlMobile);
+
+    await navigate(1440, 1000, false, "Sign in", "/sql");
+    await evaluate(`document.querySelector('.module-card[data-module-id="8"]').click()`);
+    await waitFor(`document.querySelector("#lessonDialog").open`);
+    const sqlLesson = await evaluate(`(() => {
+      const content = document.querySelector(".dialog-content");
+      const firstLesson = document.querySelector("#dialogConcepts .concept-item");
+      firstLesson.open = true;
+      content.scrollTop = firstLesson.offsetTop - 20;
+      const official = document.querySelector("#dialogOfficialLink");
+      return {
+        title: document.querySelector("#dialogTitle").textContent.trim(),
+        concepts: document.querySelectorAll("#dialogConcepts .concept-item").length,
+        allExamplesCommented: [...document.querySelectorAll("#dialogConcepts .concept-snippet")]
+          .every((item) => item.querySelector(".snippet-comment").textContent.trim().length > 3),
+        officialUrl: official.href,
+        officialLabel: official.textContent.trim(),
+        scrollable: content.scrollHeight > content.clientHeight,
+        overflowY: getComputedStyle(content).overflowY
+      };
+    })()`);
+    assert.equal(sqlLesson.title, "Joins");
+    assert.equal(sqlLesson.concepts, 7);
+    assert.equal(sqlLesson.allExamplesCommented, true);
+    assert.match(sqlLesson.officialUrl, /^https:\/\/www\.postgresql\.org\/docs\/current\/tutorial-join\.html$/);
+    assert.ok(sqlLesson.officialLabel.includes("Official PostgreSQL documentation"));
+    assert.equal(sqlLesson.scrollable, true);
+    assert.equal(sqlLesson.overflowY, "auto");
+    await capture(screenshots.sqlLesson);
+
     await setViewport(1440, 1000, false);
     await client.send("Page.navigate", { url: `${baseUrl}/ai` });
     await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-ai-path]").length === 3`);
@@ -1157,7 +1232,7 @@ async function run() {
     });
 
     console.log("Browser smoke test passed.");
-    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, modernJava, restLesson, mobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
+    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, modernJava, restLesson, mobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, sql, sqlMobile, sqlLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
     try {
       await appRequest("/api/account", {
