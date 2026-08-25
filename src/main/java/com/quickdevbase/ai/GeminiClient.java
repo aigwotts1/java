@@ -5,6 +5,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
+import com.quickdevbase.ai.KnowledgeCatalog.KnowledgeChunk;
 import com.quickdevbase.web.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
@@ -75,6 +76,86 @@ public class GeminiClient {
         return request(body);
     }
 
+    List<Double> embedQuery(String query) {
+        Map<String, Object> body = Map.of(
+            "model", "models/" + settings.embeddingModel(),
+            "content", textContent("task: search result | query: " + query),
+            "output_dimensionality", settings.embeddingDimensions()
+        );
+        EmbeddingResponse response = embeddingRequest(
+            "/v1beta/models/{model}:embedContent",
+            body,
+            EmbeddingResponse.class
+        );
+        if (response == null || response.embedding() == null) {
+            throw unusableEmbedding();
+        }
+        return validateEmbedding(response.embedding().values());
+    }
+
+    List<List<Double>> embedDocuments(List<KnowledgeChunk> chunks) {
+        if (chunks == null || chunks.isEmpty()) return List.of();
+        List<Map<String, Object>> requests = chunks.stream().map(chunk -> Map.<String, Object>of(
+            "model", "models/" + settings.embeddingModel(),
+            "content", textContent(
+                "task: search result | title: " + chunk.courseName() + " - " + chunk.moduleTitle()
+                    + " - " + chunk.topic() + " | text: " + chunk.documentText()
+            ),
+            "output_dimensionality", settings.embeddingDimensions()
+        )).toList();
+        BatchEmbeddingResponse response = embeddingRequest(
+            "/v1beta/models/{model}:batchEmbedContents",
+            Map.of("requests", requests),
+            BatchEmbeddingResponse.class
+        );
+        if (response == null || response.embeddings() == null || response.embeddings().size() != chunks.size()) {
+            throw unusableEmbedding();
+        }
+        return response.embeddings().stream().map(embedding -> validateEmbedding(embedding.values())).toList();
+    }
+
+    private static Map<String, Object> textContent(String text) {
+        return Map.of("parts", List.of(Map.of("text", text)));
+    }
+
+    private List<Double> validateEmbedding(List<Double> values) {
+        if (values == null || values.size() != settings.embeddingDimensions()
+            || values.stream().anyMatch(value -> value == null || !Double.isFinite(value))) {
+            throw unusableEmbedding();
+        }
+        return List.copyOf(values);
+    }
+
+    private <T> T embeddingRequest(String path, Map<String, Object> body, Class<T> responseType) {
+        try {
+            return client.post()
+                .uri(path, settings.embeddingModel())
+                .header("x-goog-api-key", settings.apiKey())
+                .body(body)
+                .retrieve()
+                .body(responseType);
+        } catch (RestClientResponseException exception) {
+            if (exception.getStatusCode().value() == 429) {
+                throw new ApiException(HttpStatus.TOO_MANY_REQUESTS,
+                    "Semantic search has reached its provider quota. Please try again later.");
+            }
+            if (exception.getStatusCode().is4xxClientError()) {
+                throw new ApiException(HttpStatus.SERVICE_UNAVAILABLE,
+                    "Semantic search is not configured correctly yet.");
+            }
+            throw new ApiException(HttpStatus.SERVICE_UNAVAILABLE,
+                "Semantic search is temporarily unavailable. Please try again shortly.");
+        } catch (ResourceAccessException exception) {
+            throw new ApiException(HttpStatus.SERVICE_UNAVAILABLE,
+                "Semantic search took too long to respond. Please try again.");
+        }
+    }
+
+    private static ApiException unusableEmbedding() {
+        return new ApiException(HttpStatus.BAD_GATEWAY,
+            "Semantic search could not produce a usable embedding.");
+    }
+
     private GeminiAnswer request(Map<String, Object> body) {
 
         try {
@@ -132,4 +213,7 @@ public class GeminiClient {
     record Content(List<Part> parts) {}
     record Part(String text) {}
     record Usage(Integer promptTokenCount, Integer candidatesTokenCount, Integer totalTokenCount) {}
+    record ContentEmbedding(List<Double> values) {}
+    record EmbeddingResponse(ContentEmbedding embedding) {}
+    record BatchEmbeddingResponse(List<ContentEmbedding> embeddings) {}
 }

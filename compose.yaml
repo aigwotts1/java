@@ -14,6 +14,10 @@ services:
       PUBLIC_APP_URL: ${PUBLIC_APP_URL:-}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.5-flash-lite}
+      GEMINI_EMBEDDING_MODEL: ${GEMINI_EMBEDDING_MODEL:-gemini-embedding-2}
+      RAG_ENABLED: ${RAG_ENABLED:-true}
+      RAG_SEMANTIC_THRESHOLD: ${RAG_SEMANTIC_THRESHOLD:-0.55}
+      RAG_SYNC_INTERVAL_MS: ${RAG_SYNC_INTERVAL_MS:-21600000}
       AI_DAILY_LIMIT: ${AI_DAILY_LIMIT:-20}
       AI_MINUTE_LIMIT: ${AI_MINUTE_LIMIT:-5}
       AI_GLOBAL_DAILY_LIMIT: ${AI_GLOBAL_DAILY_LIMIT:-200}
@@ -33,7 +37,7 @@ services:
       start_period: 15s
 
   db:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:0.8.6-pg16
     restart: unless-stopped
     ports:
       - "127.0.0.1:${DB_PORT:-5432}:5432"

@@ -307,6 +307,7 @@ async function run() {
       founderOnHomepage: Boolean(document.querySelector("#founderName")),
       discoveryPresent: Boolean(document.querySelector("#askQuickDev")),
       discoveryImageTypes: document.querySelector("#discoveryImage").getAttribute("accept"),
+      ragCopyVisible: document.querySelector("#askQuickDev").textContent.includes("grounded hybrid retrieval"),
       taglineVisible: document.documentElement.textContent.includes("Developer knowledge, at a glance"),
       noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
       errors: window.__qaErrors
@@ -328,6 +329,7 @@ async function run() {
     assert.equal(library.founderOnHomepage, false);
     assert.equal(library.discoveryPresent, true);
     assert.equal(library.discoveryImageTypes, "image/png,image/jpeg,image/webp");
+    assert.equal(library.ragCopyVisible, true);
     assert.equal(library.taglineVisible, true);
     assert.equal(library.noHorizontalOverflow, true);
     assert.deepEqual(library.errors, []);
@@ -346,6 +348,35 @@ async function run() {
     assert.equal(discoveryDesktop.visible, true);
     assert.equal(discoveryDesktop.chatInsideSection, true, JSON.stringify(discoveryDesktop));
     assert.equal(discoveryDesktop.noHorizontalOverflow, true);
+    const citationUi = await evaluate(`(() => {
+      renderDiscoveryResult({
+        detectedTopic: "EXPLAIN ANALYZE",
+        answer: "EXPLAIN ANALYZE executes the plan and reports actual timing. [1]",
+        retrievalMode: "hybrid",
+        generated: true,
+        privacyNote: "Grounded from server-owned curriculum.",
+        matches: [{
+          course: "sql",
+          moduleId: 15,
+          moduleTitle: "Views, Indexes & Query Plans",
+          explanation: "EXPLAIN ANALYZE runs the statement and reports measured execution details.",
+          matchedConcepts: ["EXPLAIN ANALYZE"],
+          sourceLabel: "QuickDevBase SQL curriculum",
+          path: "/sql?module=15&topic=EXPLAIN%20ANALYZE&source=ask-quickdev",
+          officialUrl: "https://www.postgresql.org/docs/current/using-explain.html"
+        }]
+      });
+      return {
+        detected: document.querySelector("#detectedTopic").textContent.trim(),
+        answer: document.querySelector("#discoveryAnswer").textContent.trim(),
+        source: document.querySelector(".result-source span").textContent.trim(),
+        lessonPath: document.querySelector(".result-actions a").getAttribute("href")
+      };
+    })()`);
+    assert.equal(citationUi.detected, "Grounded RAG · Matched topic · EXPLAIN ANALYZE");
+    assert.match(citationUi.answer, /\[1\]/);
+    assert.equal(citationUi.source, "Source [1] · From QuickDevBase SQL curriculum");
+    assert.match(citationUi.lessonPath, /^\/sql\?module=15/);
     await capture(screenshots.discovery);
     await evaluate(`document.documentElement.style.scrollBehavior = "auto"; scrollTo(0, document.documentElement.scrollHeight)`);
     await delay(150);
@@ -571,7 +602,7 @@ async function run() {
 
     if (discoveryOnly) {
       console.log("Discovery browser smoke test passed.");
-      console.log(JSON.stringify({ library, discoveryDesktop, libraryMobile, discoveryMobile, libraryResponsiveWidths, deepLink, sqlDeepLink }, null, 2));
+      console.log(JSON.stringify({ library, discoveryDesktop, citationUi, libraryMobile, discoveryMobile, libraryResponsiveWidths, deepLink, sqlDeepLink }, null, 2));
       return;
     }
 

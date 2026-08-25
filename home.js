@@ -105,8 +105,8 @@ function updateDiscoveryAuth() {
   if (!submit || !note) return;
   submit.textContent = homeUser ? "Find my lesson" : "Sign in to find my lesson";
   note.textContent = homeUser
-    ? "Text searches stay local to our curriculum. Uploaded images are not retained by QuickDevBase after processing."
-    : "Sign in to search. Text searches do not use an AI provider; image matching uses the configured server-side AI service.";
+    ? "Hybrid RAG is used when configured, with local curriculum retrieval as the fallback. Uploaded images are not retained."
+    : "Sign in to search across the curriculum with grounded retrieval and verified lesson links.";
 }
 
 function setDiscoveryStatus(label, busy = false) {
@@ -125,17 +125,20 @@ function renderDiscoveryResult(result) {
 
   answer.textContent = result.answer;
   detected.hidden = !result.detectedTopic;
-  detected.textContent = result.detectedTopic ? "Matched topic · " + result.detectedTopic : "";
+  const retrievalLabel = result.generated
+    ? "Grounded RAG"
+    : result.retrievalMode === "hybrid" ? "Hybrid retrieval" : "Curriculum retrieval";
+  detected.textContent = result.detectedTopic ? retrievalLabel + " · Matched topic · " + result.detectedTopic : "";
   results.replaceChildren();
 
-  for (const match of result.matches || []) {
+  for (const [matchIndex, match] of (result.matches || []).entries()) {
     const card = document.createElement("article");
     card.className = "discovery-result-card";
 
     const source = document.createElement("div");
     source.className = "result-source";
     const sourceName = document.createElement("span");
-    sourceName.textContent = "From " + match.sourceLabel;
+    sourceName.textContent = "Source [" + (matchIndex + 1) + "] · From " + match.sourceLabel;
     const moduleNumber = document.createElement("span");
     moduleNumber.textContent = "Module " + String(match.moduleId).padStart(2, "0");
     source.append(sourceName, moduleNumber);

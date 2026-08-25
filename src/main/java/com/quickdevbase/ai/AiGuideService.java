@@ -25,6 +25,8 @@ public class AiGuideService {
     private final GeminiClient gemini;
     private final AiUsageService usage;
     private final RateLimitService rateLimits;
+    private final KnowledgeVectorStore vectors;
+    private final KnowledgeCatalog knowledge;
 
     public AiGuideService(
         AiSettings settings,
@@ -32,7 +34,9 @@ public class AiGuideService {
         AiPromptFactory prompts,
         GeminiClient gemini,
         AiUsageService usage,
-        RateLimitService rateLimits
+        RateLimitService rateLimits,
+        KnowledgeVectorStore vectors,
+        KnowledgeCatalog knowledge
     ) {
         this.settings = settings;
         this.courses = courses;
@@ -40,11 +44,21 @@ public class AiGuideService {
         this.gemini = gemini;
         this.usage = usage;
         this.rateLimits = rateLimits;
+        this.vectors = vectors;
+        this.knowledge = knowledge;
     }
 
     public Status status(UUID userId) {
-        return new Status(settings.enabled(), settings.enabled() ? settings.model() : null,
-            settings.dailyLimit(), usage.remaining(userId, settings.dailyLimit()));
+        return new Status(
+            settings.enabled(),
+            settings.enabled() ? settings.model() : null,
+            settings.dailyLimit(),
+            usage.remaining(userId, settings.dailyLimit()),
+            settings.ragEnabled(),
+            settings.ragEnabled() ? settings.embeddingModel() : null,
+            settings.ragEnabled() ? vectors.indexedCount(settings.embeddingModel()) : 0,
+            knowledge.conceptCount()
+        );
     }
 
     public Answer ask(UUID userId, Request input) {
@@ -123,7 +137,16 @@ public class AiGuideService {
         String context,
         String officialUrl
     ) {}
-    public record Status(boolean enabled, String model, int dailyLimit, int remainingToday) {}
+    public record Status(
+        boolean enabled,
+        String model,
+        int dailyLimit,
+        int remainingToday,
+        boolean ragEnabled,
+        String embeddingModel,
+        int indexedChunks,
+        int totalChunks
+    ) {}
     public record Answer(
         String answer,
         String model,

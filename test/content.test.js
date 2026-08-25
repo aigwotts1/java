@@ -245,6 +245,26 @@ test("image discovery is grounded across every curriculum and deep-links to any 
   assert.match(privacySource, /Uploaded images and their extracted text are not retained after processing/);
 });
 
+test("hybrid RAG uses pgvector, fused retrieval, grounded prompts, and local fallback", () => {
+  const migrationSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "db", "migration", "V4__hybrid_rag.sql"), "utf8");
+  const vectorSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "ai", "KnowledgeVectorStore.java"), "utf8");
+  const retrieverSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "ai", "HybridKnowledgeRetriever.java"), "utf8");
+  const ragPromptSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "ai", "RagPromptFactory.java"), "utf8");
+  const composeSource = fs.readFileSync(path.join(__dirname, "..", "compose.yaml"), "utf8");
+  const homeScript = fs.readFileSync(path.join(__dirname, "..", "home.js"), "utf8");
+
+  assert.match(composeSource, /pgvector\/pgvector:0\.8\.6-pg16/);
+  assert.match(migrationSource, /CREATE EXTENSION IF NOT EXISTS vector/);
+  assert.match(migrationSource, /embedding vector\(768\)/);
+  assert.match(migrationSource, /USING GIN\(search_vector\)/);
+  assert.match(vectorSource, /embedding <=> \?::vector/);
+  assert.match(retrieverSource, /RRF_K = 60\.0/);
+  assert.match(retrieverSource, /fell back to lexical matching/);
+  assert.match(ragPromptSource, /Answer only from the supplied QuickDevBase curriculum context/);
+  assert.match(ragPromptSource, /Never invent a lesson, source, URL, API behavior, or citation/);
+  assert.match(homeScript, /Source \[" \+ \(matchIndex \+ 1\) \+ "\]/);
+});
+
 test("certificate publication is consent-based and completion-only language is visible", () => {
   assert.match(indexSource, /Claim &amp; publish certificate/);
   assert.match(indexSource, /I consent to publish my chosen name/);

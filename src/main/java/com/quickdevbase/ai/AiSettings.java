@@ -27,6 +27,26 @@ public class AiSettings implements ApplicationRunner {
         return environment.getProperty("GEMINI_MODEL", "gemini-3.5-flash-lite").trim();
     }
 
+    public String embeddingModel() {
+        return environment.getProperty("GEMINI_EMBEDDING_MODEL", "gemini-embedding-2").trim();
+    }
+
+    public int embeddingDimensions() {
+        return 768;
+    }
+
+    public boolean ragEnabled() {
+        return enabled() && environment.getProperty("RAG_ENABLED", Boolean.class, true);
+    }
+
+    public double semanticThreshold() {
+        double value = environment.getProperty("RAG_SEMANTIC_THRESHOLD", Double.class, 0.55);
+        if (!Double.isFinite(value) || value < 0.0 || value > 1.0) {
+            throw new IllegalStateException("RAG_SEMANTIC_THRESHOLD must be between 0 and 1.");
+        }
+        return value;
+    }
+
     public int dailyLimit() {
         return bounded("AI_DAILY_LIMIT", 20, 1, 200);
     }
@@ -64,6 +84,11 @@ public class AiSettings implements ApplicationRunner {
         if (!model().matches("[A-Za-z0-9._-]{3,80}")) {
             throw new IllegalStateException("GEMINI_MODEL contains unsupported characters.");
         }
+        if (!embeddingModel().matches("[A-Za-z0-9._-]{3,80}")) {
+            throw new IllegalStateException("GEMINI_EMBEDDING_MODEL contains unsupported characters.");
+        }
+        ragEnabled();
+        semanticThreshold();
         dailyLimit();
         minuteLimit();
         globalDailyLimit();

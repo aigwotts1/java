@@ -25,6 +25,13 @@ spring:
     locations: classpath:db/migration
   lifecycle:
     timeout-per-shutdown-phase: 20s
+  task:
+    execution:
+      thread-name-prefix: quickdev-task-
+      pool:
+        core-size: 1
+        max-size: 2
+        queue-capacity: 20
 management:
   endpoints:
     web:

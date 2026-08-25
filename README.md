@@ -20,9 +20,9 @@ The technology library is at `/`. Course paths open at `/java`, `/docker`, `/pyt
 - Spring MVC for pages and JSON APIs
 - Spring Security with database-backed sessions, CSRF tokens, origin validation, security headers, and rate limits
 - Spring JDBC with HikariCP
-- PostgreSQL 16
+- PostgreSQL 16 with pgvector
 - Flyway database migrations
-- Optional Gemini-powered Ask QuickDev lesson guide and Java screenshot-to-course finder
+- Optional Gemini-powered Ask QuickDev lesson guide and hybrid RAG topic finder
 - Thymeleaf for public certificate pages
 - HTML, CSS, and vanilla JavaScript for the responsive frontend
 - Maven for builds and tests
@@ -55,7 +55,7 @@ GEMINI_API_KEY=your-server-side-key
 
 Then rebuild the app with `docker compose up --build -d`. When the key is blank, the learning portal continues to work normally and the lesson UI reports that AI is not configured.
 
-Ask QuickDev is intentionally bounded: it requires login, receives only the open lesson plus the learner's question for lesson help, and can inspect a PNG, JPEG, or WebP image up to 5 MB to match it against the server-owned Java, Docker, Python, SQL, Generative AI, RAG, and Agentic AI curricula. Uploaded images are sent to Gemini for that request but are not retained after processing or placed in the answer cache by QuickDevBase. Text-only topic matching is local and does not call Gemini. Run `npm run curriculum:export` after editing a browser curriculum so the server-side retrieval snapshots stay synchronized. Per-minute, per-user daily, and site-wide limits are enforced in PostgreSQL; identical lesson-guide answers are cached for seven days. Names, emails, progress, and certificates are not sent to Gemini. Never put `GEMINI_API_KEY` in browser JavaScript or commit it to Git.
+Ask QuickDev is intentionally bounded: it requires login, receives only the learner's question and retrieved server-owned curriculum excerpts, and can inspect a PNG, JPEG, or WebP image up to 5 MB. Its hybrid RAG pipeline combines the existing exact technical matcher with 768-dimensional semantic search in pgvector, fuses both rankings, and asks Gemini to answer only from the top three QuickDevBase matches. Every answer keeps numbered source cards, official documentation, and exact lesson links. Uploaded images are sent to Gemini for that request but are not retained after processing or placed in the answer cache by QuickDevBase. If RAG is disabled, unavailable, or still indexing, local lexical retrieval remains available. Run `npm run curriculum:export` after editing a browser curriculum so the server-side retrieval snapshots stay synchronized; content hashes ensure only changed concepts are re-embedded. Per-minute, per-user daily, and site-wide limits are enforced in PostgreSQL. Names, emails, progress, and certificates are not sent to Gemini. Never put `GEMINI_API_KEY` in browser JavaScript or commit it to Git.
 
 Useful commands:
 
@@ -81,7 +81,7 @@ Requirements:
 
 - Java 17+
 - Maven 3.9+
-- PostgreSQL
+- PostgreSQL with the pgvector extension
 
 Set the database URL and run Spring Boot:
 
@@ -142,6 +142,10 @@ The database port is bound to `127.0.0.1`, so it is available to local tools wit
 | `DB_SSL_REJECT_UNAUTHORIZED` | When `false`, default SSL mode becomes `require` |
 | `GEMINI_API_KEY` | Optional server-side Gemini key; blank disables Ask QuickDev |
 | `GEMINI_MODEL` | Gemini model; defaults to `gemini-3.5-flash-lite` |
+| `GEMINI_EMBEDDING_MODEL` | Embedding model for semantic retrieval; defaults to `gemini-embedding-2` |
+| `RAG_ENABLED` | Enables semantic retrieval and grounded discovery answers when a Gemini key exists |
+| `RAG_SEMANTIC_THRESHOLD` | Minimum cosine similarity accepted from vector search; defaults to `0.55` |
+| `RAG_SYNC_INTERVAL_MS` | Delay between resumable curriculum-index synchronization attempts; defaults to six hours |
 | `AI_DAILY_LIMIT` | Non-cached provider requests allowed per user/day; defaults to `20` |
 | `AI_MINUTE_LIMIT` | AI requests per user/minute, including cached hits; defaults to `5` |
 | `AI_GLOBAL_DAILY_LIMIT` | Site-wide non-cached provider-call ceiling/day; defaults to `200` |

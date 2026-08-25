@@ -3,11 +3,14 @@ package com.quickdevbase.ai;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -40,47 +43,66 @@ public class KnowledgeCatalog {
         new CurriculumSource("agentic-ai", "curriculum/ai.json", "agentic-ai")
     );
 
-    private final List<ConceptEntry> concepts;
+    private final List<KnowledgeChunk> concepts;
+    private final Map<String, KnowledgeChunk> conceptsByKey;
 
     public KnowledgeCatalog(ObjectMapper mapper, CourseCatalog courses) {
         this.concepts = load(mapper, courses);
+        Map<String, KnowledgeChunk> indexed = new HashMap<>();
+        concepts.forEach(concept -> indexed.put(concept.chunkKey(), concept));
+        this.conceptsByKey = Map.copyOf(indexed);
     }
 
     public List<KnowledgeMatch> search(String rawQuery, int limit) {
+        return matches(rankedSearch(rawQuery, 60), limit);
+    }
+
+    public List<RankedChunk> rankedSearch(String rawQuery, int limit) {
         String query = normalize(rawQuery);
         if (query.isBlank()) return List.of();
 
         Set<String> queryTokens = usefulTokens(query);
-        List<ScoredConcept> scored = concepts.stream()
+        return concepts.stream()
             .map(concept -> new ScoredConcept(concept, score(query, queryTokens, concept)))
             .filter(candidate -> candidate.score() >= 4)
             .sorted(Comparator.comparingInt(ScoredConcept::score).reversed()
                 .thenComparing(candidate -> candidate.concept().courseKey())
                 .thenComparing(candidate -> candidate.concept().moduleId())
                 .thenComparing(candidate -> candidate.concept().topic()))
-            .limit(60)
+            .limit(Math.max(1, Math.min(limit, 100)))
+            .map(candidate -> new RankedChunk(candidate.concept(), candidate.score()))
             .toList();
+    }
 
+    public List<KnowledgeMatch> matches(List<RankedChunk> ranked, int limit) {
         Map<String, ModuleMatches> modules = new LinkedHashMap<>();
-        for (ScoredConcept candidate : scored) {
-            ConceptEntry concept = candidate.concept();
+        for (RankedChunk candidate : ranked) {
+            KnowledgeChunk concept = candidate.chunk();
             String moduleKey = concept.courseKey() + ":" + concept.moduleId();
             ModuleMatches group = modules.computeIfAbsent(moduleKey, ignored -> new ModuleMatches(concept));
             group.add(concept, candidate.score());
         }
 
         return modules.values().stream()
-            .sorted(Comparator.comparingInt(ModuleMatches::score).reversed())
+            .sorted(Comparator.comparingDouble(ModuleMatches::score).reversed())
             .limit(Math.max(1, Math.min(limit, 5)))
             .map(ModuleMatches::response)
             .toList();
+    }
+
+    public List<KnowledgeChunk> allChunks() {
+        return concepts;
+    }
+
+    public KnowledgeChunk byChunkKey(String chunkKey) {
+        return conceptsByKey.get(chunkKey);
     }
 
     public int conceptCount() {
         return concepts.size();
     }
 
-    private static int score(String query, Set<String> queryTokens, ConceptEntry concept) {
+    private static int score(String query, Set<String> queryTokens, KnowledgeChunk concept) {
         String topic = normalize(concept.topic());
         String title = normalize(concept.moduleTitle());
         String description = normalize(concept.moduleDescription());
@@ -146,8 +168,17 @@ public class KnowledgeCatalog {
         return NON_WORD.matcher(ascii).replaceAll(" ").trim().replaceAll("\\s+", " ");
     }
 
-    private static List<ConceptEntry> load(ObjectMapper mapper, CourseCatalog courses) {
-        List<ConceptEntry> loaded = new ArrayList<>();
+    private static String hash(String value) {
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8));
+            return HexFormat.of().formatHex(digest);
+        } catch (NoSuchAlgorithmException impossible) {
+            throw new IllegalStateException(impossible);
+        }
+    }
+
+    private static List<KnowledgeChunk> load(ObjectMapper mapper, CourseCatalog courses) {
+        List<KnowledgeChunk> loaded = new ArrayList<>();
         for (CurriculumSource source : SOURCES) {
             Course course = courses.byKey(source.courseKey())
                 .orElseThrow(() -> new IllegalStateException("Unknown course " + source.courseKey() + "."));
@@ -167,7 +198,7 @@ public class KnowledgeCatalog {
         ObjectMapper mapper,
         CurriculumSource source,
         Course course,
-        List<ConceptEntry> loaded
+        List<KnowledgeChunk> loaded
     ) {
         try (var input = new ClassPathResource(source.resource()).getInputStream()) {
             JsonNode root = mapper.readTree(input);
@@ -190,14 +221,16 @@ public class KnowledgeCatalog {
                     );
                 }
                 for (int index = 0; index < topics.size(); index++) {
-                    loaded.add(new ConceptEntry(
+                    String topic = topics.get(index).asText();
+                    loaded.add(new KnowledgeChunk(
+                        hash(course.key() + ":" + moduleId + ":" + topic),
                         course.key(),
                         courseName,
                         course.path(),
                         moduleId,
                         module.path("title").asText(),
                         module.path("description").asText(),
-                        topics.get(index).asText(),
+                        topic,
                         moduleNotes.get(index).get(0).asText(),
                         moduleNotes.get(index).size() > 1 ? moduleNotes.get(index).get(1).asText() : "",
                         module.path("officialUrl").asText(),
@@ -212,7 +245,8 @@ public class KnowledgeCatalog {
 
     private record CurriculumSource(String courseKey, String resource, String nodeKey) {}
 
-    private record ConceptEntry(
+    public record KnowledgeChunk(
+        String chunkKey,
         String courseKey,
         String courseName,
         String coursePath,
@@ -224,32 +258,52 @@ public class KnowledgeCatalog {
         String example,
         String officialUrl,
         String officialLabel
-    ) {}
+    ) {
+        public String sourceLabel() {
+            return "QuickDevBase " + courseName + " curriculum";
+        }
 
-    private record ScoredConcept(ConceptEntry concept, int score) {}
+        public String lessonPath() {
+            String encodedTopic = URLEncoder.encode(topic, StandardCharsets.UTF_8).replace("+", "%20");
+            return coursePath + "?module=" + moduleId + "&topic=" + encodedTopic + "&source=ask-quickdev";
+        }
+
+        public String documentText() {
+            return "Course: " + courseName + "\nModule: " + moduleTitle + "\nTopic: " + topic
+                + "\nModule description: " + moduleDescription + "\nExplanation: " + explanation
+                + (example.isBlank() ? "" : "\nExample: " + example);
+        }
+
+        public String contentHash() {
+            return hash(documentText() + "\n" + officialUrl + "\n" + lessonPath());
+        }
+    }
+
+    private record ScoredConcept(KnowledgeChunk concept, int score) {}
+
+    public record RankedChunk(KnowledgeChunk chunk, double score) {}
 
     private static final class ModuleMatches {
-        private final ConceptEntry lead;
+        private final KnowledgeChunk lead;
         private final List<String> topics = new ArrayList<>();
-        private int bestScore;
-        private int supportScore;
+        private double bestScore;
+        private double supportScore;
 
-        private ModuleMatches(ConceptEntry lead) {
+        private ModuleMatches(KnowledgeChunk lead) {
             this.lead = lead;
         }
 
-        private void add(ConceptEntry concept, int conceptScore) {
+        private void add(KnowledgeChunk concept, double conceptScore) {
             bestScore = Math.max(bestScore, conceptScore);
             supportScore += Math.min(conceptScore, 6);
             if (topics.size() < 3 && !topics.contains(concept.topic())) topics.add(concept.topic());
         }
 
-        private int score() {
+        private double score() {
             return bestScore + Math.min(12, supportScore / 3);
         }
 
         private KnowledgeMatch response() {
-            String encodedTopic = URLEncoder.encode(topics.get(0), StandardCharsets.UTF_8).replace("+", "%20");
             return new KnowledgeMatch(
                 lead.courseKey(),
                 lead.moduleId(),
@@ -258,8 +312,8 @@ public class KnowledgeCatalog {
                 List.copyOf(topics),
                 lead.explanation(),
                 lead.example(),
-                "QuickDevBase " + lead.courseName() + " curriculum",
-                lead.coursePath() + "?module=" + lead.moduleId() + "&topic=" + encodedTopic + "&source=ask-quickdev",
+                lead.sourceLabel(),
+                lead.lessonPath(),
                 lead.officialUrl(),
                 lead.officialLabel()
             );

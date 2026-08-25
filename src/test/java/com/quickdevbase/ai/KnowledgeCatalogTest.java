@@ -14,6 +14,8 @@ class KnowledgeCatalogTest {
     @Test
     void loadsEveryConceptFromEveryPublishedCourse() {
         assertEquals(778, catalog.conceptCount());
+        assertEquals(778, catalog.allChunks().stream().map(KnowledgeCatalog.KnowledgeChunk::chunkKey).distinct().count());
+        assertTrue(catalog.allChunks().stream().allMatch(chunk -> chunk.contentHash().length() == 64));
     }
 
     @Test

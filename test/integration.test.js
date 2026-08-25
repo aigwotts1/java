@@ -220,6 +220,10 @@ test(
     assert.equal(typeof status.data.enabled, "boolean");
     assert.equal(typeof status.data.dailyLimit, "number");
     assert.equal(status.data.remainingToday, status.data.dailyLimit);
+    assert.equal(typeof status.data.ragEnabled, "boolean");
+    assert.equal(typeof status.data.indexedChunks, "number");
+    assert.equal(status.data.totalChunks, 778);
+    assert.ok(status.data.indexedChunks >= 0 && status.data.indexedChunks <= status.data.totalChunks);
 
     const discoveryForm = new FormData();
     discoveryForm.set("question", "How does CompletableFuture run asynchronous work?");

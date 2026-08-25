@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
+import com.quickdevbase.ai.HybridKnowledgeRetriever.RetrievalResult;
 import com.quickdevbase.ai.KnowledgeCatalog.KnowledgeMatch;
 import com.quickdevbase.security.RateLimitService;
 import com.quickdevbase.web.ApiException;
@@ -20,20 +21,23 @@ public class AiDiscoveryService {
     private final GeminiClient gemini;
     private final AiUsageService usage;
     private final RateLimitService rateLimits;
-    private final KnowledgeCatalog catalog;
+    private final HybridKnowledgeRetriever retriever;
+    private final RagPromptFactory ragPrompts;
 
     public AiDiscoveryService(
         AiSettings settings,
         GeminiClient gemini,
         AiUsageService usage,
         RateLimitService rateLimits,
-        KnowledgeCatalog catalog
+        HybridKnowledgeRetriever retriever,
+        RagPromptFactory ragPrompts
     ) {
         this.settings = settings;
         this.gemini = gemini;
         this.usage = usage;
         this.rateLimits = rateLimits;
-        this.catalog = catalog;
+        this.retriever = retriever;
+        this.ragPrompts = ragPrompts;
     }
 
     public DiscoveryResponse discover(UUID userId, MultipartFile image, String rawQuestion) {
@@ -47,6 +51,7 @@ public class AiDiscoveryService {
         String extractedText = "";
         String model = null;
         int remainingToday = usage.remaining(userId, settings.dailyLimit());
+        boolean providerAllowanceConsumed = false;
 
         if (hasImage) {
             if (!settings.enabled()) {
@@ -56,6 +61,7 @@ public class AiDiscoveryService {
             byte[] bytes = readAndValidate(image);
             String mediaType = detectedMediaType(bytes);
             int count = usage.consume(userId, settings.dailyLimit(), settings.globalDailyLimit());
+            providerAllowanceConsumed = true;
             GeminiClient.GeminiAnswer extraction = gemini.extractEducationalText(bytes, mediaType);
             extractedText = normalizeExtraction(extraction.answer());
             model = settings.model();
@@ -63,9 +69,31 @@ public class AiDiscoveryService {
         }
 
         String retrievalQuery = (question + "\n" + extractedText).trim();
-        List<KnowledgeMatch> matches = catalog.search(retrievalQuery, 3);
+        boolean ragEnabled = settings.ragEnabled();
+        if (ragEnabled && !providerAllowanceConsumed) {
+            int count = usage.consume(userId, settings.dailyLimit(), settings.globalDailyLimit());
+            remainingToday = Math.max(0, settings.dailyLimit() - count);
+            providerAllowanceConsumed = true;
+        }
+
+        RetrievalResult retrieval = retriever.retrieve(retrievalQuery, 3, ragEnabled);
+        List<KnowledgeMatch> matches = retrieval.matches();
         String detectedTopic = matches.isEmpty() ? null : matches.get(0).matchedConcepts().get(0);
         String answer = responseText(hasImage, matches);
+        boolean generated = false;
+        if (ragEnabled && !matches.isEmpty()) {
+            try {
+                GeminiClient.GeminiAnswer grounded = gemini.generate(
+                    RagPromptFactory.SYSTEM_PROMPT,
+                    ragPrompts.prompt(question, extractedText, matches)
+                );
+                answer = grounded.answer();
+                model = settings.model();
+                generated = true;
+            } catch (ApiException exception) {
+                // Keep the retrieved, server-owned answer when generation is temporarily unavailable.
+            }
+        }
         return new DiscoveryResponse(
             detectedTopic,
             answer,
@@ -73,7 +101,9 @@ public class AiDiscoveryService {
             hasImage,
             model,
             remainingToday,
-            "Uploaded images are analyzed for this request and are not retained by QuickDevBase after processing."
+            privacyNote(hasImage, generated),
+            retrieval.mode(),
+            generated
         );
     }
 
@@ -131,6 +161,18 @@ public class AiDiscoveryService {
             + match.matchedConcepts().get(0) + " this way: " + match.explanation();
     }
 
+    private static String privacyNote(boolean usedImage, boolean generated) {
+        if (usedImage) {
+            return "The uploaded image is analyzed for this request and is not retained by QuickDevBase. "
+                + "Only matched, server-owned curriculum excerpts are used to ground the answer.";
+        }
+        if (generated) {
+            return "Your question and the matched, server-owned curriculum excerpts are sent to the configured AI service "
+                + "for this grounded answer.";
+        }
+        return "This result was retrieved locally from the server-owned QuickDevBase curriculum.";
+    }
+
     public record DiscoveryResponse(
         String detectedTopic,
         String answer,
@@ -138,6 +180,8 @@ public class AiDiscoveryService {
         boolean usedImage,
         String model,
         int remainingToday,
-        String privacyNote
+        String privacyNote,
+        String retrievalMode,
+        boolean generated
     ) {}
 }
