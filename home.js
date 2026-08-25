@@ -1,5 +1,8 @@
 "use strict";
 
+let homeUser = null;
+let discoveryPreviewUrl = null;
+
 async function readJson(url) {
   const response = await fetch(url, { credentials: "same-origin" });
   if (!response.ok) throw new Error("Request failed");
@@ -96,5 +99,196 @@ function initializeHeroDepth() {
   window.addEventListener("blur", resetTilt);
 }
 
-initializeLibraryAuth(loadHomeProgress);
+function updateDiscoveryAuth() {
+  const submit = document.querySelector("#discoverySubmit span");
+  const note = document.querySelector("#discoveryLoginNote");
+  if (!submit || !note) return;
+  submit.textContent = homeUser ? "Find my lesson" : "Sign in to find my lesson";
+  note.textContent = homeUser
+    ? "Text searches stay local to our curriculum. Uploaded images are not retained by QuickDevBase after processing."
+    : "Sign in to search. Text searches do not use an AI provider; image matching uses the configured server-side AI service.";
+}
+
+function setDiscoveryStatus(label, busy = false) {
+  const status = document.querySelector(".chat-status");
+  if (!status) return;
+  status.classList.toggle("is-busy", busy);
+  status.lastChild.textContent = " " + label;
+}
+
+function renderDiscoveryResult(result) {
+  const response = document.querySelector("#discoveryResponse");
+  const answer = document.querySelector("#discoveryAnswer");
+  const detected = document.querySelector("#detectedTopic");
+  const results = document.querySelector("#discoveryResults");
+  const privacy = document.querySelector("#discoveryPrivacy");
+
+  answer.textContent = result.answer;
+  detected.hidden = !result.detectedTopic;
+  detected.textContent = result.detectedTopic ? "Matched topic · " + result.detectedTopic : "";
+  results.replaceChildren();
+
+  for (const match of result.matches || []) {
+    const card = document.createElement("article");
+    card.className = "discovery-result-card";
+
+    const source = document.createElement("div");
+    source.className = "result-source";
+    const sourceName = document.createElement("span");
+    sourceName.textContent = "From " + match.sourceLabel;
+    const moduleNumber = document.createElement("span");
+    moduleNumber.textContent = "Module " + String(match.moduleId).padStart(2, "0");
+    source.append(sourceName, moduleNumber);
+
+    const title = document.createElement("h3");
+    title.textContent = match.moduleTitle;
+    const explanation = document.createElement("p");
+    explanation.textContent = match.explanation;
+
+    const concepts = document.createElement("div");
+    concepts.className = "result-concepts";
+    for (const concept of match.matchedConcepts) {
+      const chip = document.createElement("span");
+      chip.textContent = concept;
+      concepts.append(chip);
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "result-actions";
+    const lessonLink = document.createElement("a");
+    lessonLink.href = match.path;
+    lessonLink.textContent = "Open this module ↗";
+    const officialLink = document.createElement("a");
+    officialLink.href = match.officialUrl;
+    officialLink.target = "_blank";
+    officialLink.rel = "noopener noreferrer";
+    officialLink.textContent = "Official documentation ↗";
+    actions.append(lessonLink, officialLink);
+    card.append(source, title, explanation, concepts, actions);
+    results.append(card);
+  }
+
+  privacy.textContent = result.privacyNote || "";
+  response.hidden = false;
+  const thread = document.querySelector("#discoveryThread");
+  requestAnimationFrame(() => { thread.scrollTop = thread.scrollHeight; });
+}
+
+function updateSelectedImage(file) {
+  const title = document.querySelector("#imageDropTitle");
+  const hint = document.querySelector("#imageDropHint");
+  const preview = document.querySelector("#imagePreview");
+  if (discoveryPreviewUrl) URL.revokeObjectURL(discoveryPreviewUrl);
+  discoveryPreviewUrl = null;
+
+  if (!file) {
+    title.textContent = "Add a screenshot";
+    hint.textContent = "PNG, JPEG, or WebP · up to 5 MB";
+    preview.hidden = true;
+    preview.removeAttribute("src");
+    return;
+  }
+  title.textContent = file.name;
+  hint.textContent = (file.size / 1024 / 1024).toFixed(2) + " MB · click to replace";
+  discoveryPreviewUrl = URL.createObjectURL(file);
+  preview.src = discoveryPreviewUrl;
+  preview.hidden = false;
+}
+
+function initializeDiscovery() {
+  const form = document.querySelector("#discoveryForm");
+  const imageInput = document.querySelector("#discoveryImage");
+  const drop = document.querySelector("#imageDrop");
+  const errorBox = document.querySelector("#discoveryError");
+  const submit = document.querySelector("#discoverySubmit");
+  if (!form || !imageInput) return;
+
+  imageInput.addEventListener("change", () => updateSelectedImage(imageInput.files[0] || null));
+  for (const eventName of ["dragenter", "dragover"]) {
+    drop.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      drop.classList.add("is-dragging");
+    });
+  }
+  for (const eventName of ["dragleave", "drop"]) {
+    drop.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      drop.classList.remove("is-dragging");
+    });
+  }
+  drop.addEventListener("drop", (event) => {
+    const file = event.dataTransfer.files[0];
+    if (!file) return;
+    const transfer = new DataTransfer();
+    transfer.items.add(file);
+    imageInput.files = transfer.files;
+    updateSelectedImage(file);
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    errorBox.hidden = true;
+    if (!homeUser) {
+      errorBox.textContent = "Sign in first, then submit your topic again.";
+      errorBox.hidden = false;
+      openLibraryAuth("login");
+      return;
+    }
+
+    const file = imageInput.files[0] || null;
+    const question = document.querySelector("#discoveryQuestion").value.trim();
+    if (!file && question.length < 2) {
+      errorBox.textContent = "Add a screenshot or enter a topic.";
+      errorBox.hidden = false;
+      return;
+    }
+    if (file && file.size > 5 * 1024 * 1024) {
+      errorBox.textContent = "Choose an image smaller than 5 MB.";
+      errorBox.hidden = false;
+      return;
+    }
+    if (file && file.type && !["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
+      errorBox.textContent = "Choose a PNG, JPEG, or WebP image.";
+      errorBox.hidden = false;
+      return;
+    }
+
+    const body = new FormData();
+    if (file) body.append("image", file);
+    if (question) body.append("question", question);
+    submit.disabled = true;
+    submit.querySelector("span").textContent = "Searching the curriculum...";
+    setDiscoveryStatus("Searching", true);
+
+    try {
+      const result = await libraryApiRequest("/api/ai/discover", { method: "POST", body });
+      renderDiscoveryResult(result);
+      setDiscoveryStatus("Matched");
+    } catch (error) {
+      errorBox.textContent = error.message;
+      errorBox.hidden = false;
+      setDiscoveryStatus("Try again");
+    } finally {
+      submit.disabled = false;
+      updateDiscoveryAuth();
+    }
+  });
+}
+
+async function onHomeSignedIn(user) {
+  homeUser = user;
+  updateDiscoveryAuth();
+  try {
+    await loadHomeProgress();
+  } catch {
+    // Authentication and discovery remain usable if progress is temporarily unavailable.
+  }
+}
+
+initializeDiscovery();
+updateDiscoveryAuth();
+initializeLibraryAuth(onHomeSignedIn).then((user) => {
+  homeUser = user;
+  updateDiscoveryAuth();
+});
 initializeHeroDepth();

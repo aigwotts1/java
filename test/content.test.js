@@ -15,24 +15,26 @@ const pythonSource = fs.readFileSync(path.join(__dirname, "..", "python-data.js"
 const sqlSource = fs.readFileSync(path.join(__dirname, "..", "sql-data.js"), "utf8");
 const aiSource = fs.readFileSync(path.join(__dirname, "..", "ai-data.js"), "utf8");
 const aiHubSource = fs.readFileSync(path.join(__dirname, "..", "ai.html"), "utf8");
-
-function readLiteral(startMarker, endMarker) {
-  const start = appSource.indexOf(startMarker);
-  const end = appSource.indexOf(endMarker, start + startMarker.length);
-  assert.notEqual(start, -1, `Missing content marker: ${startMarker}`);
-  assert.notEqual(end, -1, `Missing content marker: ${endMarker}`);
-  const literal = appSource.slice(start + startMarker.length, end);
-  return Function(`"use strict"; return (${literal});`)();
-}
-
-const modules = readLiteral("const javaModules = ", ";\n\n// Notes are kept");
-const quickNotes = readLiteral("const javaQuickNotes = ", ";\n\n// Grouped headings");
-const groupedExamples = readLiteral("const javaGroupedExamples = ", ";\n\nconst javaExampleComments");
-const exampleComments = readLiteral("const javaExampleComments = ", ";\n\nconst javaStageLabels");
+const javaCourse = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "java.json"), "utf8"));
+const dockerKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "docker.json"), "utf8"));
+const pythonKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "python.json"), "utf8"));
+const sqlKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "sql.json"), "utf8"));
+const aiKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "ai.json"), "utf8"));
+const modules = javaCourse.modules;
+const quickNotes = javaCourse.quickNotes;
+const groupedExamples = javaCourse.groupedExamples;
+const exampleComments = javaCourse.exampleComments;
 const aiCourses = Function("window", aiSource + "; return window.QUICKDEV_AI_COURSES;")({});
 const dockerCourse = Function("window", `${dockerSource}; return window.QUICKDEV_COURSE;`)({});
 const pythonCourse = Function("window", `${pythonSource}; return window.QUICKDEV_COURSE;`)({});
 const sqlCourse = Function("window", `${sqlSource}; return window.QUICKDEV_COURSE;`)({});
+
+test("server-side retrieval catalogs stay synchronized with every browser curriculum", () => {
+  assert.deepEqual(JSON.parse(JSON.stringify(dockerCourse)), dockerKnowledge);
+  assert.deepEqual(JSON.parse(JSON.stringify(pythonCourse)), pythonKnowledge);
+  assert.deepEqual(JSON.parse(JSON.stringify(sqlCourse)), sqlKnowledge);
+  assert.deepEqual(JSON.parse(JSON.stringify(aiCourses)), aiKnowledge);
+});
 
 test("curriculum IDs, topic totals, and Spring backend module limit stay aligned", () => {
   assert.equal(modules.length, 18);
@@ -217,6 +219,30 @@ test("Ask QuickDev stays lesson-scoped, authenticated, bounded, and privacy-awar
   assert.match(migrationSource, /CREATE TABLE ai_usage_daily/);
   assert.match(migrationSource, /CREATE TABLE ai_answer_cache/);
   assert.match(privacySource, /unpaid-service content may be used to improve its products/);
+});
+
+test("image discovery is grounded across every curriculum and deep-links to any course", () => {
+  const discoverySource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "ai", "AiDiscoveryService.java"), "utf8");
+  const knowledgeSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "ai", "KnowledgeCatalog.java"), "utf8");
+  const homeScript = fs.readFileSync(path.join(__dirname, "..", "home.js"), "utf8");
+  const privacySource = fs.readFileSync(path.join(__dirname, "..", "privacy.html"), "utf8");
+
+  assert.match(homeSource, /id="askQuickDev"/);
+  assert.match(homeSource, /id="discoveryImage"/);
+  assert.match(homeSource, /PNG, JPEG, or WebP/);
+  assert.match(homeScript, /\/api\/ai\/discover/);
+  assert.match(homeScript, /textContent = result\.answer/);
+  assert.doesNotMatch(homeScript, /innerHTML = result\.answer/);
+  assert.match(discoverySource, /MAX_IMAGE_BYTES = 5L \* 1024 \* 1024/);
+  assert.match(discoverySource, /detectedMediaType/);
+  assert.match(knowledgeSource, /curriculum\/java\.json/);
+  assert.match(knowledgeSource, /curriculum\/docker\.json/);
+  assert.match(knowledgeSource, /curriculum\/python\.json/);
+  assert.match(knowledgeSource, /curriculum\/sql\.json/);
+  assert.match(knowledgeSource, /curriculum\/ai\.json/);
+  assert.doesNotMatch(appSource, /courseConfig\.key !== "java"/);
+  assert.match(appSource, /URLSearchParams\(location\.search\)/);
+  assert.match(privacySource, /Uploaded images and their extracted text are not retained after processing/);
 });
 
 test("certificate publication is consent-based and completion-only language is visible", () => {

@@ -70,6 +70,21 @@ async function request(path, { method = "GET", body, cookie, csrf = true } = {})
   };
 }
 
+async function multipartRequest(path, form, cookie) {
+  let activeCookie = cookie || "";
+  if (!cookieMap(activeCookie).has("XSRF-TOKEN")) {
+    activeCookie = (await request("/api/auth/me", { cookie: activeCookie, csrf: false })).cookie;
+  }
+  const headers = { Origin: baseUrl };
+  if (activeCookie) headers.Cookie = activeCookie;
+  const csrfToken = cookieMap(activeCookie).get("XSRF-TOKEN");
+  if (csrfToken) headers["X-XSRF-TOKEN"] = decodeURIComponent(csrfToken);
+
+  const response = await fetch(`${baseUrl}${path}`, { method: "POST", headers, body: form });
+  const data = await response.json().catch(() => ({}));
+  return { status: response.status, data, cookie: mergeCookies(activeCookie, responseCookies(response.headers)) };
+}
+
 test(
   "accounts keep progress isolated and sessions survive logout/login",
   { skip: !baseUrl },
@@ -205,6 +220,25 @@ test(
     assert.equal(typeof status.data.enabled, "boolean");
     assert.equal(typeof status.data.dailyLimit, "number");
     assert.equal(status.data.remainingToday, status.data.dailyLimit);
+
+    const discoveryForm = new FormData();
+    discoveryForm.set("question", "How does CompletableFuture run asynchronous work?");
+    const discovery = await multipartRequest("/api/ai/discover", discoveryForm, cookie);
+    assert.equal(discovery.status, 200);
+    assert.equal(discovery.data.usedImage, false);
+    assert.equal(discovery.data.detectedTopic, "CompletableFuture");
+    assert.equal(discovery.data.matches[0].moduleId, 6);
+    assert.equal(discovery.data.matches[0].sourceLabel, "QuickDevBase Java curriculum");
+    assert.match(discovery.data.matches[0].path, /^\/java\?module=6&topic=CompletableFuture/);
+
+    const sqlDiscoveryForm = new FormData();
+    sqlDiscoveryForm.set("question", "Use SQL EXPLAIN ANALYZE for query performance");
+    const sqlDiscovery = await multipartRequest("/api/ai/discover", sqlDiscoveryForm, cookie);
+    assert.equal(sqlDiscovery.status, 200);
+    assert.equal(sqlDiscovery.data.usedImage, false);
+    assert.equal(sqlDiscovery.data.detectedTopic, "EXPLAIN ANALYZE");
+    assert.equal(sqlDiscovery.data.matches[0].course, "sql");
+    assert.match(sqlDiscovery.data.matches[0].path, /^\/sql\?module=15&topic=EXPLAIN%20ANALYZE/);
 
     if (!status.data.enabled) {
       const disabled = await request("/api/ai/ask", {

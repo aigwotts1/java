@@ -11,6 +11,7 @@ function cookieValue(name) {
 async function libraryApiRequest(url, options = {}) {
   const method = String(options.method || "GET").toUpperCase();
   const needsCsrf = !["GET", "HEAD", "OPTIONS"].includes(method);
+  const isFormData = typeof FormData !== "undefined" && options.body instanceof FormData;
   if (needsCsrf && !cookieValue("XSRF-TOKEN")) {
     await fetch("/api/auth/me", { credentials: "same-origin" });
   }
@@ -19,7 +20,7 @@ async function libraryApiRequest(url, options = {}) {
     credentials: "same-origin",
     ...options,
     headers: {
-      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(options.body && !isFormData ? { "Content-Type": "application/json" } : {}),
       ...(csrfToken ? { "X-XSRF-TOKEN": csrfToken } : {}),
       ...options.headers
     }

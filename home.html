@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Young+Serif&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/home.css?v=20260818-sql" />
+    <link rel="stylesheet" href="/home.css?v=20260825-discovery" />
     <link rel="stylesheet" href="/library-auth.css?v=20260817-local-login" />
   </head>
   <body>
@@ -22,6 +22,7 @@
     <header>
       <a class="brand" href="/" aria-label="QuickDevBase home"><img class="brand-logo" src="/quickdevbase-logo.png" alt="" /><b>QuickDev<em>Base</em></b></a>
       <nav aria-label="Main navigation">
+        <a href="#askQuickDev">Ask QuickDev</a>
         <a href="#technologyLibrary">Technologies</a>
         <a href="#philosophy">How it works</a>
       </nav>
@@ -55,6 +56,56 @@
           <div class="floating-note note-two"><b>↗</b><span>Official docs linked</span></div>
           <span class="float-symbol symbol-one" aria-hidden="true">{ }</span>
           <span class="float-symbol symbol-two" aria-hidden="true">01</span>
+        </div>
+      </section>
+
+      <section class="discovery" id="askQuickDev" aria-labelledby="discoveryTitle">
+        <div class="discovery-intro">
+          <p class="eyebrow light"><span></span> Your notes, meet the library</p>
+          <h2 id="discoveryTitle">What topic<br /><em>are you looking at?</em></h2>
+          <p>Upload a screenshot or describe the idea. Ask QuickDev searches our existing lessons, shares the closest knowledge card, and takes you directly into the right module.</p>
+          <div class="discovery-trust">
+            <span><b>01</b> Read your image</span>
+            <span><b>02</b> Match our curriculum</span>
+            <span><b>03</b> Open the lesson</span>
+          </div>
+        </div>
+
+        <div class="discovery-chat">
+          <div class="chat-heading">
+            <span class="chat-avatar" aria-hidden="true">Q</span>
+            <div><strong>Ask QuickDev</strong><small> Topic finder</small></div>
+            <span class="chat-status"><i></i> Ready</span>
+          </div>
+
+          <div class="chat-thread" id="discoveryThread" aria-live="polite">
+            <div class="chat-message assistant-message">
+              <span>Q</span>
+              <p>Share a screenshot or type something like <em>“How do CompletableFuture tasks work?”</em></p>
+            </div>
+            <div class="discovery-response" id="discoveryResponse" hidden>
+              <div class="chat-message assistant-message result-message"><span>Q</span><p id="discoveryAnswer"></p></div>
+              <p class="detected-topic" id="detectedTopic" hidden></p>
+              <div class="discovery-results" id="discoveryResults"></div>
+              <p class="discovery-privacy" id="discoveryPrivacy"></p>
+            </div>
+          </div>
+
+          <form class="discovery-form" id="discoveryForm">
+            <label class="discovery-question" for="discoveryQuestion">
+              <span>Optional question or topic</span>
+              <textarea id="discoveryQuestion" name="question" maxlength="500" rows="2" placeholder="What concept is shown here?"></textarea>
+            </label>
+            <label class="image-drop" id="imageDrop" for="discoveryImage">
+              <input id="discoveryImage" name="image" type="file" accept="image/png,image/jpeg,image/webp" />
+              <span class="upload-icon" aria-hidden="true">+</span>
+              <span><strong id="imageDropTitle">Add a screenshot</strong><small id="imageDropHint">PNG, JPEG, or WebP · up to 5 MB</small></span>
+              <img id="imagePreview" alt="Selected upload preview" hidden />
+            </label>
+            <p class="discovery-error" id="discoveryError" role="alert" hidden></p>
+            <button class="discovery-submit" id="discoverySubmit" type="submit"><span>Find my lesson</span><b aria-hidden="true">→</b></button>
+            <p class="discovery-login-note" id="discoveryLoginNote">Sign in to analyze uploads. Text searches do not use an AI provider.</p>
+          </form>
         </div>
       </section>
 
@@ -175,7 +226,7 @@
       <div><p>Developer knowledge, at a glance.</p><small>Independent learning portal. Vendor names and marks belong to their respective owners.</small></div>
       <nav aria-label="Footer navigation"><a class="team-link" href="/team">Team</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/certificate-policy">Certificate policy</a><a href="#">Back to top ↑</a></nav>
     </footer>
-    <script src="/library-auth.js?v=20260818-sql"></script>
-    <script src="/home.js?v=20260818-sql"></script>
+    <script src="/library-auth.js?v=20260825-discovery"></script>
+    <script src="/home.js?v=20260825-discovery"></script>
   </body>
 </html>

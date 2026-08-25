@@ -1,0 +1,1807 @@
+{
+  "key": "python",
+  "name": "Python",
+  "mark": "Py",
+  "modules": [
+    {
+      "id": 1,
+      "title": "Python Foundations",
+      "stage": "foundation",
+      "description": "Understand how Python runs code and learn the small syntax rules used everywhere.",
+      "officialUrl": "https://docs.python.org/3/tutorial/interpreter.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Create a small command-line script that asks for a name and prints a formatted greeting.",
+      "topics": [
+        "Interpreter & REPL",
+        "Scripts & command line",
+        "Indentation & code blocks",
+        "Names & assignment",
+        "Comments & docstrings",
+        "print() & input()",
+        "Dynamic typing & identity"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Values, Types & Expressions",
+      "stage": "foundation",
+      "description": "Work confidently with Python's core scalar values and expression rules.",
+      "officialUrl": "https://docs.python.org/3/library/stdtypes.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Parse two user-entered numbers, calculate a percentage, and format the result clearly.",
+      "topics": [
+        "Integers, floats & complex numbers",
+        "Booleans & comparisons",
+        "None as a sentinel",
+        "Strings & immutability",
+        "Formatted string literals",
+        "Bytes & bytearray",
+        "Operators & precedence"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Collections & Comprehensions",
+      "stage": "foundation",
+      "description": "Choose the right built-in collection and transform data with compact, readable expressions.",
+      "officialUrl": "https://docs.python.org/3/tutorial/datastructures.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Turn a list of order records into a customer-to-total dictionary while removing duplicate tags.",
+      "topics": [
+        "Lists",
+        "Tuples",
+        "Dictionaries",
+        "Sets & frozensets",
+        "Ranges",
+        "Slicing & unpacking",
+        "Comprehensions"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Control Flow",
+      "stage": "foundation",
+      "description": "Direct program execution with decisions, loops, pattern matching, and useful loop helpers.",
+      "officialUrl": "https://docs.python.org/3/tutorial/controlflow.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Validate a command, process matching records, and report when no record was found.",
+      "topics": [
+        "if, elif & else",
+        "match & case",
+        "for loops",
+        "while loops",
+        "break & continue",
+        "Loop else",
+        "enumerate() & zip()"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Functions & Scope",
+      "stage": "core",
+      "description": "Package behavior into clear functions and understand how Python binds arguments and names.",
+      "officialUrl": "https://docs.python.org/3/tutorial/controlflow.html#defining-functions",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Design a pricing function with safe defaults, keyword-only options, documentation, and a useful return value.",
+      "topics": [
+        "def & return",
+        "Positional & keyword arguments",
+        "Default parameter values",
+        "Positional-only & keyword-only",
+        "*args & **kwargs",
+        "LEGB scope, global & nonlocal",
+        "Lambdas, docstrings & annotations"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Modules & Packages",
+      "stage": "core",
+      "description": "Split programs into importable files and packages with predictable namespaces.",
+      "officialUrl": "https://docs.python.org/3/tutorial/modules.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Create a package with two modules, expose one public function, and run its CLI entry module safely.",
+      "topics": [
+        "import statements",
+        "from, import & as",
+        "The __main__ guard",
+        "Module search path",
+        "Packages & __init__.py",
+        "Relative imports",
+        "dir(), help() & importlib"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Object-Oriented Python",
+      "stage": "core",
+      "description": "Model state and behavior with classes while keeping Python's dynamic object model clear.",
+      "officialUrl": "https://docs.python.org/3/tutorial/classes.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Model an order hierarchy with validated properties, inherited behavior, and a dataclass value object.",
+      "topics": [
+        "Classes & instances",
+        "__init__ & attributes",
+        "Methods & self",
+        "Class methods & static methods",
+        "Inheritance & super()",
+        "Properties",
+        "Dataclasses"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Python's Object Protocols",
+      "stage": "core",
+      "description": "Make custom objects behave naturally with Python syntax by implementing focused data-model protocols.",
+      "officialUrl": "https://docs.python.org/3/reference/datamodel.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Build a small collection type with useful display, length, iteration, membership, and equality behavior.",
+      "topics": [
+        "Special methods",
+        "__repr__ & __str__",
+        "Equality, ordering & hashing",
+        "Container protocols",
+        "Context manager protocol",
+        "Callable objects",
+        "Descriptors"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Errors & Resource Management",
+      "stage": "core",
+      "description": "Handle failures deliberately and guarantee cleanup around files, locks, and other resources.",
+      "officialUrl": "https://docs.python.org/3/tutorial/errors.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Create a parser that reports useful domain errors, preserves the original cause, and always closes its resource.",
+      "topics": [
+        "Syntax errors vs exceptions",
+        "try & except",
+        "else & finally",
+        "raise",
+        "Custom exceptions",
+        "Exception chaining & groups",
+        "with & contextlib"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Iterators & Generators",
+      "stage": "core",
+      "description": "Process streams lazily and compose memory-efficient data pipelines.",
+      "officialUrl": "https://docs.python.org/3/howto/functional.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Stream a large log file, filter matching records, and aggregate them without loading the whole file.",
+      "topics": [
+        "Iterables vs iterators",
+        "iter() & next()",
+        "Generator functions & yield",
+        "Generator expressions",
+        "yield from",
+        "itertools",
+        "Lazy pipelines"
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Files, Paths & Serialization",
+      "stage": "backend",
+      "description": "Read and write local data safely with explicit paths, encodings, formats, and cleanup.",
+      "officialUrl": "https://docs.python.org/3/tutorial/inputoutput.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Load a UTF-8 CSV file, convert its rows to JSON, and write the output beside the source path.",
+      "topics": [
+        "open modes & encodings",
+        "Reading & writing with with",
+        "pathlib",
+        "CSV",
+        "JSON",
+        "Pickle safety",
+        "Temporary & compressed files"
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Standard Library Essentials",
+      "stage": "backend",
+      "description": "Recognize the batteries already included for common data, date, text, system, and CLI work.",
+      "officialUrl": "https://docs.python.org/3/library/index.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Build a small command-line report using parsed arguments, grouped records, dates, and regular expressions.",
+      "topics": [
+        "collections",
+        "functools",
+        "datetime & zoneinfo",
+        "Regular expressions",
+        "math, statistics & decimal",
+        "os, sys & shutil",
+        "argparse"
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Type Hints",
+      "stage": "backend",
+      "description": "Describe interfaces for editors and static checkers without changing Python's runtime flexibility.",
+      "officialUrl": "https://docs.python.org/3/library/typing.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Annotate a repository interface and a reusable function while keeping optional and structured data explicit.",
+      "topics": [
+        "Function annotations",
+        "Built-in generics",
+        "Unions & optional values",
+        "Type aliases",
+        "TypedDict",
+        "Protocols",
+        "TypeVar & Generic"
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Testing, Debugging & Logging",
+      "stage": "backend",
+      "description": "Build feedback loops that reveal regressions, inspect failures, and explain runtime behavior.",
+      "officialUrl": "https://docs.python.org/3/library/unittest.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Test a service with setup, assertions, and a mocked dependency, then investigate one failure with the debugger.",
+      "topics": [
+        "unittest test cases",
+        "Assertions",
+        "setUp & tearDown",
+        "unittest.mock",
+        "doctest",
+        "pdb & breakpoint()",
+        "logging & warnings"
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Concurrency & Asyncio",
+      "stage": "advanced",
+      "description": "Choose between threads, processes, futures, and async tasks based on where work waits or computes.",
+      "officialUrl": "https://docs.python.org/3/library/concurrency.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Fetch several independent resources concurrently with bounded timeouts and graceful cancellation.",
+      "topics": [
+        "Threads & the GIL",
+        "Locks & thread-safe queues",
+        "Multiprocessing",
+        "concurrent.futures",
+        "async & await",
+        "Tasks, gather & TaskGroup",
+        "Cancellation & timeouts"
+      ]
+    },
+    {
+      "id": 16,
+      "title": "SQLite & Database Access",
+      "stage": "advanced",
+      "description": "Persist relational data locally with transactions and parameterized SQL through the standard sqlite3 module.",
+      "officialUrl": "https://docs.python.org/3/library/sqlite3.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Create a users table, insert safely, commit a transaction, and query rows by name.",
+      "topics": [
+        "Connections & cursors",
+        "Schema & execute()",
+        "Parameterized queries",
+        "Transactions",
+        "Connection context manager",
+        "Row factories",
+        "Backup & cleanup"
+      ]
+    },
+    {
+      "id": 17,
+      "title": "HTTP, APIs & Networking",
+      "stage": "advanced",
+      "description": "Understand URLs, HTTP requests, JSON APIs, sockets, timeouts, and TLS using the standard library.",
+      "officialUrl": "https://docs.python.org/3/library/internet.html",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Call a JSON API with each CRUD method, handle HTTP failures, and enforce a timeout.",
+      "topics": [
+        "URL parsing",
+        "HTTP GET",
+        "REST methods: GET, POST, PUT, PATCH & DELETE",
+        "JSON request & response bodies",
+        "HTTP errors & timeouts",
+        "Sockets",
+        "TLS with ssl"
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Packaging, Performance & Security",
+      "stage": "advanced",
+      "description": "Ship isolated projects, measure before optimizing, and avoid Python's best-known unsafe defaults.",
+      "officialUrl": "https://packaging.python.org/en/latest/",
+      "officialLabel": "Official Python documentation",
+      "challenge": "Package a small library, profile one workload, and document the security boundaries around its inputs.",
+      "topics": [
+        "Virtual environments",
+        "pip & dependency installation",
+        "pyproject.toml",
+        "Source distributions & wheels",
+        "TestPyPI & PyPI publishing",
+        "timeit, cProfile & tracemalloc",
+        "Secure defaults"
+      ]
+    }
+  ],
+  "quickNotes": {
+    "1": [
+      [
+        "The interpreter executes Python; the REPL lets you enter one expression or statement at a time.",
+        "python\n>>> 2 + 3\n5"
+      ],
+      [
+        "A .py file stores reusable code that the interpreter can execute as a program.",
+        "python app.py"
+      ],
+      [
+        "Indentation is syntax in Python and groups statements under constructs such as if, for, and def.",
+        "ready = True\nif ready:\n    print(\"Start\")"
+      ],
+      [
+        "Assignment binds a name to an object; it does not declare a fixed storage type.",
+        "score = 90\ncourse = \"Python\""
+      ],
+      [
+        "A # comment explains code to people; a docstring documents a module, class, or function.",
+        "# Explain why this value matters\ndef greet():\n    \"\"\"Return a friendly greeting.\"\"\"\n    return \"Hello\""
+      ],
+      [
+        "print writes text to standard output, while input reads one line from standard input as a string.",
+        "name = input(\"Name: \")\nprint(\"Hello\", name)"
+      ],
+      [
+        "A name can be rebound to different object types; id and is concern object identity, not value equality.",
+        "value = 42\nvalue = \"forty-two\"\nmissing = None\nprint(missing is None)"
+      ]
+    ],
+    "2": [
+      [
+        "int stores whole numbers, float stores binary floating-point values, and complex stores real and imaginary parts.",
+        "count = 12\nprice = 19.95\nsignal = 2 + 3j"
+      ],
+      [
+        "Comparisons produce True or False and can be chained into one readable condition.",
+        "age = 24\neligible = 18 <= age < 65"
+      ],
+      [
+        "None represents the absence of a value and should normally be checked with is or is not.",
+        "result = None\nif result is None:\n    print(\"Not loaded\")"
+      ],
+      [
+        "A string is an immutable Unicode sequence; string methods return new values instead of changing the original.",
+        "name = \"  Ada  \"\nclean = name.strip().upper()"
+      ],
+      [
+        "An f-string evaluates expressions inside braces and formats them directly into text.",
+        "name = \"Ada\"\nscore = 92.5\nmessage = f\"{name}: {score:.1f}%\""
+      ],
+      [
+        "bytes is an immutable byte sequence; bytearray is mutable and both are distinct from Unicode text.",
+        "payload = \"hello\".encode(\"utf-8\")\ntext = payload.decode(\"utf-8\")"
+      ],
+      [
+        "Arithmetic, comparison, Boolean, membership, and identity operators follow defined precedence; parentheses make intent explicit.",
+        "total = price * count\nvalid = total > 0 and count in range(1, 100)"
+      ]
+    ],
+    "3": [
+      [
+        "A list is an ordered, mutable sequence that supports indexed access and in-place updates.",
+        "names = [\"Ada\", \"Linus\"]\nnames.append(\"Grace\")"
+      ],
+      [
+        "A tuple is an ordered, immutable sequence commonly used for fixed records and multiple return values.",
+        "point = (12, 8)\nx, y = point"
+      ],
+      [
+        "A dictionary maps unique hashable keys to values and preserves insertion order.",
+        "user = {\"id\": 7, \"name\": \"Ada\"}\nemail = user.get(\"email\", \"missing\")"
+      ],
+      [
+        "A set stores unique hashable values; frozenset is the immutable version and can itself be a dictionary key.",
+        "skills = {\"python\", \"sql\", \"python\"}\nshared = skills & {\"sql\", \"docker\"}"
+      ],
+      [
+        "range represents an arithmetic sequence lazily, so it does not build a list of every number.",
+        "for number in range(1, 6):\n    print(number)"
+      ],
+      [
+        "Slicing selects part of a sequence, while unpacking assigns its elements to several names.",
+        "items = [10, 20, 30, 40]\nfirst, *middle, last = items\nsubset = items[1:3]"
+      ],
+      [
+        "A comprehension builds a collection from an iterable with an optional transformation and filter.",
+        "squares = [n * n for n in range(10) if n % 2 == 0]\nby_id = {user[\"id\"]: user for user in users}"
+      ]
+    ],
+    "4": [
+      [
+        "An if chain executes the first branch whose condition is truthy and otherwise uses else.",
+        "if score >= 90:\n    grade = \"A\"\nelif score >= 75:\n    grade = \"B\"\nelse:\n    grade = \"C\""
+      ],
+      [
+        "Structural pattern matching compares the shape and values of data and can bind matching parts to names.",
+        "match command.split():\n    case [\"open\", filename]:\n        print(filename)\n    case _:\n        print(\"Unknown\")"
+      ],
+      [
+        "A for loop asks an iterable for values one at a time instead of managing an index manually.",
+        "for name in names:\n    print(name)"
+      ],
+      [
+        "A while loop repeats as long as its condition remains truthy.",
+        "attempts = 3\nwhile attempts > 0:\n    attempts -= 1"
+      ],
+      [
+        "break exits the nearest loop; continue skips directly to its next iteration.",
+        "for value in values:\n    if value is None:\n        continue\n    if value < 0:\n        break"
+      ],
+      [
+        "A loop's else block runs only when the loop finishes normally without break.",
+        "for user in users:\n    if user.id == wanted_id:\n        print(user)\n        break\nelse:\n    print(\"Not found\")"
+      ],
+      [
+        "enumerate pairs items with indexes; zip walks multiple iterables together until the shortest ends.",
+        "for index, (name, score) in enumerate(zip(names, scores), start=1):\n    print(index, name, score)"
+      ]
+    ],
+    "5": [
+      [
+        "def creates a function object; return stops that call and sends a value back to its caller.",
+        "def total(price, quantity):\n    return price * quantity"
+      ],
+      [
+        "Arguments may bind by position or by parameter name, making calls either compact or explicit.",
+        "def connect(host, port):\n    return f\"{host}:{port}\"\n\nconnect(\"localhost\", port=5432)"
+      ],
+      [
+        "A default is evaluated once when def runs, so mutable defaults should usually be replaced with None.",
+        "def add_tag(tag, tags=None):\n    tags = [] if tags is None else tags\n    tags.append(tag)\n    return tags"
+      ],
+      [
+        "The / and * markers let an API require selected parameters to be passed by position or keyword.",
+        "def resize(width, height, /, *, quality=85):\n    return width, height, quality"
+      ],
+      [
+        "*args collects extra positional arguments into a tuple; **kwargs collects extra keyword arguments into a dictionary.",
+        "def report(title, *values, **options):\n    print(title, values, options)"
+      ],
+      [
+        "Python resolves names through local, enclosing, global, and built-in scopes; nonlocal targets an enclosing function binding.",
+        "def counter():\n    count = 0\n    def increment():\n        nonlocal count\n        count += 1\n        return count\n    return increment"
+      ],
+      [
+        "A lambda is a small expression function; docstrings explain behavior and annotations describe intended types without enforcing them.",
+        "def greet(name: str) -> str:\n    \"\"\"Return a greeting for name.\"\"\"\n    formatter = lambda value: value.strip().title()\n    return f\"Hello {formatter(name)}\""
+      ]
+    ],
+    "6": [
+      [
+        "import loads a module once per interpreter session and binds its module object to a name.",
+        "import math\nradius = 3\narea = math.pi * radius ** 2"
+      ],
+      [
+        "from imports selected names into the current namespace; as gives an imported object a local alias.",
+        "from pathlib import Path as FilePath\nroot = FilePath.cwd()"
+      ],
+      [
+        "The guard runs code only when the file is executed directly, not when another module imports it.",
+        "def main():\n    print(\"Running\")\n\nif __name__ == \"__main__\":\n    main()"
+      ],
+      [
+        "Python searches built-ins and the directories in sys.path; local filenames can accidentally shadow standard modules.",
+        "import sys\nfor location in sys.path:\n    print(location)"
+      ],
+      [
+        "A package groups modules under a dotted namespace; __init__.py can initialize or define the package's public surface.",
+        "shop/\n  __init__.py\n  pricing.py\n\nfrom shop.pricing import total"
+      ],
+      [
+        "A leading dot imports from the current package hierarchy and should be used only inside a package.",
+        "# inside shop/api.py\nfrom .pricing import total\nfrom .models.order import Order"
+      ],
+      [
+        "dir reveals available names, help displays documentation, and importlib provides programmatic import utilities.",
+        "import importlib\nmodule = importlib.import_module(\"json\")\nprint(dir(module))"
+      ]
+    ],
+    "7": [
+      [
+        "A class defines shared behavior; calling it creates a distinct instance with its own state.",
+        "class User:\n    pass\n\nuser = User()\nuser.name = \"Ada\""
+      ],
+      [
+        "__init__ initializes an already-created instance and normally stores constructor values on self.",
+        "class User:\n    def __init__(self, name):\n        self.name = name"
+      ],
+      [
+        "An instance method receives the instance as self, letting it read and update that object's attributes.",
+        "class Account:\n    def deposit(self, amount):\n        self.balance += amount"
+      ],
+      [
+        "A class method receives cls and can build alternate constructors; a static method is a namespaced function with no automatic instance.",
+        "class Temperature:\n    @classmethod\n    def from_fahrenheit(cls, value):\n        return cls((value - 32) * 5 / 9)\n\n    @staticmethod\n    def is_freezing(value):\n        return value <= 0"
+      ],
+      [
+        "Inheritance reuses and specializes parent behavior; super delegates to the next implementation in the method resolution order.",
+        "class Admin(User):\n    def __init__(self, name, permissions):\n        super().__init__(name)\n        self.permissions = permissions"
+      ],
+      [
+        "A property exposes method-backed validation or computation through normal attribute syntax.",
+        "class Product:\n    @property\n    def price(self):\n        return self._price\n\n    @price.setter\n    def price(self, value):\n        if value < 0:\n            raise ValueError(\"price must be positive\")\n        self._price = value"
+      ],
+      [
+        "@dataclass generates common methods for data-focused classes from annotated fields.",
+        "from dataclasses import dataclass\n\n@dataclass(frozen=True)\nclass Point:\n    x: int\n    y: int"
+      ]
+    ],
+    "8": [
+      [
+        "Double-underscore methods connect objects to language operations such as addition, indexing, iteration, and context management.",
+        "class Basket:\n    def __len__(self):\n        return len(self.items)"
+      ],
+      [
+        "__repr__ aims for an unambiguous developer view; __str__ supplies readable user-facing text.",
+        "class User:\n    def __repr__(self):\n        return f\"User(name={self.name!r})\"\n\n    def __str__(self):\n        return self.name"
+      ],
+      [
+        "__eq__ defines value equality; stable immutable values can implement __hash__ for set and dictionary use.",
+        "from dataclasses import dataclass\n\n@dataclass(frozen=True, order=True)\nclass Version:\n    major: int\n    minor: int"
+      ],
+      [
+        "Methods such as __len__, __iter__, __contains__, and __getitem__ let an object participate in built-in container operations.",
+        "class Team:\n    def __iter__(self):\n        return iter(self.members)\n\n    def __contains__(self, member):\n        return member in self.members"
+      ],
+      [
+        "__enter__ supplies a managed resource and __exit__ performs cleanup when a with block ends.",
+        "class Timer:\n    def __enter__(self):\n        self.started = time.perf_counter()\n        return self\n\n    def __exit__(self, *error):\n        self.elapsed = time.perf_counter() - self.started"
+      ],
+      [
+        "Implementing __call__ lets an instance be invoked like a function while retaining configuration or state.",
+        "class Multiplier:\n    def __init__(self, factor):\n        self.factor = factor\n\n    def __call__(self, value):\n        return value * self.factor"
+      ],
+      [
+        "A descriptor controls attribute access through __get__, __set__, or __delete__ and powers features such as properties and methods.",
+        "class Positive:\n    def __set_name__(self, owner, name):\n        self.name = \"_\" + name\n\n    def __set__(self, instance, value):\n        if value <= 0:\n            raise ValueError(\"must be positive\")\n        setattr(instance, self.name, value)"
+      ]
+    ],
+    "9": [
+      [
+        "A syntax error prevents parsing; an exception is an object raised while otherwise valid code executes.",
+        "# SyntaxError: invalid grammar\n# ValueError: valid code received an unsuitable value\nnumber = int(\"not-a-number\")"
+      ],
+      [
+        "A try block protects operations that may fail; matching except clauses handle only the failures they understand.",
+        "try:\n    value = int(raw)\nexcept ValueError:\n    value = 0"
+      ],
+      [
+        "else runs after a successful try; finally runs whether the operation succeeds, fails, or returns.",
+        "try:\n    result = load()\nexcept OSError as error:\n    log(error)\nelse:\n    use(result)\nfinally:\n    release()"
+      ],
+      [
+        "raise creates or re-raises an exception when the current operation cannot satisfy its contract.",
+        "def withdraw(amount):\n    if amount <= 0:\n        raise ValueError(\"amount must be positive\")"
+      ],
+      [
+        "A domain-specific exception communicates a meaningful failure while remaining compatible with Python's exception hierarchy.",
+        "class InsufficientFundsError(Exception):\n    \"\"\"Raised when an account cannot cover a withdrawal.\"\"\""
+      ],
+      [
+        "raise ... from ... preserves a cause; ExceptionGroup carries several unrelated failures that except* can handle selectively.",
+        "try:\n    config = json.loads(raw)\nexcept json.JSONDecodeError as error:\n    raise ConfigError(\"Invalid configuration\") from error"
+      ],
+      [
+        "with guarantees a context manager's exit logic; contextlib helps create managers without a full class.",
+        "from contextlib import contextmanager\n\n@contextmanager\ndef opened(path):\n    file = open(path, encoding=\"utf-8\")\n    try:\n        yield file\n    finally:\n        file.close()"
+      ]
+    ],
+    "10": [
+      [
+        "An iterable can create an iterator; an iterator remembers traversal state and produces one value at a time.",
+        "numbers = [1, 2, 3]\niterator = iter(numbers)\nprint(next(iterator))"
+      ],
+      [
+        "iter obtains an iterator and next requests its next item, raising StopIteration when exhausted.",
+        "iterator = iter([\"a\", \"b\"])\nfirst = next(iterator, None)\nsecond = next(iterator, None)"
+      ],
+      [
+        "A function containing yield returns a generator that pauses after each produced value and resumes later.",
+        "def countdown(start):\n    while start:\n        yield start\n        start -= 1"
+      ],
+      [
+        "A generator expression uses comprehension syntax but calculates each item only when requested.",
+        "total = sum(n * n for n in range(1_000_000))"
+      ],
+      [
+        "yield from delegates iteration and value exchange to another iterable or generator.",
+        "def flatten(groups):\n    for group in groups:\n        yield from group"
+      ],
+      [
+        "itertools provides fast building blocks for chaining, grouping, slicing, combining, and repeating iterables.",
+        "from itertools import chain, islice\nfirst_ten = list(islice(chain(source_a, source_b), 10))"
+      ],
+      [
+        "A lazy pipeline composes generators so only the current values occupy memory.",
+        "lines = (line.strip() for line in file)\nerrors = (line for line in lines if \"ERROR\" in line)\nfor error in errors:\n    print(error)"
+      ]
+    ],
+    "11": [
+      [
+        "open selects text or binary mode; text files should specify the intended encoding explicitly.",
+        "with open(\"notes.txt\", mode=\"r\", encoding=\"utf-8\") as file:\n    text = file.read()"
+      ],
+      [
+        "The file context manager closes the handle even if reading or writing raises an exception.",
+        "with open(\"output.txt\", \"w\", encoding=\"utf-8\") as file:\n    file.write(\"Ready\\n\")"
+      ],
+      [
+        "Path represents filesystem paths as objects and provides readable operations for joining, inspecting, reading, and writing.",
+        "from pathlib import Path\nreport = Path(\"reports\") / \"daily.txt\"\nreport.parent.mkdir(parents=True, exist_ok=True)\nreport.write_text(\"Ready\", encoding=\"utf-8\")"
+      ],
+      [
+        "The csv module handles quoting and delimiters so rows are not split incorrectly by hand.",
+        "import csv\nwith open(\"users.csv\", newline=\"\", encoding=\"utf-8\") as file:\n    rows = list(csv.DictReader(file))"
+      ],
+      [
+        "json converts supported Python values to interoperable text and parses JSON text back into Python values.",
+        "import json\npayload = {\"name\": \"Ada\", \"active\": True}\ntext = json.dumps(payload, indent=2)\nrestored = json.loads(text)"
+      ],
+      [
+        "pickle can preserve Python-specific object graphs but loading untrusted pickle data can execute arbitrary code.",
+        "import pickle\n# Only load bytes produced by a trusted source.\nwith open(\"cache.pkl\", \"rb\") as file:\n    cached = pickle.load(file)"
+      ],
+      [
+        "tempfile creates race-safe temporary resources; zipfile reads and writes ZIP archives while requiring size and path validation for untrusted input.",
+        "from tempfile import TemporaryDirectory\nfrom zipfile import ZipFile\n\nwith TemporaryDirectory() as folder:\n    with ZipFile(\"bundle.zip\", \"w\") as archive:\n        archive.write(\"report.txt\")"
+      ]
+    ],
+    "12": [
+      [
+        "collections adds specialized containers such as Counter, defaultdict, deque, and namedtuple.",
+        "from collections import Counter, deque\ncounts = Counter(\"mississippi\")\nqueue = deque([\"first\", \"second\"])\nnext_item = queue.popleft()"
+      ],
+      [
+        "functools provides higher-order utilities such as caching, partial application, reduction, and singledispatch.",
+        "from functools import lru_cache\n\n@lru_cache(maxsize=256)\ndef fibonacci(n):\n    return n if n < 2 else fibonacci(n - 1) + fibonacci(n - 2)"
+      ],
+      [
+        "datetime models dates and times; zoneinfo supplies IANA time-zone rules for aware datetimes.",
+        "from datetime import datetime\nfrom zoneinfo import ZoneInfo\nnow = datetime.now(ZoneInfo(\"Asia/Kolkata\"))"
+      ],
+      [
+        "re searches and transforms text using patterns; plain string methods are clearer for simple operations.",
+        "import re\nemails = re.findall(r\"[\\w.+-]+@[\\w.-]+\", text)"
+      ],
+      [
+        "math offers numerical functions, statistics summarizes numeric data, and Decimal supports explicit base-10 arithmetic rules.",
+        "from decimal import Decimal\nfrom statistics import mean\nprices = [Decimal(\"10.20\"), Decimal(\"11.40\")]\naverage = mean(prices)"
+      ],
+      [
+        "os and sys expose process and platform facilities; shutil provides higher-level file copying, moving, and archive operations.",
+        "import os, shutil, sys\nprint(os.environ.get(\"APP_ENV\", \"dev\"))\nshutil.copy2(\"source.txt\", \"backup.txt\")\nprint(sys.version)"
+      ],
+      [
+        "argparse converts command-line strings into validated named values and generates help output.",
+        "import argparse\nparser = argparse.ArgumentParser()\nparser.add_argument(\"--port\", type=int, default=8000)\nargs = parser.parse_args()"
+      ]
+    ],
+    "13": [
+      [
+        "Parameter and return annotations document intended types and are stored as metadata rather than automatically enforced.",
+        "def total(values: list[float]) -> float:\n    return sum(values)"
+      ],
+      [
+        "Built-in collections accept type arguments that describe the element, key, and value types expected by static tools.",
+        "names: list[str] = []\nusers_by_id: dict[int, str] = {}\ncoordinates: tuple[float, float] = (1.5, 2.5)"
+      ],
+      [
+        "The | operator describes alternatives; T | None means the value may be absent.",
+        "def find_user(user_id: int) -> User | None:\n    return users.get(user_id)"
+      ],
+      [
+        "A type alias gives a meaningful reusable name to a larger type expression.",
+        "type UserId = int\ntype Headers = dict[str, str]\n\ndef load(user_id: UserId) -> Headers:\n    ..."
+      ],
+      [
+        "TypedDict describes dictionaries with known string keys while values remain ordinary dictionaries at runtime.",
+        "from typing import TypedDict\n\nclass UserPayload(TypedDict):\n    id: int\n    name: str"
+      ],
+      [
+        "A Protocol expresses structural typing: any object with the required members satisfies the interface to a checker.",
+        "from typing import Protocol\n\nclass Closable(Protocol):\n    def close(self) -> None: ..."
+      ],
+      [
+        "A type variable preserves relationships between input and output types in reusable functions and classes.",
+        "from typing import TypeVar\n\nT = TypeVar(\"T\")\n\ndef first(items: list[T]) -> T:\n    return items[0]"
+      ]
+    ],
+    "14": [
+      [
+        "A TestCase groups isolated test methods and integrates with Python's standard test runner.",
+        "import unittest\n\nclass PriceTests(unittest.TestCase):\n    def test_total(self):\n        self.assertEqual(total(10, 3), 30)"
+      ],
+      [
+        "Specific assertions compare actual and expected behavior and produce useful failure messages.",
+        "self.assertEqual(user.name, \"Ada\")\nself.assertTrue(user.active)\nwith self.assertRaises(ValueError):\n    parse(\"bad\")"
+      ],
+      [
+        "setUp prepares fresh state before each test and tearDown releases resources afterward.",
+        "def setUp(self):\n    self.database = create_test_database()\n\ndef tearDown(self):\n    self.database.close()"
+      ],
+      [
+        "A mock replaces a collaborator so a test can control its result and verify how it was called.",
+        "from unittest.mock import Mock\nmailer = Mock()\nservice = SignupService(mailer)\nservice.signup(\"ada@example.com\")\nmailer.send.assert_called_once()"
+      ],
+      [
+        "doctest executes interactive-looking examples in docstrings and checks their displayed output.",
+        "def add(a, b):\n    \"\"\"\n    >>> add(2, 3)\n    5\n    \"\"\"\n    return a + b"
+      ],
+      [
+        "breakpoint pauses execution in the debugger so you can inspect state and step through code.",
+        "def calculate(order):\n    breakpoint()\n    return order.subtotal - order.discount"
+      ],
+      [
+        "logging records structured runtime events by severity; warnings report conditions users should address without immediately failing.",
+        "import logging, warnings\nlogger = logging.getLogger(__name__)\nlogger.info(\"order processed\", extra={\"order_id\": 42})\nwarnings.warn(\"old_api is deprecated\", DeprecationWarning)"
+      ]
+    ],
+    "15": [
+      [
+        "Threads share memory and suit many I/O-bound tasks; in standard CPython builds the GIL limits simultaneous Python bytecode execution.",
+        "from threading import Thread\nworker = Thread(target=download, args=(url,))\nworker.start()\nworker.join()"
+      ],
+      [
+        "A lock protects shared critical sections; Queue coordinates producers and consumers safely between threads.",
+        "from queue import Queue\nfrom threading import Lock\nwork = Queue()\nlock = Lock()\nwith lock:\n    shared_count += 1"
+      ],
+      [
+        "Separate processes have independent memory and can use multiple CPU cores for suitable CPU-bound work.",
+        "from multiprocessing import Pool\nwith Pool() as pool:\n    results = pool.map(calculate, inputs)"
+      ],
+      [
+        "Executors provide one Future-based API for thread or process pools and collect results as work completes.",
+        "from concurrent.futures import ThreadPoolExecutor\nwith ThreadPoolExecutor(max_workers=8) as executor:\n    results = list(executor.map(download, urls))"
+      ],
+      [
+        "An async function returns a coroutine; await pauses it cooperatively while another task can run.",
+        "import asyncio\n\nasync def main():\n    await asyncio.sleep(1)\n    print(\"Ready\")\n\nasyncio.run(main())"
+      ],
+      [
+        "Tasks schedule coroutines concurrently; TaskGroup provides structured lifetime and failure handling for related tasks.",
+        "async with asyncio.TaskGroup() as group:\n    tasks = [group.create_task(fetch(url)) for url in urls]\nresults = [task.result() for task in tasks]"
+      ],
+      [
+        "Cancellation asks cooperative tasks to stop; timeout bounds how long an awaited operation may take.",
+        "try:\n    async with asyncio.timeout(5):\n        result = await fetch(url)\nexcept TimeoutError:\n    result = None"
+      ]
+    ],
+    "16": [
+      [
+        "A connection owns the database session; execute or a cursor sends SQL and reads result rows.",
+        "import sqlite3\nconnection = sqlite3.connect(\"app.db\")\ncursor = connection.cursor()"
+      ],
+      [
+        "SQL data-definition statements create tables and indexes just as they do in other relational databases.",
+        "connection.execute(\"\"\"\n    CREATE TABLE IF NOT EXISTS users (\n        id INTEGER PRIMARY KEY,\n        name TEXT NOT NULL\n    )\n\"\"\")"
+      ],
+      [
+        "Placeholders keep values separate from SQL syntax and prevent injection caused by string concatenation.",
+        "connection.execute(\n    \"INSERT INTO users(name) VALUES (?)\",\n    (name,),\n)"
+      ],
+      [
+        "A transaction groups writes so they either commit together or roll back together after failure.",
+        "try:\n    connection.execute(\"UPDATE accounts SET balance = balance - ? WHERE id = ?\", (amount, source))\n    connection.execute(\"UPDATE accounts SET balance = balance + ? WHERE id = ?\", (amount, target))\n    connection.commit()\nexcept sqlite3.Error:\n    connection.rollback()\n    raise"
+      ],
+      [
+        "Using a connection with with commits on normal exit and rolls back when the block raises; close it separately afterward.",
+        "with sqlite3.connect(\"app.db\") as connection:\n    connection.execute(\"DELETE FROM sessions WHERE expired = 1\")"
+      ],
+      [
+        "A row factory changes query rows from plain tuples into objects that can support named column access.",
+        "connection.row_factory = sqlite3.Row\nrow = connection.execute(\"SELECT id, name FROM users LIMIT 1\").fetchone()\nprint(row[\"name\"])"
+      ],
+      [
+        "The backup API copies a live database consistently; closing connections releases file handles and locks.",
+        "source = sqlite3.connect(\"app.db\")\ntarget = sqlite3.connect(\"backup.db\")\nwith target:\n    source.backup(target)\nsource.close()\ntarget.close()"
+      ]
+    ],
+    "17": [
+      [
+        "urllib.parse separates and combines URL components without fragile manual string splitting.",
+        "from urllib.parse import urlencode, urlparse\nquery = urlencode({\"page\": 2, \"q\": \"python\"})\nparsed = urlparse(f\"https://example.com/search?{query}\")"
+      ],
+      [
+        "urlopen sends a request and returns a response context whose bytes should be decoded according to the expected format.",
+        "from urllib.request import urlopen\nwith urlopen(\"https://api.example.com/users\", timeout=5) as response:\n    body = response.read().decode(\"utf-8\")"
+      ],
+      [
+        "Request accepts an explicit HTTP method; each verb communicates a different retrieval or state-change intent.",
+        "# See one tiny request for each HTTP method below."
+      ],
+      [
+        "Encode outgoing JSON to bytes and declare its media type; decode incoming JSON from the response stream.",
+        "import json\nfrom urllib.request import Request, urlopen\nbody = json.dumps({\"title\": \"Python\"}).encode(\"utf-8\")\nrequest = Request(url, data=body, headers={\"Content-Type\": \"application/json\"})\nwith urlopen(request, timeout=5) as response:\n    result = json.load(response)"
+      ],
+      [
+        "Handle expected HTTP and network failures explicitly and always apply a finite timeout to remote calls.",
+        "from urllib.error import HTTPError, URLError\ntry:\n    with urlopen(request, timeout=5) as response:\n        body = response.read()\nexcept HTTPError as error:\n    print(error.code)\nexcept URLError as error:\n    print(error.reason)"
+      ],
+      [
+        "A socket is a low-level network endpoint; higher-level protocol libraries are usually safer for HTTP and other standard protocols.",
+        "import socket\nwith socket.create_connection((\"example.com\", 80), timeout=5) as connection:\n    connection.sendall(b\"HEAD / HTTP/1.0\\r\\nHost: example.com\\r\\n\\r\\n\")"
+      ],
+      [
+        "ssl wraps sockets with certificate validation and encryption; create_default_context provides secure client defaults.",
+        "import socket, ssl\ncontext = ssl.create_default_context()\nwith socket.create_connection((\"example.com\", 443), timeout=5) as raw:\n    with context.wrap_socket(raw, server_hostname=\"example.com\") as secure:\n        print(secure.version())"
+      ]
+    ],
+    "18": [
+      [
+        "A virtual environment gives one project its own interpreter-facing package installation directory.",
+        "python -m venv .venv\n# Windows\n.venv\\Scripts\\activate\n# macOS/Linux\nsource .venv/bin/activate"
+      ],
+      [
+        "Running pip through the selected interpreter installs packages into that interpreter's active environment.",
+        "python -m pip install --upgrade pip\npython -m pip install requests"
+      ],
+      [
+        "pyproject.toml declares build-system requirements and standardized project metadata for modern packaging tools.",
+        "[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\n\n[project]\nname = \"quick-example\"\nversion = \"0.1.0\""
+      ],
+      [
+        "A source distribution contains source files; a wheel is a built distribution designed for faster, predictable installation.",
+        "python -m pip install build\npython -m build\n# Creates dist/*.tar.gz and dist/*.whl"
+      ],
+      [
+        "TestPyPI is a practice registry for verifying built packages and installation steps before publishing the real release to the public Python Package Index.",
+        "python -m pip install twine\npython -m twine check dist/*\npython -m twine upload --repository testpypi dist/*"
+      ],
+      [
+        "timeit compares small operations, cProfile finds cumulative runtime hotspots, and tracemalloc traces Python memory allocations.",
+        "python -m timeit \"sum(range(1000))\"\npython -m cProfile -s cumulative app.py\npython -X tracemalloc app.py"
+      ],
+      [
+        "Secure defaults make the safest behavior automatic: keep tokens outside code, reject untrusted pickle data, avoid shell-built commands, and use production-ready servers.",
+        "import secrets, subprocess\ntoken = secrets.token_urlsafe(32)\nsubprocess.run([\"git\", \"status\"], check=True, shell=False)\n# Never unpickle untrusted bytes."
+      ]
+    ]
+  },
+  "groupedExamples": {
+    "Interpreter & REPL": [
+      [
+        "REPL",
+        "python\n>>> 2 + 3\n5"
+      ]
+    ],
+    "Scripts & command line": [
+      [
+        "SCRIPT",
+        "python app.py"
+      ]
+    ],
+    "Indentation & code blocks": [
+      [
+        "INDENTATION",
+        "ready = True\nif ready:\n    print(\"Start\")"
+      ]
+    ],
+    "Names & assignment": [
+      [
+        "ASSIGNMENT",
+        "score = 90\ncourse = \"Python\""
+      ]
+    ],
+    "Comments & docstrings": [
+      [
+        "DOCUMENTATION",
+        "# Explain why this value matters\ndef greet():\n    \"\"\"Return a friendly greeting.\"\"\"\n    return \"Hello\""
+      ]
+    ],
+    "print() & input()": [
+      [
+        "CONSOLE I/O",
+        "name = input(\"Name: \")\nprint(\"Hello\", name)"
+      ]
+    ],
+    "Dynamic typing & identity": [
+      [
+        "IDENTITY",
+        "value = 42\nvalue = \"forty-two\"\nmissing = None\nprint(missing is None)"
+      ]
+    ],
+    "Integers, floats & complex numbers": [
+      [
+        "NUMBERS",
+        "count = 12\nprice = 19.95\nsignal = 2 + 3j"
+      ]
+    ],
+    "Booleans & comparisons": [
+      [
+        "BOOLEAN",
+        "age = 24\neligible = 18 <= age < 65"
+      ]
+    ],
+    "None as a sentinel": [
+      [
+        "NONE",
+        "result = None\nif result is None:\n    print(\"Not loaded\")"
+      ]
+    ],
+    "Strings & immutability": [
+      [
+        "STRING",
+        "name = \"  Ada  \"\nclean = name.strip().upper()"
+      ]
+    ],
+    "Formatted string literals": [
+      [
+        "F-STRING",
+        "name = \"Ada\"\nscore = 92.5\nmessage = f\"{name}: {score:.1f}%\""
+      ]
+    ],
+    "Bytes & bytearray": [
+      [
+        "BYTES",
+        "payload = \"hello\".encode(\"utf-8\")\ntext = payload.decode(\"utf-8\")"
+      ]
+    ],
+    "Operators & precedence": [
+      [
+        "OPERATORS",
+        "total = price * count\nvalid = total > 0 and count in range(1, 100)"
+      ]
+    ],
+    "Lists": [
+      [
+        "LIST",
+        "names = [\"Ada\", \"Linus\"]\nnames.append(\"Grace\")"
+      ]
+    ],
+    "Tuples": [
+      [
+        "TUPLE",
+        "point = (12, 8)\nx, y = point"
+      ]
+    ],
+    "Dictionaries": [
+      [
+        "DICT",
+        "user = {\"id\": 7, \"name\": \"Ada\"}\nemail = user.get(\"email\", \"missing\")"
+      ]
+    ],
+    "Sets & frozensets": [
+      [
+        "SET",
+        "skills = {\"python\", \"sql\", \"python\"}\nshared = skills & {\"sql\", \"docker\"}"
+      ]
+    ],
+    "Ranges": [
+      [
+        "RANGE",
+        "for number in range(1, 6):\n    print(number)"
+      ]
+    ],
+    "Slicing & unpacking": [
+      [
+        "SLICE",
+        "items = [10, 20, 30, 40]\nfirst, *middle, last = items\nsubset = items[1:3]"
+      ]
+    ],
+    "Comprehensions": [
+      [
+        "COMPREHENSION",
+        "squares = [n * n for n in range(10) if n % 2 == 0]\nby_id = {user[\"id\"]: user for user in users}"
+      ]
+    ],
+    "if, elif & else": [
+      [
+        "CONDITION",
+        "if score >= 90:\n    grade = \"A\"\nelif score >= 75:\n    grade = \"B\"\nelse:\n    grade = \"C\""
+      ]
+    ],
+    "match & case": [
+      [
+        "MATCH",
+        "match command.split():\n    case [\"open\", filename]:\n        print(filename)\n    case _:\n        print(\"Unknown\")"
+      ]
+    ],
+    "for loops": [
+      [
+        "FOR",
+        "for name in names:\n    print(name)"
+      ]
+    ],
+    "while loops": [
+      [
+        "WHILE",
+        "attempts = 3\nwhile attempts > 0:\n    attempts -= 1"
+      ]
+    ],
+    "break & continue": [
+      [
+        "LOOP CONTROL",
+        "for value in values:\n    if value is None:\n        continue\n    if value < 0:\n        break"
+      ]
+    ],
+    "Loop else": [
+      [
+        "LOOP ELSE",
+        "for user in users:\n    if user.id == wanted_id:\n        print(user)\n        break\nelse:\n    print(\"Not found\")"
+      ]
+    ],
+    "enumerate() & zip()": [
+      [
+        "LOOP HELPERS",
+        "for index, (name, score) in enumerate(zip(names, scores), start=1):\n    print(index, name, score)"
+      ]
+    ],
+    "def & return": [
+      [
+        "FUNCTION",
+        "def total(price, quantity):\n    return price * quantity"
+      ]
+    ],
+    "Positional & keyword arguments": [
+      [
+        "ARGUMENTS",
+        "def connect(host, port):\n    return f\"{host}:{port}\"\n\nconnect(\"localhost\", port=5432)"
+      ]
+    ],
+    "Default parameter values": [
+      [
+        "SAFE DEFAULT",
+        "def add_tag(tag, tags=None):\n    tags = [] if tags is None else tags\n    tags.append(tag)\n    return tags"
+      ]
+    ],
+    "Positional-only & keyword-only": [
+      [
+        "PARAMETER RULES",
+        "def resize(width, height, /, *, quality=85):\n    return width, height, quality"
+      ]
+    ],
+    "*args & **kwargs": [
+      [
+        "VARIADIC",
+        "def report(title, *values, **options):\n    print(title, values, options)"
+      ]
+    ],
+    "LEGB scope, global & nonlocal": [
+      [
+        "SCOPE",
+        "def counter():\n    count = 0\n    def increment():\n        nonlocal count\n        count += 1\n        return count\n    return increment"
+      ]
+    ],
+    "Lambdas, docstrings & annotations": [
+      [
+        "FUNCTION METADATA",
+        "def greet(name: str) -> str:\n    \"\"\"Return a greeting for name.\"\"\"\n    formatter = lambda value: value.strip().title()\n    return f\"Hello {formatter(name)}\""
+      ]
+    ],
+    "import statements": [
+      [
+        "IMPORT",
+        "import math\nradius = 3\narea = math.pi * radius ** 2"
+      ]
+    ],
+    "from, import & as": [
+      [
+        "IMPORT NAMES",
+        "from pathlib import Path as FilePath\nroot = FilePath.cwd()"
+      ]
+    ],
+    "The __main__ guard": [
+      [
+        "MAIN GUARD",
+        "def main():\n    print(\"Running\")\n\nif __name__ == \"__main__\":\n    main()"
+      ]
+    ],
+    "Module search path": [
+      [
+        "SEARCH PATH",
+        "import sys\nfor location in sys.path:\n    print(location)"
+      ]
+    ],
+    "Packages & __init__.py": [
+      [
+        "PACKAGE",
+        "shop/\n  __init__.py\n  pricing.py\n\nfrom shop.pricing import total"
+      ]
+    ],
+    "Relative imports": [
+      [
+        "RELATIVE IMPORT",
+        "# inside shop/api.py\nfrom .pricing import total\nfrom .models.order import Order"
+      ]
+    ],
+    "dir(), help() & importlib": [
+      [
+        "INTROSPECTION",
+        "import importlib\nmodule = importlib.import_module(\"json\")\nprint(dir(module))"
+      ]
+    ],
+    "Classes & instances": [
+      [
+        "CLASS",
+        "class User:\n    pass\n\nuser = User()\nuser.name = \"Ada\""
+      ]
+    ],
+    "__init__ & attributes": [
+      [
+        "INITIALIZER",
+        "class User:\n    def __init__(self, name):\n        self.name = name"
+      ]
+    ],
+    "Methods & self": [
+      [
+        "METHOD",
+        "class Account:\n    def deposit(self, amount):\n        self.balance += amount"
+      ]
+    ],
+    "Class methods & static methods": [
+      [
+        "METHOD TYPES",
+        "class Temperature:\n    @classmethod\n    def from_fahrenheit(cls, value):\n        return cls((value - 32) * 5 / 9)\n\n    @staticmethod\n    def is_freezing(value):\n        return value <= 0"
+      ]
+    ],
+    "Inheritance & super()": [
+      [
+        "INHERITANCE",
+        "class Admin(User):\n    def __init__(self, name, permissions):\n        super().__init__(name)\n        self.permissions = permissions"
+      ]
+    ],
+    "Properties": [
+      [
+        "PROPERTY",
+        "class Product:\n    @property\n    def price(self):\n        return self._price\n\n    @price.setter\n    def price(self, value):\n        if value < 0:\n            raise ValueError(\"price must be positive\")\n        self._price = value"
+      ]
+    ],
+    "Dataclasses": [
+      [
+        "DATACLASS",
+        "from dataclasses import dataclass\n\n@dataclass(frozen=True)\nclass Point:\n    x: int\n    y: int"
+      ]
+    ],
+    "Special methods": [
+      [
+        "DUNDER",
+        "class Basket:\n    def __len__(self):\n        return len(self.items)"
+      ]
+    ],
+    "__repr__ & __str__": [
+      [
+        "REPRESENTATION",
+        "class User:\n    def __repr__(self):\n        return f\"User(name={self.name!r})\"\n\n    def __str__(self):\n        return self.name"
+      ]
+    ],
+    "Equality, ordering & hashing": [
+      [
+        "EQUALITY",
+        "from dataclasses import dataclass\n\n@dataclass(frozen=True, order=True)\nclass Version:\n    major: int\n    minor: int"
+      ]
+    ],
+    "Container protocols": [
+      [
+        "CONTAINER",
+        "class Team:\n    def __iter__(self):\n        return iter(self.members)\n\n    def __contains__(self, member):\n        return member in self.members"
+      ]
+    ],
+    "Context manager protocol": [
+      [
+        "CONTEXT PROTOCOL",
+        "class Timer:\n    def __enter__(self):\n        self.started = time.perf_counter()\n        return self\n\n    def __exit__(self, *error):\n        self.elapsed = time.perf_counter() - self.started"
+      ]
+    ],
+    "Callable objects": [
+      [
+        "CALLABLE",
+        "class Multiplier:\n    def __init__(self, factor):\n        self.factor = factor\n\n    def __call__(self, value):\n        return value * self.factor"
+      ]
+    ],
+    "Descriptors": [
+      [
+        "DESCRIPTOR",
+        "class Positive:\n    def __set_name__(self, owner, name):\n        self.name = \"_\" + name\n\n    def __set__(self, instance, value):\n        if value <= 0:\n            raise ValueError(\"must be positive\")\n        setattr(instance, self.name, value)"
+      ]
+    ],
+    "Syntax errors vs exceptions": [
+      [
+        "ERROR TYPES",
+        "# SyntaxError: invalid grammar\n# ValueError: valid code received an unsuitable value\nnumber = int(\"not-a-number\")"
+      ]
+    ],
+    "try & except": [
+      [
+        "HANDLE",
+        "try:\n    value = int(raw)\nexcept ValueError:\n    value = 0"
+      ]
+    ],
+    "else & finally": [
+      [
+        "CLEANUP",
+        "try:\n    result = load()\nexcept OSError as error:\n    log(error)\nelse:\n    use(result)\nfinally:\n    release()"
+      ]
+    ],
+    "raise": [
+      [
+        "RAISE",
+        "def withdraw(amount):\n    if amount <= 0:\n        raise ValueError(\"amount must be positive\")"
+      ]
+    ],
+    "Custom exceptions": [
+      [
+        "CUSTOM ERROR",
+        "class InsufficientFundsError(Exception):\n    \"\"\"Raised when an account cannot cover a withdrawal.\"\"\""
+      ]
+    ],
+    "Exception chaining & groups": [
+      [
+        "CHAIN",
+        "try:\n    config = json.loads(raw)\nexcept json.JSONDecodeError as error:\n    raise ConfigError(\"Invalid configuration\") from error"
+      ]
+    ],
+    "with & contextlib": [
+      [
+        "CONTEXT MANAGER",
+        "from contextlib import contextmanager\n\n@contextmanager\ndef opened(path):\n    file = open(path, encoding=\"utf-8\")\n    try:\n        yield file\n    finally:\n        file.close()"
+      ]
+    ],
+    "Iterables vs iterators": [
+      [
+        "ITERABLE",
+        "numbers = [1, 2, 3]\niterator = iter(numbers)\nprint(next(iterator))"
+      ]
+    ],
+    "iter() & next()": [
+      [
+        "ITERATION",
+        "iterator = iter([\"a\", \"b\"])\nfirst = next(iterator, None)\nsecond = next(iterator, None)"
+      ]
+    ],
+    "Generator functions & yield": [
+      [
+        "GENERATOR",
+        "def countdown(start):\n    while start:\n        yield start\n        start -= 1"
+      ]
+    ],
+    "Generator expressions": [
+      [
+        "GENERATOR EXPRESSION",
+        "total = sum(n * n for n in range(1_000_000))"
+      ]
+    ],
+    "yield from": [
+      [
+        "DELEGATION",
+        "def flatten(groups):\n    for group in groups:\n        yield from group"
+      ]
+    ],
+    "itertools": [
+      [
+        "ITERTOOLS",
+        "from itertools import chain, islice\nfirst_ten = list(islice(chain(source_a, source_b), 10))"
+      ]
+    ],
+    "Lazy pipelines": [
+      [
+        "PIPELINE",
+        "lines = (line.strip() for line in file)\nerrors = (line for line in lines if \"ERROR\" in line)\nfor error in errors:\n    print(error)"
+      ]
+    ],
+    "open modes & encodings": [
+      [
+        "OPEN",
+        "with open(\"notes.txt\", mode=\"r\", encoding=\"utf-8\") as file:\n    text = file.read()"
+      ]
+    ],
+    "Reading & writing with with": [
+      [
+        "FILE CONTEXT",
+        "with open(\"output.txt\", \"w\", encoding=\"utf-8\") as file:\n    file.write(\"Ready\\n\")"
+      ]
+    ],
+    "pathlib": [
+      [
+        "PATH",
+        "from pathlib import Path\nreport = Path(\"reports\") / \"daily.txt\"\nreport.parent.mkdir(parents=True, exist_ok=True)\nreport.write_text(\"Ready\", encoding=\"utf-8\")"
+      ]
+    ],
+    "CSV": [
+      [
+        "CSV",
+        "import csv\nwith open(\"users.csv\", newline=\"\", encoding=\"utf-8\") as file:\n    rows = list(csv.DictReader(file))"
+      ]
+    ],
+    "JSON": [
+      [
+        "JSON",
+        "import json\npayload = {\"name\": \"Ada\", \"active\": True}\ntext = json.dumps(payload, indent=2)\nrestored = json.loads(text)"
+      ]
+    ],
+    "Pickle safety": [
+      [
+        "PICKLE",
+        "import pickle\n# Only load bytes produced by a trusted source.\nwith open(\"cache.pkl\", \"rb\") as file:\n    cached = pickle.load(file)"
+      ]
+    ],
+    "Temporary & compressed files": [
+      [
+        "TEMP & ZIP",
+        "from tempfile import TemporaryDirectory\nfrom zipfile import ZipFile\n\nwith TemporaryDirectory() as folder:\n    with ZipFile(\"bundle.zip\", \"w\") as archive:\n        archive.write(\"report.txt\")"
+      ]
+    ],
+    "collections": [
+      [
+        "COLLECTIONS",
+        "from collections import Counter, deque\ncounts = Counter(\"mississippi\")\nqueue = deque([\"first\", \"second\"])\nnext_item = queue.popleft()"
+      ]
+    ],
+    "functools": [
+      [
+        "FUNCTOOLS",
+        "from functools import lru_cache\n\n@lru_cache(maxsize=256)\ndef fibonacci(n):\n    return n if n < 2 else fibonacci(n - 1) + fibonacci(n - 2)"
+      ]
+    ],
+    "datetime & zoneinfo": [
+      [
+        "DATE & TIME",
+        "from datetime import datetime\nfrom zoneinfo import ZoneInfo\nnow = datetime.now(ZoneInfo(\"Asia/Kolkata\"))"
+      ]
+    ],
+    "Regular expressions": [
+      [
+        "REGEX",
+        "import re\nemails = re.findall(r\"[\\w.+-]+@[\\w.-]+\", text)"
+      ]
+    ],
+    "math, statistics & decimal": [
+      [
+        "NUMERIC TOOLS",
+        "from decimal import Decimal\nfrom statistics import mean\nprices = [Decimal(\"10.20\"), Decimal(\"11.40\")]\naverage = mean(prices)"
+      ]
+    ],
+    "os, sys & shutil": [
+      [
+        "SYSTEM",
+        "import os, shutil, sys\nprint(os.environ.get(\"APP_ENV\", \"dev\"))\nshutil.copy2(\"source.txt\", \"backup.txt\")\nprint(sys.version)"
+      ]
+    ],
+    "argparse": [
+      [
+        "CLI",
+        "import argparse\nparser = argparse.ArgumentParser()\nparser.add_argument(\"--port\", type=int, default=8000)\nargs = parser.parse_args()"
+      ]
+    ],
+    "Function annotations": [
+      [
+        "ANNOTATIONS",
+        "def total(values: list[float]) -> float:\n    return sum(values)"
+      ]
+    ],
+    "Built-in generics": [
+      [
+        "GENERICS",
+        "names: list[str] = []\nusers_by_id: dict[int, str] = {}\ncoordinates: tuple[float, float] = (1.5, 2.5)"
+      ]
+    ],
+    "Unions & optional values": [
+      [
+        "UNION",
+        "def find_user(user_id: int) -> User | None:\n    return users.get(user_id)"
+      ]
+    ],
+    "Type aliases": [
+      [
+        "TYPE ALIAS",
+        "type UserId = int\ntype Headers = dict[str, str]\n\ndef load(user_id: UserId) -> Headers:\n    ..."
+      ]
+    ],
+    "TypedDict": [
+      [
+        "TYPEDDICT",
+        "from typing import TypedDict\n\nclass UserPayload(TypedDict):\n    id: int\n    name: str"
+      ]
+    ],
+    "Protocols": [
+      [
+        "PROTOCOL",
+        "from typing import Protocol\n\nclass Closable(Protocol):\n    def close(self) -> None: ..."
+      ]
+    ],
+    "TypeVar & Generic": [
+      [
+        "TYPE VARIABLE",
+        "from typing import TypeVar\n\nT = TypeVar(\"T\")\n\ndef first(items: list[T]) -> T:\n    return items[0]"
+      ]
+    ],
+    "unittest test cases": [
+      [
+        "TEST CASE",
+        "import unittest\n\nclass PriceTests(unittest.TestCase):\n    def test_total(self):\n        self.assertEqual(total(10, 3), 30)"
+      ]
+    ],
+    "Assertions": [
+      [
+        "TEST ASSERTIONS",
+        "self.assertEqual(user.name, \"Ada\")\nself.assertTrue(user.active)\nwith self.assertRaises(ValueError):\n    parse(\"bad\")"
+      ]
+    ],
+    "setUp & tearDown": [
+      [
+        "FIXTURE",
+        "def setUp(self):\n    self.database = create_test_database()\n\ndef tearDown(self):\n    self.database.close()"
+      ]
+    ],
+    "unittest.mock": [
+      [
+        "MOCK",
+        "from unittest.mock import Mock\nmailer = Mock()\nservice = SignupService(mailer)\nservice.signup(\"ada@example.com\")\nmailer.send.assert_called_once()"
+      ]
+    ],
+    "doctest": [
+      [
+        "DOCTEST",
+        "def add(a, b):\n    \"\"\"\n    >>> add(2, 3)\n    5\n    \"\"\"\n    return a + b"
+      ]
+    ],
+    "pdb & breakpoint()": [
+      [
+        "DEBUGGER",
+        "def calculate(order):\n    breakpoint()\n    return order.subtotal - order.discount"
+      ]
+    ],
+    "logging & warnings": [
+      [
+        "OBSERVABILITY",
+        "import logging, warnings\nlogger = logging.getLogger(__name__)\nlogger.info(\"order processed\", extra={\"order_id\": 42})\nwarnings.warn(\"old_api is deprecated\", DeprecationWarning)"
+      ]
+    ],
+    "Threads & the GIL": [
+      [
+        "THREAD",
+        "from threading import Thread\nworker = Thread(target=download, args=(url,))\nworker.start()\nworker.join()"
+      ]
+    ],
+    "Locks & thread-safe queues": [
+      [
+        "SYNCHRONIZATION",
+        "from queue import Queue\nfrom threading import Lock\nwork = Queue()\nlock = Lock()\nwith lock:\n    shared_count += 1"
+      ]
+    ],
+    "Multiprocessing": [
+      [
+        "PROCESS",
+        "from multiprocessing import Pool\nwith Pool() as pool:\n    results = pool.map(calculate, inputs)"
+      ]
+    ],
+    "concurrent.futures": [
+      [
+        "FUTURES",
+        "from concurrent.futures import ThreadPoolExecutor\nwith ThreadPoolExecutor(max_workers=8) as executor:\n    results = list(executor.map(download, urls))"
+      ]
+    ],
+    "async & await": [
+      [
+        "COROUTINE",
+        "import asyncio\n\nasync def main():\n    await asyncio.sleep(1)\n    print(\"Ready\")\n\nasyncio.run(main())"
+      ]
+    ],
+    "Tasks, gather & TaskGroup": [
+      [
+        "TASK GROUP",
+        "async with asyncio.TaskGroup() as group:\n    tasks = [group.create_task(fetch(url)) for url in urls]\nresults = [task.result() for task in tasks]"
+      ]
+    ],
+    "Cancellation & timeouts": [
+      [
+        "TIMEOUT",
+        "try:\n    async with asyncio.timeout(5):\n        result = await fetch(url)\nexcept TimeoutError:\n    result = None"
+      ]
+    ],
+    "Connections & cursors": [
+      [
+        "CONNECT",
+        "import sqlite3\nconnection = sqlite3.connect(\"app.db\")\ncursor = connection.cursor()"
+      ]
+    ],
+    "Schema & execute()": [
+      [
+        "SCHEMA",
+        "connection.execute(\"\"\"\n    CREATE TABLE IF NOT EXISTS users (\n        id INTEGER PRIMARY KEY,\n        name TEXT NOT NULL\n    )\n\"\"\")"
+      ]
+    ],
+    "Parameterized queries": [
+      [
+        "PARAMETERS",
+        "connection.execute(\n    \"INSERT INTO users(name) VALUES (?)\",\n    (name,),\n)"
+      ]
+    ],
+    "Transactions": [
+      [
+        "TRANSACTION",
+        "try:\n    connection.execute(\"UPDATE accounts SET balance = balance - ? WHERE id = ?\", (amount, source))\n    connection.execute(\"UPDATE accounts SET balance = balance + ? WHERE id = ?\", (amount, target))\n    connection.commit()\nexcept sqlite3.Error:\n    connection.rollback()\n    raise"
+      ]
+    ],
+    "Connection context manager": [
+      [
+        "DB CONTEXT",
+        "with sqlite3.connect(\"app.db\") as connection:\n    connection.execute(\"DELETE FROM sessions WHERE expired = 1\")"
+      ]
+    ],
+    "Row factories": [
+      [
+        "ROWS",
+        "connection.row_factory = sqlite3.Row\nrow = connection.execute(\"SELECT id, name FROM users LIMIT 1\").fetchone()\nprint(row[\"name\"])"
+      ]
+    ],
+    "Backup & cleanup": [
+      [
+        "DB BACKUP",
+        "source = sqlite3.connect(\"app.db\")\ntarget = sqlite3.connect(\"backup.db\")\nwith target:\n    source.backup(target)\nsource.close()\ntarget.close()"
+      ]
+    ],
+    "URL parsing": [
+      [
+        "URL",
+        "from urllib.parse import urlencode, urlparse\nquery = urlencode({\"page\": 2, \"q\": \"python\"})\nparsed = urlparse(f\"https://example.com/search?{query}\")"
+      ]
+    ],
+    "HTTP GET": [
+      [
+        "GET REQUEST",
+        "from urllib.request import urlopen\nwith urlopen(\"https://api.example.com/users\", timeout=5) as response:\n    body = response.read().decode(\"utf-8\")"
+      ]
+    ],
+    "REST methods: GET, POST, PUT, PATCH & DELETE": [
+      [
+        "GET",
+        "request = Request(\"https://api.example.com/users/7\", method=\"GET\")\nwith urlopen(request, timeout=5) as response:\n    user = json.load(response)",
+        "GET asks the API to return a resource without intending to change server state."
+      ],
+      [
+        "POST",
+        "body = json.dumps({\"name\": \"Ada\"}).encode()\nrequest = Request(url, data=body, method=\"POST\", headers={\"Content-Type\": \"application/json\"})\nwith urlopen(request, timeout=5) as response:\n    created = json.load(response)",
+        "POST submits data so the server can create a resource or perform an action."
+      ],
+      [
+        "PUT",
+        "body = json.dumps({\"name\": \"Ada Lovelace\"}).encode()\nrequest = Request(f\"{url}/7\", data=body, method=\"PUT\", headers={\"Content-Type\": \"application/json\"})",
+        "PUT sends the complete replacement representation for the resource at a known URL."
+      ],
+      [
+        "PATCH",
+        "body = json.dumps({\"active\": True}).encode()\nrequest = Request(f\"{url}/7\", data=body, method=\"PATCH\", headers={\"Content-Type\": \"application/json\"})",
+        "PATCH sends only the fields that should change instead of replacing the whole resource."
+      ],
+      [
+        "DELETE",
+        "request = Request(f\"{url}/7\", method=\"DELETE\")\nwith urlopen(request, timeout=5) as response:\n    print(response.status)",
+        "DELETE asks the server to remove the resource identified by the URL."
+      ]
+    ],
+    "JSON request & response bodies": [
+      [
+        "JSON API",
+        "import json\nfrom urllib.request import Request, urlopen\nbody = json.dumps({\"title\": \"Python\"}).encode(\"utf-8\")\nrequest = Request(url, data=body, headers={\"Content-Type\": \"application/json\"})\nwith urlopen(request, timeout=5) as response:\n    result = json.load(response)"
+      ]
+    ],
+    "HTTP errors & timeouts": [
+      [
+        "HTTP FAILURE",
+        "from urllib.error import HTTPError, URLError\ntry:\n    with urlopen(request, timeout=5) as response:\n        body = response.read()\nexcept HTTPError as error:\n    print(error.code)\nexcept URLError as error:\n    print(error.reason)"
+      ]
+    ],
+    "Sockets": [
+      [
+        "SOCKET",
+        "import socket\nwith socket.create_connection((\"example.com\", 80), timeout=5) as connection:\n    connection.sendall(b\"HEAD / HTTP/1.0\\r\\nHost: example.com\\r\\n\\r\\n\")"
+      ]
+    ],
+    "TLS with ssl": [
+      [
+        "TLS",
+        "import socket, ssl\ncontext = ssl.create_default_context()\nwith socket.create_connection((\"example.com\", 443), timeout=5) as raw:\n    with context.wrap_socket(raw, server_hostname=\"example.com\") as secure:\n        print(secure.version())"
+      ]
+    ],
+    "Virtual environments": [
+      [
+        "VENV",
+        "python -m venv .venv\n# Windows\n.venv\\Scripts\\activate\n# macOS/Linux\nsource .venv/bin/activate"
+      ]
+    ],
+    "pip & dependency installation": [
+      [
+        "PIP",
+        "python -m pip install --upgrade pip\npython -m pip install requests"
+      ]
+    ],
+    "pyproject.toml": [
+      [
+        "PYPROJECT",
+        "[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\n\n[project]\nname = \"quick-example\"\nversion = \"0.1.0\""
+      ]
+    ],
+    "Source distributions & wheels": [
+      [
+        "BUILD",
+        "python -m pip install build\npython -m build\n# Creates dist/*.tar.gz and dist/*.whl"
+      ]
+    ],
+    "TestPyPI & PyPI publishing": [
+      [
+        "PUBLISH",
+        "python -m pip install twine\npython -m twine check dist/*\npython -m twine upload --repository testpypi dist/*"
+      ]
+    ],
+    "timeit, cProfile & tracemalloc": [
+      [
+        "PROFILE",
+        "python -m timeit \"sum(range(1000))\"\npython -m cProfile -s cumulative app.py\npython -X tracemalloc app.py"
+      ]
+    ],
+    "Secure defaults": [
+      [
+        "SECURITY",
+        "import secrets, subprocess\ntoken = secrets.token_urlsafe(32)\nsubprocess.run([\"git\", \"status\"], check=True, shell=False)\n# Never unpickle untrusted bytes."
+      ]
+    ]
+  },
+  "exampleComments": {
+    "REPL": "This repl snippet turns interpreter & repl into a small piece of Python you can run and inspect.",
+    "SCRIPT": "This script snippet turns scripts & command line into a small piece of Python you can run and inspect.",
+    "INDENTATION": "The assignment stores a concrete value or result under a name so the indentation & code blocks behavior can be used on the next line.",
+    "ASSIGNMENT": "The assignment stores a concrete value or result under a name so the names & assignment behavior can be used on the next line.",
+    "DOCUMENTATION": "This defines a function for comments & docstrings; its indented body is the work that runs each time the function is called.",
+    "CONSOLE I/O": "The assignment stores a concrete value or result under a name so the print() & input() behavior can be used on the next line.",
+    "IDENTITY": "The assignment stores a concrete value or result under a name so the dynamic typing & identity behavior can be used on the next line.",
+    "NUMBERS": "The assignment stores a concrete value or result under a name so the integers, floats & complex numbers behavior can be used on the next line.",
+    "BOOLEAN": "The assignment stores a concrete value or result under a name so the booleans & comparisons behavior can be used on the next line.",
+    "NONE": "The assignment stores a concrete value or result under a name so the none as a sentinel behavior can be used on the next line.",
+    "STRING": "The assignment stores a concrete value or result under a name so the strings & immutability behavior can be used on the next line.",
+    "F-STRING": "The assignment stores a concrete value or result under a name so the formatted string literals behavior can be used on the next line.",
+    "BYTES": "The assignment stores a concrete value or result under a name so the bytes & bytearray behavior can be used on the next line.",
+    "OPERATORS": "The assignment stores a concrete value or result under a name so the operators & precedence behavior can be used on the next line.",
+    "LIST": "The assignment stores a concrete value or result under a name so the lists behavior can be used on the next line.",
+    "TUPLE": "The assignment stores a concrete value or result under a name so the tuples behavior can be used on the next line.",
+    "DICT": "The assignment stores a concrete value or result under a name so the dictionaries behavior can be used on the next line.",
+    "SET": "The assignment stores a concrete value or result under a name so the sets & frozensets behavior can be used on the next line.",
+    "RANGE": "This calls the shown function with example inputs so you can see ranges in executable Python syntax.",
+    "SLICE": "The assignment stores a concrete value or result under a name so the slicing & unpacking behavior can be used on the next line.",
+    "COMPREHENSION": "The assignment stores a concrete value or result under a name so the comprehensions behavior can be used on the next line.",
+    "CONDITION": "This condition snippet turns if, elif & else into a small piece of Python you can run and inspect.",
+    "MATCH": "This calls the shown method on a specific object, which is the concrete operation being demonstrated for match & case.",
+    "FOR": "This calls the shown function with example inputs so you can see for loops in executable Python syntax.",
+    "WHILE": "The assignment stores a concrete value or result under a name so the while loops behavior can be used on the next line.",
+    "LOOP CONTROL": "This loop control snippet turns break & continue into a small piece of Python you can run and inspect.",
+    "LOOP ELSE": "This calls the shown function with example inputs so you can see loop else in executable Python syntax.",
+    "LOOP HELPERS": "This calls the shown function with example inputs so you can see enumerate() & zip() in executable Python syntax.",
+    "FUNCTION": "This defines a function for def & return; its indented body is the work that runs each time the function is called.",
+    "ARGUMENTS": "This defines a function for positional & keyword arguments; its indented body is the work that runs each time the function is called.",
+    "SAFE DEFAULT": "This defines a function for default parameter values; its indented body is the work that runs each time the function is called.",
+    "PARAMETER RULES": "This defines a function for positional-only & keyword-only; its indented body is the work that runs each time the function is called.",
+    "VARIADIC": "This defines a function for *args & **kwargs; its indented body is the work that runs each time the function is called.",
+    "SCOPE": "This defines a function for legb scope, global & nonlocal; its indented body is the work that runs each time the function is called.",
+    "FUNCTION METADATA": "This defines a function for lambdas, docstrings & annotations; its indented body is the work that runs each time the function is called.",
+    "IMPORT": "The import makes the required module or name available; the following lines then use it to demonstrate import statements.",
+    "IMPORT NAMES": "The import makes the required module or name available; the following lines then use it to demonstrate from, import & as.",
+    "MAIN GUARD": "This defines a function for the __main__ guard; its indented body is the work that runs each time the function is called.",
+    "SEARCH PATH": "The import makes the required module or name available; the following lines then use it to demonstrate module search path.",
+    "PACKAGE": "The import makes the required module or name available; the following lines then use it to demonstrate packages & __init__.py.",
+    "RELATIVE IMPORT": "The import makes the required module or name available; the following lines then use it to demonstrate relative imports.",
+    "INTROSPECTION": "The import makes the required module or name available; the following lines then use it to demonstrate dir(), help() & importlib.",
+    "CLASS": "This creates a class for classes & instances; the indented attributes and methods describe the behavior of its instances.",
+    "INITIALIZER": "This creates a class for __init__ & attributes; the indented attributes and methods describe the behavior of its instances.",
+    "METHOD": "This creates a class for methods & self; the indented attributes and methods describe the behavior of its instances.",
+    "METHOD TYPES": "This creates a class for class methods & static methods; the indented attributes and methods describe the behavior of its instances.",
+    "INHERITANCE": "This creates a class for inheritance & super(); the indented attributes and methods describe the behavior of its instances.",
+    "PROPERTY": "This creates a class for properties; the indented attributes and methods describe the behavior of its instances.",
+    "DATACLASS": "The import makes the required module or name available; the following lines then use it to demonstrate dataclasses.",
+    "DUNDER": "This creates a class for special methods; the indented attributes and methods describe the behavior of its instances.",
+    "REPRESENTATION": "This creates a class for __repr__ & __str__; the indented attributes and methods describe the behavior of its instances.",
+    "EQUALITY": "The import makes the required module or name available; the following lines then use it to demonstrate equality, ordering & hashing.",
+    "CONTAINER": "This creates a class for container protocols; the indented attributes and methods describe the behavior of its instances.",
+    "CONTEXT PROTOCOL": "This creates a class for context manager protocol; the indented attributes and methods describe the behavior of its instances.",
+    "CALLABLE": "This creates a class for callable objects; the indented attributes and methods describe the behavior of its instances.",
+    "DESCRIPTOR": "This creates a class for descriptors; the indented attributes and methods describe the behavior of its instances.",
+    "ERROR TYPES": "This calls the shown function with example inputs so you can see syntax errors vs exceptions in executable Python syntax.",
+    "HANDLE": "This calls the shown function with example inputs so you can see try & except in executable Python syntax.",
+    "CLEANUP": "This calls the shown function with example inputs so you can see else & finally in executable Python syntax.",
+    "RAISE": "This defines a function for raise; its indented body is the work that runs each time the function is called.",
+    "CUSTOM ERROR": "This creates a class for custom exceptions; the indented attributes and methods describe the behavior of its instances.",
+    "CHAIN": "This calls the shown method on a specific object, which is the concrete operation being demonstrated for exception chaining & groups.",
+    "CONTEXT MANAGER": "The import makes the required module or name available; the following lines then use it to demonstrate with & contextlib.",
+    "ITERABLE": "The assignment stores a concrete value or result under a name so the iterables vs iterators behavior can be used on the next line.",
+    "ITERATION": "The assignment stores a concrete value or result under a name so the iter() & next() behavior can be used on the next line.",
+    "GENERATOR": "This defines a function for generator functions & yield; its indented body is the work that runs each time the function is called.",
+    "GENERATOR EXPRESSION": "The assignment stores a concrete value or result under a name so the generator expressions behavior can be used on the next line.",
+    "DELEGATION": "This defines a function for yield from; its indented body is the work that runs each time the function is called.",
+    "ITERTOOLS": "The import makes the required module or name available; the following lines then use it to demonstrate itertools.",
+    "PIPELINE": "The assignment stores a concrete value or result under a name so the lazy pipelines behavior can be used on the next line.",
+    "OPEN": "This calls the shown method on a specific object, which is the concrete operation being demonstrated for open modes & encodings.",
+    "FILE CONTEXT": "This calls the shown method on a specific object, which is the concrete operation being demonstrated for reading & writing with with.",
+    "PATH": "The import makes the required module or name available; the following lines then use it to demonstrate pathlib.",
+    "CSV": "The import makes the required module or name available; the following lines then use it to demonstrate csv.",
+    "JSON": "The import makes the required module or name available; the following lines then use it to demonstrate json.",
+    "PICKLE": "The import makes the required module or name available; the following lines then use it to demonstrate pickle safety.",
+    "TEMP & ZIP": "The import makes the required module or name available; the following lines then use it to demonstrate temporary & compressed files.",
+    "COLLECTIONS": "The import makes the required module or name available; the following lines then use it to demonstrate collections.",
+    "FUNCTOOLS": "The import makes the required module or name available; the following lines then use it to demonstrate functools.",
+    "DATE & TIME": "The import makes the required module or name available; the following lines then use it to demonstrate datetime & zoneinfo.",
+    "REGEX": "The import makes the required module or name available; the following lines then use it to demonstrate regular expressions.",
+    "NUMERIC TOOLS": "The import makes the required module or name available; the following lines then use it to demonstrate math, statistics & decimal.",
+    "SYSTEM": "The import makes the required module or name available; the following lines then use it to demonstrate os, sys & shutil.",
+    "CLI": "The import makes the required module or name available; the following lines then use it to demonstrate argparse.",
+    "ANNOTATIONS": "This defines a function for function annotations; its indented body is the work that runs each time the function is called.",
+    "GENERICS": "This generics snippet turns built-in generics into a small piece of Python you can run and inspect.",
+    "UNION": "This defines a function for unions & optional values; its indented body is the work that runs each time the function is called.",
+    "TYPE ALIAS": "This defines a function for type aliases; its indented body is the work that runs each time the function is called.",
+    "TYPEDDICT": "The import makes the required module or name available; the following lines then use it to demonstrate typeddict.",
+    "PROTOCOL": "The import makes the required module or name available; the following lines then use it to demonstrate protocols.",
+    "TYPE VARIABLE": "The import makes the required module or name available; the following lines then use it to demonstrate typevar & generic.",
+    "TEST CASE": "The import makes the required module or name available; the following lines then use it to demonstrate unittest test cases.",
+    "TEST ASSERTIONS": "This calls the shown method on a specific object, which is the concrete operation being demonstrated for assertions.",
+    "FIXTURE": "This defines a function for setup & teardown; its indented body is the work that runs each time the function is called.",
+    "MOCK": "The import makes the required module or name available; the following lines then use it to demonstrate unittest.mock.",
+    "DOCTEST": "This defines a function for doctest; its indented body is the work that runs each time the function is called.",
+    "DEBUGGER": "This defines a function for pdb & breakpoint(); its indented body is the work that runs each time the function is called.",
+    "OBSERVABILITY": "The import makes the required module or name available; the following lines then use it to demonstrate logging & warnings.",
+    "THREAD": "The import makes the required module or name available; the following lines then use it to demonstrate threads & the gil.",
+    "SYNCHRONIZATION": "The import makes the required module or name available; the following lines then use it to demonstrate locks & thread-safe queues.",
+    "PROCESS": "The import makes the required module or name available; the following lines then use it to demonstrate multiprocessing.",
+    "FUTURES": "The import makes the required module or name available; the following lines then use it to demonstrate concurrent.futures.",
+    "COROUTINE": "The import makes the required module or name available; the following lines then use it to demonstrate async & await.",
+    "TASK GROUP": "This calls the shown method on a specific object, which is the concrete operation being demonstrated for tasks, gather & taskgroup.",
+    "TIMEOUT": "await pauses this coroutine without blocking the event loop until the shown asynchronous operation completes.",
+    "CONNECT": "The import makes the required module or name available; the following lines then use it to demonstrate connections & cursors.",
+    "SCHEMA": "This schema snippet turns schema & execute() into a small piece of Python you can run and inspect.",
+    "PARAMETERS": "This calls the shown function with example inputs so you can see parameterized queries in executable Python syntax.",
+    "TRANSACTION": "This calls the shown method on a specific object, which is the concrete operation being demonstrated for transactions.",
+    "DB CONTEXT": "This calls the shown method on a specific object, which is the concrete operation being demonstrated for connection context manager.",
+    "ROWS": "This calls the shown method on a specific object, which is the concrete operation being demonstrated for row factories.",
+    "DB BACKUP": "The assignment stores a concrete value or result under a name so the backup & cleanup behavior can be used on the next line.",
+    "URL": "The import makes the required module or name available; the following lines then use it to demonstrate url parsing.",
+    "GET REQUEST": "The import makes the required module or name available; the following lines then use it to demonstrate http get.",
+    "GET": "GET asks the API to return a resource without intending to change server state.",
+    "POST": "POST submits data so the server can create a resource or perform an action.",
+    "PUT": "PUT sends the complete replacement representation for the resource at a known URL.",
+    "PATCH": "PATCH sends only the fields that should change instead of replacing the whole resource.",
+    "DELETE": "DELETE asks the server to remove the resource identified by the URL.",
+    "JSON API": "The import makes the required module or name available; the following lines then use it to demonstrate json request & response bodies.",
+    "HTTP FAILURE": "The import makes the required module or name available; the following lines then use it to demonstrate http errors & timeouts.",
+    "SOCKET": "The import makes the required module or name available; the following lines then use it to demonstrate sockets.",
+    "TLS": "The import makes the required module or name available; the following lines then use it to demonstrate tls with ssl.",
+    "VENV": "This venv snippet turns virtual environments into a small piece of Python you can run and inspect.",
+    "PIP": "This pip snippet turns pip & dependency installation into a small piece of Python you can run and inspect.",
+    "PYPROJECT": "This pyproject snippet turns pyproject.toml into a small piece of Python you can run and inspect.",
+    "BUILD": "This build snippet turns source distributions & wheels into a small piece of Python you can run and inspect.",
+    "PUBLISH": "This publish snippet turns testpypi & pypi publishing into a small piece of Python you can run and inspect.",
+    "PROFILE": "This calls the shown function with example inputs so you can see timeit, cprofile & tracemalloc in executable Python syntax.",
+    "SECURITY": "The import makes the required module or name available; the following lines then use it to demonstrate secure defaults."
+  },
+  "pageTitle": "Python at a Glance | QuickDevBase",
+  "pageDescription": "QuickDevBase Python — fast explanations for Python essentials, with direct links to the official Python and PyPA documentation.",
+  "heroEyebrow": "Python knowledge, at a glance",
+  "heroTitle": "Python, without<br>the <em>indentation intimidation.</em>",
+  "heroLede": "Scan the language from your first expression to async APIs and dependable packaging. Every module points to Python's official documentation for full detail.",
+  "previewLabel": "PYTHON.APP",
+  "previewCode": "<span><b class=\"code-pink\">from</b> dataclasses <b class=\"code-pink\">import</b> dataclass</span><span><b class=\"code-blue\">@dataclass</b></span><span><b class=\"code-pink\">class</b> Topic:</span><span>&nbsp;&nbsp;name: str</span><span><b class=\"code-blue\">print</b>(Topic(\"Python\"))</span>",
+  "chipOne": "✓ Script ready",
+  "chipTwo": "⌁ Keep exploring",
+  "curriculumTitle": "One glance. Every Python essential.",
+  "curriculumLede": "Build the mental model first, test each tiny example, then continue into the official Python docs when you need the full contract.",
+  "searchPlaceholder": "Search topics, e.g. generators",
+  "certificateTitleHtml": "Python Topics<br>at a Glance",
+  "completionNoun": "Python learner",
+  "trademark": "Independent educational project—not affiliated with or endorsed by the Python Software Foundation. Python and related marks belong to their respective owners.",
+  "stageLabels": {
+    "foundation": "Foundation",
+    "core": "Python Core",
+    "backend": "Practical Python",
+    "advanced": "Production"
+  },
+  "fallbackNote": "A practical Python concept worth understanding before moving to the next module.",
+  "fallbackCode": "# Try this in a small, disposable Python script."
+}

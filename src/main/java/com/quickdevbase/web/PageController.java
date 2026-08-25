@@ -37,6 +37,7 @@ public class PageController {
     private final String privacy;
     private final String terms;
     private final String certificatePolicy;
+    private final String javaCourseData;
     private final CourseCatalog courses;
     private final CertificateService certificates;
     private final CertificatePresentationService presentation;
@@ -57,6 +58,7 @@ public class PageController {
         this.privacy = read("privacy.html");
         this.terms = read("terms.html");
         this.certificatePolicy = read("certificate-policy.html");
+        this.javaCourseData = "window.QUICKDEV_COURSE = " + readResource("curriculum/java.json") + ";\n";
         this.courses = courses;
         this.certificates = certificates;
         this.presentation = presentation;
@@ -76,7 +78,12 @@ public class PageController {
 
     @GetMapping("/java")
     ResponseEntity<String> java() {
-        return html(portal);
+        return html(withDataScript(portal, "/java-data.js", false));
+    }
+
+    @GetMapping(value = "/java-data.js", produces = "text/javascript;charset=UTF-8")
+    ResponseEntity<String> javaData() {
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/javascript;charset=UTF-8")).body(javaCourseData);
     }
 
     @GetMapping("/docker")
@@ -140,15 +147,19 @@ public class PageController {
     }
 
     private static String withDataScript(String source, String dataScript, boolean absoluteAppScript) {
-        String appScript = absoluteAppScript ? "/app.js" : "app.js";
+        String appScript = absoluteAppScript ? "/app.js?v=20260825-discovery" : "app.js?v=20260825-discovery";
         return source.replace(
-            "<script src=\"app.js\"></script>",
+            "<script src=\"app.js?v=20260825-discovery\"></script>",
             "<script src=\"" + dataScript + "\"></script><script src=\"" + appScript + "\"></script>"
         );
     }
 
     private static String read(String filename) throws IOException {
-        return new ClassPathResource("static/" + filename).getContentAsString(StandardCharsets.UTF_8);
+        return readResource("static/" + filename);
+    }
+
+    private static String readResource(String filename) throws IOException {
+        return new ClassPathResource(filename).getContentAsString(StandardCharsets.UTF_8);
     }
 
     private static ResponseEntity<String> html(String content) {

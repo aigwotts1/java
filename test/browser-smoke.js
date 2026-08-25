@@ -9,10 +9,12 @@ const debugPort = Number(process.env.CHROME_DEBUG_PORT || 9331);
 const profilePath = path.join(process.cwd(), ".browser-qa", String(process.pid));
 const screenshots = {
   library: path.join(process.cwd(), "qa-quickdev-home.png"),
+  discovery: path.join(process.cwd(), "qa-quickdev-discovery.png"),
   team: path.join(process.cwd(), "qa-quickdev-team.png"),
   brandFooter: path.join(process.cwd(), "qa-quickdev-footer.png"),
   libraryMobile: path.join(process.cwd(), "qa-quickdev-mobile.png"),
   libraryMobileDeck: path.join(process.cwd(), "qa-quickdev-mobile-deck.png"),
+  discoveryMobile: path.join(process.cwd(), "qa-quickdev-discovery-mobile.png"),
   teamMobile: path.join(process.cwd(), "qa-quickdev-team-mobile.png"),
   aiHub: path.join(process.cwd(), "qa-ai-hub.png"),
   aiHubMobile: path.join(process.cwd(), "qa-ai-hub-mobile.png"),
@@ -179,7 +181,7 @@ class DevToolsClient {
       const timeout = setTimeout(() => {
         this.pending.delete(id);
         reject(new Error(`Chrome command timed out: ${method}`));
-      }, 5000);
+      }, 15000);
       this.pending.set(id, { resolve, reject, timeout });
       this.socket.send(JSON.stringify({ id, method, params }));
     });
@@ -193,7 +195,8 @@ class DevToolsClient {
 async function run() {
   console.log(`Running browser smoke test against ${baseUrl}`);
   await fs.mkdir(profilePath, { recursive: true });
-  const certificateLearner = await createNearlyCompleteLearner();
+  const discoveryOnly = process.env.TEST_DISCOVERY_ONLY === "true";
+  const certificateLearner = discoveryOnly ? null : await createNearlyCompleteLearner();
 
   const chrome = spawn(
     chromePath,
@@ -302,6 +305,8 @@ async function run() {
       footerLinkColors: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).color),
       footerLinkDecorations: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).textDecorationLine),
       founderOnHomepage: Boolean(document.querySelector("#founderName")),
+      discoveryPresent: Boolean(document.querySelector("#askQuickDev")),
+      discoveryImageTypes: document.querySelector("#discoveryImage").getAttribute("accept"),
       taglineVisible: document.documentElement.textContent.includes("Developer knowledge, at a glance"),
       noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
       errors: window.__qaErrors
@@ -321,10 +326,27 @@ async function run() {
     assert.deepEqual([...new Set(library.footerLinkColors)], ["rgb(36, 88, 166)"]);
     assert.deepEqual([...new Set(library.footerLinkDecorations)], ["none"]);
     assert.equal(library.founderOnHomepage, false);
+    assert.equal(library.discoveryPresent, true);
+    assert.equal(library.discoveryImageTypes, "image/png,image/jpeg,image/webp");
     assert.equal(library.taglineVisible, true);
     assert.equal(library.noHorizontalOverflow, true);
     assert.deepEqual(library.errors, []);
     await capture(screenshots.library);
+    await evaluate(`scrollTo(0, document.querySelector("#askQuickDev").offsetTop - 80)`);
+    await delay(150);
+    const discoveryDesktop = await evaluate(`(() => {
+      const section = document.querySelector("#askQuickDev").getBoundingClientRect();
+      const chat = document.querySelector(".discovery-chat").getBoundingClientRect();
+      return {
+        visible: section.top < innerHeight && section.bottom > 0,
+        chatInsideSection: chat.left >= section.left && chat.right <= section.right,
+        noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth
+      };
+    })()`);
+    assert.equal(discoveryDesktop.visible, true);
+    assert.equal(discoveryDesktop.chatInsideSection, true, JSON.stringify(discoveryDesktop));
+    assert.equal(discoveryDesktop.noHorizontalOverflow, true);
+    await capture(screenshots.discovery);
     await evaluate(`document.documentElement.style.scrollBehavior = "auto"; scrollTo(0, document.documentElement.scrollHeight)`);
     await delay(150);
     await capture(screenshots.brandFooter);
@@ -364,7 +386,7 @@ async function run() {
 
     await setViewport(390, 844, false);
     await client.send("Page.navigate", { url: baseUrl });
-    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 4`);
+    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 5`);
     const libraryMobile = await evaluate(`({
       cards: document.querySelectorAll("[data-course-card]").length,
       responsiveLayout: matchMedia("(max-width: 680px)").matches,
@@ -395,7 +417,7 @@ async function run() {
       noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
       errors: window.__qaErrors
     })`);
-    assert.equal(libraryMobile.cards, 4);
+    assert.equal(libraryMobile.cards, 5);
     assert.equal(libraryMobile.responsiveLayout, true);
     assert.equal(libraryMobile.logoLoaded, true);
     assert.ok(libraryMobile.logoWidth <= 56);
@@ -411,12 +433,29 @@ async function run() {
     await evaluate(`scrollTo(0, document.querySelector(".hero-visual").offsetTop - 150)`);
     await delay(150);
     await capture(screenshots.libraryMobileDeck);
+    await evaluate(`scrollTo(0, document.querySelector("#askQuickDev").offsetTop - 16)`);
+    await delay(150);
+    const discoveryMobile = await evaluate(`(() => {
+      const section = document.querySelector("#askQuickDev").getBoundingClientRect();
+      const chat = document.querySelector(".discovery-chat").getBoundingClientRect();
+      return {
+        sectionFits: section.left >= 0 && section.right <= innerWidth,
+        chatFits: chat.left >= section.left && chat.right <= section.right,
+        oneColumn: getComputedStyle(document.querySelector("#askQuickDev")).gridTemplateColumns.split(" ").length === 1,
+        noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth
+      };
+    })()`);
+    assert.equal(discoveryMobile.sectionFits, true, JSON.stringify(discoveryMobile));
+    assert.equal(discoveryMobile.chatFits, true, JSON.stringify(discoveryMobile));
+    assert.equal(discoveryMobile.oneColumn, true, JSON.stringify(discoveryMobile));
+    assert.equal(discoveryMobile.noHorizontalOverflow, true, JSON.stringify(discoveryMobile));
+    await capture(screenshots.discoveryMobile);
 
     const libraryResponsiveWidths = [];
     for (const width of [320, 500]) {
       await setViewport(width, 844, false);
       await client.send("Page.navigate", { url: baseUrl });
-      await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 4`);
+      await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 5`);
       const metrics = await evaluate(`(() => {
         const visual = document.querySelector(".hero-visual").getBoundingClientRect();
         const notes = [...document.querySelectorAll(".floating-note")].map((item) => item.getBoundingClientRect());
@@ -501,6 +540,42 @@ async function run() {
     assert.deepEqual(desktop.errors, []);
     assert.equal(desktop.horizontalScrollPrevented, true);
     await capture(screenshots.home);
+
+    await client.send("Page.navigate", { url: `${baseUrl}/java?module=6&topic=CompletableFuture&source=ask-quickdev` });
+    await waitFor(`document.readyState === "complete" && document.querySelector("#lessonDialog").open`);
+    const deepLink = await evaluate(`(() => {
+      const opened = [...document.querySelectorAll("#dialogConcepts .concept-item")].filter((item) => item.open);
+      return {
+        title: document.querySelector("#dialogTitle").textContent.trim(),
+        openedCount: opened.length,
+        openedTopic: opened[0]?.querySelector("summary strong")?.textContent.trim()
+      };
+    })()`);
+    assert.equal(deepLink.title, "Modern Java: 8, 11, 17 & 21");
+    assert.equal(deepLink.openedCount, 1);
+    assert.equal(deepLink.openedTopic, "CompletableFuture");
+
+    await client.send("Page.navigate", { url: `${baseUrl}/sql?module=15&topic=EXPLAIN%20ANALYZE&source=ask-quickdev` });
+    await waitFor(`document.readyState === "complete" && document.querySelector("#lessonDialog").open`);
+    const sqlDeepLink = await evaluate(`(() => {
+      const opened = [...document.querySelectorAll("#dialogConcepts .concept-item")].filter((item) => item.open);
+      return {
+        title: document.querySelector("#dialogTitle").textContent.trim(),
+        openedCount: opened.length,
+        openedTopic: opened[0]?.querySelector("summary strong")?.textContent.trim()
+      };
+    })()`);
+    assert.equal(sqlDeepLink.title, "Views, Indexes & Query Plans");
+    assert.equal(sqlDeepLink.openedCount, 1);
+    assert.equal(sqlDeepLink.openedTopic, "EXPLAIN ANALYZE");
+
+    if (discoveryOnly) {
+      console.log("Discovery browser smoke test passed.");
+      console.log(JSON.stringify({ library, discoveryDesktop, libraryMobile, discoveryMobile, libraryResponsiveWidths, deepLink, sqlDeepLink }, null, 2));
+      return;
+    }
+
+    await navigate(1440, 1000, false, "Sign in", "/java", 18);
 
     await evaluate(`document.querySelector("#authButton").click()`);
     await waitFor(`document.querySelector("#authDialog").open`);
@@ -1234,14 +1309,16 @@ async function run() {
     console.log("Browser smoke test passed.");
     console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, modernJava, restLesson, mobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, sql, sqlMobile, sqlLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
-    try {
-      await appRequest("/api/account", {
-        method: "DELETE",
-        cookie: certificateLearner.cookie,
-        body: { confirmation: "DELETE", password: "LearnJava!42" },
-      });
-    } catch {
-      // Best-effort cleanup also removes the synthetic learner after a failed assertion.
+    if (certificateLearner) {
+      try {
+        await appRequest("/api/account", {
+          method: "DELETE",
+          cookie: certificateLearner.cookie,
+          body: { confirmation: "DELETE", password: "LearnJava!42" },
+        });
+      } catch {
+        // Best-effort cleanup also removes the synthetic learner after a failed assertion.
+      }
     }
     client?.close();
     chrome.kill();

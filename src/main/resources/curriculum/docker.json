@@ -1,0 +1,1779 @@
+{
+  "key": "docker",
+  "name": "Docker",
+  "mark": "D",
+  "modules": [
+    {
+      "id": 1,
+      "title": "Docker Foundations",
+      "stage": "foundation",
+      "description": "Understand what Docker solves and how its main parts work together.",
+      "officialUrl": "https://docs.docker.com/get-started/docker-overview/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Explain the path from typing docker run to a running isolated process.",
+      "topics": [
+        "Containers vs virtual machines",
+        "Docker client",
+        "Docker daemon",
+        "Docker objects",
+        "Registries",
+        "Namespaces and cgroups",
+        "OCI and containerd"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Install & Configure",
+      "stage": "foundation",
+      "description": "Set up Docker Desktop or Engine and verify the environment before building.",
+      "officialUrl": "https://docs.docker.com/engine/install/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Install Docker for your operating system, run hello-world, and inspect the active context.",
+      "topics": [
+        "Docker Desktop",
+        "Docker Engine",
+        "Docker CLI",
+        "Hello-world verification",
+        "Docker contexts",
+        "Version compatibility",
+        "Daemon configuration"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Container Lifecycle",
+      "stage": "foundation",
+      "description": "Create, run, inspect, enter, stop, and remove containers confidently.",
+      "officialUrl": "https://docs.docker.com/reference/cli/docker/container/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Run an Nginx container, inspect it, execute a command inside it, then stop and remove it.",
+      "topics": [
+        "docker run",
+        "create and start",
+        "stop and kill",
+        "restart and remove",
+        "docker exec",
+        "logs and attach",
+        "inspect, stats and top"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Images & Layers",
+      "stage": "foundation",
+      "description": "Read image names, layers, tags, and immutable digests without guesswork.",
+      "officialUrl": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Pull an image by tag, inspect its digest and history, retag it, then remove the extra tag.",
+      "topics": [
+        "Image layers",
+        "Tags",
+        "Digests",
+        "Pull and push",
+        "Image history",
+        "Platform variants",
+        "Image cleanup"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Dockerfile Essentials",
+      "stage": "foundation",
+      "description": "Turn repeatable build instructions into a clear, maintainable image recipe.",
+      "officialUrl": "https://docs.docker.com/reference/dockerfile/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Write a Dockerfile for a small application that runs as a non-root user.",
+      "topics": [
+        "FROM",
+        "RUN",
+        "COPY and ADD",
+        "WORKDIR",
+        "CMD and ENTRYPOINT",
+        "ARG and ENV",
+        "USER, EXPOSE and LABEL"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "BuildKit & Buildx",
+      "stage": "core",
+      "description": "Use Docker's modern builder for caching, secrets, remote builders, and multiple platforms.",
+      "officialUrl": "https://docs.docker.com/build/buildkit/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Create a buildx builder and produce an amd64 and arm64 image without copying secrets into a layer.",
+      "topics": [
+        "BuildKit",
+        "Build context",
+        ".dockerignore",
+        "Cache mounts",
+        "Secret mounts",
+        "SSH mounts",
+        "buildx and multi-platform"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Multi-stage & Efficient Builds",
+      "stage": "core",
+      "description": "Shrink attack surface and build time by separating compilation from runtime.",
+      "officialUrl": "https://docs.docker.com/build/building/multi-stage/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Refactor a single-stage build so only the runtime artifact reaches the final image.",
+      "topics": [
+        "Multi-stage builds",
+        "Named stages",
+        "Target builds",
+        "Cache ordering",
+        "Pinned base images",
+        "Small runtime images",
+        "Non-root runtime"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Registries & Distribution",
+      "stage": "core",
+      "description": "Name, authenticate, publish, and retrieve images safely across environments.",
+      "officialUrl": "https://docs.docker.com/docker-hub/repos/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Tag a local image for a registry, authenticate securely, push it, and verify its digest.",
+      "topics": [
+        "Docker Hub repositories",
+        "Image naming",
+        "docker login",
+        "Access tokens",
+        "Private registries",
+        "Credential stores",
+        "Registry mirrors"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Storage & Persistence",
+      "stage": "core",
+      "description": "Choose the right mount for durable data, source code, or temporary memory.",
+      "officialUrl": "https://docs.docker.com/engine/storage/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Persist database data in a named volume, inspect it, and describe how you would back it up.",
+      "topics": [
+        "Writable container layer",
+        "Named volumes",
+        "Bind mounts",
+        "tmpfs mounts",
+        "--mount syntax",
+        "Volume backup and restore",
+        "Shared and read-only data"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Container Networking",
+      "stage": "core",
+      "description": "Connect services, publish ports, and use Docker's built-in service discovery.",
+      "officialUrl": "https://docs.docker.com/engine/network/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Create a private network, connect an API and database by name, and publish only the API port.",
+      "topics": [
+        "Bridge networks",
+        "Port publishing",
+        "Container DNS",
+        "Host network",
+        "None network",
+        "Overlay and macvlan",
+        "Internal networks and IPv6"
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Docker Compose",
+      "stage": "backend",
+      "description": "Define and operate a complete multi-container application in one readable YAML model.",
+      "officialUrl": "https://docs.docker.com/compose/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Describe a web and database stack with health-aware startup, named storage, and an internal network.",
+      "topics": [
+        "Compose application model",
+        "services",
+        "build and image",
+        "ports, volumes and networks",
+        "environment and env files",
+        "depends_on and health",
+        "profiles and watch"
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Runtime Configuration",
+      "stage": "backend",
+      "description": "Control process behavior, resources, health, and restart policy without rebuilding.",
+      "officialUrl": "https://docs.docker.com/engine/containers/run/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Run a service with a memory limit, healthcheck, restart policy, and read-only root filesystem.",
+      "topics": [
+        "Environment variables",
+        "CPU and memory limits",
+        "Restart policies",
+        "Healthchecks",
+        "PID 1 and --init",
+        "Read-only root filesystem",
+        "Capabilities and sysctls"
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Logs & Observability",
+      "stage": "backend",
+      "description": "See what containers are doing and collect useful signals when something fails.",
+      "officialUrl": "https://docs.docker.com/engine/logging/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Diagnose a restarting container using ps, logs, inspect, stats, and events in a sensible order.",
+      "topics": [
+        "stdout and stderr",
+        "Logging drivers",
+        "Log rotation",
+        "Docker events",
+        "Resource stats",
+        "Inspect and format",
+        "Debugging tools"
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Container Security",
+      "stage": "advanced",
+      "description": "Reduce privilege, protect the daemon, and make safer runtime boundaries the default.",
+      "officialUrl": "https://docs.docker.com/engine/security/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Harden a container by dropping privileges, making filesystems read-only, and avoiding the Docker socket.",
+      "topics": [
+        "Least privilege",
+        "Rootless mode",
+        "User namespaces",
+        "Seccomp",
+        "AppArmor and SELinux",
+        "Docker socket risk",
+        "Runtime secrets"
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Supply-chain Security",
+      "stage": "advanced",
+      "description": "Inspect image contents, vulnerabilities, provenance, and policy before deployment.",
+      "officialUrl": "https://docs.docker.com/scout/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Generate an SBOM, review critical CVEs, and explain why a signed provenance record matters.",
+      "topics": [
+        "Docker Scout",
+        "SBOM",
+        "CVE analysis",
+        "Base image refresh",
+        "Provenance attestations",
+        "SBOM attestations",
+        "Policy gates"
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Developer Workflow",
+      "stage": "advanced",
+      "description": "Use Docker for fast, repeatable local development without hiding feedback.",
+      "officialUrl": "https://docs.docker.com/guides/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Design a local workflow where source changes are synced but dependencies and database data remain cached.",
+      "topics": [
+        "Development containers",
+        "Bind-mounted source",
+        "Compose overrides",
+        "Compose Watch",
+        "Hot reload",
+        "Ephemeral test environments",
+        "Build Cloud and remote builders"
+      ]
+    },
+    {
+      "id": 17,
+      "title": "CI/CD & Publishing",
+      "stage": "advanced",
+      "description": "Build once, test predictably, and publish immutable images through automation.",
+      "officialUrl": "https://docs.docker.com/build/ci/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Outline a pipeline that tests, builds, scans, and pushes a commit-tagged multi-platform image.",
+      "topics": [
+        "Pipeline stages",
+        "Immutable version tags",
+        "Registry authentication in CI",
+        "Build cache in CI",
+        "Multi-platform publishing",
+        "GitHub Actions integration",
+        "Promotion by digest"
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Production & Swarm",
+      "stage": "advanced",
+      "description": "Operate services across nodes with controlled rollout, scale, configuration, and recovery.",
+      "officialUrl": "https://docs.docker.com/engine/swarm/",
+      "officialLabel": "Official Docker documentation",
+      "challenge": "Deploy a replicated service with a secret, health-aware rolling update, and safe rollback plan.",
+      "topics": [
+        "Swarm nodes",
+        "Services and tasks",
+        "Stacks",
+        "Overlay networking",
+        "Scaling and placement",
+        "Rolling updates and rollback",
+        "Swarm secrets and configs"
+      ]
+    }
+  ],
+  "quickNotes": {
+    "1": [
+      [
+        "Containers share the host kernel and isolate processes; VMs boot a complete guest operating system.",
+        "docker run --rm alpine echo hello"
+      ],
+      [
+        "The docker command is a client that sends API requests to a Docker daemon.",
+        "docker version"
+      ],
+      [
+        "dockerd builds images, creates networks and volumes, and manages container lifecycle.",
+        "docker info"
+      ],
+      [
+        "Images are templates; containers are runnable instances; networks and volumes connect and persist them.",
+        "docker image ls\ndocker container ls"
+      ],
+      [
+        "A registry stores and distributes tagged or digest-addressed images.",
+        "docker pull docker.io/library/nginx:alpine"
+      ],
+      [
+        "Namespaces isolate what a process can see; cgroups limit and account for resources it can use.",
+        "docker run --memory 256m --cpus 0.5 alpine"
+      ],
+      [
+        "OCI defines interoperable image/runtime standards while containerd handles lower-level container lifecycle for Docker.",
+        "docker info --format '{{json .DriverStatus}}'"
+      ]
+    ],
+    "2": [
+      [
+        "Desktop bundles the Engine, CLI, Compose, BuildKit, and a graphical dashboard for local development.",
+        "docker desktop status"
+      ],
+      [
+        "Engine is the daemon-led container runtime commonly installed directly on Linux servers.",
+        "docker info --format '{{.ServerVersion}}'"
+      ],
+      [
+        "The CLI exposes commands and built-in help for objects such as containers, images, and networks.",
+        "docker --help"
+      ],
+      [
+        "The hello-world image verifies that the client can reach the daemon and pull and run an image.",
+        "docker run --rm hello-world"
+      ],
+      [
+        "A context stores connection settings so one CLI can target local or remote Docker endpoints.",
+        "docker context ls\ndocker context use default"
+      ],
+      [
+        "docker version shows client and server versions separately, which helps reveal API mismatches.",
+        "docker version"
+      ],
+      [
+        "daemon.json controls Engine-wide settings such as logging, registries, and data location.",
+        "docker info"
+      ]
+    ],
+    "3": [
+      [
+        "docker run creates a new container from an image, applies the requested settings, and starts the image's configured process.",
+        "docker run --name web -d nginx:alpine"
+      ],
+      [
+        "docker create prepares a container without running it, while docker start launches that same prepared container later.",
+        "docker create --name job alpine echo done\ndocker start -a job"
+      ],
+      [
+        "docker stop requests a graceful shutdown and waits for a timeout; docker kill sends a signal immediately when waiting is inappropriate.",
+        "docker stop web\ndocker kill web"
+      ],
+      [
+        "restart cycles a container; rm deletes a stopped container and its writable layer.",
+        "docker restart web\ndocker rm -f web"
+      ],
+      [
+        "exec starts an additional command inside an already-running container.",
+        "docker exec -it web sh"
+      ],
+      [
+        "logs reads captured output; attach connects your terminal to the container's main process.",
+        "docker logs --tail 50 -f web"
+      ],
+      [
+        "inspect returns configuration JSON; stats shows resource use; top lists container processes.",
+        "docker inspect web\ndocker stats web\ndocker top web"
+      ]
+    ],
+    "4": [
+      [
+        "Each filesystem-changing build instruction creates a reusable read-only layer.",
+        "docker image history nginx:alpine"
+      ],
+      [
+        "A tag is a movable human-friendly image reference, commonly used for versions.",
+        "docker tag myapp:latest myapp:1.0"
+      ],
+      [
+        "A digest is an immutable content hash, so it identifies exactly one image manifest.",
+        "docker pull alpine@sha256:<digest>"
+      ],
+      [
+        "pull downloads an image; push uploads a tagged image to a registry you can access.",
+        "docker pull alpine:3.20\ndocker push username/myapp:1.0"
+      ],
+      [
+        "history shows the commands and sizes that formed an image's layers.",
+        "docker history --no-trunc myapp:1.0"
+      ],
+      [
+        "A manifest list can point one tag to architecture-specific images such as amd64 and arm64.",
+        "docker pull --platform linux/arm64 alpine:3.20"
+      ],
+      [
+        "prune removes unused image data; review disk usage before reclaiming it.",
+        "docker system df\ndocker image prune"
+      ]
+    ],
+    "5": [
+      [
+        "FROM selects a base image and starts a build stage.",
+        "FROM node:22-alpine"
+      ],
+      [
+        "RUN executes a build-time command and commits its filesystem result to a layer.",
+        "RUN npm ci --omit=dev"
+      ],
+      [
+        "COPY transfers local build-context files; ADD has extra archive and URL behavior and should be intentional.",
+        "COPY package*.json ./\nCOPY src ./src"
+      ],
+      [
+        "WORKDIR sets the directory used by later instructions and by the launched process.",
+        "WORKDIR /app"
+      ],
+      [
+        "ENTRYPOINT defines the executable while CMD supplies default arguments or the default command.",
+        "ENTRYPOINT [\"java\", \"-jar\"]\nCMD [\"app.jar\"]"
+      ],
+      [
+        "ARG exists while building; ENV persists in the image and is available to the running container.",
+        "ARG APP_VERSION\nENV NODE_ENV=production"
+      ],
+      [
+        "USER drops privileges, EXPOSE documents a port, and LABEL adds searchable metadata.",
+        "USER 10001\nEXPOSE 8080\nLABEL org.opencontainers.image.title=\"api\""
+      ]
+    ],
+    "6": [
+      [
+        "BuildKit is Docker's modern build backend and can skip unused work and run independent stages in parallel.",
+        "DOCKER_BUILDKIT=1 docker build ."
+      ],
+      [
+        "The context is the file set a build may read; keep it small to make transfers and cache checks faster.",
+        "docker build -f docker/Dockerfile ."
+      ],
+      [
+        ".dockerignore excludes files such as Git history, dependencies, and secrets from the build context.",
+        "node_modules\n.git\n.env"
+      ],
+      [
+        "A cache mount reuses package-manager data without placing that cache in the final image layer.",
+        "RUN --mount=type=cache,target=/root/.npm npm ci"
+      ],
+      [
+        "A secret mount exposes sensitive data only to one build step and does not bake it into the image.",
+        "RUN --mount=type=secret,id=npmrc npm ci"
+      ],
+      [
+        "An SSH mount forwards an agent temporarily so a build can fetch private source without copying a key.",
+        "RUN --mount=type=ssh git clone git@github.com:org/repo.git"
+      ],
+      [
+        "buildx manages advanced builders and can publish one tag containing multiple architecture variants.",
+        "docker buildx build --platform linux/amd64,linux/arm64 --push -t user/app:1.0 ."
+      ]
+    ],
+    "7": [
+      [
+        "Multiple FROM instructions create stages so build tools can stay out of the final runtime image.",
+        "FROM golang:1.24 AS build\nRUN go build -o /out/app .\nFROM gcr.io/distroless/base\nCOPY --from=build /out/app /app"
+      ],
+      [
+        "AS gives a stage a stable name that COPY --from can reference even if stages are reordered.",
+        "FROM node:22 AS build\nCOPY --from=build /app/dist /srv"
+      ],
+      [
+        "--target stops at a named stage, which is useful for testing or debugging intermediate output.",
+        "docker build --target test -t myapp:test ."
+      ],
+      [
+        "Place stable dependency steps before frequently changing source so more layers remain reusable.",
+        "COPY package*.json ./\nRUN npm ci\nCOPY . ."
+      ],
+      [
+        "A version tag or digest reduces surprise changes; a digest gives exact reproducibility.",
+        "FROM eclipse-temurin:21-jre@sha256:<digest>"
+      ],
+      [
+        "A focused runtime base contains fewer packages, downloads faster, and exposes fewer components.",
+        "FROM eclipse-temurin:21-jre-alpine"
+      ],
+      [
+        "A non-root runtime executes the application as an unprivileged user, reducing what a compromised container process can change or access.",
+        "RUN adduser -D -u 10001 app\nUSER 10001"
+      ]
+    ],
+    "8": [
+      [
+        "A repository groups versions of an image under a registry namespace and name.",
+        "docker pull docker.io/library/postgres:17"
+      ],
+      [
+        "A complete reference can include registry host, namespace, repository, tag, and digest.",
+        "registry.example.com/team/api:1.4.0"
+      ],
+      [
+        "login stores or delegates registry credentials so pull and push can authenticate.",
+        "docker login registry.example.com --username alice"
+      ],
+      [
+        "Registry access tokens are limited credentials for pull or push operations and are safer for automation than exposing a user's main password.",
+        "echo \"$REGISTRY_TOKEN\" | docker login -u alice --password-stdin"
+      ],
+      [
+        "A private registry limits who may discover, pull, or push organization images.",
+        "docker pull registry.example.com/team/api:1.4.0"
+      ],
+      [
+        "A credential helper keeps registry secrets in an operating-system keychain instead of plain config.",
+        "\"credsStore\": \"desktop\""
+      ],
+      [
+        "A mirror caches upstream content closer to builders and can reduce latency or rate-limit pressure.",
+        "\"registry-mirrors\": [\"https://mirror.example.com\"]"
+      ]
+    ],
+    "9": [
+      [
+        "Changes not mounted elsewhere live in the container's disposable writable layer.",
+        "docker diff web"
+      ],
+      [
+        "Docker-managed volumes persist independently of a container and are the usual choice for application data.",
+        "docker volume create pgdata\ndocker run -v pgdata:/var/lib/postgresql/data postgres:17"
+      ],
+      [
+        "A bind mount exposes an exact host path, which is useful for source code but tightly couples host layout.",
+        "docker run --mount type=bind,src=\"$PWD\",dst=/work alpine"
+      ],
+      [
+        "A tmpfs keeps temporary data in host memory and does not persist it to the container layer.",
+        "docker run --tmpfs /run:rw,noexec,nosuid alpine"
+      ],
+      [
+        "--mount names source, target, type, and options explicitly and is easier to review than short syntax.",
+        "docker run --mount type=volume,src=data,dst=/data alpine"
+      ],
+      [
+        "A helper container can archive the mounted volume without installing backup tools in the application image.",
+        "docker run --rm -v data:/data -v \"$PWD\":/backup alpine tar czf /backup/data.tgz /data"
+      ],
+      [
+        "Multiple containers can mount the same data; use read-only mode for consumers that must not modify it.",
+        "docker run --mount type=volume,src=config,dst=/config,readonly app"
+      ]
+    ],
+    "10": [
+      [
+        "A bridge is the standard single-host network; user-defined bridges add automatic DNS by container name.",
+        "docker network create app-net"
+      ],
+      [
+        "-p maps a host address and port to a container port; EXPOSE alone does not publish it.",
+        "docker run -p 127.0.0.1:8080:80 nginx"
+      ],
+      [
+        "On a user-defined network, containers resolve one another by name or network alias.",
+        "docker run --network app-net --name api my-api"
+      ],
+      [
+        "Host mode removes network namespace isolation and lets the process use the host network directly.",
+        "docker run --network host metrics-agent"
+      ],
+      [
+        "None leaves a container with loopback only, useful when it needs no network access.",
+        "docker run --network none batch-job"
+      ],
+      [
+        "Overlay joins services across Docker hosts; macvlan gives containers addresses on a physical network.",
+        "docker network create --driver overlay service-net"
+      ],
+      [
+        "Internal networks block external routing; IPv6 can be enabled where daemon and network configuration support it.",
+        "docker network create --internal backend"
+      ]
+    ],
+    "11": [
+      [
+        "Compose represents an application as services connected by networks and persistent resources.",
+        "docker compose config"
+      ],
+      [
+        "Each service defines how one application component is built or run.",
+        "services:\n  api:\n    image: example/api:1.0"
+      ],
+      [
+        "In Compose, build specifies how to create an image from source, while image identifies what to run and optionally names the built result.",
+        "services:\n  api:\n    build: .\n    image: example/api:dev"
+      ],
+      [
+        "These sections declare host exposure, persistent mounts, and communication boundaries.",
+        "ports: [\"8080:8080\"]\nvolumes: [\"data:/data\"]\nnetworks: [\"backend\"]"
+      ],
+      [
+        "environment passes explicit values; env_file loads container variables from a file.",
+        "environment:\n  LOG_LEVEL: info\nenv_file: .env"
+      ],
+      [
+        "depends_on controls creation order and can wait for a dependency healthcheck, not just process start.",
+        "depends_on:\n  db:\n    condition: service_healthy"
+      ],
+      [
+        "Profiles enable optional services; Compose Watch syncs or rebuilds as development files change.",
+        "docker compose --profile debug up\ndocker compose watch"
+      ]
+    ],
+    "12": [
+      [
+        "-e supplies runtime configuration and overrides image ENV values without changing the image.",
+        "docker run -e LOG_LEVEL=debug app"
+      ],
+      [
+        "Resource flags stop one container from consuming unbounded host CPU or memory.",
+        "docker run --cpus 1.5 --memory 512m app"
+      ],
+      [
+        "A restart policy tells the daemon when to relaunch a stopped container.",
+        "docker run --restart unless-stopped app"
+      ],
+      [
+        "A healthcheck reports whether the service is functioning, independently of whether its process still exists.",
+        "HEALTHCHECK CMD curl -f http://localhost:8080/health || exit 1"
+      ],
+      [
+        "PID 1 handles signals and orphaned children specially; --init adds a small init process when needed.",
+        "docker run --init app"
+      ],
+      [
+        "Read-only mode prevents writes to the image filesystem; add explicit writable mounts for required paths.",
+        "docker run --read-only --tmpfs /tmp app"
+      ],
+      [
+        "Capabilities add or drop focused kernel privileges; sysctls tune allowed namespaced kernel parameters.",
+        "docker run --cap-drop ALL --cap-add NET_BIND_SERVICE app"
+      ]
+    ],
+    "13": [
+      [
+        "Containers should usually write application logs to standard streams so Docker can collect them.",
+        "docker logs api"
+      ],
+      [
+        "A logging driver routes container output to json-file, local, journald, syslog, or another destination.",
+        "docker run --log-driver local app"
+      ],
+      [
+        "Size and file limits stop local log files from silently filling the host disk.",
+        "docker run --log-opt max-size=10m --log-opt max-file=3 app"
+      ],
+      [
+        "events streams daemon activity such as create, start, die, network, and volume actions.",
+        "docker events --since 10m"
+      ],
+      [
+        "stats reports live CPU, memory, network, block I/O, and process counts.",
+        "docker stats --no-stream"
+      ],
+      [
+        "inspect exposes low-level state and Go templates can select just the value you need.",
+        "docker inspect --format '{{.State.ExitCode}}' api"
+      ],
+      [
+        "exec can inspect a running container; docker debug can add tools without permanently bloating a slim image.",
+        "docker exec -it api sh"
+      ]
+    ],
+    "14": [
+      [
+        "Grant only the users, mounts, networks, and kernel capabilities the process genuinely needs.",
+        "docker run --cap-drop ALL --read-only app"
+      ],
+      [
+        "Rootless Docker runs daemon and containers without host root privileges, reducing daemon compromise impact.",
+        "dockerd-rootless-setuptool.sh install"
+      ],
+      [
+        "User namespace remapping maps container root to an unprivileged host identity.",
+        "\"userns-remap\": \"default\""
+      ],
+      [
+        "The default seccomp profile blocks risky system calls while permitting common container workloads.",
+        "docker run --security-opt seccomp=profile.json app"
+      ],
+      [
+        "Linux security modules add mandatory access rules beyond ordinary Unix permissions.",
+        "docker run --security-opt apparmor=docker-default app"
+      ],
+      [
+        "Mounting docker.sock effectively grants control of the daemon and often the host; avoid it or proxy narrowly.",
+        "# Avoid: -v /var/run/docker.sock:/var/run/docker.sock"
+      ],
+      [
+        "Provide secrets through a managed secret mechanism or temporary file, not an image layer or committed env file.",
+        "docker secret create db_password ./password.txt"
+      ]
+    ],
+    "15": [
+      [
+        "Scout analyzes image components and compares them with vulnerability and policy data.",
+        "docker scout quickview example/api:1.0"
+      ],
+      [
+        "A software bill of materials lists the packages and components present in an image.",
+        "docker scout sbom example/api:1.0"
+      ],
+      [
+        "CVE reports connect vulnerable packages with severity and available fixes.",
+        "docker scout cves --only-severity critical,high example/api:1.0"
+      ],
+      [
+        "Rebuilding with a patched base can remove inherited vulnerabilities even when app code is unchanged.",
+        "docker build --pull --no-cache -t example/api:1.0.1 ."
+      ],
+      [
+        "Provenance records how and where an image was built so consumers can verify its origin.",
+        "docker buildx build --provenance=mode=max --push -t example/api:1.0 ."
+      ],
+      [
+        "An SBOM attestation travels alongside the image manifest in the registry.",
+        "docker buildx build --sbom=true --push -t example/api:1.0 ."
+      ],
+      [
+        "A CI policy can block release when images violate approved base, severity, or freshness rules.",
+        "docker scout policy example/api:1.0"
+      ]
+    ],
+    "16": [
+      [
+        "A development container standardizes tools and dependencies while the editor stays connected to the workspace.",
+        "docker run --rm -it -v \"$PWD\":/workspace dev-image"
+      ],
+      [
+        "Mounting source gives immediate file changes without rebuilding every edit.",
+        "docker run -v \"$PWD/src\":/app/src app:dev"
+      ],
+      [
+        "An additional Compose file can layer development-only ports, mounts, or commands onto a shared base.",
+        "docker compose -f compose.yaml -f compose.dev.yaml up"
+      ],
+      [
+        "Watch can sync files, restart a service, or rebuild when selected paths change.",
+        "docker compose watch"
+      ],
+      [
+        "A language-specific watcher reloads the process when mounted or synced source changes.",
+        "command: npm run dev"
+      ],
+      [
+        "Disposable Compose projects make integration tests repeatable and easy to tear down.",
+        "docker compose -p test-$BUILD_ID up --abort-on-container-exit"
+      ],
+      [
+        "Remote builders can share cache and powerful build capacity while the developer keeps a local CLI.",
+        "docker buildx ls"
+      ]
+    ],
+    "17": [
+      [
+        "Separate test, build, scan, and publish steps so failures stop promotion at the right boundary.",
+        "test -> build -> scan -> push -> deploy"
+      ],
+      [
+        "Tag releases with a commit or version; do not depend on latest as the only production identity.",
+        "docker tag api qdb/api:$GIT_SHA"
+      ],
+      [
+        "CI registry authentication uses short-lived or narrowly scoped secrets, passed through standard input so credentials do not appear in command arguments or logs.",
+        "echo \"$TOKEN\" | docker login -u \"$USER\" --password-stdin"
+      ],
+      [
+        "Export and import BuildKit cache so clean runners can reuse expensive dependency layers.",
+        "docker buildx build --cache-from type=registry,ref=qdb/api:cache --cache-to type=registry,ref=qdb/api:cache,mode=max ."
+      ],
+      [
+        "A buildx push can publish architecture variants and their manifest list in one operation.",
+        "docker buildx build --platform linux/amd64,linux/arm64 --push -t qdb/api:1.0 ."
+      ],
+      [
+        "Docker's maintained actions set up Buildx, authenticate, generate metadata, and build and push.",
+        "uses: docker/build-push-action@v6"
+      ],
+      [
+        "Promote the tested digest between environments so deployment cannot drift to different bytes.",
+        "image: qdb/api@sha256:<tested-digest>"
+      ]
+    ],
+    "18": [
+      [
+        "A swarm groups Engines into manager and worker nodes with an encrypted control plane.",
+        "docker swarm init"
+      ],
+      [
+        "A service declares desired state; the orchestrator schedules individual task containers to match it.",
+        "docker service create --name web --replicas 3 nginx:alpine"
+      ],
+      [
+        "A stack deploys a group of services, networks, configs, and secrets from a Compose-style file.",
+        "docker stack deploy -c compose.yaml shop"
+      ],
+      [
+        "An overlay network lets swarm services communicate across nodes and supports routing mesh ingress.",
+        "docker network create --driver overlay backend"
+      ],
+      [
+        "Replica counts and placement constraints control capacity and where tasks may run.",
+        "docker service scale web=6"
+      ],
+      [
+        "Update settings control parallelism and delay; rollback restores the previous service specification.",
+        "docker service update --image nginx:1.28 --update-parallelism 2 web\ndocker service rollback web"
+      ],
+      [
+        "Secrets are encrypted in the swarm and mounted only into authorized tasks; configs hold non-sensitive files.",
+        "docker secret create db_password ./password.txt\ndocker service create --secret db_password app"
+      ]
+    ]
+  },
+  "groupedExamples": {
+    "Containers vs virtual machines": [
+      [
+        "CONTAINER",
+        "docker run --rm alpine echo hello"
+      ]
+    ],
+    "Docker client": [
+      [
+        "CLIENT",
+        "docker version"
+      ]
+    ],
+    "Docker daemon": [
+      [
+        "DAEMON",
+        "docker info"
+      ]
+    ],
+    "Docker objects": [
+      [
+        "OBJECTS",
+        "docker image ls\ndocker container ls"
+      ]
+    ],
+    "Registries": [
+      [
+        "REGISTRY",
+        "docker pull docker.io/library/nginx:alpine"
+      ]
+    ],
+    "Namespaces and cgroups": [
+      [
+        "ISOLATION",
+        "docker run --memory 256m --cpus 0.5 alpine"
+      ]
+    ],
+    "OCI and containerd": [
+      [
+        "RUNTIME",
+        "docker info --format '{{json .DriverStatus}}'"
+      ]
+    ],
+    "Docker Desktop": [
+      [
+        "DESKTOP",
+        "docker desktop status"
+      ]
+    ],
+    "Docker Engine": [
+      [
+        "ENGINE",
+        "docker info --format '{{.ServerVersion}}'"
+      ]
+    ],
+    "Docker CLI": [
+      [
+        "CLI",
+        "docker --help"
+      ]
+    ],
+    "Hello-world verification": [
+      [
+        "VERIFY",
+        "docker run --rm hello-world"
+      ]
+    ],
+    "Docker contexts": [
+      [
+        "CONTEXT",
+        "docker context ls\ndocker context use default"
+      ]
+    ],
+    "Version compatibility": [
+      [
+        "VERSION",
+        "docker version"
+      ]
+    ],
+    "Daemon configuration": [
+      [
+        "CONFIG",
+        "docker info"
+      ]
+    ],
+    "docker run": [
+      [
+        "RUN",
+        "docker run --name web -d nginx:alpine"
+      ]
+    ],
+    "create and start": [
+      [
+        "CREATE / START",
+        "docker create --name job alpine echo done\ndocker start -a job"
+      ]
+    ],
+    "stop and kill": [
+      [
+        "STOP / KILL",
+        "docker stop web\ndocker kill web"
+      ]
+    ],
+    "restart and remove": [
+      [
+        "RESTART / RM",
+        "docker restart web\ndocker rm -f web"
+      ]
+    ],
+    "docker exec": [
+      [
+        "EXEC",
+        "docker exec -it web sh"
+      ]
+    ],
+    "logs and attach": [
+      [
+        "LOGS / ATTACH",
+        "docker logs --tail 50 -f web"
+      ]
+    ],
+    "inspect, stats and top": [
+      [
+        "OBSERVE",
+        "docker inspect web\ndocker stats web\ndocker top web"
+      ]
+    ],
+    "Image layers": [
+      [
+        "LAYERS",
+        "docker image history nginx:alpine"
+      ]
+    ],
+    "Tags": [
+      [
+        "TAG",
+        "docker tag myapp:latest myapp:1.0"
+      ]
+    ],
+    "Digests": [
+      [
+        "DIGEST",
+        "docker pull alpine@sha256:<digest>"
+      ]
+    ],
+    "Pull and push": [
+      [
+        "TRANSFER",
+        "docker pull alpine:3.20\ndocker push username/myapp:1.0"
+      ]
+    ],
+    "Image history": [
+      [
+        "HISTORY",
+        "docker history --no-trunc myapp:1.0"
+      ]
+    ],
+    "Platform variants": [
+      [
+        "PLATFORM",
+        "docker pull --platform linux/arm64 alpine:3.20"
+      ]
+    ],
+    "Image cleanup": [
+      [
+        "PRUNE",
+        "docker system df\ndocker image prune"
+      ]
+    ],
+    "FROM": [
+      [
+        "FROM",
+        "FROM node:22-alpine"
+      ]
+    ],
+    "RUN": [
+      [
+        "RUN",
+        "RUN npm ci --omit=dev"
+      ]
+    ],
+    "COPY and ADD": [
+      [
+        "COPY",
+        "COPY package*.json ./\nCOPY src ./src"
+      ]
+    ],
+    "WORKDIR": [
+      [
+        "WORKDIR",
+        "WORKDIR /app"
+      ]
+    ],
+    "CMD and ENTRYPOINT": [
+      [
+        "STARTUP",
+        "ENTRYPOINT [\"java\", \"-jar\"]\nCMD [\"app.jar\"]"
+      ]
+    ],
+    "ARG and ENV": [
+      [
+        "VARIABLES",
+        "ARG APP_VERSION\nENV NODE_ENV=production"
+      ]
+    ],
+    "USER, EXPOSE and LABEL": [
+      [
+        "METADATA",
+        "USER 10001\nEXPOSE 8080\nLABEL org.opencontainers.image.title=\"api\""
+      ]
+    ],
+    "BuildKit": [
+      [
+        "BUILDKIT",
+        "DOCKER_BUILDKIT=1 docker build ."
+      ]
+    ],
+    "Build context": [
+      [
+        "CONTEXT",
+        "docker build -f docker/Dockerfile ."
+      ]
+    ],
+    ".dockerignore": [
+      [
+        "IGNORE",
+        "node_modules\n.git\n.env"
+      ]
+    ],
+    "Cache mounts": [
+      [
+        "CACHE MOUNT",
+        "RUN --mount=type=cache,target=/root/.npm npm ci"
+      ]
+    ],
+    "Secret mounts": [
+      [
+        "SECRET",
+        "RUN --mount=type=secret,id=npmrc npm ci"
+      ]
+    ],
+    "SSH mounts": [
+      [
+        "SSH",
+        "RUN --mount=type=ssh git clone git@github.com:org/repo.git"
+      ]
+    ],
+    "buildx and multi-platform": [
+      [
+        "BUILDX",
+        "docker buildx build --platform linux/amd64,linux/arm64 --push -t user/app:1.0 ."
+      ]
+    ],
+    "Multi-stage builds": [
+      [
+        "STAGES",
+        "FROM golang:1.24 AS build\nRUN go build -o /out/app .\nFROM gcr.io/distroless/base\nCOPY --from=build /out/app /app"
+      ]
+    ],
+    "Named stages": [
+      [
+        "NAMED STAGE",
+        "FROM node:22 AS build\nCOPY --from=build /app/dist /srv"
+      ]
+    ],
+    "Target builds": [
+      [
+        "TARGET",
+        "docker build --target test -t myapp:test ."
+      ]
+    ],
+    "Cache ordering": [
+      [
+        "ORDER",
+        "COPY package*.json ./\nRUN npm ci\nCOPY . ."
+      ]
+    ],
+    "Pinned base images": [
+      [
+        "PIN",
+        "FROM eclipse-temurin:21-jre@sha256:<digest>"
+      ]
+    ],
+    "Small runtime images": [
+      [
+        "RUNTIME BASE",
+        "FROM eclipse-temurin:21-jre-alpine"
+      ]
+    ],
+    "Non-root runtime": [
+      [
+        "NON-ROOT",
+        "RUN adduser -D -u 10001 app\nUSER 10001"
+      ]
+    ],
+    "Docker Hub repositories": [
+      [
+        "REPOSITORY",
+        "docker pull docker.io/library/postgres:17"
+      ]
+    ],
+    "Image naming": [
+      [
+        "REFERENCE",
+        "registry.example.com/team/api:1.4.0"
+      ]
+    ],
+    "docker login": [
+      [
+        "LOGIN",
+        "docker login registry.example.com --username alice"
+      ]
+    ],
+    "Access tokens": [
+      [
+        "TOKEN",
+        "echo \"$REGISTRY_TOKEN\" | docker login -u alice --password-stdin"
+      ]
+    ],
+    "Private registries": [
+      [
+        "PRIVATE",
+        "docker pull registry.example.com/team/api:1.4.0"
+      ]
+    ],
+    "Credential stores": [
+      [
+        "CREDENTIALS",
+        "\"credsStore\": \"desktop\""
+      ]
+    ],
+    "Registry mirrors": [
+      [
+        "MIRROR",
+        "\"registry-mirrors\": [\"https://mirror.example.com\"]"
+      ]
+    ],
+    "Writable container layer": [
+      [
+        "WRITABLE LAYER",
+        "docker diff web"
+      ]
+    ],
+    "Named volumes": [
+      [
+        "VOLUME",
+        "docker volume create pgdata\ndocker run -v pgdata:/var/lib/postgresql/data postgres:17"
+      ]
+    ],
+    "Bind mounts": [
+      [
+        "BIND",
+        "docker run --mount type=bind,src=\"$PWD\",dst=/work alpine"
+      ]
+    ],
+    "tmpfs mounts": [
+      [
+        "TMPFS",
+        "docker run --tmpfs /run:rw,noexec,nosuid alpine"
+      ]
+    ],
+    "--mount syntax": [
+      [
+        "MOUNT",
+        "docker run --mount type=volume,src=data,dst=/data alpine"
+      ]
+    ],
+    "Volume backup and restore": [
+      [
+        "BACKUP",
+        "docker run --rm -v data:/data -v \"$PWD\":/backup alpine tar czf /backup/data.tgz /data"
+      ]
+    ],
+    "Shared and read-only data": [
+      [
+        "READ ONLY",
+        "docker run --mount type=volume,src=config,dst=/config,readonly app"
+      ]
+    ],
+    "Bridge networks": [
+      [
+        "BRIDGE",
+        "docker network create app-net"
+      ]
+    ],
+    "Port publishing": [
+      [
+        "PORT",
+        "docker run -p 127.0.0.1:8080:80 nginx"
+      ]
+    ],
+    "Container DNS": [
+      [
+        "DNS",
+        "docker run --network app-net --name api my-api"
+      ]
+    ],
+    "Host network": [
+      [
+        "HOST",
+        "docker run --network host metrics-agent"
+      ]
+    ],
+    "None network": [
+      [
+        "NONE",
+        "docker run --network none batch-job"
+      ]
+    ],
+    "Overlay and macvlan": [
+      [
+        "DRIVERS",
+        "docker network create --driver overlay service-net"
+      ]
+    ],
+    "Internal networks and IPv6": [
+      [
+        "ISOLATE",
+        "docker network create --internal backend"
+      ]
+    ],
+    "Compose application model": [
+      [
+        "MODEL",
+        "docker compose config"
+      ]
+    ],
+    "services": [
+      [
+        "SERVICES",
+        "services:\n  api:\n    image: example/api:1.0"
+      ]
+    ],
+    "build and image": [
+      [
+        "BUILD",
+        "services:\n  api:\n    build: .\n    image: example/api:dev"
+      ]
+    ],
+    "ports, volumes and networks": [
+      [
+        "RESOURCES",
+        "ports: [\"8080:8080\"]\nvolumes: [\"data:/data\"]\nnetworks: [\"backend\"]"
+      ]
+    ],
+    "environment and env files": [
+      [
+        "ENVIRONMENT",
+        "environment:\n  LOG_LEVEL: info\nenv_file: .env"
+      ]
+    ],
+    "depends_on and health": [
+      [
+        "DEPENDENCY",
+        "depends_on:\n  db:\n    condition: service_healthy"
+      ]
+    ],
+    "profiles and watch": [
+      [
+        "DEVELOP",
+        "docker compose --profile debug up\ndocker compose watch"
+      ]
+    ],
+    "Environment variables": [
+      [
+        "ENV",
+        "docker run -e LOG_LEVEL=debug app"
+      ]
+    ],
+    "CPU and memory limits": [
+      [
+        "LIMITS",
+        "docker run --cpus 1.5 --memory 512m app"
+      ]
+    ],
+    "Restart policies": [
+      [
+        "RESTART",
+        "docker run --restart unless-stopped app"
+      ]
+    ],
+    "Healthchecks": [
+      [
+        "HEALTH",
+        "HEALTHCHECK CMD curl -f http://localhost:8080/health || exit 1"
+      ]
+    ],
+    "PID 1 and --init": [
+      [
+        "INIT",
+        "docker run --init app"
+      ]
+    ],
+    "Read-only root filesystem": [
+      [
+        "READ ONLY",
+        "docker run --read-only --tmpfs /tmp app"
+      ]
+    ],
+    "Capabilities and sysctls": [
+      [
+        "KERNEL",
+        "docker run --cap-drop ALL --cap-add NET_BIND_SERVICE app"
+      ]
+    ],
+    "stdout and stderr": [
+      [
+        "STREAMS",
+        "docker logs api"
+      ]
+    ],
+    "Logging drivers": [
+      [
+        "DRIVER",
+        "docker run --log-driver local app"
+      ]
+    ],
+    "Log rotation": [
+      [
+        "ROTATION",
+        "docker run --log-opt max-size=10m --log-opt max-file=3 app"
+      ]
+    ],
+    "Docker events": [
+      [
+        "EVENTS",
+        "docker events --since 10m"
+      ]
+    ],
+    "Resource stats": [
+      [
+        "STATS",
+        "docker stats --no-stream"
+      ]
+    ],
+    "Inspect and format": [
+      [
+        "INSPECT",
+        "docker inspect --format '{{.State.ExitCode}}' api"
+      ]
+    ],
+    "Debugging tools": [
+      [
+        "DEBUG",
+        "docker exec -it api sh"
+      ]
+    ],
+    "Least privilege": [
+      [
+        "LEAST PRIVILEGE",
+        "docker run --cap-drop ALL --read-only app"
+      ]
+    ],
+    "Rootless mode": [
+      [
+        "ROOTLESS",
+        "dockerd-rootless-setuptool.sh install"
+      ]
+    ],
+    "User namespaces": [
+      [
+        "USERNS",
+        "\"userns-remap\": \"default\""
+      ]
+    ],
+    "Seccomp": [
+      [
+        "SECCOMP",
+        "docker run --security-opt seccomp=profile.json app"
+      ]
+    ],
+    "AppArmor and SELinux": [
+      [
+        "LSM",
+        "docker run --security-opt apparmor=docker-default app"
+      ]
+    ],
+    "Docker socket risk": [
+      [
+        "SOCKET",
+        "# Avoid: -v /var/run/docker.sock:/var/run/docker.sock"
+      ]
+    ],
+    "Runtime secrets": [
+      [
+        "SECRETS",
+        "docker secret create db_password ./password.txt"
+      ]
+    ],
+    "Docker Scout": [
+      [
+        "SCOUT",
+        "docker scout quickview example/api:1.0"
+      ]
+    ],
+    "SBOM": [
+      [
+        "SBOM",
+        "docker scout sbom example/api:1.0"
+      ]
+    ],
+    "CVE analysis": [
+      [
+        "CVES",
+        "docker scout cves --only-severity critical,high example/api:1.0"
+      ]
+    ],
+    "Base image refresh": [
+      [
+        "REFRESH",
+        "docker build --pull --no-cache -t example/api:1.0.1 ."
+      ]
+    ],
+    "Provenance attestations": [
+      [
+        "PROVENANCE",
+        "docker buildx build --provenance=mode=max --push -t example/api:1.0 ."
+      ]
+    ],
+    "SBOM attestations": [
+      [
+        "ATTEST",
+        "docker buildx build --sbom=true --push -t example/api:1.0 ."
+      ]
+    ],
+    "Policy gates": [
+      [
+        "POLICY",
+        "docker scout policy example/api:1.0"
+      ]
+    ],
+    "Development containers": [
+      [
+        "DEV CONTAINER",
+        "docker run --rm -it -v \"$PWD\":/workspace dev-image"
+      ]
+    ],
+    "Bind-mounted source": [
+      [
+        "SOURCE",
+        "docker run -v \"$PWD/src\":/app/src app:dev"
+      ]
+    ],
+    "Compose overrides": [
+      [
+        "OVERRIDE",
+        "docker compose -f compose.yaml -f compose.dev.yaml up"
+      ]
+    ],
+    "Compose Watch": [
+      [
+        "WATCH",
+        "docker compose watch"
+      ]
+    ],
+    "Hot reload": [
+      [
+        "RELOAD",
+        "command: npm run dev"
+      ]
+    ],
+    "Ephemeral test environments": [
+      [
+        "TEST STACK",
+        "docker compose -p test-$BUILD_ID up --abort-on-container-exit"
+      ]
+    ],
+    "Build Cloud and remote builders": [
+      [
+        "REMOTE BUILD",
+        "docker buildx ls"
+      ]
+    ],
+    "Pipeline stages": [
+      [
+        "PIPELINE",
+        "test -> build -> scan -> push -> deploy"
+      ]
+    ],
+    "Immutable version tags": [
+      [
+        "TAGGING",
+        "docker tag api qdb/api:$GIT_SHA"
+      ]
+    ],
+    "Registry authentication in CI": [
+      [
+        "CI LOGIN",
+        "echo \"$TOKEN\" | docker login -u \"$USER\" --password-stdin"
+      ]
+    ],
+    "Build cache in CI": [
+      [
+        "CI CACHE",
+        "docker buildx build --cache-from type=registry,ref=qdb/api:cache --cache-to type=registry,ref=qdb/api:cache,mode=max ."
+      ]
+    ],
+    "Multi-platform publishing": [
+      [
+        "PUBLISH",
+        "docker buildx build --platform linux/amd64,linux/arm64 --push -t qdb/api:1.0 ."
+      ]
+    ],
+    "GitHub Actions integration": [
+      [
+        "ACTIONS",
+        "uses: docker/build-push-action@v6"
+      ]
+    ],
+    "Promotion by digest": [
+      [
+        "PROMOTE",
+        "image: qdb/api@sha256:<tested-digest>"
+      ]
+    ],
+    "Swarm nodes": [
+      [
+        "SWARM",
+        "docker swarm init"
+      ]
+    ],
+    "Services and tasks": [
+      [
+        "SERVICE",
+        "docker service create --name web --replicas 3 nginx:alpine"
+      ]
+    ],
+    "Stacks": [
+      [
+        "STACK",
+        "docker stack deploy -c compose.yaml shop"
+      ]
+    ],
+    "Overlay networking": [
+      [
+        "OVERLAY",
+        "docker network create --driver overlay backend"
+      ]
+    ],
+    "Scaling and placement": [
+      [
+        "SCALE",
+        "docker service scale web=6"
+      ]
+    ],
+    "Rolling updates and rollback": [
+      [
+        "UPDATE",
+        "docker service update --image nginx:1.28 --update-parallelism 2 web\ndocker service rollback web"
+      ]
+    ],
+    "Swarm secrets and configs": [
+      [
+        "SWARM CONFIG",
+        "docker secret create db_password ./password.txt\ndocker service create --secret db_password app"
+      ]
+    ]
+  },
+  "exampleComments": {
+    "CONTAINER": "docker run creates and starts a new container; the remaining flags and arguments configure this containers vs virtual machines example.",
+    "CLIENT": "This command applies docker client with concrete options you can inspect or adapt.",
+    "DAEMON": "This command applies docker daemon with concrete options you can inspect or adapt.",
+    "OBJECTS": "This command applies docker objects with concrete options you can inspect or adapt.",
+    "REGISTRY": "This downloads the named image and tag from a registry into the local image store.",
+    "ISOLATION": "docker run creates and starts a new container; the remaining flags and arguments configure this namespaces and cgroups example.",
+    "RUNTIME": "This command applies oci and containerd with concrete options you can inspect or adapt.",
+    "DESKTOP": "This command applies docker desktop with concrete options you can inspect or adapt.",
+    "ENGINE": "This command applies docker engine with concrete options you can inspect or adapt.",
+    "CLI": "This command applies docker cli with concrete options you can inspect or adapt.",
+    "VERIFY": "docker run creates and starts a new container; the remaining flags and arguments configure this hello-world verification example.",
+    "CONTEXT": "This builds an image from the selected context, while the options demonstrate build context.",
+    "VERSION": "This command applies version compatibility with concrete options you can inspect or adapt.",
+    "CONFIG": "This command applies daemon configuration with concrete options you can inspect or adapt.",
+    "RUN": "This run snippet shows the Dockerfile instruction or setting that puts run into practice.",
+    "CREATE / START": "This command applies create and start with concrete options you can inspect or adapt.",
+    "STOP / KILL": "This command applies stop and kill with concrete options you can inspect or adapt.",
+    "RESTART / RM": "This command applies restart and remove with concrete options you can inspect or adapt.",
+    "EXEC": "This command applies docker exec with concrete options you can inspect or adapt.",
+    "LOGS / ATTACH": "This command applies logs and attach with concrete options you can inspect or adapt.",
+    "OBSERVE": "This command applies inspect, stats and top with concrete options you can inspect or adapt.",
+    "LAYERS": "This command applies image layers with concrete options you can inspect or adapt.",
+    "TAG": "This command applies tags with concrete options you can inspect or adapt.",
+    "DIGEST": "This downloads the named image and tag from a registry into the local image store.",
+    "TRANSFER": "This downloads the named image and tag from a registry into the local image store.",
+    "HISTORY": "This command applies image history with concrete options you can inspect or adapt.",
+    "PLATFORM": "This downloads the named image and tag from a registry into the local image store.",
+    "PRUNE": "This command applies image cleanup with concrete options you can inspect or adapt.",
+    "FROM": "This from snippet shows the Dockerfile instruction or setting that puts from into practice.",
+    "COPY": "This copy snippet shows the Dockerfile instruction or setting that puts copy and add into practice.",
+    "WORKDIR": "This workdir snippet shows the Dockerfile instruction or setting that puts workdir into practice.",
+    "STARTUP": "This startup snippet shows the Dockerfile instruction or setting that puts cmd and entrypoint into practice.",
+    "VARIABLES": "This variables snippet shows the Dockerfile instruction or setting that puts arg and env into practice.",
+    "METADATA": "This metadata snippet shows the Dockerfile instruction or setting that puts user, expose and label into practice.",
+    "BUILDKIT": "This command applies buildkit with concrete options you can inspect or adapt.",
+    "IGNORE": "This command applies .dockerignore with concrete options you can inspect or adapt.",
+    "CACHE MOUNT": "This cache mount snippet shows the Dockerfile instruction or setting that puts cache mounts into practice.",
+    "SECRET": "This secret snippet shows the Dockerfile instruction or setting that puts secret mounts into practice.",
+    "SSH": "This ssh snippet shows the Dockerfile instruction or setting that puts ssh mounts into practice.",
+    "BUILDX": "This builds an image from the selected context, while the options demonstrate buildx and multi-platform.",
+    "STAGES": "This stages snippet shows the Dockerfile instruction or setting that puts multi-stage builds into practice.",
+    "NAMED STAGE": "This named stage snippet shows the Dockerfile instruction or setting that puts named stages into practice.",
+    "TARGET": "This builds an image from the selected context, while the options demonstrate target builds.",
+    "ORDER": "This order snippet shows the Dockerfile instruction or setting that puts cache ordering into practice.",
+    "PIN": "This pin snippet shows the Dockerfile instruction or setting that puts pinned base images into practice.",
+    "RUNTIME BASE": "This runtime base snippet shows the Dockerfile instruction or setting that puts small runtime images into practice.",
+    "NON-ROOT": "This non-root snippet shows the Dockerfile instruction or setting that puts non-root runtime into practice.",
+    "REPOSITORY": "This downloads the named image and tag from a registry into the local image store.",
+    "REFERENCE": "This command applies image naming with concrete options you can inspect or adapt.",
+    "LOGIN": "This command applies docker login with concrete options you can inspect or adapt.",
+    "TOKEN": "This command applies access tokens with concrete options you can inspect or adapt.",
+    "PRIVATE": "This downloads the named image and tag from a registry into the local image store.",
+    "CREDENTIALS": "This command applies credential stores with concrete options you can inspect or adapt.",
+    "MIRROR": "This command applies registry mirrors with concrete options you can inspect or adapt.",
+    "WRITABLE LAYER": "This command applies writable container layer with concrete options you can inspect or adapt.",
+    "VOLUME": "This command applies named volumes with concrete options you can inspect or adapt.",
+    "BIND": "docker run creates and starts a new container; the remaining flags and arguments configure this bind mounts example.",
+    "TMPFS": "docker run creates and starts a new container; the remaining flags and arguments configure this tmpfs mounts example.",
+    "MOUNT": "docker run creates and starts a new container; the remaining flags and arguments configure this --mount syntax example.",
+    "BACKUP": "docker run creates and starts a new container; the remaining flags and arguments configure this volume backup and restore example.",
+    "READ ONLY": "docker run creates and starts a new container; the remaining flags and arguments configure this read-only root filesystem example.",
+    "BRIDGE": "This command applies bridge networks with concrete options you can inspect or adapt.",
+    "PORT": "docker run creates and starts a new container; the remaining flags and arguments configure this port publishing example.",
+    "DNS": "docker run creates and starts a new container; the remaining flags and arguments configure this container dns example.",
+    "HOST": "docker run creates and starts a new container; the remaining flags and arguments configure this host network example.",
+    "NONE": "docker run creates and starts a new container; the remaining flags and arguments configure this none network example.",
+    "DRIVERS": "This command applies overlay and macvlan with concrete options you can inspect or adapt.",
+    "ISOLATE": "This command applies internal networks and ipv6 with concrete options you can inspect or adapt.",
+    "MODEL": "This asks Compose to apply the shown operation to the services in the project, demonstrating compose application model.",
+    "SERVICES": "This Compose YAML declares the service or resource settings used for services.",
+    "BUILD": "This Compose YAML declares the service or resource settings used for build and image.",
+    "RESOURCES": "This Compose YAML declares the service or resource settings used for ports, volumes and networks.",
+    "ENVIRONMENT": "This command applies environment and env files with concrete options you can inspect or adapt.",
+    "DEPENDENCY": "This command applies depends_on and health with concrete options you can inspect or adapt.",
+    "DEVELOP": "This asks Compose to apply the shown operation to the services in the project, demonstrating profiles and watch.",
+    "ENV": "docker run creates and starts a new container; the remaining flags and arguments configure this environment variables example.",
+    "LIMITS": "docker run creates and starts a new container; the remaining flags and arguments configure this cpu and memory limits example.",
+    "RESTART": "docker run creates and starts a new container; the remaining flags and arguments configure this restart policies example.",
+    "HEALTH": "This health snippet shows the Dockerfile instruction or setting that puts healthchecks into practice.",
+    "INIT": "docker run creates and starts a new container; the remaining flags and arguments configure this pid 1 and --init example.",
+    "KERNEL": "docker run creates and starts a new container; the remaining flags and arguments configure this capabilities and sysctls example.",
+    "STREAMS": "This command applies stdout and stderr with concrete options you can inspect or adapt.",
+    "DRIVER": "docker run creates and starts a new container; the remaining flags and arguments configure this logging drivers example.",
+    "ROTATION": "docker run creates and starts a new container; the remaining flags and arguments configure this log rotation example.",
+    "EVENTS": "This command applies docker events with concrete options you can inspect or adapt.",
+    "STATS": "This command applies resource stats with concrete options you can inspect or adapt.",
+    "INSPECT": "This command applies inspect and format with concrete options you can inspect or adapt.",
+    "DEBUG": "This command applies debugging tools with concrete options you can inspect or adapt.",
+    "LEAST PRIVILEGE": "docker run creates and starts a new container; the remaining flags and arguments configure this least privilege example.",
+    "ROOTLESS": "This command applies rootless mode with concrete options you can inspect or adapt.",
+    "USERNS": "This command applies user namespaces with concrete options you can inspect or adapt.",
+    "SECCOMP": "docker run creates and starts a new container; the remaining flags and arguments configure this seccomp example.",
+    "LSM": "docker run creates and starts a new container; the remaining flags and arguments configure this apparmor and selinux example.",
+    "SOCKET": "This command applies docker socket risk with concrete options you can inspect or adapt.",
+    "SECRETS": "This command applies runtime secrets with concrete options you can inspect or adapt.",
+    "SCOUT": "This command applies docker scout with concrete options you can inspect or adapt.",
+    "SBOM": "This command applies sbom with concrete options you can inspect or adapt.",
+    "CVES": "This command applies cve analysis with concrete options you can inspect or adapt.",
+    "REFRESH": "This builds an image from the selected context, while the options demonstrate base image refresh.",
+    "PROVENANCE": "This builds an image from the selected context, while the options demonstrate provenance attestations.",
+    "ATTEST": "This builds an image from the selected context, while the options demonstrate sbom attestations.",
+    "POLICY": "This command applies policy gates with concrete options you can inspect or adapt.",
+    "DEV CONTAINER": "docker run creates and starts a new container; the remaining flags and arguments configure this development containers example.",
+    "SOURCE": "docker run creates and starts a new container; the remaining flags and arguments configure this bind-mounted source example.",
+    "OVERRIDE": "This asks Compose to apply the shown operation to the services in the project, demonstrating compose overrides.",
+    "WATCH": "This asks Compose to apply the shown operation to the services in the project, demonstrating compose watch.",
+    "RELOAD": "This command applies hot reload with concrete options you can inspect or adapt.",
+    "TEST STACK": "This asks Compose to apply the shown operation to the services in the project, demonstrating ephemeral test environments.",
+    "REMOTE BUILD": "This command applies build cloud and remote builders with concrete options you can inspect or adapt.",
+    "PIPELINE": "This command applies pipeline stages with concrete options you can inspect or adapt.",
+    "TAGGING": "This command applies immutable version tags with concrete options you can inspect or adapt.",
+    "CI LOGIN": "This command applies registry authentication in ci with concrete options you can inspect or adapt.",
+    "CI CACHE": "This builds an image from the selected context, while the options demonstrate build cache in ci.",
+    "PUBLISH": "This builds an image from the selected context, while the options demonstrate multi-platform publishing.",
+    "ACTIONS": "This command applies github actions integration with concrete options you can inspect or adapt.",
+    "PROMOTE": "This command applies promotion by digest with concrete options you can inspect or adapt.",
+    "SWARM": "This command applies swarm nodes with concrete options you can inspect or adapt.",
+    "SERVICE": "This command applies services and tasks with concrete options you can inspect or adapt.",
+    "STACK": "This command applies stacks with concrete options you can inspect or adapt.",
+    "OVERLAY": "This command applies overlay networking with concrete options you can inspect or adapt.",
+    "SCALE": "This command applies scaling and placement with concrete options you can inspect or adapt.",
+    "UPDATE": "This command applies rolling updates and rollback with concrete options you can inspect or adapt.",
+    "SWARM CONFIG": "This command applies swarm secrets and configs with concrete options you can inspect or adapt."
+  },
+  "pageTitle": "Docker at a Glance | QuickDevBase",
+  "pageDescription": "QuickDevBase Docker — fast explanations for Docker essentials, with direct links to the official Docker documentation.",
+  "heroEyebrow": "Docker knowledge, at a glance",
+  "heroTitle": "Docker, without<br>the <em>container confusion.</em>",
+  "heroLede": "Scan the essentials from your first container to secure production delivery. Every module links directly to Docker's official documentation for full detail.",
+  "previewLabel": "DOCKER.RUN",
+  "previewCode": "<span><b class=\"code-pink\">FROM</b> node:22-alpine</span><span><b class=\"code-blue\">WORKDIR</b> /app</span><span><b class=\"code-blue\">COPY</b> . .</span><span><b class=\"code-pink\">CMD</b> [\"npm\", \"start\"]</span>",
+  "chipOne": "✓ Image ready",
+  "chipTwo": "⌁ Keep shipping",
+  "curriculumTitle": "One glance. Every Docker essential.",
+  "curriculumLede": "Start anywhere, learn the mental model, then use the official Docker docs when you need depth.",
+  "searchPlaceholder": "Search topics, e.g. volumes",
+  "certificateTitleHtml": "Docker Topics<br>at a Glance",
+  "completionNoun": "Docker learner",
+  "trademark": "Independent educational project—not affiliated with or endorsed by Docker, Inc. Docker and the Docker logo are trademarks or registered trademarks of Docker, Inc.",
+  "stageLabels": {
+    "foundation": "Foundation",
+    "core": "Images & Runtime",
+    "backend": "Operations",
+    "advanced": "Production"
+  },
+  "fallbackNote": "A practical Docker concept to understand before operating containers in real environments.",
+  "fallbackCode": "# Try the command in a disposable local environment."
+}

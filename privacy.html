@@ -17,7 +17,7 @@
     <main class="legal-page">
       <p class="legal-kicker">Plain-language policy</p>
       <h1>Privacy notice</h1>
-      <p class="updated">Effective 16 August 2026</p>
+      <p class="updated">Effective 25 August 2026</p>
       <p>This notice explains the personal data QuickDevBase uses to provide accounts, per-technology learning progress, optional AI lesson help, and optional public certificates of completion.</p>
 
       <h2>Data we process</h2>
@@ -32,9 +32,9 @@
       <p>You can make the certificate private again at any time. The same link will stop working publicly until you choose to republish. Updating your account name also updates the name on your certificate.</p>
 
       <h2>Optional AI lesson help</h2>
-      <p>Ask QuickDev is used only when you select an AI action or submit a question. The open lesson, its official documentation link, and your question are sent to Google's Gemini API. QuickDevBase does not include your name, email, progress, password, or certificate in that request. Do not enter personal, confidential, or sensitive information.</p>
+      <p>Ask QuickDev is used only when you select an AI action, submit a question, or ask it to analyze an image. For lesson help, the open lesson, its official documentation link, and your question are sent to Google's Gemini API. For image matching, the uploaded PNG, JPEG, or WebP image is sent to Gemini to extract educational text, then QuickDevBase searches all of its server-owned course curricula locally. Text-only topic matching does not call Gemini. QuickDevBase does not include your name, email, progress, password, or certificate in these requests. Do not upload or enter personal, confidential, or sensitive information.</p>
       <div class="notice"><strong>Free and paid Gemini tiers have different data terms.</strong> Google states that unpaid-service content may be used to improve its products and may be reviewed by people, while paid-service prompts and responses are not used to improve products. The site operator should choose the appropriate tier and keep this notice consistent with the deployed configuration.</div>
-      <p>Identical requests may be answered from a temporary shared cache to reduce provider calls. Cached records expire automatically and are not linked to a user ID. Per-user daily counts are retained for abuse prevention and are deleted with the account.</p>
+      <p>Uploaded images and their extracted text are not retained after processing or placed in the answer cache by QuickDevBase. Identical lesson-guide requests may be answered from a temporary shared cache to reduce provider calls. Cached records expire automatically and are not linked to a user ID. Per-user daily counts are retained for abuse prevention and are deleted with the account.</p>
 
       <h2>Retention and deletion</h2>
       <p>Account data remains while your account is active. Expired sessions are removed automatically. You can permanently delete your account from Profile &amp; privacy settings; this deletes the user, sessions, progress, and certificate records through database cascade rules.</p>

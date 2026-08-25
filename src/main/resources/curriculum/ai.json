@@ -1,0 +1,3610 @@
+{
+  "generative-ai": {
+    "key": "generative-ai",
+    "name": "Generative AI",
+    "mark": "G",
+    "officialLabel": "Official generative AI documentation",
+    "pageTitle": "Generative AI at a Glance | QuickDevBase",
+    "pageDescription": "Fast, vendor-neutral explanations of generative AI foundations, with direct links to primary documentation.",
+    "heroEyebrow": "Generative AI, at a glance",
+    "heroTitle": "Understand what<br><em>generation is doing.</em>",
+    "heroLede": "Build the model-level mental map—from tokens and transformers to prompting, multimodality, evaluation, and safe production use.",
+    "previewLabel": "GENERATION.FLOW",
+    "previewCode": "<span><b class=\"code-blue\">prompt</b> = instructions + context</span><span><b class=\"code-pink\">tokens</b> = tokenize(prompt)</span><span><b class=\"code-blue\">output</b> = model.generate(tokens)</span><span><b class=\"code-pink\">verify</b>(output)</span>",
+    "chipOne": "Model mapped",
+    "chipTwo": "Evaluate always",
+    "curriculumTitle": "One glance. Generative AI explained.",
+    "curriculumLede": "Learn the vocabulary quickly, then follow each primary-source link for implementation details and updates.",
+    "searchPlaceholder": "Search topics, e.g. tokens",
+    "certificateTitleHtml": "Generative AI Topics<br>at a Glance",
+    "completionNoun": "Generative AI learner",
+    "trademark": "Independent educational project—not affiliated with or endorsed by OpenAI, Google, Anthropic, Hugging Face, or any model provider.",
+    "stageLabels": {
+      "foundation": "Foundations",
+      "core": "Building Blocks",
+      "production": "Quality & Production"
+    },
+    "modules": [
+      {
+        "id": 1,
+        "title": "AI & Generative AI",
+        "stage": "foundation",
+        "description": "Place generative models inside the wider AI landscape and learn what they can—and cannot—do.",
+        "officialUrl": "https://developers.google.com/machine-learning/resources/intro-llms",
+        "challenge": "Choose a real product idea and explain whether it needs prediction, generation, retrieval, or ordinary software.",
+        "topics": [
+          "AI, ML & deep learning",
+          "Generative vs discriminative models",
+          "Foundation models",
+          "Large language models",
+          "Model modalities",
+          "Probabilistic output",
+          "Capabilities & limitations"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 2,
+        "title": "Neural & LLM Foundations",
+        "stage": "foundation",
+        "description": "Understand the training vocabulary beneath modern language models without diving into the full mathematics.",
+        "officialUrl": "https://developers.google.com/machine-learning/crash-course/neural-networks",
+        "challenge": "Draw the lifecycle from raw examples to training loss, updated weights, and inference.",
+        "topics": [
+          "Parameters & weights",
+          "Training vs inference",
+          "Pretraining",
+          "Self-supervised learning",
+          "Loss & optimization",
+          "Epochs, batches & steps",
+          "Generalization & overfitting"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 3,
+        "title": "Transformers & Attention",
+        "stage": "foundation",
+        "description": "Build the mental model behind the architecture used by most modern language models.",
+        "officialUrl": "https://huggingface.co/docs/transformers/index",
+        "challenge": "Explain how tokens become contextual representations and then next-token probabilities.",
+        "topics": [
+          "Transformer architecture",
+          "Self-attention",
+          "Queries, keys & values",
+          "Multi-head attention",
+          "Positional information",
+          "Encoder, decoder & encoder-decoder",
+          "Autoregressive generation"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 4,
+        "title": "Tokens & Context Windows",
+        "stage": "foundation",
+        "description": "See how text becomes model input and why context size affects quality, latency, and cost.",
+        "officialUrl": "https://platform.openai.com/tokenizer",
+        "challenge": "Estimate the context budget for a request containing instructions, retrieved text, user input, and a response.",
+        "topics": [
+          "Tokenization",
+          "Token IDs",
+          "Context window",
+          "Input vs output tokens",
+          "Truncation",
+          "Long-context trade-offs",
+          "Token budgeting"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 5,
+        "title": "Embeddings & Meaning",
+        "stage": "core",
+        "description": "Understand vector representations and when similarity is more useful than keyword matching.",
+        "officialUrl": "https://platform.openai.com/docs/guides/embeddings",
+        "challenge": "Design a semantic FAQ search that embeds questions, compares vectors, and returns the closest entries.",
+        "topics": [
+          "Embedding vectors",
+          "Semantic similarity",
+          "Cosine similarity",
+          "Embedding dimensions",
+          "Normalization",
+          "Batch embedding",
+          "Embedding use cases"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 6,
+        "title": "Models & Inference",
+        "stage": "core",
+        "description": "Choose an appropriate model and control how it generates a response.",
+        "officialUrl": "https://platform.openai.com/docs/models",
+        "challenge": "Create a model-selection table for quality, latency, context, modality, privacy, and cost.",
+        "topics": [
+          "Model selection",
+          "Open vs hosted models",
+          "Temperature",
+          "Top-p sampling",
+          "Stop conditions",
+          "Latency & throughput",
+          "Cost estimation"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 7,
+        "title": "Prompt Design",
+        "stage": "core",
+        "description": "Turn a vague request into clear instructions, context, constraints, and success criteria.",
+        "officialUrl": "https://platform.openai.com/docs/guides/prompt-engineering",
+        "challenge": "Rewrite one ambiguous prompt with a role, task, input delimiters, rules, output format, and example.",
+        "topics": [
+          "Instruction hierarchy",
+          "Clear task definition",
+          "Delimiters & data boundaries",
+          "Zero-shot prompting",
+          "Few-shot prompting",
+          "Decomposition",
+          "Prompt iteration"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 8,
+        "title": "Structured Outputs & Tools",
+        "stage": "core",
+        "description": "Make model responses dependable enough for software to validate and consume.",
+        "officialUrl": "https://platform.openai.com/docs/guides/structured-outputs",
+        "challenge": "Define a typed support-ticket schema, validate a response, and retry safely on invalid data.",
+        "topics": [
+          "JSON output",
+          "JSON Schema",
+          "Schema validation",
+          "Function calling",
+          "Tool result messages",
+          "Deterministic post-processing",
+          "Failure handling"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 9,
+        "title": "Multimodal Generation",
+        "stage": "production",
+        "description": "Work with text, images, speech, and mixed inputs while respecting modality-specific limits.",
+        "officialUrl": "https://platform.openai.com/docs/guides/images",
+        "challenge": "Design an accessible product workflow that accepts an image and returns verified text plus alt text.",
+        "topics": [
+          "Vision inputs",
+          "Image generation",
+          "Speech to text",
+          "Text to speech",
+          "Multimodal prompting",
+          "Media preprocessing",
+          "Accessibility & consent"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 10,
+        "title": "Customization & Fine-tuning",
+        "stage": "production",
+        "description": "Know when prompting, retrieval, or parameter adaptation is the right customization tool.",
+        "officialUrl": "https://huggingface.co/docs/peft/index",
+        "challenge": "Choose between prompt engineering, RAG, supervised fine-tuning, and adapters for three concrete product needs.",
+        "topics": [
+          "Prompting vs RAG vs fine-tuning",
+          "Supervised fine-tuning",
+          "Training data quality",
+          "Train, validation & test splits",
+          "LoRA & adapters",
+          "Preference optimization",
+          "Fine-tuning evaluation"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 11,
+        "title": "Evaluation & Quality",
+        "stage": "production",
+        "description": "Measure a system with repeatable datasets, task-specific criteria, and production feedback.",
+        "officialUrl": "https://platform.openai.com/docs/guides/evals",
+        "challenge": "Build a 25-case evaluation set with objective checks, a rubric, and regression thresholds.",
+        "topics": [
+          "Evaluation datasets",
+          "Exact & programmatic graders",
+          "Model-based graders",
+          "Human evaluation",
+          "Groundedness & factuality",
+          "Regression testing",
+          "Online monitoring"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      },
+      {
+        "id": 12,
+        "title": "Safety & Production",
+        "stage": "production",
+        "description": "Ship generative features with privacy, security, reliability, and operational limits designed in.",
+        "officialUrl": "https://platform.openai.com/docs/guides/safety-best-practices",
+        "challenge": "Threat-model one AI feature and define input controls, output checks, human review, logging, and rollback.",
+        "topics": [
+          "Hallucination controls",
+          "Prompt injection",
+          "Content safety",
+          "Privacy & data retention",
+          "Rate limits & retries",
+          "Caching & fallbacks",
+          "Production checklist"
+        ],
+        "officialLabel": "Official generative AI documentation"
+      }
+    ],
+    "quickNotes": {
+      "1": [
+        [
+          "AI is the broad goal; machine learning learns patterns from data; deep learning uses layered neural networks.",
+          "AI > machine learning > deep learning"
+        ],
+        [
+          "A discriminative model predicts a label or boundary; a generative model produces new content from learned patterns.",
+          "classifier(input) -> label\ngenerator(prompt) -> new content"
+        ],
+        [
+          "A foundation model is pretrained broadly and can be adapted to many downstream tasks.",
+          "base_model + instructions + context -> task output"
+        ],
+        [
+          "An LLM predicts token sequences, which enables text generation, extraction, classification, and code assistance.",
+          "next_token = model(previous_tokens)"
+        ],
+        [
+          "Models may accept or produce text, images, audio, video, or combinations of them.",
+          "text + image -> text answer"
+        ],
+        [
+          "Generation samples from likely continuations, so the same request can produce different valid results.",
+          "temperature=0.2  # more focused sampling"
+        ],
+        [
+          "Models can transform patterns fluently but may hallucinate, inherit bias, or lack current/private facts.",
+          "model answer -> verify facts before use"
+        ]
+      ],
+      "2": [
+        [
+          "Parameters are learned numeric values that shape how inputs are transformed into predictions.",
+          "prediction = network(input, learned_weights)"
+        ],
+        [
+          "Training updates parameters from examples; inference uses fixed parameters to answer new inputs.",
+          "train: update weights\ninfer: use weights"
+        ],
+        [
+          "Pretraining learns broad language and world patterns from a very large corpus.",
+          "documents -> self-supervised training -> base model"
+        ],
+        [
+          "The training signal comes from the data itself, such as predicting hidden or next tokens.",
+          "\"Java runs on the\" -> predict \"JVM\""
+        ],
+        [
+          "Loss measures error; an optimizer adjusts parameters to reduce that error over many steps.",
+          "weights = weights - learning_rate * gradient"
+        ],
+        [
+          "A batch is one sample group, a step is one update, and an epoch is one pass through the dataset.",
+          "1000 examples / batch 100 = 10 steps per epoch"
+        ],
+        [
+          "Generalization works on unseen inputs; overfitting memorizes training details and performs poorly elsewhere.",
+          "train score high + test score low -> overfitting"
+        ]
+      ],
+      "3": [
+        [
+          "A transformer processes token representations through repeated attention and feed-forward blocks.",
+          "tokens -> transformer blocks -> token probabilities"
+        ],
+        [
+          "Self-attention lets each token weigh other tokens that matter for interpreting its current context.",
+          "\"bank\" attends to \"river\" or \"money\""
+        ],
+        [
+          "Attention compares a query with keys, then mixes the corresponding values using those scores.",
+          "attention(Q,K,V) = softmax(QK^T)V"
+        ],
+        [
+          "Several attention heads learn different relationships in parallel before their results are combined.",
+          "head1: syntax | head2: reference | head3: position"
+        ],
+        [
+          "Position signals tell a transformer token order because attention alone does not encode sequence order.",
+          "\"dog bites man\" != \"man bites dog\""
+        ],
+        [
+          "Encoders build representations, decoders generate sequences, and encoder-decoder models connect both.",
+          "encoder: understand\ndecoder: generate"
+        ],
+        [
+          "An autoregressive model emits one token, appends it to context, and repeats until it stops.",
+          "prompt -> token1 -> token2 -> ... -> stop"
+        ]
+      ],
+      "4": [
+        [
+          "A tokenizer splits content into model vocabulary units that may be words, word pieces, punctuation, or bytes.",
+          "\"unbelievable\" -> [\"un\", \"believ\", \"able\"]"
+        ],
+        [
+          "Each token maps to an integer ID that the model converts into a learned vector.",
+          "\"hello\" -> token_id 15339 -> vector"
+        ],
+        [
+          "The context window is the maximum combined input and output token budget visible in one model call.",
+          "system + history + prompt + output <= context limit"
+        ],
+        [
+          "Input tokens provide context; output tokens are newly generated and often have their own maximum.",
+          "input=1200 tokens, max_output=300 tokens"
+        ],
+        [
+          "When content exceeds the limit, the application must remove, summarize, or split information deliberately.",
+          "old messages -> summarize -> compact context"
+        ],
+        [
+          "More context can include useful evidence but increases cost and may make relevant details harder to find.",
+          "more tokens != automatically better answer"
+        ],
+        [
+          "Reserve space for instructions, evidence, conversation state, and the answer before making a request.",
+          "budget = instructions + evidence + history + response"
+        ]
+      ],
+      "5": [
+        [
+          "An embedding converts content into a numeric vector that places related meanings near one another.",
+          "embed(\"reset password\") -> [0.12, -0.04, ...]"
+        ],
+        [
+          "Vector similarity can match concepts even when two texts use different words.",
+          "\"car repair\" ~ \"automobile service\""
+        ],
+        [
+          "Cosine similarity compares vector direction and commonly scores semantic closeness.",
+          "score = dot(a,b) / (norm(a) * norm(b))"
+        ],
+        [
+          "Dimensions are vector coordinates; the chosen model fixes their count and compatibility.",
+          "vector.length = model_dimension"
+        ],
+        [
+          "Normalized vectors have unit length, simplifying cosine or dot-product comparison.",
+          "normalized = vector / norm(vector)"
+        ],
+        [
+          "Batching many inputs reduces request overhead while staying within provider limits.",
+          "embeddings.create(input=[text1, text2, text3])"
+        ],
+        [
+          "Embeddings power semantic search, clustering, recommendations, anomaly detection, and RAG retrieval.",
+          "query_vector -> nearest documents"
+        ]
+      ],
+      "6": [
+        [
+          "Model selection means choosing the smallest affordable model that still meets the task's quality, input, context, and speed requirements.",
+          "simple extraction -> small model\nhard reasoning -> stronger model"
+        ],
+        [
+          "Hosted APIs reduce operations; open-weight models offer more deployment control but require infrastructure.",
+          "hosted: managed endpoint | open: operate weights"
+        ],
+        [
+          "Temperature changes sampling sharpness: lower is more focused, higher is more varied.",
+          "temperature=0.1  # consistent extraction"
+        ],
+        [
+          "Top-p samples only from the smallest token set whose cumulative probability reaches the threshold.",
+          "top_p=0.9"
+        ],
+        [
+          "Stop conditions tell the model when to finish, preventing an answer from continuing past a marker or consuming unnecessary output tokens.",
+          "stop=[\"END\"], max_output_tokens=400"
+        ],
+        [
+          "Latency is time per response; throughput is work completed per unit time and improves with batching or concurrency.",
+          "p95_latency=1.8s, requests_per_second=40"
+        ],
+        [
+          "Estimate cost from input/output token counts, model rates, tool calls, storage, and infrastructure.",
+          "cost = input_tokens*rate_in + output_tokens*rate_out"
+        ]
+      ],
+      "7": [
+        [
+          "System or developer rules set durable behavior, while user content supplies the current task and data.",
+          "system: rules\nuser: request + input"
+        ],
+        [
+          "A clear task definition tells the model exactly what to do, who the answer is for, which rules apply, and what completion looks like.",
+          "\"Summarize for a beginner in 5 bullets.\""
+        ],
+        [
+          "Delimit untrusted or variable content so the model can distinguish data from instructions.",
+          "<document>user supplied text</document>"
+        ],
+        [
+          "Zero-shot prompts describe the task without showing an example.",
+          "\"Classify as bug, feature, or question.\""
+        ],
+        [
+          "Few-shot prompts demonstrate representative input-output pairs to teach format or judgment.",
+          "Input: slow page -> Output: performance"
+        ],
+        [
+          "Decomposition breaks a complex request into smaller, clearly defined stages so each result can be checked before the next stage begins.",
+          "extract facts -> compare -> write conclusion"
+        ],
+        [
+          "Prompt iteration improves instructions through measured revisions, using the same test cases to compare versions fairly instead of trusting one example.",
+          "prompt_v2 score 0.91 > prompt_v1 score 0.82"
+        ]
+      ],
+      "8": [
+        [
+          "JSON is machine-readable, but plain JSON prompting alone does not guarantee a valid shape.",
+          "{\"category\":\"billing\",\"urgent\":false}"
+        ],
+        [
+          "A schema defines required fields, types, enums, and nesting that a structured response must follow.",
+          "{\"type\":\"object\",\"required\":[\"answer\"]}"
+        ],
+        [
+          "Schema validation checks that model-generated data has the required fields, types, and allowed values before the application uses or stores it.",
+          "parsed = schema.parse(model_output)"
+        ],
+        [
+          "Function calling lets a model select a named operation and provide typed arguments; application code performs it.",
+          "get_weather({\"city\":\"Delhi\"})"
+        ],
+        [
+          "After executing a tool, send its result back with the matching call identity so generation can continue.",
+          "tool_call_id=call_7 -> {\"temp_c\":31}"
+        ],
+        [
+          "Deterministic post-processing uses ordinary code for exact calculations, permission checks, and irreversible actions instead of trusting uncertain generated text.",
+          "total = items.reduce(sum)  # code calculates"
+        ],
+        [
+          "Failure handling treats refusals, invalid output, timeouts, and tool errors as expected states with safe retries or clear messages.",
+          "if invalid: repair once; else fail clearly"
+        ]
+      ],
+      "9": [
+        [
+          "Vision-capable models reason over supplied images, but small text, counting, and spatial precision can remain difficult.",
+          "input = [question, product_photo]"
+        ],
+        [
+          "Image models create or edit pixels from prompts, masks, and reference images.",
+          "prompt + optional mask/reference -> image"
+        ],
+        [
+          "Speech recognition converts audio into transcripts and may support timestamps or speaker cues.",
+          "audio.wav -> transcript"
+        ],
+        [
+          "Speech synthesis turns text into audio; disclose synthetic voices where appropriate.",
+          "response text -> generated speech"
+        ],
+        [
+          "Tell the model exactly which parts of each input to inspect and what output evidence to provide.",
+          "\"Read the label; return product and expiry date.\""
+        ],
+        [
+          "Resize, compress, sample, or segment media to fit limits while preserving task-relevant detail.",
+          "video -> selected frames + transcript"
+        ],
+        [
+          "Provide alt text and captions, and obtain permission before processing identifiable voices or images.",
+          "image output -> human-reviewed alt text"
+        ]
+      ],
+      "10": [
+        [
+          "Prompting changes instructions, RAG supplies facts, and fine-tuning changes learned behavior patterns.",
+          "fresh facts -> RAG | stable style -> fine-tune"
+        ],
+        [
+          "SFT trains on desired input-output examples to make a behavior more consistent.",
+          "{input: support note, output: approved summary}"
+        ],
+        [
+          "Small, accurate, representative examples often teach more than large noisy datasets.",
+          "deduplicate -> review -> split -> train"
+        ],
+        [
+          "These splits keep model learning, tuning, and final evaluation on separate examples so reported performance reflects unseen data honestly.",
+          "80% train | 10% validation | 10% test"
+        ],
+        [
+          "LoRA learns small low-rank updates while keeping base weights fixed, reducing training and storage cost.",
+          "base weights frozen + trainable adapter"
+        ],
+        [
+          "Preference methods teach which of two responses better matches human or policy judgments.",
+          "preferred answer > rejected answer"
+        ],
+        [
+          "Compare the tuned model with a baseline on held-out quality, safety, latency, and regression tests.",
+          "candidate must beat baseline and safety thresholds"
+        ]
+      ],
+      "11": [
+        [
+          "An eval set contains representative inputs, expected behavior, and difficult edge cases.",
+          "cases = happy paths + edge cases + attacks"
+        ],
+        [
+          "Code can score structured fields, keywords, executable tests, or reference matches objectively.",
+          "assert output.status in allowed_statuses"
+        ],
+        [
+          "A judge model can apply a rubric to open-ended output, but needs calibration against human ratings.",
+          "judge(prompt, answer, rubric) -> score"
+        ],
+        [
+          "People remain essential for nuance, usefulness, risk, and validating automated graders.",
+          "two reviewers + disagreement resolution"
+        ],
+        [
+          "Groundedness asks whether claims follow supplied evidence; factuality asks whether claims are true.",
+          "claim -> supporting passage or verified source"
+        ],
+        [
+          "Regression testing reruns the same evaluation suite after model, prompt, tool, or data changes to detect quality that was accidentally lost.",
+          "release only if critical evals pass"
+        ],
+        [
+          "Production metrics reveal latency, errors, user feedback, escalation rates, and distribution shifts.",
+          "monitor p95 latency, refusal rate, helpfulness"
+        ]
+      ],
+      "12": [
+        [
+          "Hallucination controls reduce unsupported claims by grounding answers in evidence, constraining output, checking facts, and refusing when evidence is insufficient.",
+          "if confidence low: \"I do not have enough evidence\""
+        ],
+        [
+          "Prompt injection is a malicious instruction hidden in user or retrieved content that tries to override rules or trigger unauthorized actions.",
+          "retrieved text = data, never authority"
+        ],
+        [
+          "Layer provider filters, application policy, age/use context, and human escalation around generated content.",
+          "input moderation -> model -> output moderation"
+        ],
+        [
+          "Minimize personal data, document retention, and understand whether a provider stores or trains on inputs.",
+          "redact PII before model request"
+        ],
+        [
+          "Rate limits control request volume, while bounded retries with increasing delays recover from temporary failures without repeatedly sending invalid requests.",
+          "retry_after = min(cap, base * 2^attempt) + jitter"
+        ],
+        [
+          "Cache suitable results and define a smaller model, static response, or graceful failure for outages.",
+          "cache key = model + prompt_version + safe_input_hash"
+        ],
+        [
+          "Version prompts, pin models where possible, evaluate changes, observe costs, and keep a rollback path.",
+          "eval -> canary -> monitor -> expand or rollback"
+        ]
+      ]
+    },
+    "groupedExamples": {
+      "AI, ML & deep learning": [
+        [
+          "AI, ML & deep learning",
+          "AI > machine learning > deep learning"
+        ]
+      ],
+      "Generative vs discriminative models": [
+        [
+          "Generative vs discriminative models",
+          "classifier(input) -> label\ngenerator(prompt) -> new content"
+        ]
+      ],
+      "Foundation models": [
+        [
+          "Foundation models",
+          "base_model + instructions + context -> task output"
+        ]
+      ],
+      "Large language models": [
+        [
+          "Large language models",
+          "next_token = model(previous_tokens)"
+        ]
+      ],
+      "Model modalities": [
+        [
+          "Model modalities",
+          "text + image -> text answer"
+        ]
+      ],
+      "Probabilistic output": [
+        [
+          "Probabilistic output",
+          "temperature=0.2  # more focused sampling"
+        ]
+      ],
+      "Capabilities & limitations": [
+        [
+          "Capabilities & limitations",
+          "model answer -> verify facts before use"
+        ]
+      ],
+      "Parameters & weights": [
+        [
+          "Parameters & weights",
+          "prediction = network(input, learned_weights)"
+        ]
+      ],
+      "Training vs inference": [
+        [
+          "Training vs inference",
+          "train: update weights\ninfer: use weights"
+        ]
+      ],
+      "Pretraining": [
+        [
+          "Pretraining",
+          "documents -> self-supervised training -> base model"
+        ]
+      ],
+      "Self-supervised learning": [
+        [
+          "Self-supervised learning",
+          "\"Java runs on the\" -> predict \"JVM\""
+        ]
+      ],
+      "Loss & optimization": [
+        [
+          "Loss & optimization",
+          "weights = weights - learning_rate * gradient"
+        ]
+      ],
+      "Epochs, batches & steps": [
+        [
+          "Epochs, batches & steps",
+          "1000 examples / batch 100 = 10 steps per epoch"
+        ]
+      ],
+      "Generalization & overfitting": [
+        [
+          "Generalization & overfitting",
+          "train score high + test score low -> overfitting"
+        ]
+      ],
+      "Transformer architecture": [
+        [
+          "Transformer architecture",
+          "tokens -> transformer blocks -> token probabilities"
+        ]
+      ],
+      "Self-attention": [
+        [
+          "Self-attention",
+          "\"bank\" attends to \"river\" or \"money\""
+        ]
+      ],
+      "Queries, keys & values": [
+        [
+          "Queries, keys & values",
+          "attention(Q,K,V) = softmax(QK^T)V"
+        ]
+      ],
+      "Multi-head attention": [
+        [
+          "Multi-head attention",
+          "head1: syntax | head2: reference | head3: position"
+        ]
+      ],
+      "Positional information": [
+        [
+          "Positional information",
+          "\"dog bites man\" != \"man bites dog\""
+        ]
+      ],
+      "Encoder, decoder & encoder-decoder": [
+        [
+          "Encoder, decoder & encoder-decoder",
+          "encoder: understand\ndecoder: generate"
+        ]
+      ],
+      "Autoregressive generation": [
+        [
+          "Autoregressive generation",
+          "prompt -> token1 -> token2 -> ... -> stop"
+        ]
+      ],
+      "Tokenization": [
+        [
+          "Tokenization",
+          "\"unbelievable\" -> [\"un\", \"believ\", \"able\"]"
+        ]
+      ],
+      "Token IDs": [
+        [
+          "Token IDs",
+          "\"hello\" -> token_id 15339 -> vector"
+        ]
+      ],
+      "Context window": [
+        [
+          "Context window",
+          "system + history + prompt + output <= context limit"
+        ]
+      ],
+      "Input vs output tokens": [
+        [
+          "Input vs output tokens",
+          "input=1200 tokens, max_output=300 tokens"
+        ]
+      ],
+      "Truncation": [
+        [
+          "Truncation",
+          "old messages -> summarize -> compact context"
+        ]
+      ],
+      "Long-context trade-offs": [
+        [
+          "Long-context trade-offs",
+          "more tokens != automatically better answer"
+        ]
+      ],
+      "Token budgeting": [
+        [
+          "Token budgeting",
+          "budget = instructions + evidence + history + response"
+        ]
+      ],
+      "Embedding vectors": [
+        [
+          "Embedding vectors",
+          "embed(\"reset password\") -> [0.12, -0.04, ...]"
+        ]
+      ],
+      "Semantic similarity": [
+        [
+          "Semantic similarity",
+          "\"car repair\" ~ \"automobile service\""
+        ]
+      ],
+      "Cosine similarity": [
+        [
+          "Cosine similarity",
+          "score = dot(a,b) / (norm(a) * norm(b))"
+        ]
+      ],
+      "Embedding dimensions": [
+        [
+          "Embedding dimensions",
+          "vector.length = model_dimension"
+        ]
+      ],
+      "Normalization": [
+        [
+          "Normalization",
+          "normalized = vector / norm(vector)"
+        ]
+      ],
+      "Batch embedding": [
+        [
+          "Batch embedding",
+          "embeddings.create(input=[text1, text2, text3])"
+        ]
+      ],
+      "Embedding use cases": [
+        [
+          "Embedding use cases",
+          "query_vector -> nearest documents"
+        ]
+      ],
+      "Model selection": [
+        [
+          "Model selection",
+          "simple extraction -> small model\nhard reasoning -> stronger model"
+        ]
+      ],
+      "Open vs hosted models": [
+        [
+          "Open vs hosted models",
+          "hosted: managed endpoint | open: operate weights"
+        ]
+      ],
+      "Temperature": [
+        [
+          "Temperature",
+          "temperature=0.1  # consistent extraction"
+        ]
+      ],
+      "Top-p sampling": [
+        [
+          "Top-p sampling",
+          "top_p=0.9"
+        ]
+      ],
+      "Stop conditions": [
+        [
+          "Stop conditions",
+          "stop=[\"END\"], max_output_tokens=400"
+        ]
+      ],
+      "Latency & throughput": [
+        [
+          "Latency & throughput",
+          "p95_latency=1.8s, requests_per_second=40"
+        ]
+      ],
+      "Cost estimation": [
+        [
+          "Cost estimation",
+          "cost = input_tokens*rate_in + output_tokens*rate_out"
+        ]
+      ],
+      "Instruction hierarchy": [
+        [
+          "Instruction hierarchy",
+          "system: rules\nuser: request + input"
+        ]
+      ],
+      "Clear task definition": [
+        [
+          "Clear task definition",
+          "\"Summarize for a beginner in 5 bullets.\""
+        ]
+      ],
+      "Delimiters & data boundaries": [
+        [
+          "Delimiters & data boundaries",
+          "<document>user supplied text</document>"
+        ]
+      ],
+      "Zero-shot prompting": [
+        [
+          "Zero-shot prompting",
+          "\"Classify as bug, feature, or question.\""
+        ]
+      ],
+      "Few-shot prompting": [
+        [
+          "Few-shot prompting",
+          "Input: slow page -> Output: performance"
+        ]
+      ],
+      "Decomposition": [
+        [
+          "Decomposition",
+          "extract facts -> compare -> write conclusion"
+        ]
+      ],
+      "Prompt iteration": [
+        [
+          "Prompt iteration",
+          "prompt_v2 score 0.91 > prompt_v1 score 0.82"
+        ]
+      ],
+      "JSON output": [
+        [
+          "JSON output",
+          "{\"category\":\"billing\",\"urgent\":false}"
+        ]
+      ],
+      "JSON Schema": [
+        [
+          "JSON Schema",
+          "{\"type\":\"object\",\"required\":[\"answer\"]}"
+        ]
+      ],
+      "Schema validation": [
+        [
+          "Schema validation",
+          "parsed = schema.parse(model_output)"
+        ]
+      ],
+      "Function calling": [
+        [
+          "Function calling",
+          "get_weather({\"city\":\"Delhi\"})"
+        ]
+      ],
+      "Tool result messages": [
+        [
+          "Tool result messages",
+          "tool_call_id=call_7 -> {\"temp_c\":31}"
+        ]
+      ],
+      "Deterministic post-processing": [
+        [
+          "Deterministic post-processing",
+          "total = items.reduce(sum)  # code calculates"
+        ]
+      ],
+      "Failure handling": [
+        [
+          "Failure handling",
+          "if invalid: repair once; else fail clearly"
+        ]
+      ],
+      "Vision inputs": [
+        [
+          "Vision inputs",
+          "input = [question, product_photo]"
+        ]
+      ],
+      "Image generation": [
+        [
+          "Image generation",
+          "prompt + optional mask/reference -> image"
+        ]
+      ],
+      "Speech to text": [
+        [
+          "Speech to text",
+          "audio.wav -> transcript"
+        ]
+      ],
+      "Text to speech": [
+        [
+          "Text to speech",
+          "response text -> generated speech"
+        ]
+      ],
+      "Multimodal prompting": [
+        [
+          "Multimodal prompting",
+          "\"Read the label; return product and expiry date.\""
+        ]
+      ],
+      "Media preprocessing": [
+        [
+          "Media preprocessing",
+          "video -> selected frames + transcript"
+        ]
+      ],
+      "Accessibility & consent": [
+        [
+          "Accessibility & consent",
+          "image output -> human-reviewed alt text"
+        ]
+      ],
+      "Prompting vs RAG vs fine-tuning": [
+        [
+          "Prompting vs RAG vs fine-tuning",
+          "fresh facts -> RAG | stable style -> fine-tune"
+        ]
+      ],
+      "Supervised fine-tuning": [
+        [
+          "Supervised fine-tuning",
+          "{input: support note, output: approved summary}"
+        ]
+      ],
+      "Training data quality": [
+        [
+          "Training data quality",
+          "deduplicate -> review -> split -> train"
+        ]
+      ],
+      "Train, validation & test splits": [
+        [
+          "Train, validation & test splits",
+          "80% train | 10% validation | 10% test"
+        ]
+      ],
+      "LoRA & adapters": [
+        [
+          "LoRA & adapters",
+          "base weights frozen + trainable adapter"
+        ]
+      ],
+      "Preference optimization": [
+        [
+          "Preference optimization",
+          "preferred answer > rejected answer"
+        ]
+      ],
+      "Fine-tuning evaluation": [
+        [
+          "Fine-tuning evaluation",
+          "candidate must beat baseline and safety thresholds"
+        ]
+      ],
+      "Evaluation datasets": [
+        [
+          "Evaluation datasets",
+          "cases = happy paths + edge cases + attacks"
+        ]
+      ],
+      "Exact & programmatic graders": [
+        [
+          "Exact & programmatic graders",
+          "assert output.status in allowed_statuses"
+        ]
+      ],
+      "Model-based graders": [
+        [
+          "Model-based graders",
+          "judge(prompt, answer, rubric) -> score"
+        ]
+      ],
+      "Human evaluation": [
+        [
+          "Human evaluation",
+          "two reviewers + disagreement resolution"
+        ]
+      ],
+      "Groundedness & factuality": [
+        [
+          "Groundedness & factuality",
+          "claim -> supporting passage or verified source"
+        ]
+      ],
+      "Regression testing": [
+        [
+          "Regression testing",
+          "release only if critical evals pass"
+        ]
+      ],
+      "Online monitoring": [
+        [
+          "Online monitoring",
+          "monitor p95 latency, refusal rate, helpfulness"
+        ]
+      ],
+      "Hallucination controls": [
+        [
+          "Hallucination controls",
+          "if confidence low: \"I do not have enough evidence\""
+        ]
+      ],
+      "Prompt injection": [
+        [
+          "Prompt injection",
+          "retrieved text = data, never authority"
+        ]
+      ],
+      "Content safety": [
+        [
+          "Content safety",
+          "input moderation -> model -> output moderation"
+        ]
+      ],
+      "Privacy & data retention": [
+        [
+          "Privacy & data retention",
+          "redact PII before model request"
+        ]
+      ],
+      "Rate limits & retries": [
+        [
+          "Rate limits & retries",
+          "retry_after = min(cap, base * 2^attempt) + jitter"
+        ]
+      ],
+      "Caching & fallbacks": [
+        [
+          "Caching & fallbacks",
+          "cache key = model + prompt_version + safe_input_hash"
+        ]
+      ],
+      "Production checklist": [
+        [
+          "Production checklist",
+          "eval -> canary -> monitor -> expand or rollback"
+        ]
+      ]
+    },
+    "exampleComments": {
+      "AI, ML & deep learning": "This shorthand shows the concrete action, setting, or result an implementation uses for ai, ml & deep learning.",
+      "Generative vs discriminative models": "Read this sketch from left to right: the input moves through the shown stages to demonstrate generative vs discriminative models.",
+      "Foundation models": "Read this sketch from left to right: the input moves through the shown stages to demonstrate foundation models.",
+      "Large language models": "The name on the left stores the value produced or configured on the right, making large language models concrete.",
+      "Model modalities": "Read this sketch from left to right: the input moves through the shown stages to demonstrate model modalities.",
+      "Probabilistic output": "The name on the left stores the value produced or configured on the right, making probabilistic output concrete.",
+      "Capabilities & limitations": "Read this sketch from left to right: the input moves through the shown stages to demonstrate capabilities & limitations.",
+      "Parameters & weights": "The name on the left stores the value produced or configured on the right, making parameters & weights concrete.",
+      "Training vs inference": "This shorthand shows the concrete action, setting, or result an implementation uses for training vs inference.",
+      "Pretraining": "Read this sketch from left to right: the input moves through the shown stages to demonstrate pretraining.",
+      "Self-supervised learning": "Read this sketch from left to right: the input moves through the shown stages to demonstrate self-supervised learning.",
+      "Loss & optimization": "The name on the left stores the value produced or configured on the right, making loss & optimization concrete.",
+      "Epochs, batches & steps": "This shorthand shows the concrete action, setting, or result an implementation uses for epochs, batches & steps.",
+      "Generalization & overfitting": "Read this sketch from left to right: the input moves through the shown stages to demonstrate generalization & overfitting.",
+      "Transformer architecture": "Read this sketch from left to right: the input moves through the shown stages to demonstrate transformer architecture.",
+      "Self-attention": "This shorthand shows the concrete action, setting, or result an implementation uses for self-attention.",
+      "Queries, keys & values": "This calls the shown operation with concrete inputs so you can see where queries, keys & values happens in the workflow.",
+      "Multi-head attention": "This shorthand shows the concrete action, setting, or result an implementation uses for multi-head attention.",
+      "Positional information": "This shorthand shows the concrete action, setting, or result an implementation uses for positional information.",
+      "Encoder, decoder & encoder-decoder": "This shorthand shows the concrete action, setting, or result an implementation uses for encoder, decoder & encoder-decoder.",
+      "Autoregressive generation": "Read this sketch from left to right: the input moves through the shown stages to demonstrate autoregressive generation.",
+      "Tokenization": "Read this sketch from left to right: the input moves through the shown stages to demonstrate tokenization.",
+      "Token IDs": "Read this sketch from left to right: the input moves through the shown stages to demonstrate token ids.",
+      "Context window": "This shorthand shows the concrete action, setting, or result an implementation uses for context window.",
+      "Input vs output tokens": "The name on the left stores the value produced or configured on the right, making input vs output tokens concrete.",
+      "Truncation": "Read this sketch from left to right: the input moves through the shown stages to demonstrate truncation.",
+      "Long-context trade-offs": "This shorthand shows the concrete action, setting, or result an implementation uses for long-context trade-offs.",
+      "Token budgeting": "The name on the left stores the value produced or configured on the right, making token budgeting concrete.",
+      "Embedding vectors": "Read this sketch from left to right: the input moves through the shown stages to demonstrate embedding vectors.",
+      "Semantic similarity": "This shorthand shows the concrete action, setting, or result an implementation uses for semantic similarity.",
+      "Cosine similarity": "The name on the left stores the value produced or configured on the right, making cosine similarity concrete.",
+      "Embedding dimensions": "The name on the left stores the value produced or configured on the right, making embedding dimensions concrete.",
+      "Normalization": "The name on the left stores the value produced or configured on the right, making normalization concrete.",
+      "Batch embedding": "This calls the shown operation with concrete inputs so you can see where batch embedding happens in the workflow.",
+      "Embedding use cases": "Read this sketch from left to right: the input moves through the shown stages to demonstrate embedding use cases.",
+      "Model selection": "Read this sketch from left to right: the input moves through the shown stages to demonstrate model selection.",
+      "Open vs hosted models": "This shorthand shows the concrete action, setting, or result an implementation uses for open vs hosted models.",
+      "Temperature": "The name on the left stores the value produced or configured on the right, making temperature concrete.",
+      "Top-p sampling": "The name on the left stores the value produced or configured on the right, making top-p sampling concrete.",
+      "Stop conditions": "The name on the left stores the value produced or configured on the right, making stop conditions concrete.",
+      "Latency & throughput": "The name on the left stores the value produced or configured on the right, making latency & throughput concrete.",
+      "Cost estimation": "The name on the left stores the value produced or configured on the right, making cost estimation concrete.",
+      "Instruction hierarchy": "This shorthand shows the concrete action, setting, or result an implementation uses for instruction hierarchy.",
+      "Clear task definition": "This shorthand shows the concrete action, setting, or result an implementation uses for clear task definition.",
+      "Delimiters & data boundaries": "This shorthand shows the concrete action, setting, or result an implementation uses for delimiters & data boundaries.",
+      "Zero-shot prompting": "This shorthand shows the concrete action, setting, or result an implementation uses for zero-shot prompting.",
+      "Few-shot prompting": "Read this sketch from left to right: the input moves through the shown stages to demonstrate few-shot prompting.",
+      "Decomposition": "Read this sketch from left to right: the input moves through the shown stages to demonstrate decomposition.",
+      "Prompt iteration": "This shorthand shows the concrete action, setting, or result an implementation uses for prompt iteration.",
+      "JSON output": "This shorthand shows the concrete action, setting, or result an implementation uses for json output.",
+      "JSON Schema": "This shorthand shows the concrete action, setting, or result an implementation uses for json schema.",
+      "Schema validation": "The name on the left stores the value produced or configured on the right, making schema validation concrete.",
+      "Function calling": "This calls the shown operation with concrete inputs so you can see where function calling happens in the workflow.",
+      "Tool result messages": "Read this sketch from left to right: the input moves through the shown stages to demonstrate tool result messages.",
+      "Deterministic post-processing": "The name on the left stores the value produced or configured on the right, making deterministic post-processing concrete.",
+      "Failure handling": "This condition is the decision point: the indented action runs only when the failure handling check passes.",
+      "Vision inputs": "The name on the left stores the value produced or configured on the right, making vision inputs concrete.",
+      "Image generation": "Read this sketch from left to right: the input moves through the shown stages to demonstrate image generation.",
+      "Speech to text": "Read this sketch from left to right: the input moves through the shown stages to demonstrate speech to text.",
+      "Text to speech": "Read this sketch from left to right: the input moves through the shown stages to demonstrate text to speech.",
+      "Multimodal prompting": "This shorthand shows the concrete action, setting, or result an implementation uses for multimodal prompting.",
+      "Media preprocessing": "Read this sketch from left to right: the input moves through the shown stages to demonstrate media preprocessing.",
+      "Accessibility & consent": "Read this sketch from left to right: the input moves through the shown stages to demonstrate accessibility & consent.",
+      "Prompting vs RAG vs fine-tuning": "Read this sketch from left to right: the input moves through the shown stages to demonstrate prompting vs rag vs fine-tuning.",
+      "Supervised fine-tuning": "This shorthand shows the concrete action, setting, or result an implementation uses for supervised fine-tuning.",
+      "Training data quality": "Read this sketch from left to right: the input moves through the shown stages to demonstrate training data quality.",
+      "Train, validation & test splits": "This shorthand shows the concrete action, setting, or result an implementation uses for train, validation & test splits.",
+      "LoRA & adapters": "This shorthand shows the concrete action, setting, or result an implementation uses for lora & adapters.",
+      "Preference optimization": "This shorthand shows the concrete action, setting, or result an implementation uses for preference optimization.",
+      "Fine-tuning evaluation": "This shorthand shows the concrete action, setting, or result an implementation uses for fine-tuning evaluation.",
+      "Evaluation datasets": "The name on the left stores the value produced or configured on the right, making evaluation datasets concrete.",
+      "Exact & programmatic graders": "This shorthand shows the concrete action, setting, or result an implementation uses for exact & programmatic graders.",
+      "Model-based graders": "Read this sketch from left to right: the input moves through the shown stages to demonstrate model-based graders.",
+      "Human evaluation": "This shorthand shows the concrete action, setting, or result an implementation uses for human evaluation.",
+      "Groundedness & factuality": "Read this sketch from left to right: the input moves through the shown stages to demonstrate groundedness & factuality.",
+      "Regression testing": "This shorthand shows the concrete action, setting, or result an implementation uses for regression testing.",
+      "Online monitoring": "This shorthand shows the concrete action, setting, or result an implementation uses for online monitoring.",
+      "Hallucination controls": "This condition is the decision point: the indented action runs only when the hallucination controls check passes.",
+      "Prompt injection": "This shorthand shows the concrete action, setting, or result an implementation uses for prompt injection.",
+      "Content safety": "Read this sketch from left to right: the input moves through the shown stages to demonstrate content safety.",
+      "Privacy & data retention": "This shorthand shows the concrete action, setting, or result an implementation uses for privacy & data retention.",
+      "Rate limits & retries": "The name on the left stores the value produced or configured on the right, making rate limits & retries concrete.",
+      "Caching & fallbacks": "This shorthand shows the concrete action, setting, or result an implementation uses for caching & fallbacks.",
+      "Production checklist": "Read this sketch from left to right: the input moves through the shown stages to demonstrate production checklist."
+    },
+    "hubPath": "/ai",
+    "hubLabel": "AI knowledge hub",
+    "fallbackNote": "A practical AI concept to understand before moving to the next module.",
+    "fallbackCode": "# Sketch the input, transformation, output, and validation step."
+  },
+  "rag": {
+    "key": "rag",
+    "name": "RAG Systems",
+    "mark": "R",
+    "officialLabel": "Official retrieval and RAG documentation",
+    "pageTitle": "RAG Systems at a Glance | QuickDevBase",
+    "pageDescription": "Fast explanations for retrieval-augmented generation, from ingestion and embeddings to evaluation and production.",
+    "heroEyebrow": "RAG systems, at a glance",
+    "heroTitle": "Give models<br><em>evidence, not guesses.</em>",
+    "heroLede": "Trace the entire RAG pipeline—from source ingestion and chunking to hybrid retrieval, reranking, citations, evaluation, and secure operations.",
+    "previewLabel": "RAG.PIPELINE",
+    "previewCode": "<span><b class=\"code-blue\">query</b> = rewrite(question)</span><span><b class=\"code-pink\">chunks</b> = retrieve(query)</span><span><b class=\"code-blue\">evidence</b> = rerank(chunks)</span><span><b class=\"code-pink\">answer</b> = generate(evidence)</span>",
+    "chipOne": "Evidence found",
+    "chipTwo": "Citations checked",
+    "curriculumTitle": "One glance. The full RAG pipeline.",
+    "curriculumLede": "See where retrieval quality comes from, then use the linked primary documentation to build each component in depth.",
+    "searchPlaceholder": "Search topics, e.g. reranking",
+    "certificateTitleHtml": "RAG Systems Topics<br>at a Glance",
+    "completionNoun": "RAG systems learner",
+    "trademark": "Independent educational project. Provider names and marks belong to their respective owners; no vendor endorses this path.",
+    "stageLabels": {
+      "foundation": "Foundations",
+      "core": "Index & Search",
+      "retrieval": "Retrieval Quality",
+      "quality": "Evaluation & Production"
+    },
+    "modules": [
+      {
+        "id": 1,
+        "title": "RAG Architecture",
+        "stage": "foundation",
+        "description": "Understand how retrieval and generation combine to answer from external knowledge.",
+        "officialUrl": "https://docs.cloud.google.com/architecture/gen-ai-rag-vertex-ai-vector-search",
+        "challenge": "Draw the offline ingestion flow and online question-answering flow for an internal handbook.",
+        "topics": [
+          "What RAG solves",
+          "Parametric vs external knowledge",
+          "Ingestion pipeline",
+          "Query pipeline",
+          "Retriever",
+          "Generator",
+          "RAG trade-offs"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 2,
+        "title": "Sources, Loading & Parsing",
+        "stage": "foundation",
+        "description": "Turn varied source files and systems into clean, permission-aware text and structure.",
+        "officialUrl": "https://docs.cloud.google.com/document-ai/docs/overview",
+        "challenge": "Design loaders for HTML, PDF, database, and API sources while preserving ownership and timestamps.",
+        "topics": [
+          "Source inventory",
+          "Document loaders",
+          "HTML parsing",
+          "PDF extraction",
+          "OCR",
+          "Tables & structured data",
+          "Access-control metadata"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 3,
+        "title": "Chunking Strategies",
+        "stage": "foundation",
+        "description": "Split knowledge into retrievable units that retain enough meaning without flooding the prompt.",
+        "officialUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/rag-engine/chunk-documents",
+        "challenge": "Compare fixed, recursive, and structure-aware chunking on one policy document.",
+        "topics": [
+          "Chunk purpose",
+          "Fixed-size chunking",
+          "Recursive chunking",
+          "Structure-aware chunking",
+          "Chunk overlap",
+          "Parent-child retrieval",
+          "Chunk-size experiments"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 4,
+        "title": "Metadata & Document Lifecycle",
+        "stage": "foundation",
+        "description": "Keep chunks traceable, filterable, current, and safe throughout their lifecycle.",
+        "officialUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/rag-engine/rag-overview",
+        "challenge": "Define a metadata contract and incremental update strategy for versioned product documentation.",
+        "topics": [
+          "Stable document identity",
+          "Chunk identity",
+          "Provenance",
+          "Filterable metadata",
+          "Versioning",
+          "Incremental updates",
+          "Deletion & tombstones"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 5,
+        "title": "Embedding Pipeline",
+        "stage": "core",
+        "description": "Create consistent query and document vectors and migrate them without silent incompatibility.",
+        "officialUrl": "https://platform.openai.com/docs/guides/embeddings",
+        "challenge": "Specify an embedding job with batching, retries, model version metadata, and migration support.",
+        "topics": [
+          "Document embeddings",
+          "Query embeddings",
+          "Model compatibility",
+          "Batching & rate limits",
+          "Vector normalization",
+          "Model migration",
+          "Embedding observability"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 6,
+        "title": "Vector Search & Indexes",
+        "stage": "core",
+        "description": "Understand similarity metrics, approximate indexes, and the recall-latency choices beneath retrieval.",
+        "officialUrl": "https://docs.cloud.google.com/vertex-ai/docs/vector-search/overview",
+        "challenge": "Choose a vector index and top-k setting for a million-chunk support corpus, then measure recall.",
+        "topics": [
+          "Vector databases",
+          "Similarity metrics",
+          "Exact nearest neighbors",
+          "Approximate nearest neighbors",
+          "HNSW",
+          "Top-k",
+          "Recall & latency tuning"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 7,
+        "title": "Hybrid Retrieval & Filtering",
+        "stage": "core",
+        "description": "Combine semantic meaning, exact terms, metadata, and business constraints.",
+        "officialUrl": "https://www.elastic.co/docs/solutions/search/hybrid-search",
+        "challenge": "Build a hybrid search for product error codes that also understands plain-language symptoms.",
+        "topics": [
+          "Keyword search",
+          "Semantic search",
+          "Hybrid search",
+          "Reciprocal rank fusion",
+          "Metadata pre-filtering",
+          "Post-filtering risk",
+          "Diversification"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 8,
+        "title": "Query Understanding",
+        "stage": "retrieval",
+        "description": "Transform conversational or ambiguous questions into better retrieval requests.",
+        "officialUrl": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/rag-engine/rag-overview",
+        "challenge": "Create a query pipeline that detects filters, rewrites follow-ups, and decomposes multi-part questions.",
+        "topics": [
+          "Query rewriting",
+          "Conversation condensation",
+          "Multi-query retrieval",
+          "Query decomposition",
+          "HyDE",
+          "Entity & filter extraction",
+          "Query routing"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 9,
+        "title": "Reranking & Context Assembly",
+        "stage": "retrieval",
+        "description": "Turn a broad candidate set into a compact, ordered evidence package.",
+        "officialUrl": "https://cloud.google.com/vertex-ai/generative-ai/docs/retrieval-and-ranking",
+        "challenge": "Retrieve 30 candidates, rerank them, deduplicate, and assemble a token-budgeted evidence block.",
+        "topics": [
+          "Candidate generation",
+          "Cross-encoder reranking",
+          "LLM reranking",
+          "Score thresholds",
+          "Deduplication",
+          "Context ordering",
+          "Token-budgeted packing"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 10,
+        "title": "Grounded Generation & Citations",
+        "stage": "retrieval",
+        "description": "Produce useful answers that stay faithful to evidence and reveal their sources.",
+        "officialUrl": "https://platform.openai.com/docs/guides/retrieval",
+        "challenge": "Write a grounded answer prompt with citation IDs, insufficient-evidence behavior, and claim-level attribution.",
+        "topics": [
+          "Grounding instructions",
+          "Citation identifiers",
+          "Claim-level citations",
+          "Citation validation",
+          "Abstention",
+          "Conflicting sources",
+          "Conversational RAG"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 11,
+        "title": "RAG Evaluation",
+        "stage": "quality",
+        "description": "Locate quality failures in retrieval, context, generation, and end-to-end behavior.",
+        "officialUrl": "https://platform.openai.com/docs/guides/evals",
+        "challenge": "Create a labeled RAG test set and a dashboard for retrieval recall, groundedness, citation, and answer quality.",
+        "topics": [
+          "Golden question sets",
+          "Retrieval recall",
+          "Retrieval precision",
+          "Ranking metrics",
+          "Context relevance",
+          "Faithfulness & citation accuracy",
+          "End-to-end answer quality"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      },
+      {
+        "id": 12,
+        "title": "Production RAG",
+        "stage": "quality",
+        "description": "Operate a secure, fresh, observable retrieval system as sources and usage evolve.",
+        "officialUrl": "https://docs.cloud.google.com/architecture/rag-capable-gen-ai-app-using-vertex-ai",
+        "challenge": "Design production controls for freshness, tenant isolation, monitoring, caching, and incident response.",
+        "topics": [
+          "Freshness SLAs",
+          "Tenant isolation",
+          "Prompt-injection defense",
+          "Caching",
+          "Observability",
+          "Graph & multimodal RAG",
+          "Cost & capacity"
+        ],
+        "officialLabel": "Official retrieval and RAG documentation"
+      }
+    ],
+    "quickNotes": {
+      "1": [
+        [
+          "RAG supplies relevant external evidence so a model can answer beyond its fixed training knowledge.",
+          "question -> retrieve evidence -> grounded answer"
+        ],
+        [
+          "Parametric knowledge lives in model weights; external knowledge lives in documents, databases, or APIs.",
+          "model memory + current source data"
+        ],
+        [
+          "The offline pipeline loads, parses, chunks, enriches, embeds, and indexes source content.",
+          "source -> parse -> chunk -> embed -> index"
+        ],
+        [
+          "The online pipeline understands a request, retrieves candidates, builds context, and generates an answer.",
+          "query -> retrieve -> rerank -> prompt -> answer"
+        ],
+        [
+          "The retriever finds candidate passages using vector, keyword, metadata, graph, or combined search.",
+          "retrieve(query, top_k=20)"
+        ],
+        [
+          "The generator synthesizes an answer from instructions, the question, and selected evidence.",
+          "LLM(system + evidence + question)"
+        ],
+        [
+          "RAG improves freshness and traceability but adds indexing, retrieval, latency, and evaluation complexity.",
+          "quality depends on source + retrieval + generation"
+        ]
+      ],
+      "2": [
+        [
+          "A source inventory records where knowledge comes from, who owns it, its format, update schedule, sensitivity, and whether it is authoritative.",
+          "source_registry: uri, owner, cadence, classification"
+        ],
+        [
+          "A loader reads from a source and emits normalized documents plus provenance metadata.",
+          "load(uri) -> {text, metadata}"
+        ],
+        [
+          "HTML parsing extracts the useful page content while removing menus and boilerplate, but keeps headings, lists, tables, and source URLs meaningful.",
+          "HTML -> main content + heading hierarchy"
+        ],
+        [
+          "PDFs may contain positioned text, tables, images, or scans, so extraction quality must be checked.",
+          "PDF -> pages -> blocks -> reading order"
+        ],
+        [
+          "Optical character recognition turns scanned pixels into text and should retain confidence and page coordinates.",
+          "page_image -> OCR text + bounding boxes"
+        ],
+        [
+          "Represent tables so rows, headers, and units stay connected rather than flattening into ambiguous text.",
+          "row: {quarter: Q2, revenue_usd: 420000}"
+        ],
+        [
+          "Carry source permissions into every chunk so retrieval cannot expose content a user may not read.",
+          "chunk.allowed_groups = [\"finance\"]"
+        ]
+      ],
+      "3": [
+        [
+          "A chunk is the unit retrieved and cited; it should answer a focused need while retaining essential context.",
+          "document -> retrievable passages"
+        ],
+        [
+          "Fixed windows are simple and predictable but may split sentences or logical sections.",
+          "tokens[0:500], tokens[450:950]"
+        ],
+        [
+          "Recursive splitters prefer larger boundaries such as sections, paragraphs, sentences, then words.",
+          "split by heading -> paragraph -> sentence"
+        ],
+        [
+          "Structure-aware chunking follows natural boundaries such as headings, functions, or table rows so each retrieved piece keeps its original meaning.",
+          "chunk = heading + section body"
+        ],
+        [
+          "Overlap repeats boundary context between adjacent chunks but increases index size and duplicates retrieval.",
+          "chunk_size=500, overlap=75"
+        ],
+        [
+          "Search small child chunks for precision, then return a larger parent section for sufficient context.",
+          "match child -> fetch parent"
+        ],
+        [
+          "Chunk-size experiments compare retrieval and answer quality at several sizes because no single token count works best for every document collection.",
+          "test 256 vs 512 vs 900 tokens"
+        ]
+      ],
+      "4": [
+        [
+          "A stable source ID connects updated chunks to the same logical document over time.",
+          "document_id = canonical repository path"
+        ],
+        [
+          "A chunk ID should be deterministic or version-aware so updates and deletes are reliable.",
+          "chunk_id = hash(document_id + version + section)"
+        ],
+        [
+          "Provenance records where a chunk came from—such as its URL, author, page, ingestion time, and parser version—so it remains traceable.",
+          "{source_url, page, ingested_at, parser_version}"
+        ],
+        [
+          "Fields such as product, locale, date, tenant, and ACL narrow retrieval before ranking.",
+          "filter: product=\"billing\" AND locale=\"en\""
+        ],
+        [
+          "Version metadata distinguishes current content from history and supports reproducible answers.",
+          "effective_from <= now < effective_to"
+        ],
+        [
+          "Detect changed sources and reprocess only affected documents instead of rebuilding everything.",
+          "content_hash changed -> reparse and reindex"
+        ],
+        [
+          "Deletion must remove or hide every derived chunk and cache entry, including replicas.",
+          "delete source -> delete vectors -> invalidate cache"
+        ]
+      ],
+      "5": [
+        [
+          "Document embeddings turn each searchable chunk and its useful metadata into a meaning-based vector that can be compared with user questions.",
+          "vector = embed(title + \"\\n\" + chunk_text)"
+        ],
+        [
+          "A query embedding converts the user's question into a compatible vector so the search can find chunks with similar meaning.",
+          "query_vector = embed(user_question)"
+        ],
+        [
+          "Vectors from different embedding models or dimensions cannot be compared directly.",
+          "index.embedding_model == query.embedding_model"
+        ],
+        [
+          "Batching groups embedding inputs into efficient requests while respecting provider limits and saving progress so interrupted jobs can resume safely.",
+          "for batch in batches: embed(batch); save_checkpoint()"
+        ],
+        [
+          "Normalize consistently when the chosen distance metric expects unit vectors.",
+          "v = v / norm(v)"
+        ],
+        [
+          "Embedding-model migration builds and evaluates a separate index with the new model before traffic switches, avoiding incompatible vectors and sudden quality loss.",
+          "index_v1 and index_v2 -> shadow test -> cutover"
+        ],
+        [
+          "Embedding observability tracks failures, speed, token volume, empty chunks, dimensions, and model versions so ingestion problems can be diagnosed quickly.",
+          "metric: embedded_chunks_total by model_version"
+        ]
+      ],
+      "6": [
+        [
+          "A vector database stores embeddings with metadata and performs nearest-neighbor search.",
+          "index.upsert(id, vector, metadata)"
+        ],
+        [
+          "Cosine, dot product, and Euclidean distance rank vectors differently depending on normalization and model guidance.",
+          "similarity = cosine(query, chunk)"
+        ],
+        [
+          "Exact search compares every vector and maximizes recall but becomes expensive at large scale.",
+          "score query against all N vectors"
+        ],
+        [
+          "ANN indexes trade a small amount of recall for much faster search at scale.",
+          "ANN(query, top_k=20)"
+        ],
+        [
+          "HNSW navigates a layered proximity graph and offers strong low-latency recall with memory trade-offs.",
+          "search graph from upper layers to neighbors"
+        ],
+        [
+          "Top-k controls how many candidates retrieval returns; too few miss evidence, too many add noise.",
+          "candidates = search(query, k=30)"
+        ],
+        [
+          "Recall-and-latency tuning balances how often relevant chunks are found against how quickly the vector index must return its results.",
+          "recall@10 vs p95_search_ms"
+        ]
+      ],
+      "7": [
+        [
+          "Lexical search excels at exact names, IDs, error codes, and rare terms.",
+          "BM25(\"ERR_AUTH_17\")"
+        ],
+        [
+          "Dense vector search finds conceptually related text even when wording differs.",
+          "vector_search(\"cannot sign in\")"
+        ],
+        [
+          "Hybrid retrieval combines lexical and semantic candidates to cover exact and conceptual matches.",
+          "candidates = lexical(query) UNION vector(query)"
+        ],
+        [
+          "RRF merges ranked lists using positions without requiring scores on the same scale.",
+          "RRF score = sum(1 / (k + rank_i))"
+        ],
+        [
+          "Pre-filtering restricts the searchable set before vector ranking, enforcing scope and improving relevance.",
+          "tenant_id=user.tenant AND locale=\"en\""
+        ],
+        [
+          "Filtering only after top-k search may leave too few valid results or leak timing and count signals.",
+          "prefer ACL filter inside retrieval"
+        ],
+        [
+          "Maximal marginal relevance and similar methods reduce near-duplicate chunks while preserving relevance.",
+          "pick relevant candidate unlike already selected ones"
+        ]
+      ],
+      "8": [
+        [
+          "Query rewriting converts vague or conversational wording into a clear standalone search request while preserving what the user actually meant.",
+          "\"what about its price?\" + history -> \"price of Product X\""
+        ],
+        [
+          "Resolve references from recent dialogue so retrieval does not depend on hidden conversational context.",
+          "history + follow-up -> standalone question"
+        ],
+        [
+          "Multi-query retrieval creates several equivalent searches and merges their results, improving the chance of finding relevant evidence expressed with different wording.",
+          "queries = [original, synonym version, technical version]"
+        ],
+        [
+          "Query decomposition splits a multi-part question into smaller searches so evidence for each required fact can be found independently.",
+          "\"compare A and B\" -> facts(A) + facts(B)"
+        ],
+        [
+          "Hypothetical document embeddings search using an imagined answer-like passage rather than the short query alone.",
+          "hypothetical_passage = LLM(query); embed(hypothetical_passage)"
+        ],
+        [
+          "Entity and filter extraction turns details such as dates, products, regions, or tenants into validated filters that narrow the search correctly.",
+          "\"EU policy after 2025\" -> region=EU, date>=2025"
+        ],
+        [
+          "Query routing examines a request and sends it to the most suitable source—documents, vector search, SQL, the web, or a direct-answer path.",
+          "router(query) -> docs | database | web | direct"
+        ]
+      ],
+      "9": [
+        [
+          "Fast first-stage retrieval favors recall and returns more candidates than the prompt will receive.",
+          "retrieve top_50 candidates"
+        ],
+        [
+          "A reranker jointly reads query and passage for a stronger relevance score at higher cost.",
+          "score = reranker(query, passage)"
+        ],
+        [
+          "An LLM can rank with nuanced instructions but adds latency, cost, and nondeterminism.",
+          "rank passages by answer usefulness"
+        ],
+        [
+          "A score threshold removes candidates that are not relevant enough and allows the system to report that no trustworthy evidence was found.",
+          "if best_score < threshold: abstain"
+        ],
+        [
+          "Deduplication removes repeated or nearly identical passages so limited prompt space contains a wider range of useful evidence.",
+          "dedupe by source section and semantic similarity"
+        ],
+        [
+          "Context ordering arranges selected evidence by relevance, source, time, or document structure so the model can combine it more reliably.",
+          "context = highest relevance first"
+        ],
+        [
+          "Token-budgeted packing selects and fits the most useful evidence chunks into the model prompt without exceeding its token limit, while keeping citation details.",
+          "pack(chunks, max_tokens=6000)"
+        ]
+      ],
+      "10": [
+        [
+          "Grounding instructions require the model to use supplied evidence, label its inferences, and decline claims that the sources cannot support.",
+          "\"Use only evidence below; say when evidence is insufficient.\""
+        ],
+        [
+          "Attach stable source IDs to passages so the output can reference evidence without inventing URLs.",
+          "[S3] title, page, URL, passage"
+        ],
+        [
+          "Place citations next to the specific factual claims they support rather than only at the end.",
+          "\"Retention is 30 days [S2].\""
+        ],
+        [
+          "Citation validation checks that every cited source exists and that its passage genuinely supports the nearby claim instead of merely looking credible.",
+          "assert cited_ids subset of provided_source_ids"
+        ],
+        [
+          "A good RAG system says it lacks evidence rather than filling gaps with plausible language.",
+          "no relevant passage -> ask or abstain"
+        ],
+        [
+          "Conflicting-source handling shows meaningful disagreement and uses authority, date, and version rules rather than silently choosing one answer.",
+          "\"S1 says 30 days; newer policy S4 says 60.\""
+        ],
+        [
+          "Conversational RAG uses recent dialogue to understand follow-up questions but retrieves fresh evidence for every turn that depends on external knowledge.",
+          "history summary + current query + retrieved evidence"
+        ]
+      ],
+      "11": [
+        [
+          "A golden set pairs realistic questions with relevant source IDs, expected facts, or answer rubrics.",
+          "{question, relevant_chunks, required_facts}"
+        ],
+        [
+          "Recall measures how often at least one known relevant passage appears in the candidate set.",
+          "recall@k = relevant_retrieved / relevant_total"
+        ],
+        [
+          "Precision measures how much retrieved content is actually relevant and helps reveal noisy context.",
+          "precision@k = relevant_retrieved / k"
+        ],
+        [
+          "MRR and nDCG reward placing useful passages nearer the top, including graded relevance.",
+          "MRR = mean(1 / first_relevant_rank)"
+        ],
+        [
+          "Context relevance measures whether the passages placed in the prompt actually help answer the question without adding unrelated distractions.",
+          "judge(question, context) -> relevance score"
+        ],
+        [
+          "Score whether answer claims follow the evidence and whether citations support those claims.",
+          "claims(answer) -> evidence entailment checks"
+        ],
+        [
+          "End-to-end quality evaluates whether the complete RAG system gives useful, correct, complete, appropriately cautious answers at acceptable speed and cost.",
+          "release gate = quality + safety + latency + cost"
+        ]
+      ],
+      "12": [
+        [
+          "A freshness SLA defines how quickly changed source content must become searchable and measures whether the ingestion pipeline meets that target.",
+          "freshness_lag = indexed_at - source_updated_at"
+        ],
+        [
+          "Separate or filter indexes so one customer can never retrieve another customer's chunks.",
+          "retrieval filter tenant_id = authenticated_tenant"
+        ],
+        [
+          "Assume documents can contain malicious instructions; isolate content and restrict tools and secrets.",
+          "document text cannot override system policy"
+        ],
+        [
+          "RAG caching reuses embeddings, safe search results, or answers, while version and permission details prevent stale or unauthorized reuse.",
+          "cache_key includes corpus_version + ACL scope"
+        ],
+        [
+          "RAG observability records each transformation, retrieved chunk, score, citation, delay, and error so weak or failed answers can be investigated.",
+          "trace: query -> chunks -> answer -> feedback"
+        ],
+        [
+          "Graphs add explicit relationships; multimodal RAG retrieves images, tables, audio, or video alongside text.",
+          "entity graph + text passages + figure embeddings"
+        ],
+        [
+          "Budget storage, embedding updates, search, reranking, generation, and peak concurrency.",
+          "monthly cost = ingest + index + retrieve + rerank + generate"
+        ]
+      ]
+    },
+    "groupedExamples": {
+      "What RAG solves": [
+        [
+          "What RAG solves",
+          "question -> retrieve evidence -> grounded answer"
+        ]
+      ],
+      "Parametric vs external knowledge": [
+        [
+          "Parametric vs external knowledge",
+          "model memory + current source data"
+        ]
+      ],
+      "Ingestion pipeline": [
+        [
+          "Ingestion pipeline",
+          "source -> parse -> chunk -> embed -> index"
+        ]
+      ],
+      "Query pipeline": [
+        [
+          "Query pipeline",
+          "query -> retrieve -> rerank -> prompt -> answer"
+        ]
+      ],
+      "Retriever": [
+        [
+          "Retriever",
+          "retrieve(query, top_k=20)"
+        ]
+      ],
+      "Generator": [
+        [
+          "Generator",
+          "LLM(system + evidence + question)"
+        ]
+      ],
+      "RAG trade-offs": [
+        [
+          "RAG trade-offs",
+          "quality depends on source + retrieval + generation"
+        ]
+      ],
+      "Source inventory": [
+        [
+          "Source inventory",
+          "source_registry: uri, owner, cadence, classification"
+        ]
+      ],
+      "Document loaders": [
+        [
+          "Document loaders",
+          "load(uri) -> {text, metadata}"
+        ]
+      ],
+      "HTML parsing": [
+        [
+          "HTML parsing",
+          "HTML -> main content + heading hierarchy"
+        ]
+      ],
+      "PDF extraction": [
+        [
+          "PDF extraction",
+          "PDF -> pages -> blocks -> reading order"
+        ]
+      ],
+      "OCR": [
+        [
+          "OCR",
+          "page_image -> OCR text + bounding boxes"
+        ]
+      ],
+      "Tables & structured data": [
+        [
+          "Tables & structured data",
+          "row: {quarter: Q2, revenue_usd: 420000}"
+        ]
+      ],
+      "Access-control metadata": [
+        [
+          "Access-control metadata",
+          "chunk.allowed_groups = [\"finance\"]"
+        ]
+      ],
+      "Chunk purpose": [
+        [
+          "Chunk purpose",
+          "document -> retrievable passages"
+        ]
+      ],
+      "Fixed-size chunking": [
+        [
+          "Fixed-size chunking",
+          "tokens[0:500], tokens[450:950]"
+        ]
+      ],
+      "Recursive chunking": [
+        [
+          "Recursive chunking",
+          "split by heading -> paragraph -> sentence"
+        ]
+      ],
+      "Structure-aware chunking": [
+        [
+          "Structure-aware chunking",
+          "chunk = heading + section body"
+        ]
+      ],
+      "Chunk overlap": [
+        [
+          "Chunk overlap",
+          "chunk_size=500, overlap=75"
+        ]
+      ],
+      "Parent-child retrieval": [
+        [
+          "Parent-child retrieval",
+          "match child -> fetch parent"
+        ]
+      ],
+      "Chunk-size experiments": [
+        [
+          "Chunk-size experiments",
+          "test 256 vs 512 vs 900 tokens"
+        ]
+      ],
+      "Stable document identity": [
+        [
+          "Stable document identity",
+          "document_id = canonical repository path"
+        ]
+      ],
+      "Chunk identity": [
+        [
+          "Chunk identity",
+          "chunk_id = hash(document_id + version + section)"
+        ]
+      ],
+      "Provenance": [
+        [
+          "Provenance",
+          "{source_url, page, ingested_at, parser_version}"
+        ]
+      ],
+      "Filterable metadata": [
+        [
+          "Filterable metadata",
+          "filter: product=\"billing\" AND locale=\"en\""
+        ]
+      ],
+      "Versioning": [
+        [
+          "Versioning",
+          "effective_from <= now < effective_to"
+        ]
+      ],
+      "Incremental updates": [
+        [
+          "Incremental updates",
+          "content_hash changed -> reparse and reindex"
+        ]
+      ],
+      "Deletion & tombstones": [
+        [
+          "Deletion & tombstones",
+          "delete source -> delete vectors -> invalidate cache"
+        ]
+      ],
+      "Document embeddings": [
+        [
+          "Document embeddings",
+          "vector = embed(title + \"\\n\" + chunk_text)"
+        ]
+      ],
+      "Query embeddings": [
+        [
+          "Query embeddings",
+          "query_vector = embed(user_question)"
+        ]
+      ],
+      "Model compatibility": [
+        [
+          "Model compatibility",
+          "index.embedding_model == query.embedding_model"
+        ]
+      ],
+      "Batching & rate limits": [
+        [
+          "Batching & rate limits",
+          "for batch in batches: embed(batch); save_checkpoint()"
+        ]
+      ],
+      "Vector normalization": [
+        [
+          "Vector normalization",
+          "v = v / norm(v)"
+        ]
+      ],
+      "Model migration": [
+        [
+          "Model migration",
+          "index_v1 and index_v2 -> shadow test -> cutover"
+        ]
+      ],
+      "Embedding observability": [
+        [
+          "Embedding observability",
+          "metric: embedded_chunks_total by model_version"
+        ]
+      ],
+      "Vector databases": [
+        [
+          "Vector databases",
+          "index.upsert(id, vector, metadata)"
+        ]
+      ],
+      "Similarity metrics": [
+        [
+          "Similarity metrics",
+          "similarity = cosine(query, chunk)"
+        ]
+      ],
+      "Exact nearest neighbors": [
+        [
+          "Exact nearest neighbors",
+          "score query against all N vectors"
+        ]
+      ],
+      "Approximate nearest neighbors": [
+        [
+          "Approximate nearest neighbors",
+          "ANN(query, top_k=20)"
+        ]
+      ],
+      "HNSW": [
+        [
+          "HNSW",
+          "search graph from upper layers to neighbors"
+        ]
+      ],
+      "Top-k": [
+        [
+          "Top-k",
+          "candidates = search(query, k=30)"
+        ]
+      ],
+      "Recall & latency tuning": [
+        [
+          "Recall & latency tuning",
+          "recall@10 vs p95_search_ms"
+        ]
+      ],
+      "Keyword search": [
+        [
+          "Keyword search",
+          "BM25(\"ERR_AUTH_17\")"
+        ]
+      ],
+      "Semantic search": [
+        [
+          "Semantic search",
+          "vector_search(\"cannot sign in\")"
+        ]
+      ],
+      "Hybrid search": [
+        [
+          "Hybrid search",
+          "candidates = lexical(query) UNION vector(query)"
+        ]
+      ],
+      "Reciprocal rank fusion": [
+        [
+          "Reciprocal rank fusion",
+          "RRF score = sum(1 / (k + rank_i))"
+        ]
+      ],
+      "Metadata pre-filtering": [
+        [
+          "Metadata pre-filtering",
+          "tenant_id=user.tenant AND locale=\"en\""
+        ]
+      ],
+      "Post-filtering risk": [
+        [
+          "Post-filtering risk",
+          "prefer ACL filter inside retrieval"
+        ]
+      ],
+      "Diversification": [
+        [
+          "Diversification",
+          "pick relevant candidate unlike already selected ones"
+        ]
+      ],
+      "Query rewriting": [
+        [
+          "Query rewriting",
+          "\"what about its price?\" + history -> \"price of Product X\""
+        ]
+      ],
+      "Conversation condensation": [
+        [
+          "Conversation condensation",
+          "history + follow-up -> standalone question"
+        ]
+      ],
+      "Multi-query retrieval": [
+        [
+          "Multi-query retrieval",
+          "queries = [original, synonym version, technical version]"
+        ]
+      ],
+      "Query decomposition": [
+        [
+          "Query decomposition",
+          "\"compare A and B\" -> facts(A) + facts(B)"
+        ]
+      ],
+      "HyDE": [
+        [
+          "HyDE",
+          "hypothetical_passage = LLM(query); embed(hypothetical_passage)"
+        ]
+      ],
+      "Entity & filter extraction": [
+        [
+          "Entity & filter extraction",
+          "\"EU policy after 2025\" -> region=EU, date>=2025"
+        ]
+      ],
+      "Query routing": [
+        [
+          "Query routing",
+          "router(query) -> docs | database | web | direct"
+        ]
+      ],
+      "Candidate generation": [
+        [
+          "Candidate generation",
+          "retrieve top_50 candidates"
+        ]
+      ],
+      "Cross-encoder reranking": [
+        [
+          "Cross-encoder reranking",
+          "score = reranker(query, passage)"
+        ]
+      ],
+      "LLM reranking": [
+        [
+          "LLM reranking",
+          "rank passages by answer usefulness"
+        ]
+      ],
+      "Score thresholds": [
+        [
+          "Score thresholds",
+          "if best_score < threshold: abstain"
+        ]
+      ],
+      "Deduplication": [
+        [
+          "Deduplication",
+          "dedupe by source section and semantic similarity"
+        ]
+      ],
+      "Context ordering": [
+        [
+          "Context ordering",
+          "context = highest relevance first"
+        ]
+      ],
+      "Token-budgeted packing": [
+        [
+          "Token-budgeted packing",
+          "pack(chunks, max_tokens=6000)"
+        ]
+      ],
+      "Grounding instructions": [
+        [
+          "Grounding instructions",
+          "\"Use only evidence below; say when evidence is insufficient.\""
+        ]
+      ],
+      "Citation identifiers": [
+        [
+          "Citation identifiers",
+          "[S3] title, page, URL, passage"
+        ]
+      ],
+      "Claim-level citations": [
+        [
+          "Claim-level citations",
+          "\"Retention is 30 days [S2].\""
+        ]
+      ],
+      "Citation validation": [
+        [
+          "Citation validation",
+          "assert cited_ids subset of provided_source_ids"
+        ]
+      ],
+      "Abstention": [
+        [
+          "Abstention",
+          "no relevant passage -> ask or abstain"
+        ]
+      ],
+      "Conflicting sources": [
+        [
+          "Conflicting sources",
+          "\"S1 says 30 days; newer policy S4 says 60.\""
+        ]
+      ],
+      "Conversational RAG": [
+        [
+          "Conversational RAG",
+          "history summary + current query + retrieved evidence"
+        ]
+      ],
+      "Golden question sets": [
+        [
+          "Golden question sets",
+          "{question, relevant_chunks, required_facts}"
+        ]
+      ],
+      "Retrieval recall": [
+        [
+          "Retrieval recall",
+          "recall@k = relevant_retrieved / relevant_total"
+        ]
+      ],
+      "Retrieval precision": [
+        [
+          "Retrieval precision",
+          "precision@k = relevant_retrieved / k"
+        ]
+      ],
+      "Ranking metrics": [
+        [
+          "Ranking metrics",
+          "MRR = mean(1 / first_relevant_rank)"
+        ]
+      ],
+      "Context relevance": [
+        [
+          "Context relevance",
+          "judge(question, context) -> relevance score"
+        ]
+      ],
+      "Faithfulness & citation accuracy": [
+        [
+          "Faithfulness & citation accuracy",
+          "claims(answer) -> evidence entailment checks"
+        ]
+      ],
+      "End-to-end answer quality": [
+        [
+          "End-to-end answer quality",
+          "release gate = quality + safety + latency + cost"
+        ]
+      ],
+      "Freshness SLAs": [
+        [
+          "Freshness SLAs",
+          "freshness_lag = indexed_at - source_updated_at"
+        ]
+      ],
+      "Tenant isolation": [
+        [
+          "Tenant isolation",
+          "retrieval filter tenant_id = authenticated_tenant"
+        ]
+      ],
+      "Prompt-injection defense": [
+        [
+          "Prompt-injection defense",
+          "document text cannot override system policy"
+        ]
+      ],
+      "Caching": [
+        [
+          "Caching",
+          "cache_key includes corpus_version + ACL scope"
+        ]
+      ],
+      "Observability": [
+        [
+          "Observability",
+          "trace: query -> chunks -> answer -> feedback"
+        ]
+      ],
+      "Graph & multimodal RAG": [
+        [
+          "Graph & multimodal RAG",
+          "entity graph + text passages + figure embeddings"
+        ]
+      ],
+      "Cost & capacity": [
+        [
+          "Cost & capacity",
+          "monthly cost = ingest + index + retrieve + rerank + generate"
+        ]
+      ]
+    },
+    "exampleComments": {
+      "What RAG solves": "Read this sketch from left to right: the input moves through the shown stages to demonstrate what rag solves.",
+      "Parametric vs external knowledge": "This shorthand shows the concrete action, setting, or result an implementation uses for parametric vs external knowledge.",
+      "Ingestion pipeline": "Read this sketch from left to right: the input moves through the shown stages to demonstrate ingestion pipeline.",
+      "Query pipeline": "Read this sketch from left to right: the input moves through the shown stages to demonstrate query pipeline.",
+      "Retriever": "This calls the shown operation with concrete inputs so you can see where retriever happens in the workflow.",
+      "Generator": "This calls the shown operation with concrete inputs so you can see where generator happens in the workflow.",
+      "RAG trade-offs": "This shorthand shows the concrete action, setting, or result an implementation uses for rag trade-offs.",
+      "Source inventory": "This shorthand shows the concrete action, setting, or result an implementation uses for source inventory.",
+      "Document loaders": "Read this sketch from left to right: the input moves through the shown stages to demonstrate document loaders.",
+      "HTML parsing": "Read this sketch from left to right: the input moves through the shown stages to demonstrate html parsing.",
+      "PDF extraction": "Read this sketch from left to right: the input moves through the shown stages to demonstrate pdf extraction.",
+      "OCR": "Read this sketch from left to right: the input moves through the shown stages to demonstrate ocr.",
+      "Tables & structured data": "This shorthand shows the concrete action, setting, or result an implementation uses for tables & structured data.",
+      "Access-control metadata": "The name on the left stores the value produced or configured on the right, making access-control metadata concrete.",
+      "Chunk purpose": "Read this sketch from left to right: the input moves through the shown stages to demonstrate chunk purpose.",
+      "Fixed-size chunking": "This shorthand shows the concrete action, setting, or result an implementation uses for fixed-size chunking.",
+      "Recursive chunking": "Read this sketch from left to right: the input moves through the shown stages to demonstrate recursive chunking.",
+      "Structure-aware chunking": "The name on the left stores the value produced or configured on the right, making structure-aware chunking concrete.",
+      "Chunk overlap": "The name on the left stores the value produced or configured on the right, making chunk overlap concrete.",
+      "Parent-child retrieval": "Read this sketch from left to right: the input moves through the shown stages to demonstrate parent-child retrieval.",
+      "Chunk-size experiments": "This shorthand shows the concrete action, setting, or result an implementation uses for chunk-size experiments.",
+      "Stable document identity": "The name on the left stores the value produced or configured on the right, making stable document identity concrete.",
+      "Chunk identity": "The name on the left stores the value produced or configured on the right, making chunk identity concrete.",
+      "Provenance": "This shorthand shows the concrete action, setting, or result an implementation uses for provenance.",
+      "Filterable metadata": "This shorthand shows the concrete action, setting, or result an implementation uses for filterable metadata.",
+      "Versioning": "This shorthand shows the concrete action, setting, or result an implementation uses for versioning.",
+      "Incremental updates": "Read this sketch from left to right: the input moves through the shown stages to demonstrate incremental updates.",
+      "Deletion & tombstones": "Read this sketch from left to right: the input moves through the shown stages to demonstrate deletion & tombstones.",
+      "Document embeddings": "The name on the left stores the value produced or configured on the right, making document embeddings concrete.",
+      "Query embeddings": "The name on the left stores the value produced or configured on the right, making query embeddings concrete.",
+      "Model compatibility": "The name on the left stores the value produced or configured on the right, making model compatibility concrete.",
+      "Batching & rate limits": "This calls the shown operation with concrete inputs so you can see where batching & rate limits happens in the workflow.",
+      "Vector normalization": "The name on the left stores the value produced or configured on the right, making vector normalization concrete.",
+      "Model migration": "Read this sketch from left to right: the input moves through the shown stages to demonstrate model migration.",
+      "Embedding observability": "This shorthand shows the concrete action, setting, or result an implementation uses for embedding observability.",
+      "Vector databases": "This calls the shown operation with concrete inputs so you can see where vector databases happens in the workflow.",
+      "Similarity metrics": "The name on the left stores the value produced or configured on the right, making similarity metrics concrete.",
+      "Exact nearest neighbors": "This shorthand shows the concrete action, setting, or result an implementation uses for exact nearest neighbors.",
+      "Approximate nearest neighbors": "This calls the shown operation with concrete inputs so you can see where approximate nearest neighbors happens in the workflow.",
+      "HNSW": "This shorthand shows the concrete action, setting, or result an implementation uses for hnsw.",
+      "Top-k": "The name on the left stores the value produced or configured on the right, making top-k concrete.",
+      "Recall & latency tuning": "This shorthand shows the concrete action, setting, or result an implementation uses for recall & latency tuning.",
+      "Keyword search": "This calls the shown operation with concrete inputs so you can see where keyword search happens in the workflow.",
+      "Semantic search": "This calls the shown operation with concrete inputs so you can see where semantic search happens in the workflow.",
+      "Hybrid search": "The name on the left stores the value produced or configured on the right, making hybrid search concrete.",
+      "Reciprocal rank fusion": "This calls the shown operation with concrete inputs so you can see where reciprocal rank fusion happens in the workflow.",
+      "Metadata pre-filtering": "The name on the left stores the value produced or configured on the right, making metadata pre-filtering concrete.",
+      "Post-filtering risk": "This shorthand shows the concrete action, setting, or result an implementation uses for post-filtering risk.",
+      "Diversification": "This shorthand shows the concrete action, setting, or result an implementation uses for diversification.",
+      "Query rewriting": "Read this sketch from left to right: the input moves through the shown stages to demonstrate query rewriting.",
+      "Conversation condensation": "Read this sketch from left to right: the input moves through the shown stages to demonstrate conversation condensation.",
+      "Multi-query retrieval": "The name on the left stores the value produced or configured on the right, making multi-query retrieval concrete.",
+      "Query decomposition": "Read this sketch from left to right: the input moves through the shown stages to demonstrate query decomposition.",
+      "HyDE": "The name on the left stores the value produced or configured on the right, making hyde concrete.",
+      "Entity & filter extraction": "Read this sketch from left to right: the input moves through the shown stages to demonstrate entity & filter extraction.",
+      "Query routing": "Read this sketch from left to right: the input moves through the shown stages to demonstrate query routing.",
+      "Candidate generation": "This asks the retriever for 50 broad candidates first; reranking will later keep only the strongest evidence for the prompt.",
+      "Cross-encoder reranking": "This sends one query-passage pair through the reranker and stores its relevance score for sorting.",
+      "LLM reranking": "This instruction asks the model to reorder the retrieved passages by how directly they help answer the question.",
+      "Score thresholds": "This checks the best available score and refuses to answer when even the strongest passage is below the trusted minimum.",
+      "Deduplication": "This removes passages from the same section or with nearly identical meaning before they consume prompt space twice.",
+      "Context ordering": "This places the strongest passage at the beginning of the context, followed by progressively less relevant evidence.",
+      "Token-budgeted packing": "This adds the best chunks until the context reaches 6,000 tokens, while carrying their source details for later citations.",
+      "Grounding instructions": "This shorthand shows the concrete action, setting, or result an implementation uses for grounding instructions.",
+      "Citation identifiers": "This shorthand shows the concrete action, setting, or result an implementation uses for citation identifiers.",
+      "Claim-level citations": "This shorthand shows the concrete action, setting, or result an implementation uses for claim-level citations.",
+      "Citation validation": "This shorthand shows the concrete action, setting, or result an implementation uses for citation validation.",
+      "Abstention": "Read this sketch from left to right: the input moves through the shown stages to demonstrate abstention.",
+      "Conflicting sources": "This shorthand shows the concrete action, setting, or result an implementation uses for conflicting sources.",
+      "Conversational RAG": "This shorthand shows the concrete action, setting, or result an implementation uses for conversational rag.",
+      "Golden question sets": "This shorthand shows the concrete action, setting, or result an implementation uses for golden question sets.",
+      "Retrieval recall": "This shorthand shows the concrete action, setting, or result an implementation uses for retrieval recall.",
+      "Retrieval precision": "This shorthand shows the concrete action, setting, or result an implementation uses for retrieval precision.",
+      "Ranking metrics": "The name on the left stores the value produced or configured on the right, making ranking metrics concrete.",
+      "Context relevance": "Read this sketch from left to right: the input moves through the shown stages to demonstrate context relevance.",
+      "Faithfulness & citation accuracy": "Read this sketch from left to right: the input moves through the shown stages to demonstrate faithfulness & citation accuracy.",
+      "End-to-end answer quality": "This shorthand shows the concrete action, setting, or result an implementation uses for end-to-end answer quality.",
+      "Freshness SLAs": "The name on the left stores the value produced or configured on the right, making freshness slas concrete.",
+      "Tenant isolation": "This shorthand shows the concrete action, setting, or result an implementation uses for tenant isolation.",
+      "Prompt-injection defense": "This shorthand shows the concrete action, setting, or result an implementation uses for prompt-injection defense.",
+      "Caching": "This shorthand shows the concrete action, setting, or result an implementation uses for caching.",
+      "Observability": "Read this sketch from left to right: the input moves through the shown stages to demonstrate observability.",
+      "Graph & multimodal RAG": "This shorthand shows the concrete action, setting, or result an implementation uses for graph & multimodal rag.",
+      "Cost & capacity": "This shorthand shows the concrete action, setting, or result an implementation uses for cost & capacity."
+    },
+    "hubPath": "/ai",
+    "hubLabel": "AI knowledge hub",
+    "fallbackNote": "A practical AI concept to understand before moving to the next module.",
+    "fallbackCode": "# Sketch the input, transformation, output, and validation step."
+  },
+  "agentic-ai": {
+    "key": "agentic-ai",
+    "name": "Agentic AI",
+    "mark": "A",
+    "officialLabel": "Official agents documentation",
+    "pageTitle": "Agentic AI at a Glance | QuickDevBase",
+    "pageDescription": "Fast explanations for agents, tools, memory, orchestration, MCP, human approval, evaluation, and security.",
+    "heroEyebrow": "Agentic AI, at a glance",
+    "heroTitle": "From one answer<br>to <em>bounded action.</em>",
+    "heroLede": "Understand how agents decide, use tools, hand off work, pause for people, recover from failure, and stay inside secure boundaries.",
+    "previewLabel": "AGENT.LOOP",
+    "previewCode": "<span><b class=\"code-blue\">state</b> = observe(environment)</span><span><b class=\"code-pink\">action</b> = agent.decide(state)</span><span><b class=\"code-blue\">result</b> = tools.execute(action)</span><span><b class=\"code-pink\">verify</b>(result)</span>",
+    "chipOne": "Tools scoped",
+    "chipTwo": "Human in control",
+    "curriculumTitle": "One glance. Agent systems mapped.",
+    "curriculumLede": "Learn the patterns and safety boundaries first, then follow official sources for framework-specific implementation.",
+    "searchPlaceholder": "Search topics, e.g. handoffs",
+    "certificateTitleHtml": "Agentic AI Topics<br>at a Glance",
+    "completionNoun": "Agentic AI learner",
+    "trademark": "Independent educational project. Provider names and marks belong to their respective owners; no vendor endorses this path.",
+    "stageLabels": {
+      "foundation": "Foundations",
+      "core": "Reasoning & Flow",
+      "orchestration": "Orchestration",
+      "reliability": "Reliability & Safety"
+    },
+    "modules": [
+      {
+        "id": 1,
+        "title": "Agents & Workflows",
+        "stage": "foundation",
+        "description": "Distinguish an agent that selects actions from a deterministic workflow and know when each is appropriate.",
+        "officialUrl": "https://huggingface.co/learn/agents-course/unit0/introduction",
+        "challenge": "Classify three product requirements as a direct model call, fixed workflow, or agent.",
+        "topics": [
+          "What is an AI agent?",
+          "Agents vs workflows",
+          "When not to use an agent",
+          "Autonomy spectrum",
+          "Environment",
+          "Goal & success criteria",
+          "Agent boundaries"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 2,
+        "title": "The Agent Loop",
+        "stage": "foundation",
+        "description": "Follow the reasoning-action-observation cycle and understand how runs terminate.",
+        "officialUrl": "https://openai.github.io/openai-agents-js/guides/running-agents/",
+        "challenge": "Sketch a three-turn agent trace that searches, reads a result, and produces a cited answer.",
+        "topics": [
+          "Perceive, decide, act",
+          "Messages & roles",
+          "Tool calls",
+          "Observations",
+          "Final output",
+          "Maximum turns",
+          "Termination conditions"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 3,
+        "title": "Tools & Function Calling",
+        "stage": "foundation",
+        "description": "Give agents typed capabilities while application code keeps authority over execution.",
+        "officialUrl": "https://openai.github.io/openai-agents-js/guides/tools/",
+        "challenge": "Design a read-only order lookup tool and a refund tool that always requires approval.",
+        "topics": [
+          "Tool definitions",
+          "Schema design",
+          "Tool descriptions",
+          "Tool execution",
+          "Read vs write tools",
+          "Tool errors",
+          "Tool output design"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 4,
+        "title": "State, Context & Memory",
+        "stage": "foundation",
+        "description": "Separate run state, model-visible context, persistent memory, and authoritative application data.",
+        "officialUrl": "https://openai.github.io/openai-agents-js/guides/context/",
+        "challenge": "Design a support agent state object and decide exactly what enters model context.",
+        "topics": [
+          "Run context",
+          "Conversation state",
+          "Working memory",
+          "Long-term memory",
+          "Semantic memory retrieval",
+          "Context engineering",
+          "Memory risks"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 5,
+        "title": "Planning & Reasoning Patterns",
+        "stage": "core",
+        "description": "Use planning, decomposition, reflection, and verification only where they improve outcomes.",
+        "officialUrl": "https://huggingface.co/learn/agents-course/unit1/agent-steps-and-structure",
+        "challenge": "Break a research task into dependencies, evidence checks, and a concrete finish condition.",
+        "topics": [
+          "Task decomposition",
+          "Plan-and-execute",
+          "ReAct pattern",
+          "Reflection",
+          "Self-correction limits",
+          "Verification steps",
+          "Planning cost control"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 6,
+        "title": "Workflow Patterns",
+        "stage": "core",
+        "description": "Compose dependable agentic systems from routing, sequences, parallel branches, and evaluator loops.",
+        "officialUrl": "https://openai.github.io/openai-agents-js/guides/multi-agent/",
+        "challenge": "Model a content workflow using a router, parallel research, and an evaluator-revision loop.",
+        "topics": [
+          "Prompt chaining",
+          "Routing",
+          "Parallelization",
+          "Fan-out & fan-in",
+          "Evaluator-optimizer loop",
+          "State-machine workflows",
+          "Deterministic gates"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 7,
+        "title": "Multi-agent Orchestration",
+        "stage": "orchestration",
+        "description": "Coordinate specialists through managers, handoffs, and shared protocols without needless complexity.",
+        "officialUrl": "https://openai.github.io/openai-agents-js/guides/handoffs/",
+        "challenge": "Design a triage agent that hands off to billing and technical specialists with a clear context contract.",
+        "topics": [
+          "Manager pattern",
+          "Handoffs",
+          "Agents as tools",
+          "Specialist agents",
+          "Context contracts",
+          "Shared-state coordination",
+          "Multi-agent trade-offs"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 8,
+        "title": "MCP & External Integrations",
+        "stage": "orchestration",
+        "description": "Connect agents to tools and context through standard protocols and tightly scoped credentials.",
+        "officialUrl": "https://modelcontextprotocol.io/docs/getting-started/intro",
+        "challenge": "Outline a read-only MCP integration with capability discovery, authentication, and output validation.",
+        "topics": [
+          "Model Context Protocol",
+          "MCP clients & servers",
+          "Tools, resources & prompts",
+          "Capability discovery",
+          "Transport & authentication",
+          "Least-privilege integration",
+          "Untrusted server output"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 9,
+        "title": "Human Control & Sandboxing",
+        "stage": "orchestration",
+        "description": "Keep people in control of high-impact actions and isolate code or browsing environments.",
+        "officialUrl": "https://openai.github.io/openai-agents-js/guides/human-in-the-loop/",
+        "challenge": "Create an approval matrix for read, draft, send, purchase, delete, and privilege-change actions.",
+        "topics": [
+          "Human-in-the-loop",
+          "Approval boundaries",
+          "Interrupt & resume",
+          "Permission checks",
+          "Sandboxed execution",
+          "Dry runs & previews",
+          "Audit trails"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 10,
+        "title": "Reliability & Long-running Work",
+        "stage": "reliability",
+        "description": "Make loops, tool use, retries, background runs, and recovery predictable.",
+        "officialUrl": "https://openai.github.io/openai-agents-js/guides/running-agents/",
+        "challenge": "Design a resumable report agent with checkpoints, idempotent writes, timeouts, and cancellation.",
+        "topics": [
+          "Timeouts",
+          "Retries with backoff",
+          "Idempotency",
+          "Checkpoints",
+          "Background runs",
+          "Loop detection",
+          "Graceful degradation"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 11,
+        "title": "Tracing, Evaluation & Cost",
+        "stage": "reliability",
+        "description": "Observe complete trajectories and evaluate whether agents choose good actions, not just polished final text.",
+        "officialUrl": "https://openai.github.io/openai-agents-js/guides/tracing/",
+        "challenge": "Define trace spans and an evaluation suite for tool choice, argument quality, outcome, latency, and cost.",
+        "topics": [
+          "Trace hierarchy",
+          "Correlation IDs",
+          "Sensitive-data controls",
+          "Trajectory evaluation",
+          "Tool-call accuracy",
+          "Outcome & task success",
+          "Token, latency & spend budgets"
+        ],
+        "officialLabel": "Official agents documentation"
+      },
+      {
+        "id": 12,
+        "title": "Guardrails & Agent Security",
+        "stage": "reliability",
+        "description": "Layer input, output, tool, identity, and environment controls around non-deterministic decisions.",
+        "officialUrl": "https://openai.github.io/openai-agents-js/guides/guardrails/",
+        "challenge": "Threat-model an agent exposed to public documents and write controls for injection, exfiltration, and unsafe actions.",
+        "topics": [
+          "Input guardrails",
+          "Output guardrails",
+          "Tool guardrails",
+          "Indirect prompt injection",
+          "Data exfiltration",
+          "Identity & authorization",
+          "Defense in depth"
+        ],
+        "officialLabel": "Official agents documentation"
+      }
+    ],
+    "quickNotes": {
+      "1": [
+        [
+          "An agent uses a model to decide which actions to take toward a goal and observes results before continuing.",
+          "goal -> decide -> act -> observe -> repeat"
+        ],
+        [
+          "A workflow follows predefined transitions; an agent dynamically selects the next step.",
+          "workflow: fixed graph | agent: model chooses"
+        ],
+        [
+          "Ordinary code is safer than an agent when the steps are known, the rules are exact, or a wrong decision would create unacceptable risk.",
+          "known formula -> code, not an agent"
+        ],
+        [
+          "Systems range from suggestions to bounded tool use to longer-running autonomous execution.",
+          "assist -> approve each action -> bounded autonomy"
+        ],
+        [
+          "The environment is the external state an agent observes or changes through tools.",
+          "environment = files + APIs + browser + database"
+        ],
+        [
+          "A useful goal states the desired outcome, constraints, and observable completion conditions.",
+          "\"Resolve ticket with cited policy; never issue refund.\""
+        ],
+        [
+          "Agent boundaries are explicit limits on time, steps, cost, data, permissions, and tools that keep autonomous behavior within an approved scope.",
+          "max_turns=12, allowed_tools=[search, read]"
+        ]
+      ],
+      "2": [
+        [
+          "Each loop reads the current state, chooses an action or final answer, then updates state from the result.",
+          "state -> model decision -> tool/final -> new state"
+        ],
+        [
+          "System, user, assistant, and tool messages carry policies, requests, decisions, and observations.",
+          "messages = [system, user, assistant(tool_call), tool(result)]"
+        ],
+        [
+          "A tool call is a structured request from the model; the runtime validates and executes it.",
+          "search_docs({\"query\":\"refund policy\"})"
+        ],
+        [
+          "A tool result becomes an observation the model can use for its next decision.",
+          "tool result: {matches:[...]}"
+        ],
+        [
+          "The run ends when the model returns the required output instead of requesting another action.",
+          "final: {status:\"resolved\", summary:\"...\"}"
+        ],
+        [
+          "A turn limit prevents infinite loops and makes failure behavior predictable.",
+          "run(agent, {maxTurns: 10})"
+        ],
+        [
+          "Termination conditions define exactly when an agent run ends: success, known failure, exhausted limits, cancellation, or a need for human input.",
+          "if done || cancelled || limit_hit: stop"
+        ]
+      ],
+      "3": [
+        [
+          "A tool has a clear name, purpose, input schema, output contract, and execution function.",
+          "{name:\"lookup_order\", parameters: schema, execute}"
+        ],
+        [
+          "Tool schema design uses precise types, required fields, allowed values, and limits so the model produces arguments the application can validate reliably.",
+          "{order_id:string, include_items:boolean}"
+        ],
+        [
+          "A tool description explains its purpose, appropriate use, restrictions, and side effects so the model can choose it correctly.",
+          "\"Read order status; does not modify the order.\""
+        ],
+        [
+          "The runtime—not the model—validates arguments, checks authorization, runs code, and returns data.",
+          "authorize -> validate -> execute -> sanitize result"
+        ],
+        [
+          "Read tools inspect state; write tools mutate it and deserve stricter confirmation and idempotency controls.",
+          "search_docs=read | issue_refund=write"
+        ],
+        [
+          "Tool errors should return safe error codes and retry information that an agent can handle without exposing stack traces, credentials, or internal details.",
+          "{error:\"ORDER_NOT_FOUND\", retryable:false}"
+        ],
+        [
+          "Tool output design returns only the structured facts needed for the next decision, including source information when traceability matters.",
+          "{order_id, status, refundable, source_version}"
+        ]
+      ],
+      "4": [
+        [
+          "Run context stores application dependencies and state—such as identity, permissions, and database access—for code and tools without exposing everything to the model.",
+          "context = {userId, db, permissions, traceId}"
+        ],
+        [
+          "Conversation history preserves prior turns but should be trimmed or summarized as it grows.",
+          "recent messages + verified summary"
+        ],
+        [
+          "Working memory holds temporary facts, plans, and intermediate results for the current task.",
+          "state.notes = [verified fact A, pending question B]"
+        ],
+        [
+          "Persistent memory stores selected information across runs and requires consent, expiry, and correction controls.",
+          "memory.write(user_id, preference, expires_at)"
+        ],
+        [
+          "Embeddings can recall relevant past facts, but retrieved memory must still be scoped and verified.",
+          "retrieve memories where owner=user_id"
+        ],
+        [
+          "Context engineering selects and organizes the smallest useful set of instructions, state, evidence, and tool results for the model's next decision.",
+          "context = policy + goal + relevant state"
+        ],
+        [
+          "Stale, poisoned, cross-user, or sensitive memories can cause wrong or unsafe actions.",
+          "validate owner, source, freshness, and sensitivity"
+        ]
+      ],
+      "5": [
+        [
+          "Task decomposition splits a broad goal into smaller outcomes with clear dependencies, making each result easier to execute and verify.",
+          "research -> compare -> verify -> summarize"
+        ],
+        [
+          "Plan-and-execute first creates a sequence of steps, then performs and revises them when real observations show that an assumption was wrong.",
+          "plan = make_plan(goal); execute(plan.next)"
+        ],
+        [
+          "ReAct interleaves model reasoning with actions and observations instead of planning everything upfront.",
+          "reason -> action -> observation -> reason"
+        ],
+        [
+          "A reflection pass critiques a draft or trajectory against explicit criteria before finalizing.",
+          "critique(draft, rubric) -> revise"
+        ],
+        [
+          "A model can repeat the same misconception; correction works better with new evidence or deterministic feedback.",
+          "failed test output -> targeted revision"
+        ],
+        [
+          "Verification steps use tests, schemas, tools, or independent sources to confirm that claims and actions are correct before the agent finishes.",
+          "draft code -> run tests -> inspect failures"
+        ],
+        [
+          "Extra planning consumes tokens and latency, so scale reasoning depth with task uncertainty and impact.",
+          "simple task: direct | complex task: bounded plan"
+        ]
+      ],
+      "6": [
+        [
+          "A sequence passes a validated output from one focused stage into the next.",
+          "extract -> validate -> summarize"
+        ],
+        [
+          "A router classifies the request and sends it to the most suitable workflow, agent, or tool.",
+          "route(ticket) -> billing | technical | abuse"
+        ],
+        [
+          "Independent branches can run concurrently, then a reducer combines their results.",
+          "await all([search_docs, search_db, check_status])"
+        ],
+        [
+          "Fan-out distributes subtasks; fan-in deduplicates, reconciles, and synthesizes their outputs.",
+          "topics.map(research) -> merge evidence"
+        ],
+        [
+          "One stage produces, another scores against a rubric, and revision repeats within a limit.",
+          "draft -> evaluate -> revise (max 2)"
+        ],
+        [
+          "Explicit states and transitions make important business processes auditable and testable.",
+          "DRAFT -> REVIEW -> APPROVED -> PUBLISHED"
+        ],
+        [
+          "Deterministic gates are code-based checks between model stages that stop invalid schemas, missing permissions, exhausted budgets, or failed tests.",
+          "if !schema.valid(output): stop"
+        ]
+      ],
+      "7": [
+        [
+          "A central manager keeps control and invokes specialist agents as tools before producing the final result.",
+          "manager -> specialist tools -> manager response"
+        ],
+        [
+          "A handoff transfers control and selected context to a specialist that continues the conversation.",
+          "triage -> handoff_to_billing(summary)"
+        ],
+        [
+          "A specialist can be wrapped as a callable tool so the orchestrator owns the user-facing run.",
+          "research_agent({question}) -> findings"
+        ],
+        [
+          "A specialist agent has one narrow responsibility, a limited tool set, focused instructions, and a defined output that another component can use.",
+          "security_agent tools=[scan, docs], output=RiskReport"
+        ],
+        [
+          "Pass only the verified facts and identifiers the receiver needs, not an uncontrolled full transcript.",
+          "{task, constraints, evidence_ids, open_questions}"
+        ],
+        [
+          "Shared-state coordination uses a structured store with ownership and conflict rules so several agents cannot silently overwrite one another's work.",
+          "state.update(field, value, actor, version)"
+        ],
+        [
+          "More agents add calls, latency, coordination failures, and security boundaries; use them for real specialization.",
+          "benefit of specialization > orchestration overhead"
+        ]
+      ],
+      "8": [
+        [
+          "MCP standardizes how AI applications discover and use external tools, resources, and prompts.",
+          "client <-> MCP server <-> external system"
+        ],
+        [
+          "A client lives in the AI host; a server exposes capabilities backed by a local or remote system.",
+          "host creates client connection to server"
+        ],
+        [
+          "Tools perform actions, resources expose readable context, and prompts provide reusable interaction templates.",
+          "tools/list | resources/read | prompts/get"
+        ],
+        [
+          "Capability discovery lets an MCP client negotiate a compatible protocol version and ask a server which tools and resources are actually available.",
+          "initialize -> list capabilities -> call"
+        ],
+        [
+          "Local stdio and remote HTTP transports have different trust boundaries and credential needs.",
+          "remote server -> TLS + scoped OAuth token"
+        ],
+        [
+          "Grant the minimum scopes, tenant access, and operations required for the agent's task.",
+          "calendar.read != calendar.write"
+        ],
+        [
+          "MCP server output is untrusted external data, so the application must validate its structure and prevent embedded text from requesting unrelated secrets or actions.",
+          "validate result; isolate instructions inside returned text"
+        ]
+      ],
+      "9": [
+        [
+          "HITL pauses a run so a person can inspect context and approve, reject, or edit a pending action.",
+          "pending_action -> human decision -> resume or cancel"
+        ],
+        [
+          "Approval boundaries specify which actions require a person to confirm them based on impact, reversibility, financial value, audience, and data sensitivity.",
+          "external send or delete -> approval required"
+        ],
+        [
+          "Persist run state at an approval point so the same execution can safely resume later.",
+          "save run_state + pending_tool_call"
+        ],
+        [
+          "Authorize every tool call using the current user and resource, even if the model already requested it.",
+          "can(user, \"refund\", order)"
+        ],
+        [
+          "Sandboxed execution runs generated code in an isolated environment with strict filesystem, network, process, time, memory, and CPU limits.",
+          "sandbox(cpu=1, memory=256MB, network=off)"
+        ],
+        [
+          "Show the exact effect of a mutation before execution and support a no-change simulation.",
+          "preview: would update 17 records"
+        ],
+        [
+          "An audit trail records who requested, proposed, approved, executed, and observed every significant action so incidents can be reconstructed.",
+          "{actor, action, args_hash, approval, result, time}"
+        ]
+      ],
+      "10": [
+        [
+          "Timeouts place deadlines on individual tools and the complete run so an unavailable dependency cannot leave the agent waiting forever.",
+          "tool_timeout=10s, run_deadline=2m"
+        ],
+        [
+          "Retries with backoff repeat only temporary failures, waiting longer between attempts and stopping after a safe maximum instead of looping indefinitely.",
+          "retry network 503; do not retry invalid schema forever"
+        ],
+        [
+          "A repeated write with the same idempotency key should not apply the effect twice.",
+          "create_payment(key=run_id + step_id)"
+        ],
+        [
+          "Persist validated progress after meaningful stages so a crashed run resumes without repeating completed work.",
+          "checkpoint after fetch, analyze, and draft"
+        ],
+        [
+          "Background runs move long tasks outside the web request while exposing durable status, progress, cancellation, approval, and final-result states.",
+          "queued -> running -> awaiting_approval -> completed"
+        ],
+        [
+          "Detect repeated tool calls, unchanged state, or oscillating decisions and stop with diagnostics.",
+          "same action + same args three times -> halt"
+        ],
+        [
+          "When a tool or model is unavailable, fall back safely or return partial, clearly labeled work.",
+          "search unavailable -> answer only from cached verified sources"
+        ]
+      ],
+      "11": [
+        [
+          "A trace groups a run; spans represent model calls, tool calls, handoffs, and custom operations.",
+          "trace -> agent span -> tool span -> model span"
+        ],
+        [
+          "Carry a stable ID through model, application, queue, and tool logs to reconstruct one run.",
+          "trace_id propagated in every call"
+        ],
+        [
+          "Redact or omit secrets and personal data from traces while retaining useful diagnostics.",
+          "log argument shape, not access token"
+        ],
+        [
+          "Judge whether the agent selected appropriate actions and recovered well, not only its final wording.",
+          "score tool choice + arguments + ordering + outcome"
+        ],
+        [
+          "Tool-call accuracy measures whether the agent selected the right tool, supplied valid arguments, avoided unnecessary calls, and handled side effects safely.",
+          "expected_tool == actual_tool and schema_valid"
+        ],
+        [
+          "Task success is an observable change in the environment—such as a resolved record or passing artifact—not merely a confident final message.",
+          "success = ticket.status == \"resolved\""
+        ],
+        [
+          "These budgets cap calls, tokens, response time, and cost for each run so expensive loops or model choices are detected and stopped.",
+          "budget: max_calls=20, max_tokens=50000"
+        ]
+      ],
+      "12": [
+        [
+          "Check requests for policy violations, malformed scope, or unsupported use before expensive agent work.",
+          "validate request -> allow, route, or reject"
+        ],
+        [
+          "Output guardrails inspect final content for required structure, policy violations, sensitive data, and missing evidence before it reaches a user or external system.",
+          "draft -> PII scan -> citation check -> return"
+        ],
+        [
+          "Tool guardrails recheck the requested operation, arguments, permissions, risk, and expected impact immediately before application code executes it.",
+          "authorize + validate + require approval"
+        ],
+        [
+          "Web pages, emails, and retrieved files may contain hostile instructions aimed at the agent.",
+          "external content is evidence, never higher-priority policy"
+        ],
+        [
+          "Prevent tools from sending secrets or cross-tenant data through destinations chosen from untrusted input.",
+          "egress allowlist + data classification check"
+        ],
+        [
+          "Bind every action to an authenticated principal and enforce resource-level authorization in code.",
+          "actor=user_123; can(actor, action, resource)"
+        ],
+        [
+          "Defense in depth combines several independent protections—least privilege, isolation, approval, validation, monitoring, limits, and recovery—so one failure is not enough.",
+          "prevent + detect + contain + recover"
+        ]
+      ]
+    },
+    "groupedExamples": {
+      "What is an AI agent?": [
+        [
+          "What is an AI agent?",
+          "goal -> decide -> act -> observe -> repeat"
+        ]
+      ],
+      "Agents vs workflows": [
+        [
+          "Agents vs workflows",
+          "workflow: fixed graph | agent: model chooses"
+        ]
+      ],
+      "When not to use an agent": [
+        [
+          "When not to use an agent",
+          "known formula -> code, not an agent"
+        ]
+      ],
+      "Autonomy spectrum": [
+        [
+          "Autonomy spectrum",
+          "assist -> approve each action -> bounded autonomy"
+        ]
+      ],
+      "Environment": [
+        [
+          "Environment",
+          "environment = files + APIs + browser + database"
+        ]
+      ],
+      "Goal & success criteria": [
+        [
+          "Goal & success criteria",
+          "\"Resolve ticket with cited policy; never issue refund.\""
+        ]
+      ],
+      "Agent boundaries": [
+        [
+          "Agent boundaries",
+          "max_turns=12, allowed_tools=[search, read]"
+        ]
+      ],
+      "Perceive, decide, act": [
+        [
+          "Perceive, decide, act",
+          "state -> model decision -> tool/final -> new state"
+        ]
+      ],
+      "Messages & roles": [
+        [
+          "Messages & roles",
+          "messages = [system, user, assistant(tool_call), tool(result)]"
+        ]
+      ],
+      "Tool calls": [
+        [
+          "Tool calls",
+          "search_docs({\"query\":\"refund policy\"})"
+        ]
+      ],
+      "Observations": [
+        [
+          "Observations",
+          "tool result: {matches:[...]}"
+        ]
+      ],
+      "Final output": [
+        [
+          "Final output",
+          "final: {status:\"resolved\", summary:\"...\"}"
+        ]
+      ],
+      "Maximum turns": [
+        [
+          "Maximum turns",
+          "run(agent, {maxTurns: 10})"
+        ]
+      ],
+      "Termination conditions": [
+        [
+          "Termination conditions",
+          "if done || cancelled || limit_hit: stop"
+        ]
+      ],
+      "Tool definitions": [
+        [
+          "Tool definitions",
+          "{name:\"lookup_order\", parameters: schema, execute}"
+        ]
+      ],
+      "Schema design": [
+        [
+          "Schema design",
+          "{order_id:string, include_items:boolean}"
+        ]
+      ],
+      "Tool descriptions": [
+        [
+          "Tool descriptions",
+          "\"Read order status; does not modify the order.\""
+        ]
+      ],
+      "Tool execution": [
+        [
+          "Tool execution",
+          "authorize -> validate -> execute -> sanitize result"
+        ]
+      ],
+      "Read vs write tools": [
+        [
+          "Read vs write tools",
+          "search_docs=read | issue_refund=write"
+        ]
+      ],
+      "Tool errors": [
+        [
+          "Tool errors",
+          "{error:\"ORDER_NOT_FOUND\", retryable:false}"
+        ]
+      ],
+      "Tool output design": [
+        [
+          "Tool output design",
+          "{order_id, status, refundable, source_version}"
+        ]
+      ],
+      "Run context": [
+        [
+          "Run context",
+          "context = {userId, db, permissions, traceId}"
+        ]
+      ],
+      "Conversation state": [
+        [
+          "Conversation state",
+          "recent messages + verified summary"
+        ]
+      ],
+      "Working memory": [
+        [
+          "Working memory",
+          "state.notes = [verified fact A, pending question B]"
+        ]
+      ],
+      "Long-term memory": [
+        [
+          "Long-term memory",
+          "memory.write(user_id, preference, expires_at)"
+        ]
+      ],
+      "Semantic memory retrieval": [
+        [
+          "Semantic memory retrieval",
+          "retrieve memories where owner=user_id"
+        ]
+      ],
+      "Context engineering": [
+        [
+          "Context engineering",
+          "context = policy + goal + relevant state"
+        ]
+      ],
+      "Memory risks": [
+        [
+          "Memory risks",
+          "validate owner, source, freshness, and sensitivity"
+        ]
+      ],
+      "Task decomposition": [
+        [
+          "Task decomposition",
+          "research -> compare -> verify -> summarize"
+        ]
+      ],
+      "Plan-and-execute": [
+        [
+          "Plan-and-execute",
+          "plan = make_plan(goal); execute(plan.next)"
+        ]
+      ],
+      "ReAct pattern": [
+        [
+          "ReAct pattern",
+          "reason -> action -> observation -> reason"
+        ]
+      ],
+      "Reflection": [
+        [
+          "Reflection",
+          "critique(draft, rubric) -> revise"
+        ]
+      ],
+      "Self-correction limits": [
+        [
+          "Self-correction limits",
+          "failed test output -> targeted revision"
+        ]
+      ],
+      "Verification steps": [
+        [
+          "Verification steps",
+          "draft code -> run tests -> inspect failures"
+        ]
+      ],
+      "Planning cost control": [
+        [
+          "Planning cost control",
+          "simple task: direct | complex task: bounded plan"
+        ]
+      ],
+      "Prompt chaining": [
+        [
+          "Prompt chaining",
+          "extract -> validate -> summarize"
+        ]
+      ],
+      "Routing": [
+        [
+          "Routing",
+          "route(ticket) -> billing | technical | abuse"
+        ]
+      ],
+      "Parallelization": [
+        [
+          "Parallelization",
+          "await all([search_docs, search_db, check_status])"
+        ]
+      ],
+      "Fan-out & fan-in": [
+        [
+          "Fan-out & fan-in",
+          "topics.map(research) -> merge evidence"
+        ]
+      ],
+      "Evaluator-optimizer loop": [
+        [
+          "Evaluator-optimizer loop",
+          "draft -> evaluate -> revise (max 2)"
+        ]
+      ],
+      "State-machine workflows": [
+        [
+          "State-machine workflows",
+          "DRAFT -> REVIEW -> APPROVED -> PUBLISHED"
+        ]
+      ],
+      "Deterministic gates": [
+        [
+          "Deterministic gates",
+          "if !schema.valid(output): stop"
+        ]
+      ],
+      "Manager pattern": [
+        [
+          "Manager pattern",
+          "manager -> specialist tools -> manager response"
+        ]
+      ],
+      "Handoffs": [
+        [
+          "Handoffs",
+          "triage -> handoff_to_billing(summary)"
+        ]
+      ],
+      "Agents as tools": [
+        [
+          "Agents as tools",
+          "research_agent({question}) -> findings"
+        ]
+      ],
+      "Specialist agents": [
+        [
+          "Specialist agents",
+          "security_agent tools=[scan, docs], output=RiskReport"
+        ]
+      ],
+      "Context contracts": [
+        [
+          "Context contracts",
+          "{task, constraints, evidence_ids, open_questions}"
+        ]
+      ],
+      "Shared-state coordination": [
+        [
+          "Shared-state coordination",
+          "state.update(field, value, actor, version)"
+        ]
+      ],
+      "Multi-agent trade-offs": [
+        [
+          "Multi-agent trade-offs",
+          "benefit of specialization > orchestration overhead"
+        ]
+      ],
+      "Model Context Protocol": [
+        [
+          "Model Context Protocol",
+          "client <-> MCP server <-> external system"
+        ]
+      ],
+      "MCP clients & servers": [
+        [
+          "MCP clients & servers",
+          "host creates client connection to server"
+        ]
+      ],
+      "Tools, resources & prompts": [
+        [
+          "Tools, resources & prompts",
+          "tools/list | resources/read | prompts/get"
+        ]
+      ],
+      "Capability discovery": [
+        [
+          "Capability discovery",
+          "initialize -> list capabilities -> call"
+        ]
+      ],
+      "Transport & authentication": [
+        [
+          "Transport & authentication",
+          "remote server -> TLS + scoped OAuth token"
+        ]
+      ],
+      "Least-privilege integration": [
+        [
+          "Least-privilege integration",
+          "calendar.read != calendar.write"
+        ]
+      ],
+      "Untrusted server output": [
+        [
+          "Untrusted server output",
+          "validate result; isolate instructions inside returned text"
+        ]
+      ],
+      "Human-in-the-loop": [
+        [
+          "Human-in-the-loop",
+          "pending_action -> human decision -> resume or cancel"
+        ]
+      ],
+      "Approval boundaries": [
+        [
+          "Approval boundaries",
+          "external send or delete -> approval required"
+        ]
+      ],
+      "Interrupt & resume": [
+        [
+          "Interrupt & resume",
+          "save run_state + pending_tool_call"
+        ]
+      ],
+      "Permission checks": [
+        [
+          "Permission checks",
+          "can(user, \"refund\", order)"
+        ]
+      ],
+      "Sandboxed execution": [
+        [
+          "Sandboxed execution",
+          "sandbox(cpu=1, memory=256MB, network=off)"
+        ]
+      ],
+      "Dry runs & previews": [
+        [
+          "Dry runs & previews",
+          "preview: would update 17 records"
+        ]
+      ],
+      "Audit trails": [
+        [
+          "Audit trails",
+          "{actor, action, args_hash, approval, result, time}"
+        ]
+      ],
+      "Timeouts": [
+        [
+          "Timeouts",
+          "tool_timeout=10s, run_deadline=2m"
+        ]
+      ],
+      "Retries with backoff": [
+        [
+          "Retries with backoff",
+          "retry network 503; do not retry invalid schema forever"
+        ]
+      ],
+      "Idempotency": [
+        [
+          "Idempotency",
+          "create_payment(key=run_id + step_id)"
+        ]
+      ],
+      "Checkpoints": [
+        [
+          "Checkpoints",
+          "checkpoint after fetch, analyze, and draft"
+        ]
+      ],
+      "Background runs": [
+        [
+          "Background runs",
+          "queued -> running -> awaiting_approval -> completed"
+        ]
+      ],
+      "Loop detection": [
+        [
+          "Loop detection",
+          "same action + same args three times -> halt"
+        ]
+      ],
+      "Graceful degradation": [
+        [
+          "Graceful degradation",
+          "search unavailable -> answer only from cached verified sources"
+        ]
+      ],
+      "Trace hierarchy": [
+        [
+          "Trace hierarchy",
+          "trace -> agent span -> tool span -> model span"
+        ]
+      ],
+      "Correlation IDs": [
+        [
+          "Correlation IDs",
+          "trace_id propagated in every call"
+        ]
+      ],
+      "Sensitive-data controls": [
+        [
+          "Sensitive-data controls",
+          "log argument shape, not access token"
+        ]
+      ],
+      "Trajectory evaluation": [
+        [
+          "Trajectory evaluation",
+          "score tool choice + arguments + ordering + outcome"
+        ]
+      ],
+      "Tool-call accuracy": [
+        [
+          "Tool-call accuracy",
+          "expected_tool == actual_tool and schema_valid"
+        ]
+      ],
+      "Outcome & task success": [
+        [
+          "Outcome & task success",
+          "success = ticket.status == \"resolved\""
+        ]
+      ],
+      "Token, latency & spend budgets": [
+        [
+          "Token, latency & spend budgets",
+          "budget: max_calls=20, max_tokens=50000"
+        ]
+      ],
+      "Input guardrails": [
+        [
+          "Input guardrails",
+          "validate request -> allow, route, or reject"
+        ]
+      ],
+      "Output guardrails": [
+        [
+          "Output guardrails",
+          "draft -> PII scan -> citation check -> return"
+        ]
+      ],
+      "Tool guardrails": [
+        [
+          "Tool guardrails",
+          "authorize + validate + require approval"
+        ]
+      ],
+      "Indirect prompt injection": [
+        [
+          "Indirect prompt injection",
+          "external content is evidence, never higher-priority policy"
+        ]
+      ],
+      "Data exfiltration": [
+        [
+          "Data exfiltration",
+          "egress allowlist + data classification check"
+        ]
+      ],
+      "Identity & authorization": [
+        [
+          "Identity & authorization",
+          "actor=user_123; can(actor, action, resource)"
+        ]
+      ],
+      "Defense in depth": [
+        [
+          "Defense in depth",
+          "prevent + detect + contain + recover"
+        ]
+      ]
+    },
+    "exampleComments": {
+      "What is an AI agent?": "Read this sketch from left to right: the input moves through the shown stages to demonstrate what is an ai agent?.",
+      "Agents vs workflows": "This shorthand shows the concrete action, setting, or result an implementation uses for agents vs workflows.",
+      "When not to use an agent": "Read this sketch from left to right: the input moves through the shown stages to demonstrate when not to use an agent.",
+      "Autonomy spectrum": "Read this sketch from left to right: the input moves through the shown stages to demonstrate autonomy spectrum.",
+      "Environment": "The name on the left stores the value produced or configured on the right, making environment concrete.",
+      "Goal & success criteria": "This shorthand shows the concrete action, setting, or result an implementation uses for goal & success criteria.",
+      "Agent boundaries": "The name on the left stores the value produced or configured on the right, making agent boundaries concrete.",
+      "Perceive, decide, act": "Read this sketch from left to right: the input moves through the shown stages to demonstrate perceive, decide, act.",
+      "Messages & roles": "The name on the left stores the value produced or configured on the right, making messages & roles concrete.",
+      "Tool calls": "This calls the shown operation with concrete inputs so you can see where tool calls happens in the workflow.",
+      "Observations": "This shorthand shows the concrete action, setting, or result an implementation uses for observations.",
+      "Final output": "This shorthand shows the concrete action, setting, or result an implementation uses for final output.",
+      "Maximum turns": "This calls the shown operation with concrete inputs so you can see where maximum turns happens in the workflow.",
+      "Termination conditions": "This condition is the decision point: the indented action runs only when the termination conditions check passes.",
+      "Tool definitions": "This shorthand shows the concrete action, setting, or result an implementation uses for tool definitions.",
+      "Schema design": "This shorthand shows the concrete action, setting, or result an implementation uses for schema design.",
+      "Tool descriptions": "This shorthand shows the concrete action, setting, or result an implementation uses for tool descriptions.",
+      "Tool execution": "Read this sketch from left to right: the input moves through the shown stages to demonstrate tool execution.",
+      "Read vs write tools": "The name on the left stores the value produced or configured on the right, making read vs write tools concrete.",
+      "Tool errors": "This shorthand shows the concrete action, setting, or result an implementation uses for tool errors.",
+      "Tool output design": "This shorthand shows the concrete action, setting, or result an implementation uses for tool output design.",
+      "Run context": "The name on the left stores the value produced or configured on the right, making run context concrete.",
+      "Conversation state": "This shorthand shows the concrete action, setting, or result an implementation uses for conversation state.",
+      "Working memory": "The name on the left stores the value produced or configured on the right, making working memory concrete.",
+      "Long-term memory": "This calls the shown operation with concrete inputs so you can see where long-term memory happens in the workflow.",
+      "Semantic memory retrieval": "This shorthand shows the concrete action, setting, or result an implementation uses for semantic memory retrieval.",
+      "Context engineering": "The name on the left stores the value produced or configured on the right, making context engineering concrete.",
+      "Memory risks": "This shorthand shows the concrete action, setting, or result an implementation uses for memory risks.",
+      "Task decomposition": "Read this sketch from left to right: the input moves through the shown stages to demonstrate task decomposition.",
+      "Plan-and-execute": "The name on the left stores the value produced or configured on the right, making plan-and-execute concrete.",
+      "ReAct pattern": "Read this sketch from left to right: the input moves through the shown stages to demonstrate react pattern.",
+      "Reflection": "Read this sketch from left to right: the input moves through the shown stages to demonstrate reflection.",
+      "Self-correction limits": "Read this sketch from left to right: the input moves through the shown stages to demonstrate self-correction limits.",
+      "Verification steps": "Read this sketch from left to right: the input moves through the shown stages to demonstrate verification steps.",
+      "Planning cost control": "This shorthand shows the concrete action, setting, or result an implementation uses for planning cost control.",
+      "Prompt chaining": "Read this sketch from left to right: the input moves through the shown stages to demonstrate prompt chaining.",
+      "Routing": "Read this sketch from left to right: the input moves through the shown stages to demonstrate routing.",
+      "Parallelization": "This calls the shown operation with concrete inputs so you can see where parallelization happens in the workflow.",
+      "Fan-out & fan-in": "Read this sketch from left to right: the input moves through the shown stages to demonstrate fan-out & fan-in.",
+      "Evaluator-optimizer loop": "Read this sketch from left to right: the input moves through the shown stages to demonstrate evaluator-optimizer loop.",
+      "State-machine workflows": "Read this sketch from left to right: the input moves through the shown stages to demonstrate state-machine workflows.",
+      "Deterministic gates": "This condition is the decision point: the indented action runs only when the deterministic gates check passes.",
+      "Manager pattern": "Read this sketch from left to right: the input moves through the shown stages to demonstrate manager pattern.",
+      "Handoffs": "Read this sketch from left to right: the input moves through the shown stages to demonstrate handoffs.",
+      "Agents as tools": "Read this sketch from left to right: the input moves through the shown stages to demonstrate agents as tools.",
+      "Specialist agents": "This shorthand shows the concrete action, setting, or result an implementation uses for specialist agents.",
+      "Context contracts": "This shorthand shows the concrete action, setting, or result an implementation uses for context contracts.",
+      "Shared-state coordination": "This calls the shown operation with concrete inputs so you can see where shared-state coordination happens in the workflow.",
+      "Multi-agent trade-offs": "This shorthand shows the concrete action, setting, or result an implementation uses for multi-agent trade-offs.",
+      "Model Context Protocol": "Read this sketch from left to right: the input moves through the shown stages to demonstrate model context protocol.",
+      "MCP clients & servers": "This shorthand shows the concrete action, setting, or result an implementation uses for mcp clients & servers.",
+      "Tools, resources & prompts": "This shorthand shows the concrete action, setting, or result an implementation uses for tools, resources & prompts.",
+      "Capability discovery": "Read this sketch from left to right: the input moves through the shown stages to demonstrate capability discovery.",
+      "Transport & authentication": "Read this sketch from left to right: the input moves through the shown stages to demonstrate transport & authentication.",
+      "Least-privilege integration": "This shorthand shows the concrete action, setting, or result an implementation uses for least-privilege integration.",
+      "Untrusted server output": "This shorthand shows the concrete action, setting, or result an implementation uses for untrusted server output.",
+      "Human-in-the-loop": "Read this sketch from left to right: the input moves through the shown stages to demonstrate human-in-the-loop.",
+      "Approval boundaries": "Read this sketch from left to right: the input moves through the shown stages to demonstrate approval boundaries.",
+      "Interrupt & resume": "This shorthand shows the concrete action, setting, or result an implementation uses for interrupt & resume.",
+      "Permission checks": "This calls the shown operation with concrete inputs so you can see where permission checks happens in the workflow.",
+      "Sandboxed execution": "This calls the shown operation with concrete inputs so you can see where sandboxed execution happens in the workflow.",
+      "Dry runs & previews": "This shorthand shows the concrete action, setting, or result an implementation uses for dry runs & previews.",
+      "Audit trails": "This shorthand shows the concrete action, setting, or result an implementation uses for audit trails.",
+      "Timeouts": "The name on the left stores the value produced or configured on the right, making timeouts concrete.",
+      "Retries with backoff": "This shorthand shows the concrete action, setting, or result an implementation uses for retries with backoff.",
+      "Idempotency": "This calls the shown operation with concrete inputs so you can see where idempotency happens in the workflow.",
+      "Checkpoints": "This shorthand shows the concrete action, setting, or result an implementation uses for checkpoints.",
+      "Background runs": "Read this sketch from left to right: the input moves through the shown stages to demonstrate background runs.",
+      "Loop detection": "Read this sketch from left to right: the input moves through the shown stages to demonstrate loop detection.",
+      "Graceful degradation": "Read this sketch from left to right: the input moves through the shown stages to demonstrate graceful degradation.",
+      "Trace hierarchy": "Read this sketch from left to right: the input moves through the shown stages to demonstrate trace hierarchy.",
+      "Correlation IDs": "This shorthand shows the concrete action, setting, or result an implementation uses for correlation ids.",
+      "Sensitive-data controls": "This shorthand shows the concrete action, setting, or result an implementation uses for sensitive-data controls.",
+      "Trajectory evaluation": "This shorthand shows the concrete action, setting, or result an implementation uses for trajectory evaluation.",
+      "Tool-call accuracy": "The name on the left stores the value produced or configured on the right, making tool-call accuracy concrete.",
+      "Outcome & task success": "The name on the left stores the value produced or configured on the right, making outcome & task success concrete.",
+      "Token, latency & spend budgets": "This shorthand shows the concrete action, setting, or result an implementation uses for token, latency & spend budgets.",
+      "Input guardrails": "Read this sketch from left to right: the input moves through the shown stages to demonstrate input guardrails.",
+      "Output guardrails": "Read this sketch from left to right: the input moves through the shown stages to demonstrate output guardrails.",
+      "Tool guardrails": "This shorthand shows the concrete action, setting, or result an implementation uses for tool guardrails.",
+      "Indirect prompt injection": "This shorthand shows the concrete action, setting, or result an implementation uses for indirect prompt injection.",
+      "Data exfiltration": "This shorthand shows the concrete action, setting, or result an implementation uses for data exfiltration.",
+      "Identity & authorization": "The name on the left stores the value produced or configured on the right, making identity & authorization concrete.",
+      "Defense in depth": "This shorthand shows the concrete action, setting, or result an implementation uses for defense in depth."
+    },
+    "hubPath": "/ai",
+    "hubLabel": "AI knowledge hub",
+    "fallbackNote": "A practical AI concept to understand before moving to the next module.",
+    "fallbackCode": "# Sketch the input, transformation, output, and validation step."
+  }
+}

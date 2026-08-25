@@ -1,0 +1,1908 @@
+{
+  "key": "sql",
+  "name": "SQL",
+  "mark": "SQL",
+  "modules": [
+    {
+      "id": 1,
+      "title": "SQL & Relational Foundations",
+      "stage": "foundation",
+      "description": "Learn the vocabulary behind relational databases and the shape of a readable SQL statement.",
+      "officialUrl": "https://www.postgresql.org/docs/current/tutorial-concepts.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Describe a small library as tables, rows, columns, keys, and relationships before writing any queries.",
+      "topics": [
+        "Relational databases",
+        "Tables, rows & columns",
+        "Schemas & qualified names",
+        "SQL statements & semicolons",
+        "Identifiers & keywords",
+        "Literals & expressions",
+        "Standard SQL vs PostgreSQL"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Tables & Data Types",
+      "stage": "foundation",
+      "description": "Create and evolve tables with types that accurately describe the values your application stores.",
+      "officialUrl": "https://www.postgresql.org/docs/current/ddl-basics.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Create a products table, add a stock column safely, and choose an appropriate type for every value.",
+      "topics": [
+        "CREATE TABLE",
+        "ALTER TABLE",
+        "DROP & TRUNCATE",
+        "Integer & numeric types",
+        "Character & text types",
+        "Boolean & enumerated choices",
+        "Identity, generated & temporary columns"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Keys & Constraints",
+      "stage": "foundation",
+      "description": "Protect data quality at the database boundary with required values, uniqueness, checks, and relationships.",
+      "officialUrl": "https://www.postgresql.org/docs/current/ddl-constraints.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Model customers and orders so invalid identifiers, missing names, duplicate emails, and orphaned orders are rejected.",
+      "topics": [
+        "NOT NULL",
+        "UNIQUE",
+        "PRIMARY KEY",
+        "FOREIGN KEY",
+        "CHECK",
+        "Column defaults",
+        "Referential actions"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "SELECT Essentials",
+      "stage": "core",
+      "description": "Retrieve exactly the columns and rows you need, and give calculated results clear names.",
+      "officialUrl": "https://www.postgresql.org/docs/current/tutorial-select.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Write a compact product report that selects named columns, calculates tax, removes duplicates, and filters rows.",
+      "topics": [
+        "SELECT & FROM",
+        "Selecting explicit columns",
+        "Column & table aliases",
+        "Calculated columns",
+        "DISTINCT",
+        "VALUES row sets",
+        "SQL comments"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Filtering, NULL & Logic",
+      "stage": "core",
+      "description": "Build precise row conditions and handle SQL's three-valued NULL logic intentionally.",
+      "officialUrl": "https://www.postgresql.org/docs/current/functions-comparison.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Filter a customer list by activity, country, email pattern, optional values, and a numeric range.",
+      "topics": [
+        "Comparison operators",
+        "AND, OR & NOT",
+        "IS NULL & IS NOT NULL",
+        "IN & NOT IN",
+        "BETWEEN",
+        "LIKE & ILIKE",
+        "COALESCE & NULLIF"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Sorting & Pagination",
+      "stage": "core",
+      "description": "Order results predictably and return manageable pages without losing track of stable row boundaries.",
+      "officialUrl": "https://www.postgresql.org/docs/current/queries-order.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Build deterministic first-page and next-page queries for a newest-orders screen.",
+      "topics": [
+        "ORDER BY ASC & DESC",
+        "Multi-column sorting",
+        "NULLS FIRST & LAST",
+        "LIMIT",
+        "OFFSET",
+        "FETCH FIRST & WITH TIES",
+        "Keyset pagination"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Aggregates & Grouping",
+      "stage": "core",
+      "description": "Summarize many rows into counts, totals, averages, ranges, and grouped business metrics.",
+      "officialUrl": "https://www.postgresql.org/docs/current/tutorial-agg.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Produce a status dashboard with counts, revenue, averages, conditional totals, and grouped rollups.",
+      "topics": [
+        "COUNT",
+        "SUM & AVG",
+        "MIN & MAX",
+        "GROUP BY",
+        "HAVING",
+        "Aggregate FILTER",
+        "ROLLUP, CUBE & grouping sets"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Joins",
+      "stage": "core",
+      "description": "Combine related tables and choose deliberately which unmatched rows should remain visible.",
+      "officialUrl": "https://www.postgresql.org/docs/current/tutorial-join.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Join customers, orders, products, and employees using every major join shape, then explain which unmatched rows remain.",
+      "topics": [
+        "INNER JOIN",
+        "LEFT JOIN",
+        "RIGHT JOIN",
+        "FULL OUTER JOIN",
+        "CROSS JOIN",
+        "SELF JOIN",
+        "ON, USING & join safety"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Set Operations",
+      "stage": "core",
+      "description": "Combine compatible query results as mathematical sets while choosing whether duplicates matter.",
+      "officialUrl": "https://www.postgresql.org/docs/current/queries-union.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Combine customer and subscriber lists with UNION, INTERSECT, and EXCEPT, then compare DISTINCT and ALL behavior.",
+      "topics": [
+        "UNION",
+        "UNION ALL",
+        "INTERSECT",
+        "INTERSECT ALL",
+        "EXCEPT",
+        "EXCEPT ALL",
+        "Compatibility & parentheses"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Subqueries & CTEs",
+      "stage": "core",
+      "description": "Compose complex questions from smaller queries and name intermediate results when that improves clarity.",
+      "officialUrl": "https://www.postgresql.org/docs/current/queries-with.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Find above-average customers with a subquery, then rewrite a multi-stage report with readable CTEs.",
+      "topics": [
+        "Scalar subqueries",
+        "IN subqueries",
+        "EXISTS",
+        "Correlated subqueries",
+        "Common table expressions",
+        "Recursive CTEs",
+        "CTE materialization"
+      ]
+    },
+    {
+      "id": 11,
+      "title": "INSERT, UPDATE, DELETE & MERGE",
+      "stage": "backend",
+      "description": "Change data safely and return affected rows without requiring an immediate follow-up query.",
+      "officialUrl": "https://www.postgresql.org/docs/current/dml.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Implement create, update, upsert, merge, and delete operations for a product catalog with useful RETURNING results.",
+      "topics": [
+        "INSERT VALUES",
+        "Multi-row INSERT",
+        "INSERT SELECT",
+        "UPDATE",
+        "DELETE",
+        "RETURNING",
+        "ON CONFLICT & MERGE"
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Transactions & Concurrency",
+      "stage": "backend",
+      "description": "Group related changes, choose isolation deliberately, and coordinate concurrent writers without corrupting data.",
+      "officialUrl": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Implement a money transfer that commits atomically, rolls back on failure, and locks the rows it changes.",
+      "topics": [
+        "BEGIN, COMMIT & ROLLBACK",
+        "Atomicity",
+        "SAVEPOINT",
+        "Isolation levels",
+        "MVCC snapshots",
+        "Row locks",
+        "Deadlocks & retry"
+      ]
+    },
+    {
+      "id": 13,
+      "title": "String, Numeric & Conditional Functions",
+      "stage": "backend",
+      "description": "Transform text and numbers inside a query while keeping business choices readable.",
+      "officialUrl": "https://www.postgresql.org/docs/current/functions.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Clean a small import, format names, calculate rounded totals, and label values with CASE.",
+      "topics": [
+        "String concatenation",
+        "LOWER & UPPER",
+        "LENGTH & TRIM",
+        "SUBSTRING & position",
+        "ROUND, ABS & arithmetic",
+        "CASE expressions",
+        "Type casts"
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Date & Time",
+      "stage": "backend",
+      "description": "Store instants and calendar values correctly, calculate intervals, and make time-zone behavior explicit.",
+      "officialUrl": "https://www.postgresql.org/docs/current/functions-datetime.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Build a seven-day activity report that handles timestamps, intervals, truncation, extraction, and time-zone conversion.",
+      "topics": [
+        "date, time & timestamp types",
+        "timestamptz",
+        "Current date & time",
+        "Intervals",
+        "Date arithmetic",
+        "EXTRACT & date_part",
+        "date_trunc & time zones"
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Views, Indexes & Query Plans",
+      "stage": "advanced",
+      "description": "Package reusable queries and help PostgreSQL find rows efficiently by reading actual execution plans.",
+      "officialUrl": "https://www.postgresql.org/docs/current/performance-tips.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Create a reporting view, add a targeted index, and use EXPLAIN ANALYZE to confirm whether it improves the real query.",
+      "topics": [
+        "Views",
+        "Materialized views",
+        "B-tree indexes",
+        "Multicolumn indexes",
+        "Partial & expression indexes",
+        "EXPLAIN",
+        "EXPLAIN ANALYZE"
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Window Functions",
+      "stage": "advanced",
+      "description": "Calculate rankings, comparisons, and running metrics while preserving each input row.",
+      "officialUrl": "https://www.postgresql.org/docs/current/tutorial-window.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Rank salespeople per region and calculate previous values, running totals, and moving averages.",
+      "topics": [
+        "OVER",
+        "PARTITION BY",
+        "Window ORDER BY",
+        "ROW_NUMBER, RANK & DENSE_RANK",
+        "LAG & LEAD",
+        "Window frames",
+        "Named windows"
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Data Modeling & Normalization",
+      "stage": "advanced",
+      "description": "Shape tables around stable facts and relationships so updates stay consistent as the application grows.",
+      "officialUrl": "https://www.postgresql.org/docs/current/ddl.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Turn a duplicated spreadsheet-style order table into normalized customers, orders, products, and order_items tables.",
+      "topics": [
+        "Entities & attributes",
+        "First normal form",
+        "Second normal form",
+        "Third normal form",
+        "One-to-one & one-to-many",
+        "Many-to-many junctions",
+        "Natural & surrogate keys"
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Security & PostgreSQL Data Features",
+      "stage": "advanced",
+      "description": "Control database access and use JSON, arrays, and search features only where they fit the data model.",
+      "officialUrl": "https://www.postgresql.org/docs/current/ddl-priv.html",
+      "officialLabel": "Official PostgreSQL documentation",
+      "challenge": "Create a least-privilege reporting role and prototype protected JSONB and full-text queries with suitable indexes.",
+      "topics": [
+        "Roles",
+        "GRANT & REVOKE",
+        "Schema privileges & search_path",
+        "Row-level security",
+        "JSONB",
+        "Arrays",
+        "Full-text search"
+      ]
+    }
+  ],
+  "quickNotes": {
+    "1": [
+      [
+        "A relational database stores related facts in tables and connects those tables through meaningful keys.",
+        "SELECT title FROM books;"
+      ],
+      [
+        "A table represents one kind of thing, each row is one record, and each column stores one attribute of that record.",
+        "SELECT id, name, email\nFROM users;"
+      ],
+      [
+        "A schema is a namespace that organizes database objects; qualify a name when the active search path might be ambiguous.",
+        "SELECT id, total\nFROM sales.orders;"
+      ],
+      [
+        "A SQL statement expresses one database operation, and a semicolon terminates it in clients that accept multiple statements.",
+        "SELECT current_database();\nSELECT current_user;"
+      ],
+      [
+        "Identifiers name objects such as tables and columns, while keywords such as SELECT and FROM define SQL grammar.",
+        "SELECT employee_id, display_name\nFROM employees;"
+      ],
+      [
+        "A literal is a fixed value, while an expression combines values, columns, operators, or functions to calculate a result.",
+        "SELECT 'SQL' AS topic, 20 * 1.18 AS total;"
+      ],
+      [
+        "Core SQL travels well between databases, but types, functions, quoting rules, and advanced features can differ by product.",
+        "SELECT version(), 'quickdev'::text;"
+      ]
+    ],
+    "2": [
+      [
+        "CREATE TABLE defines a new table, its columns, and the rules PostgreSQL should enforce for those columns.",
+        "CREATE TABLE products (\n  id bigint PRIMARY KEY,\n  name text NOT NULL,\n  price numeric(10, 2)\n);"
+      ],
+      [
+        "ALTER TABLE changes an existing table without recreating it, for example by adding, renaming, or changing a column.",
+        "ALTER TABLE products\nADD COLUMN in_stock boolean DEFAULT true;"
+      ],
+      [
+        "DROP removes the table definition; TRUNCATE quickly removes its rows while keeping the table available.",
+        "TRUNCATE TABLE import_staging;\nDROP TABLE old_imports;"
+      ],
+      [
+        "Integer types store whole numbers, while numeric stores exact decimal values suitable for money-like calculations.",
+        "CREATE TABLE invoices (\n  item_count integer,\n  amount numeric(12, 2)\n);"
+      ],
+      [
+        "text stores variable-length strings; varchar can add a length limit when that limit is a real business rule.",
+        "CREATE TABLE profiles (\n  bio text,\n  country_code varchar(2)\n);"
+      ],
+      [
+        "boolean represents true, false, or unknown; a CHECK constraint often keeps small choice lists portable and visible.",
+        "CREATE TABLE tasks (\n  done boolean DEFAULT false,\n  priority text CHECK (priority IN ('low', 'high'))\n);"
+      ],
+      [
+        "Identity columns generate keys, generated columns derive stored values, and temporary tables live only for the current session.",
+        "CREATE TEMP TABLE cart (\n  id bigint GENERATED ALWAYS AS IDENTITY,\n  price numeric, quantity integer,\n  total numeric GENERATED ALWAYS AS (price * quantity) STORED\n);"
+      ]
+    ],
+    "3": [
+      [
+        "NOT NULL requires every row to provide a real value for a column instead of leaving it unknown.",
+        "CREATE TABLE members (\n  name text NOT NULL\n);"
+      ],
+      [
+        "A UNIQUE constraint prevents two rows from having the same constrained value or combination of values.",
+        "ALTER TABLE members\nADD CONSTRAINT members_email_unique UNIQUE (email);"
+      ],
+      [
+        "A primary key uniquely identifies each row and combines uniqueness with a NOT NULL requirement.",
+        "CREATE TABLE customers (\n  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY\n);"
+      ],
+      [
+        "A foreign key requires a child value to reference an existing key in another table, preserving referential integrity.",
+        "CREATE TABLE orders (\n  id bigint PRIMARY KEY,\n  customer_id bigint REFERENCES customers(id)\n);"
+      ],
+      [
+        "A CHECK constraint rejects rows whose Boolean rule is false, keeping domain rules close to the data.",
+        "ALTER TABLE products\nADD CONSTRAINT price_nonnegative CHECK (price >= 0);"
+      ],
+      [
+        "A DEFAULT supplies a value when an INSERT omits the column; it does not override a value explicitly provided.",
+        "ALTER TABLE orders\nALTER COLUMN status SET DEFAULT 'pending';"
+      ],
+      [
+        "Foreign-key actions define what happens to child rows when the referenced parent key changes or disappears.",
+        "FOREIGN KEY (customer_id) REFERENCES customers(id)\n  ON UPDATE CASCADE\n  ON DELETE RESTRICT"
+      ]
+    ],
+    "4": [
+      [
+        "SELECT chooses output expressions, while FROM identifies the table or other row source that supplies values.",
+        "SELECT name, price\nFROM products;"
+      ],
+      [
+        "Naming columns documents the result shape and avoids accidental breakage or wasted data caused by SELECT *.",
+        "SELECT id, created_at, status\nFROM orders;"
+      ],
+      [
+        "Aliases give temporary readable names to output expressions or shorter names to tables within one query.",
+        "SELECT o.id AS order_id, o.total AS amount\nFROM orders AS o;"
+      ],
+      [
+        "A SELECT expression can calculate a value for each row without changing the stored source columns.",
+        "SELECT name, price, price * 1.18 AS price_with_tax\nFROM products;"
+      ],
+      [
+        "DISTINCT removes duplicate result rows after the selected expressions have been evaluated.",
+        "SELECT DISTINCT city\nFROM customers;"
+      ],
+      [
+        "VALUES constructs a small in-memory row set that can be queried, joined, or inserted without a permanent table.",
+        "SELECT *\nFROM (VALUES ('low', 1), ('high', 2)) AS priorities(name, rank);"
+      ],
+      [
+        "Double hyphens comment one line and slash-star comments span blocks, helping explain intent without changing results.",
+        "-- Return active plans only\nSELECT name FROM plans\nWHERE active = true; /* public plans */"
+      ]
+    ],
+    "5": [
+      [
+        "Comparisons such as =, <>, <, and >= evaluate values and produce true, false, or unknown.",
+        "SELECT * FROM products\nWHERE price >= 100;"
+      ],
+      [
+        "AND requires all conditions, OR accepts any condition, and NOT reverses a Boolean result; parentheses make precedence clear.",
+        "SELECT * FROM users\nWHERE active = true AND (role = 'admin' OR role = 'editor');"
+      ],
+      [
+        "NULL means unknown or missing, so test it with IS NULL rather than equality.",
+        "SELECT * FROM users\nWHERE deleted_at IS NULL;"
+      ],
+      [
+        "IN compares one expression with a value list; be careful because NULL inside a NOT IN set can make the result unknown.",
+        "SELECT * FROM orders\nWHERE status IN ('paid', 'shipped');"
+      ],
+      [
+        "BETWEEN is an inclusive range test equivalent to a lower and upper comparison joined by AND.",
+        "SELECT * FROM products\nWHERE price BETWEEN 50 AND 100;"
+      ],
+      [
+        "LIKE matches text patterns case-sensitively; PostgreSQL's ILIKE performs the same pattern match without case sensitivity.",
+        "SELECT * FROM customers\nWHERE email ILIKE '%@example.com';"
+      ],
+      [
+        "COALESCE returns the first non-null input, while NULLIF turns two equal values into NULL.",
+        "SELECT COALESCE(nickname, full_name) AS display_name,\n       total / NULLIF(item_count, 0) AS average\nFROM orders;"
+      ]
+    ],
+    "6": [
+      [
+        "ORDER BY sorts the final result; ASC is increasing and DESC is decreasing.",
+        "SELECT id, created_at FROM orders\nORDER BY created_at DESC;"
+      ],
+      [
+        "Additional sort columns break ties in the order they are listed.",
+        "SELECT name, score FROM players\nORDER BY score DESC, name ASC;"
+      ],
+      [
+        "NULLS FIRST or NULLS LAST explicitly chooses where missing sort values appear.",
+        "SELECT name, last_login FROM users\nORDER BY last_login DESC NULLS LAST;"
+      ],
+      [
+        "LIMIT caps the number of rows returned after filtering and ordering.",
+        "SELECT id, total FROM orders\nORDER BY created_at DESC\nLIMIT 20;"
+      ],
+      [
+        "OFFSET skips result rows, which is simple for small pages but can become slow or unstable deep into changing data.",
+        "SELECT id, total FROM orders\nORDER BY created_at DESC, id DESC\nLIMIT 20 OFFSET 40;"
+      ],
+      [
+        "FETCH is standard-style row limiting; WITH TIES also includes rows equal to the last ordered value.",
+        "SELECT name, score FROM players\nORDER BY score DESC\nFETCH FIRST 3 ROWS WITH TIES;"
+      ],
+      [
+        "Keyset pagination continues after the last seen sort key, avoiding the deep scan and shifting-page problems of large offsets.",
+        "SELECT id, created_at FROM orders\nWHERE (created_at, id) < (:last_time, :last_id)\nORDER BY created_at DESC, id DESC\nLIMIT 20;"
+      ]
+    ],
+    "7": [
+      [
+        "COUNT(*) counts rows, while COUNT(column) counts only rows where that column is not NULL.",
+        "SELECT COUNT(*) AS order_count,\n       COUNT(shipped_at) AS shipped_count\nFROM orders;"
+      ],
+      [
+        "SUM adds numeric inputs and AVG computes their arithmetic mean, ignoring NULL inputs.",
+        "SELECT SUM(total) AS revenue, AVG(total) AS average_order\nFROM orders;"
+      ],
+      [
+        "MIN and MAX return the smallest and largest non-null input values.",
+        "SELECT MIN(price) AS cheapest, MAX(price) AS costliest\nFROM products;"
+      ],
+      [
+        "GROUP BY forms sets of rows sharing the same values so aggregates are calculated once per group.",
+        "SELECT status, COUNT(*)\nFROM orders\nGROUP BY status;"
+      ],
+      [
+        "WHERE filters input rows before grouping; HAVING filters completed groups after aggregate values exist.",
+        "SELECT customer_id, SUM(total) AS spend\nFROM orders\nGROUP BY customer_id\nHAVING SUM(total) >= 1000;"
+      ],
+      [
+        "FILTER gives one aggregate its own condition without removing rows needed by other aggregates.",
+        "SELECT COUNT(*) AS all_orders,\n       COUNT(*) FILTER (WHERE status = 'paid') AS paid_orders\nFROM orders;"
+      ],
+      [
+        "Advanced grouping produces several subtotal levels in one query instead of combining many separate aggregate queries.",
+        "SELECT region, category, SUM(total)\nFROM sales\nGROUP BY ROLLUP (region, category);"
+      ]
+    ],
+    "8": [
+      [
+        "INNER JOIN keeps only row pairs whose ON condition matches on both sides.",
+        "SELECT o.id, c.name\nFROM orders AS o\nINNER JOIN customers AS c ON c.id = o.customer_id;"
+      ],
+      [
+        "LEFT JOIN keeps every left-side row and fills right-side columns with NULL when no match exists.",
+        "SELECT c.name, o.id\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id;"
+      ],
+      [
+        "RIGHT JOIN keeps every right-side row; swapping table order usually expresses the same idea as a clearer LEFT JOIN.",
+        "SELECT o.id, c.name\nFROM orders AS o\nRIGHT JOIN customers AS c ON c.id = o.customer_id;"
+      ],
+      [
+        "FULL OUTER JOIN keeps matched pairs plus unmatched rows from both inputs.",
+        "SELECT a.email, b.email\nFROM old_list AS a\nFULL OUTER JOIN new_list AS b ON b.email = a.email;"
+      ],
+      [
+        "CROSS JOIN creates every possible pair of rows and needs careful sizing because the result multiplies input counts.",
+        "SELECT c.color, s.size\nFROM colors AS c\nCROSS JOIN sizes AS s;"
+      ],
+      [
+        "A self join uses aliases to relate different rows from the same table, such as an employee and manager.",
+        "SELECT e.name AS employee, m.name AS manager\nFROM employees AS e\nLEFT JOIN employees AS m ON m.id = e.manager_id;"
+      ],
+      [
+        "ON accepts any join condition; USING joins same-named columns once, while a missing condition can accidentally create a Cartesian result.",
+        "SELECT o.id, s.status\nFROM orders AS o\nJOIN shipments AS s USING (order_id);"
+      ]
+    ],
+    "9": [
+      [
+        "UNION combines compatible results and removes duplicate rows from the final set.",
+        "SELECT email FROM customers\nUNION\nSELECT email FROM subscribers;"
+      ],
+      [
+        "UNION ALL appends compatible results without duplicate removal and is usually cheaper when duplicates are acceptable.",
+        "SELECT event_time FROM web_events\nUNION ALL\nSELECT event_time FROM mobile_events;"
+      ],
+      [
+        "INTERSECT returns distinct rows present in both compatible query results.",
+        "SELECT email FROM customers\nINTERSECT\nSELECT email FROM subscribers;"
+      ],
+      [
+        "INTERSECT ALL preserves duplicate frequency up to the smaller count found in the two inputs.",
+        "SELECT tag FROM article_tags\nINTERSECT ALL\nSELECT tag FROM video_tags;"
+      ],
+      [
+        "EXCEPT returns distinct rows from the first result that do not appear in the second.",
+        "SELECT email FROM subscribers\nEXCEPT\nSELECT email FROM unsubscribed;"
+      ],
+      [
+        "EXCEPT ALL subtracts matching row occurrences while preserving any remaining duplicates from the first input.",
+        "SELECT sku FROM expected_stock\nEXCEPT ALL\nSELECT sku FROM received_stock;"
+      ],
+      [
+        "Set-operation branches need the same column count and compatible types; parentheses control branch-local sorting and limits.",
+        "(SELECT id FROM recent_orders ORDER BY id DESC LIMIT 5)\nUNION ALL\nSELECT id FROM flagged_orders;"
+      ]
+    ],
+    "10": [
+      [
+        "A scalar subquery must return at most one row and one column so its value can be used inside an expression.",
+        "SELECT name\nFROM products\nWHERE price > (SELECT AVG(price) FROM products);"
+      ],
+      [
+        "IN tests whether a value appears in the one-column result produced by a subquery.",
+        "SELECT name FROM customers\nWHERE id IN (SELECT customer_id FROM orders WHERE status = 'paid');"
+      ],
+      [
+        "EXISTS becomes true as soon as its subquery can produce one row, making it ideal for presence checks.",
+        "SELECT c.name FROM customers AS c\nWHERE EXISTS (SELECT 1 FROM orders AS o WHERE o.customer_id = c.id);"
+      ],
+      [
+        "A correlated subquery references the current outer row and is conceptually evaluated in that row's context.",
+        "SELECT p.name\nFROM products AS p\nWHERE p.price > (SELECT AVG(p2.price) FROM products AS p2 WHERE p2.category_id = p.category_id);"
+      ],
+      [
+        "A WITH clause names an intermediate query for the duration of one statement, often making multi-stage logic easier to read.",
+        "WITH paid AS (\n  SELECT * FROM orders WHERE status = 'paid'\n)\nSELECT customer_id, SUM(total) FROM paid GROUP BY customer_id;"
+      ],
+      [
+        "WITH RECURSIVE repeatedly evaluates a recursive term until no new rows appear, supporting trees and graph-like paths.",
+        "WITH RECURSIVE numbers(n) AS (\n  VALUES (1)\n  UNION ALL\n  SELECT n + 1 FROM numbers WHERE n < 5\n)\nSELECT n FROM numbers;"
+      ],
+      [
+        "PostgreSQL may inline a side-effect-free CTE; MATERIALIZED or NOT MATERIALIZED can deliberately influence reuse and optimization.",
+        "WITH recent AS NOT MATERIALIZED (\n  SELECT * FROM orders WHERE created_at >= current_date - 7\n)\nSELECT * FROM recent WHERE status = 'paid';"
+      ]
+    ],
+    "11": [
+      [
+        "INSERT VALUES creates one or more rows from explicit expressions mapped to named columns.",
+        "INSERT INTO users (name, email)\nVALUES ('Ada', 'ada@example.com');"
+      ],
+      [
+        "One INSERT can add several rows, reducing round trips and letting PostgreSQL treat the write as one statement.",
+        "INSERT INTO tags (name) VALUES\n  ('sql'),\n  ('postgresql'),\n  ('database');"
+      ],
+      [
+        "INSERT SELECT copies or transforms rows produced by a query into a compatible target table.",
+        "INSERT INTO archived_orders (id, total)\nSELECT id, total FROM orders WHERE created_at < DATE '2025-01-01';"
+      ],
+      [
+        "UPDATE changes columns on rows that satisfy its WHERE condition; omitting WHERE updates every row.",
+        "UPDATE products\nSET price = price * 1.05\nWHERE category_id = 4;"
+      ],
+      [
+        "DELETE removes rows matching its WHERE condition; inspect the condition carefully because an omitted WHERE removes all rows.",
+        "DELETE FROM sessions\nWHERE expires_at < now();"
+      ],
+      [
+        "RETURNING exposes values from rows affected by INSERT, UPDATE, DELETE, or MERGE without another select.",
+        "INSERT INTO users (name, email)\nVALUES ('Grace', 'grace@example.com')\nRETURNING id, created_at;"
+      ],
+      [
+        "ON CONFLICT handles PostgreSQL upserts; MERGE conditionally inserts, updates, or deletes by matching a source to a target.",
+        "INSERT INTO counters (name, value) VALUES ('visits', 1)\nON CONFLICT (name) DO UPDATE\nSET value = counters.value + 1\nRETURNING value;"
+      ]
+    ],
+    "12": [
+      [
+        "BEGIN opens a transaction, COMMIT makes all its changes durable, and ROLLBACK discards the uncommitted work.",
+        "BEGIN;\nUPDATE accounts SET balance = balance - 50 WHERE id = 1;\nUPDATE accounts SET balance = balance + 50 WHERE id = 2;\nCOMMIT;"
+      ],
+      [
+        "Atomicity means a transaction's changes succeed as one unit or leave no partial result behind.",
+        "BEGIN;\nINSERT INTO orders (id, total) VALUES (42, 99);\nINSERT INTO order_items (order_id, sku) VALUES (42, 'BOOK');\nCOMMIT;"
+      ],
+      [
+        "A savepoint marks an inner recovery point so part of a transaction can be undone without abandoning all earlier work.",
+        "BEGIN;\nUPDATE carts SET checked_out = true WHERE id = 7;\nSAVEPOINT before_coupon;\nUPDATE coupons SET uses = uses + 1 WHERE code = 'SAVE10';\nROLLBACK TO before_coupon;\nCOMMIT;"
+      ],
+      [
+        "Isolation levels control which concurrent changes a transaction can observe and which anomalies PostgreSQL must prevent.",
+        "BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;\nSELECT balance FROM accounts WHERE id = 1;\nCOMMIT;"
+      ],
+      [
+        "PostgreSQL MVCC lets readers see consistent row versions while writers create newer versions instead of normally blocking reads.",
+        "BEGIN;\nSELECT * FROM inventory WHERE sku = 'A1';\n-- This transaction reads from its current snapshot.\nCOMMIT;"
+      ],
+      [
+        "SELECT FOR UPDATE locks chosen rows against conflicting modifications until the transaction ends.",
+        "BEGIN;\nSELECT balance FROM accounts WHERE id = 1 FOR UPDATE;\nUPDATE accounts SET balance = balance - 50 WHERE id = 1;\nCOMMIT;"
+      ],
+      [
+        "Conflicting lock order can deadlock; PostgreSQL aborts one transaction, so applications should use consistent ordering and retry safely.",
+        "BEGIN;\nSELECT id FROM accounts\nWHERE id IN (1, 2)\nORDER BY id\nFOR UPDATE;\nCOMMIT;"
+      ]
+    ],
+    "13": [
+      [
+        "The || operator joins text values; concat and concat_ws provide function-based alternatives with useful NULL behavior.",
+        "SELECT first_name || ' ' || last_name AS full_name\nFROM users;"
+      ],
+      [
+        "LOWER and UPPER normalize letter case for display or comparison, though indexed case-insensitive search may need a deliberate index.",
+        "SELECT LOWER(email) AS normalized_email, UPPER(country_code) AS country\nFROM users;"
+      ],
+      [
+        "LENGTH counts characters and TRIM removes unwanted characters, spaces by default, from the ends of text.",
+        "SELECT TRIM(name) AS clean_name, LENGTH(TRIM(name)) AS characters\nFROM imports;"
+      ],
+      [
+        "SUBSTRING extracts part of a string, while position finds where one string starts inside another.",
+        "SELECT SUBSTRING(email FROM 1 FOR position('@' IN email) - 1) AS username\nFROM users;"
+      ],
+      [
+        "Numeric functions can round values, make them non-negative, or combine them with ordinary arithmetic operators.",
+        "SELECT ROUND(price * quantity, 2) AS total, ABS(balance) AS magnitude\nFROM line_items;"
+      ],
+      [
+        "CASE selects a result by testing conditions in order and returns the first matching branch.",
+        "SELECT total,\n  CASE WHEN total >= 1000 THEN 'large'\n       WHEN total >= 100 THEN 'medium'\n       ELSE 'small' END AS size\nFROM orders;"
+      ],
+      [
+        "A cast asks PostgreSQL to interpret or convert a value as another compatible data type.",
+        "SELECT '42'::integer + 8 AS answer,\n       CAST('2026-08-18' AS date) AS launch_date;"
+      ]
+    ],
+    "14": [
+      [
+        "date stores a calendar day, time stores a clock value, and timestamp combines date and time without a time zone.",
+        "SELECT DATE '2026-08-18', TIME '14:30', TIMESTAMP '2026-08-18 14:30';"
+      ],
+      [
+        "timestamp with time zone stores an instant and displays it in the session time zone; it does not preserve the original zone name.",
+        "SELECT TIMESTAMPTZ '2026-08-18 14:30:00+05:30';"
+      ],
+      [
+        "CURRENT_DATE and CURRENT_TIMESTAMP expose the transaction's current calendar date and time consistently.",
+        "SELECT CURRENT_DATE, CURRENT_TIMESTAMP, clock_timestamp();"
+      ],
+      [
+        "An interval represents a duration that can be added to or subtracted from temporal values.",
+        "SELECT CURRENT_TIMESTAMP + INTERVAL '30 minutes' AS expires_at;"
+      ],
+      [
+        "Subtracting dates measures days, while adding integers or intervals moves a temporal value forward or backward.",
+        "SELECT due_date - CURRENT_DATE AS days_left\nFROM tasks;"
+      ],
+      [
+        "EXTRACT reads a selected component such as year, month, hour, or epoch from a temporal value.",
+        "SELECT EXTRACT(YEAR FROM created_at) AS year,\n       EXTRACT(MONTH FROM created_at) AS month\nFROM orders;"
+      ],
+      [
+        "date_trunc groups timestamps at a chosen precision, and AT TIME ZONE converts between local timestamps and instants.",
+        "SELECT date_trunc('day', created_at AT TIME ZONE 'Asia/Kolkata') AS local_day, COUNT(*)\nFROM events\nGROUP BY local_day;"
+      ]
+    ],
+    "15": [
+      [
+        "A view saves a query behind a table-like name; PostgreSQL runs its underlying query when the view is referenced.",
+        "CREATE VIEW active_customers AS\nSELECT id, name FROM customers WHERE active = true;"
+      ],
+      [
+        "A materialized view stores a query result for fast reads and must be refreshed when fresher source data is required.",
+        "CREATE MATERIALIZED VIEW daily_sales AS\nSELECT created_at::date AS day, SUM(total) AS revenue\nFROM orders GROUP BY day;\nREFRESH MATERIALIZED VIEW daily_sales;"
+      ],
+      [
+        "The default B-tree index supports equality and ordered range lookups on values with a useful ordering.",
+        "CREATE INDEX orders_created_at_idx\nON orders (created_at);"
+      ],
+      [
+        "A multicolumn index is ordered by its listed columns, so column order should match frequent filters and sorts.",
+        "CREATE INDEX orders_customer_time_idx\nON orders (customer_id, created_at DESC);"
+      ],
+      [
+        "A partial index stores qualifying rows only, while an expression index stores a calculated key used by matching queries.",
+        "CREATE INDEX users_active_email_idx\nON users (LOWER(email))\nWHERE active = true;"
+      ],
+      [
+        "EXPLAIN shows the planner's estimated execution tree, row counts, costs, and chosen scan or join strategies without running most statements.",
+        "EXPLAIN\nSELECT * FROM orders WHERE customer_id = 42;"
+      ],
+      [
+        "EXPLAIN ANALYZE executes the statement and adds actual timing and row counts, so use care with writes and production workloads.",
+        "EXPLAIN (ANALYZE, BUFFERS)\nSELECT * FROM orders WHERE customer_id = 42;"
+      ]
+    ],
+    "16": [
+      [
+        "OVER turns an aggregate or window function into a per-row calculation across a related set of rows.",
+        "SELECT id, total, AVG(total) OVER () AS overall_average\nFROM orders;"
+      ],
+      [
+        "PARTITION BY splits rows into independent windows without collapsing them like GROUP BY.",
+        "SELECT id, region, SUM(total) OVER (PARTITION BY region) AS region_total\nFROM sales;"
+      ],
+      [
+        "ORDER BY inside OVER defines sequence for ranking and cumulative calculations independently of the final result order.",
+        "SELECT id, created_at, ROW_NUMBER() OVER (ORDER BY created_at) AS sequence\nFROM events;"
+      ],
+      [
+        "ROW_NUMBER is always unique, RANK leaves gaps after ties, and DENSE_RANK does not leave gaps.",
+        "SELECT name, score,\n  ROW_NUMBER() OVER (ORDER BY score DESC),\n  RANK() OVER (ORDER BY score DESC),\n  DENSE_RANK() OVER (ORDER BY score DESC)\nFROM players;"
+      ],
+      [
+        "LAG reads a previous row and LEAD reads a following row within the defined window order.",
+        "SELECT day, revenue,\n  LAG(revenue) OVER (ORDER BY day) AS previous_revenue\nFROM daily_sales;"
+      ],
+      [
+        "A frame narrows the rows around the current row used by frame-sensitive window calculations.",
+        "SELECT day, revenue,\n  AVG(revenue) OVER (ORDER BY day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS seven_day_average\nFROM daily_sales;"
+      ],
+      [
+        "A WINDOW clause names a reusable partition-and-order definition so several functions share consistent logic.",
+        "SELECT name, region, score,\n  RANK() OVER regional AS rank,\n  AVG(score) OVER regional AS average\nFROM players\nWINDOW regional AS (PARTITION BY region ORDER BY score DESC);"
+      ]
+    ],
+    "17": [
+      [
+        "An entity is a thing the system tracks, while attributes are the facts stored about each instance.",
+        "CREATE TABLE authors (\n  id bigint PRIMARY KEY,\n  name text NOT NULL,\n  biography text\n);"
+      ],
+      [
+        "First normal form keeps each field atomic for its intended use and avoids repeating column groups.",
+        "CREATE TABLE order_items (\n  order_id bigint REFERENCES orders(id),\n  product_id bigint REFERENCES products(id),\n  quantity integer NOT NULL,\n  PRIMARY KEY (order_id, product_id)\n);"
+      ],
+      [
+        "Second normal form moves attributes that depend on only part of a composite key into the table where that key truly belongs.",
+        "-- product_name depends on product_id, not the full order-item key\nCREATE TABLE products (id bigint PRIMARY KEY, name text NOT NULL);"
+      ],
+      [
+        "Third normal form removes non-key attributes that depend on other non-key attributes, reducing inconsistent duplicate facts.",
+        "CREATE TABLE postal_codes (\n  postal_code text PRIMARY KEY,\n  city text NOT NULL\n);"
+      ],
+      [
+        "A unique foreign key models one-to-one; a regular foreign key lets many child rows reference one parent.",
+        "CREATE TABLE profiles (\n  user_id bigint UNIQUE REFERENCES users(id),\n  bio text\n);\n-- orders.customer_id without UNIQUE models many orders per customer"
+      ],
+      [
+        "A junction table turns a many-to-many relationship into two one-to-many relationships and can store relationship attributes.",
+        "CREATE TABLE student_courses (\n  student_id bigint REFERENCES students(id),\n  course_id bigint REFERENCES courses(id),\n  enrolled_at timestamptz NOT NULL,\n  PRIMARY KEY (student_id, course_id)\n);"
+      ],
+      [
+        "Natural keys come from business data; surrogate keys are generated identifiers that keep relationships stable when business values change.",
+        "CREATE TABLE users (\n  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,\n  email text NOT NULL UNIQUE\n);"
+      ]
+    ],
+    "18": [
+      [
+        "PostgreSQL roles can own objects, log in, and inherit membership; applications should use dedicated roles instead of a superuser.",
+        "CREATE ROLE app_reader LOGIN PASSWORD 'replace-in-secret-store';"
+      ],
+      [
+        "GRANT adds privileges and REVOKE removes them, enabling least-privilege access to specific objects or actions.",
+        "GRANT SELECT ON TABLE products TO app_reader;\nREVOKE INSERT, UPDATE, DELETE ON TABLE products FROM app_reader;"
+      ],
+      [
+        "Schema USAGE permits object lookup, CREATE permits new objects, and a trusted search_path avoids unsafe name resolution.",
+        "GRANT USAGE ON SCHEMA reporting TO app_reader;\nALTER ROLE app_reader SET search_path = reporting, pg_catalog;"
+      ],
+      [
+        "Row-level security policies restrict which rows a role can read or change after table privileges have been granted.",
+        "ALTER TABLE projects ENABLE ROW LEVEL SECURITY;\nCREATE POLICY own_projects ON projects\nUSING (owner_id = current_setting('app.user_id')::bigint);"
+      ],
+      [
+        "jsonb stores decomposed JSON for querying and indexing, but important relational constraints may still belong in ordinary columns.",
+        "SELECT payload ->> 'event' AS event_name\nFROM audit_log\nWHERE payload @> '{\"source\": \"web\"}'::jsonb;"
+      ],
+      [
+        "PostgreSQL arrays store ordered values of one type and support containment, indexing, and unnesting; junction tables often model relationships better.",
+        "SELECT id, tags[1] AS first_tag\nFROM articles\nWHERE tags @> ARRAY['sql'];"
+      ],
+      [
+        "Full-text search normalizes documents and queries into searchable lexemes and ranks matches more meaningfully than simple substring matching.",
+        "SELECT title\nFROM articles\nWHERE to_tsvector('english', title || ' ' || body)\n      @@ plainto_tsquery('english', 'sql joins');"
+      ]
+    ]
+  },
+  "groupedExamples": {
+    "Relational databases": [
+      [
+        "Relational databases",
+        "SELECT title FROM books;",
+        "SELECT reads the title column from every row currently stored in the books table."
+      ]
+    ],
+    "Tables, rows & columns": [
+      [
+        "Tables, rows & columns",
+        "SELECT id, name, email\nFROM users;",
+        "The query returns three named columns for every user row, making the table's row-and-column structure visible."
+      ]
+    ],
+    "Schemas & qualified names": [
+      [
+        "Schemas & qualified names",
+        "SELECT id, total\nFROM sales.orders;",
+        "sales.orders explicitly selects the orders table inside the sales schema instead of relying on the current search path."
+      ]
+    ],
+    "SQL statements & semicolons": [
+      [
+        "SQL statements & semicolons",
+        "SELECT current_database();\nSELECT current_user;",
+        "The semicolons separate two independent statements: one reports the database and the other reports the connected role."
+      ]
+    ],
+    "Identifiers & keywords": [
+      [
+        "Identifiers & keywords",
+        "SELECT employee_id, display_name\nFROM employees;",
+        "employee_id, display_name, and employees are identifiers; SELECT and FROM tell PostgreSQL how to interpret them."
+      ]
+    ],
+    "Literals & expressions": [
+      [
+        "Literals & expressions",
+        "SELECT 'SQL' AS topic, 20 * 1.18 AS total;",
+        "The query returns a text literal and evaluates an arithmetic expression, giving both results readable aliases."
+      ]
+    ],
+    "Standard SQL vs PostgreSQL": [
+      [
+        "Standard SQL vs PostgreSQL",
+        "SELECT version(), 'quickdev'::text;",
+        "version() and PostgreSQL's :: cast syntax demonstrate useful behavior that may need changing in another SQL database."
+      ]
+    ],
+    "CREATE TABLE": [
+      [
+        "CREATE TABLE",
+        "CREATE TABLE products (\n  id bigint PRIMARY KEY,\n  name text NOT NULL,\n  price numeric(10, 2)\n);",
+        "This creates a products table with an integer identifier, required name, and price limited to two decimal places."
+      ]
+    ],
+    "ALTER TABLE": [
+      [
+        "ALTER TABLE",
+        "ALTER TABLE products\nADD COLUMN in_stock boolean DEFAULT true;",
+        "The statement adds an in_stock flag and supplies true for future rows that omit the column."
+      ]
+    ],
+    "DROP & TRUNCATE": [
+      [
+        "DROP & TRUNCATE",
+        "TRUNCATE TABLE import_staging;\nDROP TABLE old_imports;",
+        "The first statement empties a reusable staging table; the second permanently removes the old_imports table itself."
+      ]
+    ],
+    "Integer & numeric types": [
+      [
+        "Integer & numeric types",
+        "CREATE TABLE invoices (\n  item_count integer,\n  amount numeric(12, 2)\n);",
+        "item_count accepts whole numbers, while amount preserves exact values with two digits after the decimal point."
+      ]
+    ],
+    "Character & text types": [
+      [
+        "Character & text types",
+        "CREATE TABLE profiles (\n  bio text,\n  country_code varchar(2)\n);",
+        "The bio can grow freely, but country_code is restricted to at most two characters."
+      ]
+    ],
+    "Boolean & enumerated choices": [
+      [
+        "Boolean & enumerated choices",
+        "CREATE TABLE tasks (\n  done boolean DEFAULT false,\n  priority text CHECK (priority IN ('low', 'high'))\n);",
+        "New tasks default to unfinished, and the check rejects priority values outside the allowed list."
+      ]
+    ],
+    "Identity, generated & temporary columns": [
+      [
+        "Identity, generated & temporary columns",
+        "CREATE TEMP TABLE cart (\n  id bigint GENERATED ALWAYS AS IDENTITY,\n  price numeric, quantity integer,\n  total numeric GENERATED ALWAYS AS (price * quantity) STORED\n);",
+        "PostgreSQL generates each cart id and recalculates total from price and quantity inside a session-only table."
+      ]
+    ],
+    "NOT NULL": [
+      [
+        "NOT NULL",
+        "CREATE TABLE members (\n  name text NOT NULL\n);",
+        "PostgreSQL rejects any member row whose name is omitted or explicitly set to NULL."
+      ]
+    ],
+    "UNIQUE": [
+      [
+        "UNIQUE",
+        "ALTER TABLE members\nADD CONSTRAINT members_email_unique UNIQUE (email);",
+        "The named constraint prevents duplicate non-null email values in the members table."
+      ]
+    ],
+    "PRIMARY KEY": [
+      [
+        "PRIMARY KEY",
+        "CREATE TABLE customers (\n  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY\n);",
+        "Each customer receives a generated, non-null id that no other customer row can reuse."
+      ]
+    ],
+    "FOREIGN KEY": [
+      [
+        "FOREIGN KEY",
+        "CREATE TABLE orders (\n  id bigint PRIMARY KEY,\n  customer_id bigint REFERENCES customers(id)\n);",
+        "An order can reference only a customer id that already exists in the customers table."
+      ]
+    ],
+    "CHECK": [
+      [
+        "CHECK",
+        "ALTER TABLE products\nADD CONSTRAINT price_nonnegative CHECK (price >= 0);",
+        "The database now refuses product rows or updates that would make price negative."
+      ]
+    ],
+    "Column defaults": [
+      [
+        "Column defaults",
+        "ALTER TABLE orders\nALTER COLUMN status SET DEFAULT 'pending';",
+        "Future orders that omit status start as pending, while callers can still provide another allowed value."
+      ]
+    ],
+    "Referential actions": [
+      [
+        "Referential actions",
+        "FOREIGN KEY (customer_id) REFERENCES customers(id)\n  ON UPDATE CASCADE\n  ON DELETE RESTRICT",
+        "Customer id changes flow to matching orders, while deletion is blocked when orders still reference that customer."
+      ]
+    ],
+    "SELECT & FROM": [
+      [
+        "SELECT & FROM",
+        "SELECT name, price\nFROM products;",
+        "PostgreSQL reads every product row and returns only its name and price columns."
+      ]
+    ],
+    "Selecting explicit columns": [
+      [
+        "Selecting explicit columns",
+        "SELECT id, created_at, status\nFROM orders;",
+        "The result has a deliberate three-column contract even if the orders table later gains more columns."
+      ]
+    ],
+    "Column & table aliases": [
+      [
+        "Column & table aliases",
+        "SELECT o.id AS order_id, o.total AS amount\nFROM orders AS o;",
+        "o shortens references to orders, while order_id and amount rename the two result columns."
+      ]
+    ],
+    "Calculated columns": [
+      [
+        "Calculated columns",
+        "SELECT name, price, price * 1.18 AS price_with_tax\nFROM products;",
+        "For every product, the query multiplies price by 1.18 and exposes the result as price_with_tax."
+      ]
+    ],
+    "DISTINCT": [
+      [
+        "DISTINCT",
+        "SELECT DISTINCT city\nFROM customers;",
+        "The query returns each customer city once even when many customers live in the same city."
+      ]
+    ],
+    "VALUES row sets": [
+      [
+        "VALUES row sets",
+        "SELECT *\nFROM (VALUES ('low', 1), ('high', 2)) AS priorities(name, rank);",
+        "The VALUES list becomes a two-row virtual table with readable name and rank columns."
+      ]
+    ],
+    "SQL comments": [
+      [
+        "SQL comments",
+        "-- Return active plans only\nSELECT name FROM plans\nWHERE active = true; /* public plans */",
+        "PostgreSQL ignores both comments and executes the SELECT with its active-plan filter."
+      ]
+    ],
+    "Comparison operators": [
+      [
+        "Comparison operators",
+        "SELECT * FROM products\nWHERE price >= 100;",
+        "Only product rows whose price is at least 100 satisfy the comparison and reach the result."
+      ]
+    ],
+    "AND, OR & NOT": [
+      [
+        "AND, OR & NOT",
+        "SELECT * FROM users\nWHERE active = true AND (role = 'admin' OR role = 'editor');",
+        "The query keeps active users whose role is either admin or editor; inactive users fail regardless of role."
+      ]
+    ],
+    "IS NULL & IS NOT NULL": [
+      [
+        "IS NULL & IS NOT NULL",
+        "SELECT * FROM users\nWHERE deleted_at IS NULL;",
+        "This returns users without a deletion timestamp; writing deleted_at = NULL would not match them."
+      ]
+    ],
+    "IN & NOT IN": [
+      [
+        "IN & NOT IN",
+        "SELECT * FROM orders\nWHERE status IN ('paid', 'shipped');",
+        "Only orders whose status equals paid or shipped are included."
+      ]
+    ],
+    "BETWEEN": [
+      [
+        "BETWEEN",
+        "SELECT * FROM products\nWHERE price BETWEEN 50 AND 100;",
+        "Products priced exactly 50 or 100 are included along with every price between those boundaries."
+      ]
+    ],
+    "LIKE & ILIKE": [
+      [
+        "LIKE & ILIKE",
+        "SELECT * FROM customers\nWHERE email ILIKE '%@example.com';",
+        "The percent wildcard accepts any email prefix, and ILIKE ignores letter case in the domain."
+      ]
+    ],
+    "COALESCE & NULLIF": [
+      [
+        "COALESCE & NULLIF",
+        "SELECT COALESCE(nickname, full_name) AS display_name,\n       total / NULLIF(item_count, 0) AS average\nFROM orders;",
+        "COALESCE chooses a usable display name, and NULLIF prevents division by zero when item_count is zero."
+      ]
+    ],
+    "ORDER BY ASC & DESC": [
+      [
+        "ORDER BY ASC & DESC",
+        "SELECT id, created_at FROM orders\nORDER BY created_at DESC;",
+        "The newest orders appear first because created_at is sorted from greatest to smallest."
+      ]
+    ],
+    "Multi-column sorting": [
+      [
+        "Multi-column sorting",
+        "SELECT name, score FROM players\nORDER BY score DESC, name ASC;",
+        "Higher scores appear first, and players with equal scores are alphabetized by name."
+      ]
+    ],
+    "NULLS FIRST & LAST": [
+      [
+        "NULLS FIRST & LAST",
+        "SELECT name, last_login FROM users\nORDER BY last_login DESC NULLS LAST;",
+        "Recently active users appear first while users with no login timestamp are placed at the end."
+      ]
+    ],
+    "LIMIT": [
+      [
+        "LIMIT",
+        "SELECT id, total FROM orders\nORDER BY created_at DESC\nLIMIT 20;",
+        "The query returns at most the 20 newest orders rather than the entire table."
+      ]
+    ],
+    "OFFSET": [
+      [
+        "OFFSET",
+        "SELECT id, total FROM orders\nORDER BY created_at DESC, id DESC\nLIMIT 20 OFFSET 40;",
+        "After a deterministic sort, the query skips 40 rows and returns the third group of 20."
+      ]
+    ],
+    "FETCH FIRST & WITH TIES": [
+      [
+        "FETCH FIRST & WITH TIES",
+        "SELECT name, score FROM players\nORDER BY score DESC\nFETCH FIRST 3 ROWS WITH TIES;",
+        "The result includes at least three top players and any additional players tied with the third score."
+      ]
+    ],
+    "Keyset pagination": [
+      [
+        "Keyset pagination",
+        "SELECT id, created_at FROM orders\nWHERE (created_at, id) < (:last_time, :last_id)\nORDER BY created_at DESC, id DESC\nLIMIT 20;",
+        "The tuple comparison starts after the previous page's final order using the same two-column sort boundary."
+      ]
+    ],
+    "COUNT": [
+      [
+        "COUNT",
+        "SELECT COUNT(*) AS order_count,\n       COUNT(shipped_at) AS shipped_count\nFROM orders;",
+        "The first count includes every order; the second includes only orders with a shipping timestamp."
+      ]
+    ],
+    "SUM & AVG": [
+      [
+        "SUM & AVG",
+        "SELECT SUM(total) AS revenue, AVG(total) AS average_order\nFROM orders;",
+        "The query turns all non-null order totals into one revenue value and one average value."
+      ]
+    ],
+    "MIN & MAX": [
+      [
+        "MIN & MAX",
+        "SELECT MIN(price) AS cheapest, MAX(price) AS costliest\nFROM products;",
+        "A single scan reports the lowest and highest stored product prices."
+      ]
+    ],
+    "GROUP BY": [
+      [
+        "GROUP BY",
+        "SELECT status, COUNT(*)\nFROM orders\nGROUP BY status;",
+        "Orders are separated by status, and each status receives its own row count."
+      ]
+    ],
+    "HAVING": [
+      [
+        "HAVING",
+        "SELECT customer_id, SUM(total) AS spend\nFROM orders\nGROUP BY customer_id\nHAVING SUM(total) >= 1000;",
+        "The query calculates spend per customer, then keeps only customers whose grouped total reaches 1000."
+      ]
+    ],
+    "Aggregate FILTER": [
+      [
+        "Aggregate FILTER",
+        "SELECT COUNT(*) AS all_orders,\n       COUNT(*) FILTER (WHERE status = 'paid') AS paid_orders\nFROM orders;",
+        "Both metrics share the same source rows, but only the second count accepts paid orders."
+      ]
+    ],
+    "ROLLUP, CUBE & grouping sets": [
+      [
+        "ROLLUP, CUBE & grouping sets",
+        "SELECT region, category, SUM(total)\nFROM sales\nGROUP BY ROLLUP (region, category);",
+        "ROLLUP returns category totals within each region, regional subtotals, and a final grand total."
+      ]
+    ],
+    "INNER JOIN": [
+      [
+        "INNER JOIN",
+        "SELECT o.id, c.name\nFROM orders AS o\nINNER JOIN customers AS c ON c.id = o.customer_id;",
+        "Each returned order has a matching customer; orders or customers without a match are excluded."
+      ]
+    ],
+    "LEFT JOIN": [
+      [
+        "LEFT JOIN",
+        "SELECT c.name, o.id\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id;",
+        "Every customer appears, including customers without orders whose o.id value will be NULL."
+      ]
+    ],
+    "RIGHT JOIN": [
+      [
+        "RIGHT JOIN",
+        "SELECT o.id, c.name\nFROM orders AS o\nRIGHT JOIN customers AS c ON c.id = o.customer_id;",
+        "Every customer remains in the result, while order columns become NULL for customers with no orders."
+      ]
+    ],
+    "FULL OUTER JOIN": [
+      [
+        "FULL OUTER JOIN",
+        "SELECT a.email, b.email\nFROM old_list AS a\nFULL OUTER JOIN new_list AS b ON b.email = a.email;",
+        "The result exposes emails shared by both lists and emails found in only one list."
+      ]
+    ],
+    "CROSS JOIN": [
+      [
+        "CROSS JOIN",
+        "SELECT c.color, s.size\nFROM colors AS c\nCROSS JOIN sizes AS s;",
+        "Every color is paired with every size to generate all available combinations."
+      ]
+    ],
+    "SELF JOIN": [
+      [
+        "SELF JOIN",
+        "SELECT e.name AS employee, m.name AS manager\nFROM employees AS e\nLEFT JOIN employees AS m ON m.id = e.manager_id;",
+        "The employees table is read twice so each employee can be paired with the manager row it references."
+      ]
+    ],
+    "ON, USING & join safety": [
+      [
+        "ON, USING & join safety",
+        "SELECT o.id, s.status\nFROM orders AS o\nJOIN shipments AS s USING (order_id);",
+        "USING matches the order_id column from both tables and exposes that shared join column only once."
+      ]
+    ],
+    "UNION": [
+      [
+        "UNION",
+        "SELECT email FROM customers\nUNION\nSELECT email FROM subscribers;",
+        "The two email lists become one result containing each distinct email once."
+      ]
+    ],
+    "UNION ALL": [
+      [
+        "UNION ALL",
+        "SELECT event_time FROM web_events\nUNION ALL\nSELECT event_time FROM mobile_events;",
+        "All web and mobile event rows are appended, including equal timestamps from either source."
+      ]
+    ],
+    "INTERSECT": [
+      [
+        "INTERSECT",
+        "SELECT email FROM customers\nINTERSECT\nSELECT email FROM subscribers;",
+        "Only emails that exist in both the customer and subscriber lists are returned."
+      ]
+    ],
+    "INTERSECT ALL": [
+      [
+        "INTERSECT ALL",
+        "SELECT tag FROM article_tags\nINTERSECT ALL\nSELECT tag FROM video_tags;",
+        "A repeated tag can appear multiple times, but never more often than it occurs in the less frequent input."
+      ]
+    ],
+    "EXCEPT": [
+      [
+        "EXCEPT",
+        "SELECT email FROM subscribers\nEXCEPT\nSELECT email FROM unsubscribed;",
+        "The result is the distinct subscriber emails that are absent from the unsubscribe list."
+      ]
+    ],
+    "EXCEPT ALL": [
+      [
+        "EXCEPT ALL",
+        "SELECT sku FROM expected_stock\nEXCEPT ALL\nSELECT sku FROM received_stock;",
+        "Each received SKU occurrence removes one expected occurrence, leaving the still-missing units."
+      ]
+    ],
+    "Compatibility & parentheses": [
+      [
+        "Compatibility & parentheses",
+        "(SELECT id FROM recent_orders ORDER BY id DESC LIMIT 5)\nUNION ALL\nSELECT id FROM flagged_orders;",
+        "Parentheses ensure LIMIT applies only to the recent-orders branch before flagged orders are appended."
+      ]
+    ],
+    "Scalar subqueries": [
+      [
+        "Scalar subqueries",
+        "SELECT name\nFROM products\nWHERE price > (SELECT AVG(price) FROM products);",
+        "The inner query calculates one average price, and the outer query keeps products priced above it."
+      ]
+    ],
+    "IN subqueries": [
+      [
+        "IN subqueries",
+        "SELECT name FROM customers\nWHERE id IN (SELECT customer_id FROM orders WHERE status = 'paid');",
+        "The subquery finds customers with paid orders; the outer query returns names for those ids."
+      ]
+    ],
+    "EXISTS": [
+      [
+        "EXISTS",
+        "SELECT c.name FROM customers AS c\nWHERE EXISTS (SELECT 1 FROM orders AS o WHERE o.customer_id = c.id);",
+        "For each customer, PostgreSQL checks whether at least one related order exists without needing its column values."
+      ]
+    ],
+    "Correlated subqueries": [
+      [
+        "Correlated subqueries",
+        "SELECT p.name\nFROM products AS p\nWHERE p.price > (SELECT AVG(p2.price) FROM products AS p2 WHERE p2.category_id = p.category_id);",
+        "Each product price is compared with the average calculated for that product's own category."
+      ]
+    ],
+    "Common table expressions": [
+      [
+        "Common table expressions",
+        "WITH paid AS (\n  SELECT * FROM orders WHERE status = 'paid'\n)\nSELECT customer_id, SUM(total) FROM paid GROUP BY customer_id;",
+        "The paid CTE first names the filtered orders, and the main query then totals them per customer."
+      ]
+    ],
+    "Recursive CTEs": [
+      [
+        "Recursive CTEs",
+        "WITH RECURSIVE numbers(n) AS (\n  VALUES (1)\n  UNION ALL\n  SELECT n + 1 FROM numbers WHERE n < 5\n)\nSELECT n FROM numbers;",
+        "The seed starts at 1 and the recursive branch adds one until the condition stops at 5."
+      ]
+    ],
+    "CTE materialization": [
+      [
+        "CTE materialization",
+        "WITH recent AS NOT MATERIALIZED (\n  SELECT * FROM orders WHERE created_at >= current_date - 7\n)\nSELECT * FROM recent WHERE status = 'paid';",
+        "NOT MATERIALIZED lets the planner combine the CTE and outer filters instead of forcing an intermediate result."
+      ]
+    ],
+    "INSERT VALUES": [
+      [
+        "INSERT VALUES",
+        "INSERT INTO users (name, email)\nVALUES ('Ada', 'ada@example.com');",
+        "The values are stored in the name and email columns of one new users row."
+      ]
+    ],
+    "Multi-row INSERT": [
+      [
+        "Multi-row INSERT",
+        "INSERT INTO tags (name) VALUES\n  ('sql'),\n  ('postgresql'),\n  ('database');",
+        "All three tag rows are inserted together by one statement."
+      ]
+    ],
+    "INSERT SELECT": [
+      [
+        "INSERT SELECT",
+        "INSERT INTO archived_orders (id, total)\nSELECT id, total FROM orders WHERE created_at < DATE '2025-01-01';",
+        "Older order ids and totals are selected and inserted into the archive table."
+      ]
+    ],
+    "UPDATE": [
+      [
+        "UPDATE",
+        "UPDATE products\nSET price = price * 1.05\nWHERE category_id = 4;",
+        "Only products in category 4 receive a five-percent price increase."
+      ]
+    ],
+    "DELETE": [
+      [
+        "DELETE",
+        "DELETE FROM sessions\nWHERE expires_at < now();",
+        "Expired session rows are removed while current sessions remain."
+      ]
+    ],
+    "RETURNING": [
+      [
+        "RETURNING",
+        "INSERT INTO users (name, email)\nVALUES ('Grace', 'grace@example.com')\nRETURNING id, created_at;",
+        "The insert creates the user and immediately returns the database-generated id and timestamp."
+      ]
+    ],
+    "ON CONFLICT & MERGE": [
+      [
+        "ON CONFLICT & MERGE",
+        "INSERT INTO counters (name, value) VALUES ('visits', 1)\nON CONFLICT (name) DO UPDATE\nSET value = counters.value + 1\nRETURNING value;",
+        "A missing visits counter is inserted; an existing one is incremented atomically and its new value is returned."
+      ]
+    ],
+    "BEGIN, COMMIT & ROLLBACK": [
+      [
+        "BEGIN, COMMIT & ROLLBACK",
+        "BEGIN;\nUPDATE accounts SET balance = balance - 50 WHERE id = 1;\nUPDATE accounts SET balance = balance + 50 WHERE id = 2;\nCOMMIT;",
+        "Both balance changes become visible together when COMMIT succeeds, preserving the transfer as one unit."
+      ]
+    ],
+    "Atomicity": [
+      [
+        "Atomicity",
+        "BEGIN;\nINSERT INTO orders (id, total) VALUES (42, 99);\nINSERT INTO order_items (order_id, sku) VALUES (42, 'BOOK');\nCOMMIT;",
+        "The order and its item are committed together; an error can roll back both instead of leaving an empty order."
+      ]
+    ],
+    "SAVEPOINT": [
+      [
+        "SAVEPOINT",
+        "BEGIN;\nUPDATE carts SET checked_out = true WHERE id = 7;\nSAVEPOINT before_coupon;\nUPDATE coupons SET uses = uses + 1 WHERE code = 'SAVE10';\nROLLBACK TO before_coupon;\nCOMMIT;",
+        "The coupon update is undone, but the earlier cart update can still be committed."
+      ]
+    ],
+    "Isolation levels": [
+      [
+        "Isolation levels",
+        "BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;\nSELECT balance FROM accounts WHERE id = 1;\nCOMMIT;",
+        "REPEATABLE READ gives the transaction a stable snapshot so repeated reads do not see later committed changes."
+      ]
+    ],
+    "MVCC snapshots": [
+      [
+        "MVCC snapshots",
+        "BEGIN;\nSELECT * FROM inventory WHERE sku = 'A1';\n-- This transaction reads from its current snapshot.\nCOMMIT;",
+        "The SELECT observes the version visible to the transaction's snapshot rather than an in-progress change from another transaction."
+      ]
+    ],
+    "Row locks": [
+      [
+        "Row locks",
+        "BEGIN;\nSELECT balance FROM accounts WHERE id = 1 FOR UPDATE;\nUPDATE accounts SET balance = balance - 50 WHERE id = 1;\nCOMMIT;",
+        "The row is locked before its balance is changed, preventing another writer from racing the same account update."
+      ]
+    ],
+    "Deadlocks & retry": [
+      [
+        "Deadlocks & retry",
+        "BEGIN;\nSELECT id FROM accounts\nWHERE id IN (1, 2)\nORDER BY id\nFOR UPDATE;\nCOMMIT;",
+        "Locking account rows in a consistent id order reduces the chance that two transfers wait on each other."
+      ]
+    ],
+    "String concatenation": [
+      [
+        "String concatenation",
+        "SELECT first_name || ' ' || last_name AS full_name\nFROM users;",
+        "Each row's first and last names are joined with a space into one full_name result."
+      ]
+    ],
+    "LOWER & UPPER": [
+      [
+        "LOWER & UPPER",
+        "SELECT LOWER(email) AS normalized_email, UPPER(country_code) AS country\nFROM users;",
+        "Email letters become lowercase and country-code letters become uppercase in the query result."
+      ]
+    ],
+    "LENGTH & TRIM": [
+      [
+        "LENGTH & TRIM",
+        "SELECT TRIM(name) AS clean_name, LENGTH(TRIM(name)) AS characters\nFROM imports;",
+        "The query removes surrounding spaces and then counts the characters in the cleaned name."
+      ]
+    ],
+    "SUBSTRING & position": [
+      [
+        "SUBSTRING & position",
+        "SELECT SUBSTRING(email FROM 1 FOR position('@' IN email) - 1) AS username\nFROM users;",
+        "position finds the @ sign and SUBSTRING returns everything before it as the email username."
+      ]
+    ],
+    "ROUND, ABS & arithmetic": [
+      [
+        "ROUND, ABS & arithmetic",
+        "SELECT ROUND(price * quantity, 2) AS total, ABS(balance) AS magnitude\nFROM line_items;",
+        "The line total is rounded to two decimal places and balance magnitude is returned without its sign."
+      ]
+    ],
+    "CASE expressions": [
+      [
+        "CASE expressions",
+        "SELECT total,\n  CASE WHEN total >= 1000 THEN 'large'\n       WHEN total >= 100 THEN 'medium'\n       ELSE 'small' END AS size\nFROM orders;",
+        "Each order is labeled large, medium, or small according to the first total threshold it satisfies."
+      ]
+    ],
+    "Type casts": [
+      [
+        "Type casts",
+        "SELECT '42'::integer + 8 AS answer,\n       CAST('2026-08-18' AS date) AS launch_date;",
+        "The text 42 becomes an integer for addition, and the date text becomes a typed date value."
+      ]
+    ],
+    "date, time & timestamp types": [
+      [
+        "date, time & timestamp types",
+        "SELECT DATE '2026-08-18', TIME '14:30', TIMESTAMP '2026-08-18 14:30';",
+        "Typed literals tell PostgreSQL exactly which temporal value each text represents."
+      ]
+    ],
+    "timestamptz": [
+      [
+        "timestamptz",
+        "SELECT TIMESTAMPTZ '2026-08-18 14:30:00+05:30';",
+        "The offset identifies one global instant that PostgreSQL can later display in another session time zone."
+      ]
+    ],
+    "Current date & time": [
+      [
+        "Current date & time",
+        "SELECT CURRENT_DATE, CURRENT_TIMESTAMP, clock_timestamp();",
+        "The first two stay fixed for the transaction, while clock_timestamp reports the actual wall-clock time at the call."
+      ]
+    ],
+    "Intervals": [
+      [
+        "Intervals",
+        "SELECT CURRENT_TIMESTAMP + INTERVAL '30 minutes' AS expires_at;",
+        "The expression calculates an expiration instant thirty minutes after the transaction timestamp."
+      ]
+    ],
+    "Date arithmetic": [
+      [
+        "Date arithmetic",
+        "SELECT due_date - CURRENT_DATE AS days_left\nFROM tasks;",
+        "For each task, subtracting today's date returns the number of calendar days until its due date."
+      ]
+    ],
+    "EXTRACT & date_part": [
+      [
+        "EXTRACT & date_part",
+        "SELECT EXTRACT(YEAR FROM created_at) AS year,\n       EXTRACT(MONTH FROM created_at) AS month\nFROM orders;",
+        "The timestamp remains unchanged while its year and month components are returned as separate values."
+      ]
+    ],
+    "date_trunc & time zones": [
+      [
+        "date_trunc & time zones",
+        "SELECT date_trunc('day', created_at AT TIME ZONE 'Asia/Kolkata') AS local_day, COUNT(*)\nFROM events\nGROUP BY local_day;",
+        "Each event instant is viewed in Kolkata time, truncated to its local day, and counted within that day."
+      ]
+    ],
+    "Views": [
+      [
+        "Views",
+        "CREATE VIEW active_customers AS\nSELECT id, name FROM customers WHERE active = true;",
+        "The view centralizes the active-customer filter without storing a second copy of those rows."
+      ]
+    ],
+    "Materialized views": [
+      [
+        "Materialized views",
+        "CREATE MATERIALIZED VIEW daily_sales AS\nSELECT created_at::date AS day, SUM(total) AS revenue\nFROM orders GROUP BY day;\nREFRESH MATERIALIZED VIEW daily_sales;",
+        "The aggregate result is stored physically, and REFRESH rebuilds it from the current orders data."
+      ]
+    ],
+    "B-tree indexes": [
+      [
+        "B-tree indexes",
+        "CREATE INDEX orders_created_at_idx\nON orders (created_at);",
+        "The index gives PostgreSQL an ordered path to find or sort rows by created_at without always scanning the table."
+      ]
+    ],
+    "Multicolumn indexes": [
+      [
+        "Multicolumn indexes",
+        "CREATE INDEX orders_customer_time_idx\nON orders (customer_id, created_at DESC);",
+        "The index is designed for finding one customer's orders and reading them newest first."
+      ]
+    ],
+    "Partial & expression indexes": [
+      [
+        "Partial & expression indexes",
+        "CREATE INDEX users_active_email_idx\nON users (LOWER(email))\nWHERE active = true;",
+        "Only active users are indexed, using lowercase email so matching normalized lookups can use the index."
+      ]
+    ],
+    "EXPLAIN": [
+      [
+        "EXPLAIN",
+        "EXPLAIN\nSELECT * FROM orders WHERE customer_id = 42;",
+        "PostgreSQL displays its planned path for the lookup so you can see whether it expects a scan or index access."
+      ]
+    ],
+    "EXPLAIN ANALYZE": [
+      [
+        "EXPLAIN ANALYZE",
+        "EXPLAIN (ANALYZE, BUFFERS)\nSELECT * FROM orders WHERE customer_id = 42;",
+        "The real query runs and reports actual rows, timing, and buffer activity for comparison with the planner's estimates."
+      ]
+    ],
+    "OVER": [
+      [
+        "OVER",
+        "SELECT id, total, AVG(total) OVER () AS overall_average\nFROM orders;",
+        "Every order row remains visible and receives the same average calculated across all returned orders."
+      ]
+    ],
+    "PARTITION BY": [
+      [
+        "PARTITION BY",
+        "SELECT id, region, SUM(total) OVER (PARTITION BY region) AS region_total\nFROM sales;",
+        "Each sale remains a row but receives the total calculated only from sales in its region."
+      ]
+    ],
+    "Window ORDER BY": [
+      [
+        "Window ORDER BY",
+        "SELECT id, created_at, ROW_NUMBER() OVER (ORDER BY created_at) AS sequence\nFROM events;",
+        "Events receive sequential numbers based on created_at even if the outer query later displays them differently."
+      ]
+    ],
+    "ROW_NUMBER, RANK & DENSE_RANK": [
+      [
+        "ROW_NUMBER, RANK & DENSE_RANK",
+        "SELECT name, score,\n  ROW_NUMBER() OVER (ORDER BY score DESC),\n  RANK() OVER (ORDER BY score DESC),\n  DENSE_RANK() OVER (ORDER BY score DESC)\nFROM players;",
+        "The three columns show how identical scores are numbered under each ranking rule."
+      ]
+    ],
+    "LAG & LEAD": [
+      [
+        "LAG & LEAD",
+        "SELECT day, revenue,\n  LAG(revenue) OVER (ORDER BY day) AS previous_revenue\nFROM daily_sales;",
+        "Each day is shown beside the revenue from the immediately preceding day for direct comparison."
+      ]
+    ],
+    "Window frames": [
+      [
+        "Window frames",
+        "SELECT day, revenue,\n  AVG(revenue) OVER (ORDER BY day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS seven_day_average\nFROM daily_sales;",
+        "Each row averages its revenue with up to six preceding rows, producing a rolling seven-row measure."
+      ]
+    ],
+    "Named windows": [
+      [
+        "Named windows",
+        "SELECT name, region, score,\n  RANK() OVER regional AS rank,\n  AVG(score) OVER regional AS average\nFROM players\nWINDOW regional AS (PARTITION BY region ORDER BY score DESC);",
+        "Both functions reuse the same regional ordering instead of duplicating the window definition."
+      ]
+    ],
+    "Entities & attributes": [
+      [
+        "Entities & attributes",
+        "CREATE TABLE authors (\n  id bigint PRIMARY KEY,\n  name text NOT NULL,\n  biography text\n);",
+        "The authors entity becomes one table, and each row carries the name and biography attributes for one author."
+      ]
+    ],
+    "First normal form": [
+      [
+        "First normal form",
+        "CREATE TABLE order_items (\n  order_id bigint REFERENCES orders(id),\n  product_id bigint REFERENCES products(id),\n  quantity integer NOT NULL,\n  PRIMARY KEY (order_id, product_id)\n);",
+        "Instead of product1, product2 columns, each ordered product becomes its own related order_items row."
+      ]
+    ],
+    "Second normal form": [
+      [
+        "Second normal form",
+        "-- product_name depends on product_id, not the full order-item key\nCREATE TABLE products (id bigint PRIMARY KEY, name text NOT NULL);",
+        "Product name is stored once with product_id instead of being repeated in every order-item row."
+      ]
+    ],
+    "Third normal form": [
+      [
+        "Third normal form",
+        "CREATE TABLE postal_codes (\n  postal_code text PRIMARY KEY,\n  city text NOT NULL\n);",
+        "City is stored with its determining postal code rather than copied independently into many customer rows."
+      ]
+    ],
+    "One-to-one & one-to-many": [
+      [
+        "One-to-one & one-to-many",
+        "CREATE TABLE profiles (\n  user_id bigint UNIQUE REFERENCES users(id),\n  bio text\n);\n-- orders.customer_id without UNIQUE models many orders per customer",
+        "UNIQUE limits each user to one profile, while the ordinary customer foreign key permits multiple orders."
+      ]
+    ],
+    "Many-to-many junctions": [
+      [
+        "Many-to-many junctions",
+        "CREATE TABLE student_courses (\n  student_id bigint REFERENCES students(id),\n  course_id bigint REFERENCES courses(id),\n  enrolled_at timestamptz NOT NULL,\n  PRIMARY KEY (student_id, course_id)\n);",
+        "Each row links one student to one course, allowing both sides to participate in many links."
+      ]
+    ],
+    "Natural & surrogate keys": [
+      [
+        "Natural & surrogate keys",
+        "CREATE TABLE users (\n  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,\n  email text NOT NULL UNIQUE\n);",
+        "The generated id is the stable relationship key, while UNIQUE still enforces email as a business identifier."
+      ]
+    ],
+    "Roles": [
+      [
+        "Roles",
+        "CREATE ROLE app_reader LOGIN PASSWORD 'replace-in-secret-store';",
+        "The statement creates a login role; the placeholder password must be supplied securely outside committed SQL."
+      ]
+    ],
+    "GRANT & REVOKE": [
+      [
+        "GRANT & REVOKE",
+        "GRANT SELECT ON TABLE products TO app_reader;\nREVOKE INSERT, UPDATE, DELETE ON TABLE products FROM app_reader;",
+        "The reader can query products but cannot use the three listed write operations on that table."
+      ]
+    ],
+    "Schema privileges & search_path": [
+      [
+        "Schema privileges & search_path",
+        "GRANT USAGE ON SCHEMA reporting TO app_reader;\nALTER ROLE app_reader SET search_path = reporting, pg_catalog;",
+        "The role can resolve objects in reporting and uses an explicit trusted lookup order."
+      ]
+    ],
+    "Row-level security": [
+      [
+        "Row-level security",
+        "ALTER TABLE projects ENABLE ROW LEVEL SECURITY;\nCREATE POLICY own_projects ON projects\nUSING (owner_id = current_setting('app.user_id')::bigint);",
+        "Once enabled, the policy exposes only project rows whose owner matches the application user setting."
+      ]
+    ],
+    "JSONB": [
+      [
+        "JSONB",
+        "SELECT payload ->> 'event' AS event_name\nFROM audit_log\nWHERE payload @> '{\"source\": \"web\"}'::jsonb;",
+        "The containment filter keeps web-source JSON documents and ->> extracts event as text."
+      ]
+    ],
+    "Arrays": [
+      [
+        "Arrays",
+        "SELECT id, tags[1] AS first_tag\nFROM articles\nWHERE tags @> ARRAY['sql'];",
+        "The array containment operator finds articles tagged sql, and bracket indexing returns each matching article's first tag."
+      ]
+    ],
+    "Full-text search": [
+      [
+        "Full-text search",
+        "SELECT title\nFROM articles\nWHERE to_tsvector('english', title || ' ' || body)\n      @@ plainto_tsquery('english', 'sql joins');",
+        "The document text and search phrase are normalized with the same configuration, then @@ tests whether they match."
+      ]
+    ]
+  },
+  "exampleComments": {
+    "Relational databases": "SELECT reads the title column from every row currently stored in the books table.",
+    "Tables, rows & columns": "The query returns three named columns for every user row, making the table's row-and-column structure visible.",
+    "Schemas & qualified names": "sales.orders explicitly selects the orders table inside the sales schema instead of relying on the current search path.",
+    "SQL statements & semicolons": "The semicolons separate two independent statements: one reports the database and the other reports the connected role.",
+    "Identifiers & keywords": "employee_id, display_name, and employees are identifiers; SELECT and FROM tell PostgreSQL how to interpret them.",
+    "Literals & expressions": "The query returns a text literal and evaluates an arithmetic expression, giving both results readable aliases.",
+    "Standard SQL vs PostgreSQL": "version() and PostgreSQL's :: cast syntax demonstrate useful behavior that may need changing in another SQL database.",
+    "CREATE TABLE": "This creates a products table with an integer identifier, required name, and price limited to two decimal places.",
+    "ALTER TABLE": "The statement adds an in_stock flag and supplies true for future rows that omit the column.",
+    "DROP & TRUNCATE": "The first statement empties a reusable staging table; the second permanently removes the old_imports table itself.",
+    "Integer & numeric types": "item_count accepts whole numbers, while amount preserves exact values with two digits after the decimal point.",
+    "Character & text types": "The bio can grow freely, but country_code is restricted to at most two characters.",
+    "Boolean & enumerated choices": "New tasks default to unfinished, and the check rejects priority values outside the allowed list.",
+    "Identity, generated & temporary columns": "PostgreSQL generates each cart id and recalculates total from price and quantity inside a session-only table.",
+    "NOT NULL": "PostgreSQL rejects any member row whose name is omitted or explicitly set to NULL.",
+    "UNIQUE": "The named constraint prevents duplicate non-null email values in the members table.",
+    "PRIMARY KEY": "Each customer receives a generated, non-null id that no other customer row can reuse.",
+    "FOREIGN KEY": "An order can reference only a customer id that already exists in the customers table.",
+    "CHECK": "The database now refuses product rows or updates that would make price negative.",
+    "Column defaults": "Future orders that omit status start as pending, while callers can still provide another allowed value.",
+    "Referential actions": "Customer id changes flow to matching orders, while deletion is blocked when orders still reference that customer.",
+    "SELECT & FROM": "PostgreSQL reads every product row and returns only its name and price columns.",
+    "Selecting explicit columns": "The result has a deliberate three-column contract even if the orders table later gains more columns.",
+    "Column & table aliases": "o shortens references to orders, while order_id and amount rename the two result columns.",
+    "Calculated columns": "For every product, the query multiplies price by 1.18 and exposes the result as price_with_tax.",
+    "DISTINCT": "The query returns each customer city once even when many customers live in the same city.",
+    "VALUES row sets": "The VALUES list becomes a two-row virtual table with readable name and rank columns.",
+    "SQL comments": "PostgreSQL ignores both comments and executes the SELECT with its active-plan filter.",
+    "Comparison operators": "Only product rows whose price is at least 100 satisfy the comparison and reach the result.",
+    "AND, OR & NOT": "The query keeps active users whose role is either admin or editor; inactive users fail regardless of role.",
+    "IS NULL & IS NOT NULL": "This returns users without a deletion timestamp; writing deleted_at = NULL would not match them.",
+    "IN & NOT IN": "Only orders whose status equals paid or shipped are included.",
+    "BETWEEN": "Products priced exactly 50 or 100 are included along with every price between those boundaries.",
+    "LIKE & ILIKE": "The percent wildcard accepts any email prefix, and ILIKE ignores letter case in the domain.",
+    "COALESCE & NULLIF": "COALESCE chooses a usable display name, and NULLIF prevents division by zero when item_count is zero.",
+    "ORDER BY ASC & DESC": "The newest orders appear first because created_at is sorted from greatest to smallest.",
+    "Multi-column sorting": "Higher scores appear first, and players with equal scores are alphabetized by name.",
+    "NULLS FIRST & LAST": "Recently active users appear first while users with no login timestamp are placed at the end.",
+    "LIMIT": "The query returns at most the 20 newest orders rather than the entire table.",
+    "OFFSET": "After a deterministic sort, the query skips 40 rows and returns the third group of 20.",
+    "FETCH FIRST & WITH TIES": "The result includes at least three top players and any additional players tied with the third score.",
+    "Keyset pagination": "The tuple comparison starts after the previous page's final order using the same two-column sort boundary.",
+    "COUNT": "The first count includes every order; the second includes only orders with a shipping timestamp.",
+    "SUM & AVG": "The query turns all non-null order totals into one revenue value and one average value.",
+    "MIN & MAX": "A single scan reports the lowest and highest stored product prices.",
+    "GROUP BY": "Orders are separated by status, and each status receives its own row count.",
+    "HAVING": "The query calculates spend per customer, then keeps only customers whose grouped total reaches 1000.",
+    "Aggregate FILTER": "Both metrics share the same source rows, but only the second count accepts paid orders.",
+    "ROLLUP, CUBE & grouping sets": "ROLLUP returns category totals within each region, regional subtotals, and a final grand total.",
+    "INNER JOIN": "Each returned order has a matching customer; orders or customers without a match are excluded.",
+    "LEFT JOIN": "Every customer appears, including customers without orders whose o.id value will be NULL.",
+    "RIGHT JOIN": "Every customer remains in the result, while order columns become NULL for customers with no orders.",
+    "FULL OUTER JOIN": "The result exposes emails shared by both lists and emails found in only one list.",
+    "CROSS JOIN": "Every color is paired with every size to generate all available combinations.",
+    "SELF JOIN": "The employees table is read twice so each employee can be paired with the manager row it references.",
+    "ON, USING & join safety": "USING matches the order_id column from both tables and exposes that shared join column only once.",
+    "UNION": "The two email lists become one result containing each distinct email once.",
+    "UNION ALL": "All web and mobile event rows are appended, including equal timestamps from either source.",
+    "INTERSECT": "Only emails that exist in both the customer and subscriber lists are returned.",
+    "INTERSECT ALL": "A repeated tag can appear multiple times, but never more often than it occurs in the less frequent input.",
+    "EXCEPT": "The result is the distinct subscriber emails that are absent from the unsubscribe list.",
+    "EXCEPT ALL": "Each received SKU occurrence removes one expected occurrence, leaving the still-missing units.",
+    "Compatibility & parentheses": "Parentheses ensure LIMIT applies only to the recent-orders branch before flagged orders are appended.",
+    "Scalar subqueries": "The inner query calculates one average price, and the outer query keeps products priced above it.",
+    "IN subqueries": "The subquery finds customers with paid orders; the outer query returns names for those ids.",
+    "EXISTS": "For each customer, PostgreSQL checks whether at least one related order exists without needing its column values.",
+    "Correlated subqueries": "Each product price is compared with the average calculated for that product's own category.",
+    "Common table expressions": "The paid CTE first names the filtered orders, and the main query then totals them per customer.",
+    "Recursive CTEs": "The seed starts at 1 and the recursive branch adds one until the condition stops at 5.",
+    "CTE materialization": "NOT MATERIALIZED lets the planner combine the CTE and outer filters instead of forcing an intermediate result.",
+    "INSERT VALUES": "The values are stored in the name and email columns of one new users row.",
+    "Multi-row INSERT": "All three tag rows are inserted together by one statement.",
+    "INSERT SELECT": "Older order ids and totals are selected and inserted into the archive table.",
+    "UPDATE": "Only products in category 4 receive a five-percent price increase.",
+    "DELETE": "Expired session rows are removed while current sessions remain.",
+    "RETURNING": "The insert creates the user and immediately returns the database-generated id and timestamp.",
+    "ON CONFLICT & MERGE": "A missing visits counter is inserted; an existing one is incremented atomically and its new value is returned.",
+    "BEGIN, COMMIT & ROLLBACK": "Both balance changes become visible together when COMMIT succeeds, preserving the transfer as one unit.",
+    "Atomicity": "The order and its item are committed together; an error can roll back both instead of leaving an empty order.",
+    "SAVEPOINT": "The coupon update is undone, but the earlier cart update can still be committed.",
+    "Isolation levels": "REPEATABLE READ gives the transaction a stable snapshot so repeated reads do not see later committed changes.",
+    "MVCC snapshots": "The SELECT observes the version visible to the transaction's snapshot rather than an in-progress change from another transaction.",
+    "Row locks": "The row is locked before its balance is changed, preventing another writer from racing the same account update.",
+    "Deadlocks & retry": "Locking account rows in a consistent id order reduces the chance that two transfers wait on each other.",
+    "String concatenation": "Each row's first and last names are joined with a space into one full_name result.",
+    "LOWER & UPPER": "Email letters become lowercase and country-code letters become uppercase in the query result.",
+    "LENGTH & TRIM": "The query removes surrounding spaces and then counts the characters in the cleaned name.",
+    "SUBSTRING & position": "position finds the @ sign and SUBSTRING returns everything before it as the email username.",
+    "ROUND, ABS & arithmetic": "The line total is rounded to two decimal places and balance magnitude is returned without its sign.",
+    "CASE expressions": "Each order is labeled large, medium, or small according to the first total threshold it satisfies.",
+    "Type casts": "The text 42 becomes an integer for addition, and the date text becomes a typed date value.",
+    "date, time & timestamp types": "Typed literals tell PostgreSQL exactly which temporal value each text represents.",
+    "timestamptz": "The offset identifies one global instant that PostgreSQL can later display in another session time zone.",
+    "Current date & time": "The first two stay fixed for the transaction, while clock_timestamp reports the actual wall-clock time at the call.",
+    "Intervals": "The expression calculates an expiration instant thirty minutes after the transaction timestamp.",
+    "Date arithmetic": "For each task, subtracting today's date returns the number of calendar days until its due date.",
+    "EXTRACT & date_part": "The timestamp remains unchanged while its year and month components are returned as separate values.",
+    "date_trunc & time zones": "Each event instant is viewed in Kolkata time, truncated to its local day, and counted within that day.",
+    "Views": "The view centralizes the active-customer filter without storing a second copy of those rows.",
+    "Materialized views": "The aggregate result is stored physically, and REFRESH rebuilds it from the current orders data.",
+    "B-tree indexes": "The index gives PostgreSQL an ordered path to find or sort rows by created_at without always scanning the table.",
+    "Multicolumn indexes": "The index is designed for finding one customer's orders and reading them newest first.",
+    "Partial & expression indexes": "Only active users are indexed, using lowercase email so matching normalized lookups can use the index.",
+    "EXPLAIN": "PostgreSQL displays its planned path for the lookup so you can see whether it expects a scan or index access.",
+    "EXPLAIN ANALYZE": "The real query runs and reports actual rows, timing, and buffer activity for comparison with the planner's estimates.",
+    "OVER": "Every order row remains visible and receives the same average calculated across all returned orders.",
+    "PARTITION BY": "Each sale remains a row but receives the total calculated only from sales in its region.",
+    "Window ORDER BY": "Events receive sequential numbers based on created_at even if the outer query later displays them differently.",
+    "ROW_NUMBER, RANK & DENSE_RANK": "The three columns show how identical scores are numbered under each ranking rule.",
+    "LAG & LEAD": "Each day is shown beside the revenue from the immediately preceding day for direct comparison.",
+    "Window frames": "Each row averages its revenue with up to six preceding rows, producing a rolling seven-row measure.",
+    "Named windows": "Both functions reuse the same regional ordering instead of duplicating the window definition.",
+    "Entities & attributes": "The authors entity becomes one table, and each row carries the name and biography attributes for one author.",
+    "First normal form": "Instead of product1, product2 columns, each ordered product becomes its own related order_items row.",
+    "Second normal form": "Product name is stored once with product_id instead of being repeated in every order-item row.",
+    "Third normal form": "City is stored with its determining postal code rather than copied independently into many customer rows.",
+    "One-to-one & one-to-many": "UNIQUE limits each user to one profile, while the ordinary customer foreign key permits multiple orders.",
+    "Many-to-many junctions": "Each row links one student to one course, allowing both sides to participate in many links.",
+    "Natural & surrogate keys": "The generated id is the stable relationship key, while UNIQUE still enforces email as a business identifier.",
+    "Roles": "The statement creates a login role; the placeholder password must be supplied securely outside committed SQL.",
+    "GRANT & REVOKE": "The reader can query products but cannot use the three listed write operations on that table.",
+    "Schema privileges & search_path": "The role can resolve objects in reporting and uses an explicit trusted lookup order.",
+    "Row-level security": "Once enabled, the policy exposes only project rows whose owner matches the application user setting.",
+    "JSONB": "The containment filter keeps web-source JSON documents and ->> extracts event as text.",
+    "Arrays": "The array containment operator finds articles tagged sql, and bracket indexing returns each matching article's first tag.",
+    "Full-text search": "The document text and search phrase are normalized with the same configuration, then @@ tests whether they match."
+  },
+  "pageTitle": "SQL at a Glance | QuickDevBase",
+  "pageDescription": "QuickDevBase SQL — fast explanations and practical PostgreSQL-flavoured examples with links to the official PostgreSQL documentation.",
+  "heroEyebrow": "SQL knowledge, at a glance",
+  "heroTitle": "SQL, without<br>the <em>query confusion.</em>",
+  "heroLede": "Scan the language from tables and joins to transactions, window functions, plans, and database security. Examples use PostgreSQL, with portability differences called out clearly.",
+  "previewLabel": "SQL.QUERY",
+  "previewCode": "<span><b class=\"code-pink\">SELECT</b> c.name, <b class=\"code-blue\">COUNT</b>(o.id) <b class=\"code-pink\">AS</b> orders</span><span><b class=\"code-pink\">FROM</b> customers c</span><span><b class=\"code-pink\">LEFT JOIN</b> orders o <b class=\"code-pink\">ON</b> o.customer_id = c.id</span><span><b class=\"code-pink\">GROUP BY</b> c.id, c.name</span><span><b class=\"code-pink\">ORDER BY</b> orders <b class=\"code-pink\">DESC</b>;</span>",
+  "chipOne": "126 SQL concepts",
+  "chipTwo": "Official docs linked",
+  "curriculumTitle": "One glance. Every SQL essential.",
+  "curriculumLede": "Build a portable SQL mental model, run each PostgreSQL-flavoured example, and follow the official documentation when you need exact behavior and full detail.",
+  "searchPlaceholder": "Search topics, e.g. joins",
+  "certificateTitleHtml": "SQL Topics<br>at a Glance",
+  "completionNoun": "SQL learner",
+  "trademark": "Independent educational project—not affiliated with or endorsed by the PostgreSQL project. PostgreSQL and related marks belong to their respective owners.",
+  "stageLabels": {
+    "foundation": "Foundation",
+    "core": "Querying",
+    "backend": "Data Work",
+    "advanced": "Advanced & Production"
+  },
+  "fallbackNote": "A practical SQL concept worth understanding before moving to the next module.",
+  "fallbackCode": "-- Try this query in a disposable PostgreSQL database."
+}

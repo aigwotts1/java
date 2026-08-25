@@ -22,7 +22,7 @@ The technology library is at `/`. Course paths open at `/java`, `/docker`, `/pyt
 - Spring JDBC with HikariCP
 - PostgreSQL 16
 - Flyway database migrations
-- Optional Gemini-powered, lesson-scoped Ask QuickDev assistant
+- Optional Gemini-powered Ask QuickDev lesson guide and Java screenshot-to-course finder
 - Thymeleaf for public certificate pages
 - HTML, CSS, and vanilla JavaScript for the responsive frontend
 - Maven for builds and tests
@@ -55,7 +55,7 @@ GEMINI_API_KEY=your-server-side-key
 
 Then rebuild the app with `docker compose up --build -d`. When the key is blank, the learning portal continues to work normally and the lesson UI reports that AI is not configured.
 
-Ask QuickDev is intentionally bounded: it requires login, receives only the open lesson plus the learner's question, produces a short answer, enforces per-minute, per-user daily, and site-wide daily limits in PostgreSQL, and caches identical answers for seven days. Names, emails, progress, and certificates are not sent to Gemini. Never put `GEMINI_API_KEY` in browser JavaScript or commit it to Git.
+Ask QuickDev is intentionally bounded: it requires login, receives only the open lesson plus the learner's question for lesson help, and can inspect a PNG, JPEG, or WebP image up to 5 MB to match it against the server-owned Java, Docker, Python, SQL, Generative AI, RAG, and Agentic AI curricula. Uploaded images are sent to Gemini for that request but are not retained after processing or placed in the answer cache by QuickDevBase. Text-only topic matching is local and does not call Gemini. Run `npm run curriculum:export` after editing a browser curriculum so the server-side retrieval snapshots stay synchronized. Per-minute, per-user daily, and site-wide limits are enforced in PostgreSQL; identical lesson-guide answers are cached for seven days. Names, emails, progress, and certificates are not sent to Gemini. Never put `GEMINI_API_KEY` in browser JavaScript or commit it to Git.
 
 Useful commands:
 
