@@ -74,6 +74,11 @@ public class LearningController {
             status.eligible(),
             completedCount,
             selected.moduleCount(),
+            status.modulesComplete(),
+            status.assessmentPassed(),
+            status.assessmentAttemptsUsed(),
+            status.assessmentAttemptsRemaining(),
+            "/assessment?course=" + selected.key(),
             AppSettings.CONSENT_VERSION
         );
     }
@@ -88,6 +93,11 @@ public class LearningController {
         boolean certificateEligible,
         int completedCount,
         int requiredCount,
+        boolean modulesComplete,
+        boolean assessmentPassed,
+        int assessmentAttemptsUsed,
+        int assessmentAttemptsRemaining,
+        String assessmentUrl,
         String consentVersion
     ) {}
 }

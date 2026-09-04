@@ -1,6 +1,6 @@
 # QuickDevBase
 
-**Developer Knowledge, At a Glance.** QuickDevBase is a responsive learning portal with concise explanations, tiny practical examples, official-documentation links, account-based progress, and consent-gated completion certificates.
+**Developer Knowledge, At a Glance.** QuickDevBase is a responsive learning portal with concise explanations, tiny practical examples, official-documentation links, account-based progress, and assessment-gated completion certificates.
 
 Available paths:
 
@@ -120,11 +120,12 @@ The database port is bound to `127.0.0.1`, so it is available to local tools wit
 - Authentication uses an opaque random token in an `HttpOnly`, `SameSite=Lax` cookie; only its SHA-256 hash is stored in PostgreSQL.
 - CSRF protection is enabled for every state-changing request, with same-origin validation as an additional layer.
 - Progress is isolated by user ID and course code.
-- Completing every module makes the user eligible but does not publish personal data.
+- Completing every module unlocks a 15-question, 10-minute certificate assessment. A learner must score at least 11/15 within three attempts; two exam-window warnings are allowed before the third violation voids an attempt.
+- Assessment questions are generated from the server-owned curriculum, change between attempts, and are scored by the server. Fullscreen and copy controls discourage casual misuse but are not equivalent to remote proctoring.
 - Certificate publication requires current, explicit consent and a chosen public name.
 - Public certificate IDs and verification hashes are random and unique.
 - Users can rename, unpublish a certificate, republish after fresh consent, or permanently delete their account.
-- Certificates record completion of every topic in a QuickDevBase.in at-a-glance overview; they are not professional licences, accredited qualifications, skills assessments, or vendor certifications.
+- Certificates record completion of every topic and a passing short knowledge check; they are not professional licences, accredited qualifications, proctored skills assessments, or vendor certifications.
 
 ## Production configuration
 

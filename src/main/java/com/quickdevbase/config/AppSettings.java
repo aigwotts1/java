@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppSettings implements ApplicationRunner {
     public static final String SESSION_COOKIE = "java_basecamp_session";
-    public static final String CONSENT_VERSION = "2026-08-14";
+    public static final String CONSENT_VERSION = "2026-09-03";
 
     private final Environment environment;
 

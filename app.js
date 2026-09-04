@@ -71,6 +71,8 @@ let completed = new Set();
 let currentUser = null;
 let currentCertificate = null;
 let certificateEligible = false;
+let assessmentRequired = false;
+let assessmentUrl = `/assessment${courseQuery}`;
 let certificateConsentVersion = null;
 let authMode = "login";
 let isSavingProgress = false;
@@ -159,7 +161,7 @@ function applyCourseUI() {
   document.querySelector(".auth-brand-mark").textContent = "Q";
   if (courseConfig.certificateTitleHtml) document.querySelector(".certificate-preview-card > p").innerHTML = courseConfig.certificateTitleHtml;
   if (courseConfig.completionNoun) {
-    document.querySelector("#certificateLearnerName").parentElement.innerHTML = `<strong id="certificateLearnerName">${escapeHtml(courseConfig.completionNoun)}</strong>, you reviewed every topic in the QuickDevBase.in ${escapeHtml(courseConfig.name)} at-a-glance path. That took consistency, curiosity, and a lot of tiny wins.`;
+    document.querySelector("#certificateLearnerName").parentElement.innerHTML = `<strong id="certificateLearnerName">${escapeHtml(courseConfig.completionNoun)}</strong>, you reviewed every topic and passed the QuickDevBase.in ${escapeHtml(courseConfig.name)} at-a-glance assessment. That took consistency, curiosity, and a lot of tiny wins.`;
   }
   if (courseConfig.trademark) document.querySelector(".footer-copy small").textContent = courseConfig.trademark;
   if (courseConfig.hubPath) {
@@ -233,12 +235,13 @@ function updateAuthUI() {
     ? "Certificate published"
     : certificateEligible
       ? currentCertificate ? "Certificate private" : "Certificate ready"
+      : assessmentRequired ? "Assessment ready"
       : loggedIn ? "Synced progress" : "Sign in to save";
   document.querySelector("#progressOwnerLabel").textContent = loggedIn ? `${currentUser.name}'s course progress` : "Sign in to save your progress";
-  certificateMenuButton.hidden = !certificateEligible;
+  certificateMenuButton.hidden = !(certificateEligible || assessmentRequired);
   document.querySelector("#certificateMenuLabel").textContent = currentCertificate?.isPublic
     ? "View certificate"
-    : currentCertificate ? "Republish certificate" : "Claim certificate";
+    : currentCertificate ? "Republish certificate" : assessmentRequired ? "Take certificate test" : "Claim certificate";
 
   if (loggedIn) {
     document.querySelector("#userMenuName").textContent = currentUser.name;
@@ -262,6 +265,7 @@ async function loadCertificate() {
   if (!currentUser) {
     currentCertificate = null;
     certificateEligible = false;
+    assessmentRequired = false;
     certificateConsentVersion = null;
     return null;
   }
@@ -269,6 +273,8 @@ async function loadCertificate() {
   const status = await apiRequest(`/api/certificate${courseQuery}`);
   currentCertificate = status.certificate;
   certificateEligible = status.eligible;
+  assessmentRequired = status.modulesComplete && !status.assessmentPassed;
+  assessmentUrl = status.assessmentUrl || `/assessment${courseQuery}`;
   certificateConsentVersion = status.consentVersion;
   return status;
 }
@@ -440,6 +446,8 @@ async function initializeSession() {
     currentUser = null;
     completed = new Set();
     currentCertificate = null;
+    certificateEligible = false;
+    assessmentRequired = false;
     showToastMessage("Offline progress unavailable", "Sign in will be available when the server reconnects.", "!");
   } finally {
     updateAuthUI();
@@ -759,9 +767,12 @@ async function toggleComplete() {
     });
     if (result.certificate) currentCertificate = result.certificate;
     certificateEligible = result.certificateEligible;
+    assessmentRequired = result.modulesComplete && !result.assessmentPassed;
+    assessmentUrl = result.assessmentUrl || `/assessment${courseQuery}`;
     certificateConsentVersion = result.consentVersion;
     updateAuthUI();
     if (!wasComplete && certificateEligible && !currentCertificate?.isPublic) showCertificateCelebration(currentCertificate);
+    else if (!wasComplete && assessmentRequired) showToastMessage("Course review complete", "Take the 15-question assessment to unlock your certificate.", "◆");
     else showToast(!wasComplete);
   } catch (error) {
     if (wasComplete) completed.add(moduleId);
@@ -844,7 +855,13 @@ certificateCopyButton.addEventListener("click", copyPublicCertificateLink);
 certificateClaimButton.addEventListener("click", claimCertificate);
 certificateUnpublishButton.addEventListener("click", unpublishCertificate);
 certificateSaveNameButton.addEventListener("click", saveCertificateName);
-certificateMenuButton.addEventListener("click", () => showCertificateCelebration());
+certificateMenuButton.addEventListener("click", () => {
+  if (assessmentRequired && !certificateEligible) {
+    location.href = assessmentUrl;
+    return;
+  }
+  showCertificateCelebration();
+});
 certificatePublicName.addEventListener("input", () => {
   document.querySelector("#certificatePreviewName").textContent = certificatePublicName.value.trim() || "Your name";
 });
@@ -897,6 +914,7 @@ deleteAccountForm.addEventListener("submit", async (event) => {
     completed = new Set();
     currentCertificate = null;
     certificateEligible = false;
+    assessmentRequired = false;
     certificateConsentVersion = null;
     updateAuthUI();
     updateProgress();
@@ -963,6 +981,7 @@ logoutButton.addEventListener("click", async () => {
     completed = new Set();
     currentCertificate = null;
     certificateEligible = false;
+    assessmentRequired = false;
     certificateConsentVersion = null;
     userMenu.hidden = true;
     logoutButton.disabled = false;
@@ -1017,4 +1036,9 @@ applyCourseUI();
 renderModules();
 updateProgress();
 updateAuthUI();
-initializeSession().finally(openRequestedModule);
+initializeSession().finally(() => {
+  if (new URLSearchParams(location.search).get("assessment") === "passed" && certificateEligible && !currentCertificate?.isPublic) {
+    showCertificateCelebration(currentCertificate);
+  }
+  openRequestedModule();
+});

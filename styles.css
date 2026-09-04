@@ -2267,7 +2267,7 @@ html[data-course="agentic-ai"] .dialog-content::-webkit-scrollbar-thumb { backgr
 .achievement-stats {
   margin-top: 31px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .achievement-stats > span { display: grid; gap: 3px; }

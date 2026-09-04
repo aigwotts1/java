@@ -51,7 +51,7 @@
           <h1 id="certificateTitle" th:text="${course.title}">Topics at a Glance</h1>
           <p class="presented">This credential is proudly presented to</p>
           <h2 th:text="${certificate.name}">Learner</h2>
-          <p class="achievement">for reviewing every topic in the full <span th:text="${course.shortTitle}">course</span> overview on QuickDevBase.in—<strong th:text="${certificate.moduleCount + ' modules'}">18 modules</strong> and <strong th:text="${certificate.conceptCount + ' concepts'}">148 concepts</strong>—covering <span th:text="${course.summary}">the curriculum</span></p>
+          <p class="achievement">for reviewing every topic and passing the certificate assessment for the full <span th:text="${course.shortTitle}">course</span> overview on QuickDevBase.in—<strong th:text="${certificate.moduleCount + ' modules'}">18 modules</strong> and <strong th:text="${certificate.conceptCount + ' concepts'}">148 concepts</strong>—covering <span th:text="${course.summary}">the curriculum</span></p>
 
           <div class="certificate-metrics" aria-label="Achievement details">
             <div><strong>100%</strong><span>Overview reviewed</span></div>
@@ -74,7 +74,7 @@
       <p class="certificate-note">Anyone with this link can verify this at-a-glance topic completion. No email address or private account information is displayed.</p>
       <footer class="certificate-legal">
         <a class="certificate-footer-brand" href="/" aria-label="QuickDevBase home"><img class="brand-logo" src="/quickdevbase-logo.png" alt="" /><span class="brand-wordmark">QuickDev<strong>Base</strong></span></a>
-        <p>This is an independent at-a-glance learning overview completion record, not a professional licence, accredited qualification, skills assessment, or vendor certification.</p>
+        <p>This is an independent at-a-glance learning overview and short knowledge-check record, not a professional licence, accredited qualification, proctored skills assessment, or vendor certification.</p>
         <p th:text="${course.trademark}">Independent project notice.</p>
         <nav aria-label="Certificate policies"><a class="team-link" href="/team">Team</a><a href="/certificate-policy">Certificate policy</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
       </footer>

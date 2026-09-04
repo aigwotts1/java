@@ -37,6 +37,7 @@ public class PageController {
     private final String privacy;
     private final String terms;
     private final String certificatePolicy;
+    private final String assessment;
     private final String javaCourseData;
     private final CourseCatalog courses;
     private final CertificateService certificates;
@@ -58,6 +59,7 @@ public class PageController {
         this.privacy = read("privacy.html");
         this.terms = read("terms.html");
         this.certificatePolicy = read("certificate-policy.html");
+        this.assessment = read("assessment.html");
         this.javaCourseData = "window.QUICKDEV_COURSE = " + readResource("curriculum/java.json") + ";\n";
         this.courses = courses;
         this.certificates = certificates;
@@ -127,6 +129,11 @@ public class PageController {
         return html(certificatePolicy);
     }
 
+    @GetMapping("/assessment")
+    ResponseEntity<String> assessment() {
+        return html(assessment);
+    }
+
     @GetMapping("/certificate/{publicId}")
     ResponseEntity<String> publicCertificate(@PathVariable String publicId, HttpServletRequest request) {
         limits.check("verify:" + request.getRemoteAddr(), 120, Duration.ofMinutes(1));
@@ -142,7 +149,8 @@ public class PageController {
         context.setVariable("issuedDate", CERTIFICATE_DATE.format(record.issuedAt()));
         context.setVariable("pageTitle", certificate.name() + " — " + certificate.courseTitle());
         context.setVariable("description", certificate.name() + " reviewed all " + certificate.moduleCount() + " "
-            + course.shortTitle() + " modules and " + certificate.conceptCount() + " concepts on QuickDevBase.in.");
+            + course.shortTitle() + " modules, covered " + certificate.conceptCount()
+            + " concepts, and passed the QuickDevBase certificate assessment.");
         return html(templates.process("certificate", context));
     }
 

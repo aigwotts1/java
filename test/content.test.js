@@ -15,6 +15,10 @@ const pythonSource = fs.readFileSync(path.join(__dirname, "..", "python-data.js"
 const sqlSource = fs.readFileSync(path.join(__dirname, "..", "sql-data.js"), "utf8");
 const aiSource = fs.readFileSync(path.join(__dirname, "..", "ai-data.js"), "utf8");
 const aiHubSource = fs.readFileSync(path.join(__dirname, "..", "ai.html"), "utf8");
+const assessmentSource = fs.readFileSync(path.join(__dirname, "..", "assessment.html"), "utf8");
+const assessmentScript = fs.readFileSync(path.join(__dirname, "..", "assessment.js"), "utf8");
+const assessmentServiceSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "assessment", "AssessmentService.java"), "utf8");
+const assessmentMigrationSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "db", "migration", "V5__certificate_assessments.sql"), "utf8");
 const javaCourse = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "java.json"), "utf8"));
 const dockerKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "docker.json"), "utf8"));
 const pythonKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "python.json"), "utf8"));
@@ -265,7 +269,7 @@ test("hybrid RAG uses pgvector, fused retrieval, grounded prompts, and local fal
   assert.match(homeScript, /Source \[" \+ \(matchIndex \+ 1\) \+ "\]/);
 });
 
-test("certificate publication is consent-based and completion-only language is visible", () => {
+test("certificate publication is consent-based and assessment-gated", () => {
   assert.match(indexSource, /Claim &amp; publish certificate/);
   assert.match(indexSource, /I consent to publish my chosen name/);
   assert.match(indexSource, /not professional certification/);
@@ -287,8 +291,9 @@ test("certificate publication is consent-based and completion-only language is v
   assert.match(teamSource, /mailto:vashishthabhinav9@gmail\.com/);
   assert.match(teamSource, /full-stack and backend development/);
   assert.match(teamSource, /generative AI, RAG, and agentic systems/);
-  assert.match(settingsSource, /CONSENT_VERSION = "2026-08-14"/);
+  assert.match(settingsSource, /CONSENT_VERSION = "2026-09-03"/);
   assert.match(certificateServiceSource, /is_public = FALSE/);
+  assert.match(certificateServiceSource, /assessments\.hasPassed/);
   assert.match(securitySource, /CookieCsrfTokenRepository/);
   assert.match(appSource, /X-XSRF-TOKEN/);
 
@@ -301,4 +306,19 @@ test("certificate publication is consent-based and completion-only language is v
     assert.match(legalSource, /OpenAI/);
     assert.match(legalSource, /rel="icon" type="image\/png" href="\/quickdevbase-logo\.png"/);
   }
+});
+
+test("certificate assessment is randomized, timed, limited, and browser-guarded", () => {
+  assert.match(assessmentSource, /15/);
+  assert.match(assessmentSource, /10:00/);
+  assert.match(assessmentSource, /Two warnings are allowed/);
+  assert.match(assessmentServiceSource, /PASSING_SCORE = 11/);
+  assert.match(assessmentServiceSource, /MAX_ATTEMPTS = 3/);
+  assert.match(assessmentServiceSource, /TIME_LIMIT = Duration\.ofMinutes\(10\)/);
+  assert.match(assessmentServiceSource, /questionFactory\.create\(course, excluded\)/);
+  assert.match(assessmentMigrationSource, /CREATE UNIQUE INDEX assessment_attempts_one_active_idx/);
+  assert.match(assessmentScript, /requestFullscreen/);
+  assert.match(assessmentScript, /visibilitychange/);
+  assert.match(assessmentScript, /fullscreenchange/);
+  assert.match(assessmentScript, /"copy", "cut", "contextmenu", "selectstart"/);
 });

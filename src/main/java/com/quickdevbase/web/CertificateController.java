@@ -61,6 +61,11 @@ public class CertificateController {
             status.eligible(),
             status.completedCount(),
             selected.moduleCount(),
+            status.modulesComplete(),
+            status.assessmentPassed(),
+            status.assessmentAttemptsUsed(),
+            status.assessmentAttemptsRemaining(),
+            "/assessment?course=" + selected.key(),
             AppSettings.CONSENT_VERSION
         );
     }
@@ -81,10 +86,14 @@ public class CertificateController {
         Course selected = courses.byKeyOrJava(course);
         CertificateService.ClaimResult result = certificates.claim(principal.account(), selected, body.publicName());
         if (!result.eligible()) {
+            String error = result.completedCount() < selected.moduleCount()
+                ? "Complete all " + selected.moduleCount() + " modules before claiming your certificate."
+                : "Pass the certificate assessment before claiming your certificate.";
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
-                "error", "Complete all " + selected.moduleCount() + " modules before claiming your certificate.",
+                "error", error,
                 "completedCount", result.completedCount(),
-                "requiredCount", selected.moduleCount()
+                "requiredCount", selected.moduleCount(),
+                "assessmentPassed", result.assessmentPassed()
             ));
         }
         ClaimResponse response = new ClaimResponse(
@@ -138,6 +147,11 @@ public class CertificateController {
         boolean eligible,
         int completedCount,
         int requiredCount,
+        boolean modulesComplete,
+        boolean assessmentPassed,
+        int assessmentAttemptsUsed,
+        int assessmentAttemptsRemaining,
+        String assessmentUrl,
         String consentVersion
     ) {}
 

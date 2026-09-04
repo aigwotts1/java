@@ -56,7 +56,7 @@ public class SecurityConfig {
             .cors(cors -> cors.disable())
             .headers(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/profile", "/api/account", "/api/progress/**", "/api/certificate", "/api/certificate/**", "/api/ai/**").authenticated()
+                .requestMatchers("/api/profile", "/api/account", "/api/progress/**", "/api/certificate", "/api/certificate/**", "/api/assessment/**", "/api/ai/**").authenticated()
                 .anyRequest().permitAll()
             )
             .exceptionHandling(errors -> errors

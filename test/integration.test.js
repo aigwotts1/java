@@ -1,7 +1,18 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 
 const baseUrl = process.env.TEST_BASE_URL;
+const curriculumRoot = path.join(__dirname, "..", "src", "main", "resources", "curriculum");
+const assessmentCurricula = {
+  java: JSON.parse(fs.readFileSync(path.join(curriculumRoot, "java.json"), "utf8")),
+  docker: JSON.parse(fs.readFileSync(path.join(curriculumRoot, "docker.json"), "utf8")),
+  python: JSON.parse(fs.readFileSync(path.join(curriculumRoot, "python.json"), "utf8")),
+  sql: JSON.parse(fs.readFileSync(path.join(curriculumRoot, "sql.json"), "utf8")),
+};
+const aiCurricula = JSON.parse(fs.readFileSync(path.join(curriculumRoot, "ai.json"), "utf8"));
+Object.assign(assessmentCurricula, aiCurricula);
 
 function cookieMap(cookie = "") {
   return new Map(cookie.split(/;\s*/).filter(Boolean).map((entry) => {
@@ -83,6 +94,40 @@ async function multipartRequest(path, form, cookie) {
   const response = await fetch(`${baseUrl}${path}`, { method: "POST", headers, body: form });
   const data = await response.json().catch(() => ({}));
   return { status: response.status, data, cookie: mergeCookies(activeCookie, responseCookies(response.headers)) };
+}
+
+async function passAssessment(cookie, courseKey) {
+  const course = assessmentCurricula[courseKey];
+  assert.ok(course, `Missing assessment curriculum for ${courseKey}`);
+  const started = await request(`/api/assessment/start?course=${encodeURIComponent(courseKey)}`, {
+    method: "POST",
+    cookie,
+  });
+  assert.equal(started.status, 200);
+  assert.equal(started.data.questions.length, 15);
+  assert.equal(started.data.passingScore, 11);
+
+  const answers = started.data.questions.map((question) => {
+    const topic = question.question.match(/“(.+)”/u)?.[1];
+    assert.ok(topic, question.question);
+    const module = course.modules.find((candidate) => candidate.id === question.moduleId);
+    const topicIndex = module.topics.indexOf(topic);
+    assert.notEqual(topicIndex, -1, `${courseKey}: ${topic}`);
+    const expected = course.quickNotes[question.moduleId][topicIndex][0];
+    const selectedOption = question.options.indexOf(expected);
+    assert.notEqual(selectedOption, -1, `${courseKey}: correct option missing for ${topic}`);
+    return { position: question.position, selectedOption };
+  });
+
+  const submitted = await request(`/api/assessment/attempts/${started.data.id}/submit?course=${encodeURIComponent(courseKey)}`, {
+    method: "POST",
+    cookie,
+    body: { answers },
+  });
+  assert.equal(submitted.status, 200);
+  assert.equal(submitted.data.passed, true);
+  assert.equal(submitted.data.score, 15);
+  return submitted.data;
 }
 
 test(
@@ -292,6 +337,62 @@ test(
 );
 
 test(
+  "assessment enforces warnings, changes retry questions, and stops after three attempts",
+  { skip: !baseUrl },
+  async () => {
+    const nonce = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const password = "AssessmentRules!42";
+    const registration = await request("/api/auth/register", {
+      method: "POST",
+      body: { name: "Assessment Learner", email: `assessment-${nonce}@example.com`, password },
+    });
+    assert.equal(registration.status, 201);
+    const cookie = registration.cookie;
+
+    for (let moduleId = 1; moduleId <= 12; moduleId += 1) {
+      const saved = await request(`/api/progress/${moduleId}?course=rag`, {
+        method: "PUT",
+        cookie,
+        body: { completed: true },
+      });
+      assert.equal(saved.status, 200);
+    }
+
+    const questionSets = [];
+    for (let attemptNumber = 1; attemptNumber <= 3; attemptNumber += 1) {
+      const started = await request("/api/assessment/start?course=rag", { method: "POST", cookie });
+      assert.equal(started.status, 200);
+      assert.equal(started.data.attemptNumber, attemptNumber);
+      assert.equal(started.data.questions.length, 15);
+      questionSets.push(new Set(started.data.questions.map((question) => question.question)));
+
+      for (let warningNumber = 1; warningNumber <= 3; warningNumber += 1) {
+        const warning = await request(`/api/assessment/attempts/${started.data.id}/violation?course=rag`, {
+          method: "POST",
+          cookie,
+          body: { type: warningNumber % 2 ? "visibility" : "fullscreen" },
+        });
+        assert.equal(warning.status, 200);
+        assert.equal(warning.data.warningCount, warningNumber);
+        assert.equal(warning.data.terminated, warningNumber === 3);
+      }
+    }
+
+    assert.equal([...questionSets[0]].some((question) => questionSets[1].has(question)), false);
+    const exhausted = await request("/api/assessment/start?course=rag", { method: "POST", cookie });
+    assert.equal(exhausted.status, 409);
+    assert.match(exhausted.data.error, /three assessment attempts/);
+
+    const cleanup = await request("/api/account", {
+      method: "DELETE",
+      cookie,
+      body: { confirmation: "DELETE", password },
+    });
+    assert.equal(cleanup.status, 204);
+  },
+);
+
+test(
   "certificate requires consent, can be unpublished, and stays uniquely verifiable",
   { skip: !baseUrl },
   async () => {
@@ -310,7 +411,7 @@ test(
     assert.equal(initialStatus.data.completedCount, 0);
     assert.equal(initialStatus.data.requiredCount, 18);
     assert.equal(initialStatus.data.certificate, null);
-    assert.equal(initialStatus.data.consentVersion, "2026-08-14");
+    assert.equal(initialStatus.data.consentVersion, "2026-09-03");
 
     const missingConsent = await request("/api/certificate/claim", {
       method: "POST",
@@ -342,11 +443,23 @@ test(
       body: { completed: true },
     });
     assert.equal(completion.status, 200);
-    assert.equal(completion.data.certificateEligible, true);
+    assert.equal(completion.data.certificateEligible, false);
+    assert.equal(completion.data.modulesComplete, true);
+    assert.equal(completion.data.assessmentPassed, false);
     assert.equal(completion.data.certificate, null);
 
+    const blockedBeforeAssessment = await request("/api/certificate/claim", {
+      method: "POST",
+      cookie,
+      body: { consent: true, consentVersion: completion.data.consentVersion },
+    });
+    assert.equal(blockedBeforeAssessment.status, 409);
+    assert.match(blockedBeforeAssessment.data.error, /Pass the certificate assessment/);
+
+    await passAssessment(cookie, "java");
     const eligibleStatus = await request("/api/certificate", { cookie });
     assert.equal(eligibleStatus.data.eligible, true);
+    assert.equal(eligibleStatus.data.assessmentPassed, true);
     assert.equal(eligibleStatus.data.completedCount, 18);
     assert.equal(eligibleStatus.data.certificate, null);
 
@@ -507,6 +620,7 @@ test(
     }
 
     assert.deepEqual((await request("/api/progress?course=java", { cookie })).data.completed, []);
+    await passAssessment(cookie, "docker");
     const status = await request("/api/certificate?course=docker", { cookie });
     assert.equal(status.data.eligible, true);
     assert.equal(status.data.completedCount, 18);
@@ -564,6 +678,7 @@ test(
 
     assert.deepEqual((await request("/api/progress?course=java", { cookie })).data.completed, []);
     assert.deepEqual((await request("/api/progress?course=docker", { cookie })).data.completed, []);
+    await passAssessment(cookie, "python");
     const status = await request("/api/certificate?course=python", { cookie });
     assert.equal(status.data.eligible, true);
     assert.equal(status.data.completedCount, 18);
@@ -621,6 +736,7 @@ test(
 
     assert.deepEqual((await request("/api/progress?course=java", { cookie })).data.completed, []);
     assert.deepEqual((await request("/api/progress?course=python", { cookie })).data.completed, []);
+    await passAssessment(cookie, "sql");
     const status = await request("/api/certificate?course=sql", { cookie });
     assert.equal(status.data.eligible, true);
     assert.equal(status.data.completedCount, 18);
@@ -678,6 +794,7 @@ test(
 
     assert.deepEqual((await request("/api/progress?course=generative-ai", { cookie })).data.completed, []);
     assert.deepEqual((await request("/api/progress?course=rag", { cookie })).data.completed, []);
+    await passAssessment(cookie, "agentic-ai");
     const status = await request("/api/certificate?course=agentic-ai", { cookie });
     assert.equal(status.data.eligible, true);
     assert.equal(status.data.completedCount, 12);

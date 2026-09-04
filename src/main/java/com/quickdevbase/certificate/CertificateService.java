@@ -11,6 +11,7 @@ import java.util.HexFormat;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.quickdevbase.assessment.AssessmentService;
 import com.quickdevbase.config.AppSettings;
 import com.quickdevbase.course.CourseCatalog.Course;
 import com.quickdevbase.learning.LearningService;
@@ -25,12 +26,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class CertificateService {
     private final JdbcTemplate jdbc;
     private final LearningService learning;
+    private final AssessmentService assessments;
     private final UserRepository users;
     private final SecureRandom random = new SecureRandom();
 
-    public CertificateService(JdbcTemplate jdbc, LearningService learning, UserRepository users) {
+    public CertificateService(
+        JdbcTemplate jdbc,
+        LearningService learning,
+        AssessmentService assessments,
+        UserRepository users
+    ) {
         this.jdbc = jdbc;
         this.learning = learning;
+        this.assessments = assessments;
         this.users = users;
     }
 
@@ -61,15 +69,23 @@ public class CertificateService {
     public CertificateStatus status(UUID userId, Course course) {
         int count = learning.completedCount(userId, course);
         Optional<CertificateRecord> certificate = findForUser(userId, course);
-        return new CertificateStatus(certificate.orElse(null), count, certificate.isPresent() || count >= course.moduleCount());
+        boolean modulesComplete = count >= course.moduleCount();
+        AssessmentService.AssessmentStatus assessment = assessments.status(userId, course);
+        boolean assessmentPassed = certificate.isPresent() || assessment.passed();
+        boolean eligible = certificate.isPresent() || (modulesComplete && assessmentPassed);
+        return new CertificateStatus(
+            certificate.orElse(null), count, eligible, modulesComplete, assessmentPassed,
+            assessment.attemptsUsed(), assessment.attemptsRemaining()
+        );
     }
 
     @Transactional
     public ClaimResult claim(UserAccount user, Course course, String requestedName) {
         int completedCount = learning.completedCount(user.id(), course);
         Optional<CertificateRecord> existing = findForUser(user.id(), course);
-        if (existing.isEmpty() && completedCount < course.moduleCount()) {
-            return ClaimResult.ineligible(completedCount);
+        boolean assessmentPassed = existing.isPresent() || assessments.hasPassed(user.id(), course);
+        if (existing.isEmpty() && (completedCount < course.moduleCount() || !assessmentPassed)) {
+            return ClaimResult.ineligible(completedCount, assessmentPassed);
         }
 
         String publicName = InputValidation.validName(requestedName == null || requestedName.isBlank() ? user.name() : requestedName);
@@ -85,7 +101,7 @@ public class CertificateService {
                 AppSettings.CONSENT_VERSION, user.id(), course.code()
             );
             CertificateRecord certificate = findForUser(user.id(), course).orElseThrow();
-            return new ClaimResult(certificate, renamed, completedCount, false, !existing.get().isPublic(), true);
+            return new ClaimResult(certificate, renamed, completedCount, false, !existing.get().isPublic(), true, true);
         }
 
         int inserted = jdbc.update(
@@ -99,7 +115,7 @@ public class CertificateService {
             UUID.randomUUID(), randomPublicId(), randomVerificationHash(), user.id(), course.code(), AppSettings.CONSENT_VERSION
         );
         CertificateRecord certificate = findForUser(user.id(), course).orElseThrow();
-        return new ClaimResult(certificate, renamed, completedCount, inserted == 1, inserted == 1, true);
+        return new ClaimResult(certificate, renamed, completedCount, inserted == 1, inserted == 1, true, true);
     }
 
     public Optional<CertificateRecord> unpublish(UUID userId, Course course) {
@@ -151,7 +167,15 @@ public class CertificateService {
         );
     }
 
-    public record CertificateStatus(CertificateRecord certificate, int completedCount, boolean eligible) {}
+    public record CertificateStatus(
+        CertificateRecord certificate,
+        int completedCount,
+        boolean eligible,
+        boolean modulesComplete,
+        boolean assessmentPassed,
+        int assessmentAttemptsUsed,
+        int assessmentAttemptsRemaining
+    ) {}
 
     public record ClaimResult(
         CertificateRecord certificate,
@@ -159,10 +183,11 @@ public class CertificateService {
         int completedCount,
         boolean newlyIssued,
         boolean newlyPublished,
-        boolean eligible
+        boolean eligible,
+        boolean assessmentPassed
     ) {
-        static ClaimResult ineligible(int count) {
-            return new ClaimResult(null, null, count, false, false, false);
+        static ClaimResult ineligible(int count, boolean assessmentPassed) {
+            return new ClaimResult(null, null, count, false, false, false, assessmentPassed);
         }
     }
 }

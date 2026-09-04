@@ -40,6 +40,8 @@ const screenshots = {
   aiGuideMobile: path.join(process.cwd(), "qa-ai-guide-mobile.png"),
   consent: path.join(process.cwd(), "qa-certificate-consent.png"),
   account: path.join(process.cwd(), "qa-account-privacy.png"),
+  assessment: path.join(process.cwd(), "qa-certificate-assessment.png"),
+  assessmentMobile: path.join(process.cwd(), "qa-certificate-assessment-mobile.png"),
   celebration: path.join(process.cwd(), "qa-certificate-celebration.png"),
   certificate: path.join(process.cwd(), "qa-certificate-public.png"),
   certificateMobile: path.join(process.cwd(), "qa-certificate-mobile.png"),
@@ -120,6 +122,33 @@ async function createNearlyCompleteLearner() {
   }
 
   return { name, email, cookie: registration.cookie };
+}
+
+async function passAssessment(cookie, courseKey, activeAttempt) {
+  const filename = ["generative-ai", "rag", "agentic-ai"].includes(courseKey) ? "ai.json" : `${courseKey}.json`;
+  const curriculumFile = JSON.parse(await fs.readFile(path.join(process.cwd(), "src", "main", "resources", "curriculum", filename), "utf8"));
+  const curriculum = curriculumFile[courseKey] || curriculumFile;
+  const attempt = activeAttempt || (await appRequest(`/api/assessment/start?course=${encodeURIComponent(courseKey)}`, {
+    method: "POST",
+    cookie,
+  })).data;
+  const answers = attempt.questions.map((question) => {
+    const topic = question.question.match(/“(.+)”/u)?.[1];
+    const module = curriculum.modules.find((candidate) => candidate.id === question.moduleId);
+    const topicIndex = module.topics.indexOf(topic);
+    const correctText = curriculum.quickNotes[question.moduleId][topicIndex][0];
+    const selectedOption = question.options.indexOf(correctText);
+    assert.ok(selectedOption >= 0, `Could not answer assessment topic ${topic}.`);
+    return { position: question.position, selectedOption };
+  });
+  const submitted = await appRequest(`/api/assessment/attempts/${attempt.id}/submit?course=${encodeURIComponent(courseKey)}`, {
+    method: "POST",
+    cookie,
+    body: { answers },
+  });
+  assert.equal(submitted.data.passed, true);
+  assert.equal(submitted.data.score, 15);
+  return submitted.data;
 }
 
 async function waitForDebugger() {
@@ -1187,6 +1216,55 @@ async function run() {
     assert.match(signedInAi.status, /not configured|requests left today/i);
     assert.equal(signedInAi.disabled, signedInAi.errorState);
     await evaluate(`document.querySelector("#completeButton").click()`);
+    await waitFor(`document.querySelector("#certificateMenuLabel").textContent.trim() === "Take certificate test"`);
+
+    const activeAssessment = (await appRequest("/api/assessment/start?course=java", {
+      method: "POST",
+      cookie: certificateLearner.cookie,
+    })).data;
+    assert.equal(activeAssessment.questions.length, 15);
+
+    await setViewport(1440, 1000, false);
+    await client.send("Page.navigate", { url: `${baseUrl}/assessment?course=java` });
+    await waitFor(`document.readyState === "complete" && !document.querySelector("#startAssessment").disabled`);
+    const assessmentIntro = await evaluate(`(() => ({
+      title: document.title,
+      resumeLabel: document.querySelector("#startAssessment").textContent.trim(),
+      attempts: document.querySelector("#attemptsLabel").textContent.trim(),
+      ruleCount: document.querySelectorAll(".rules-card li").length,
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    }))()`);
+    assert.equal(assessmentIntro.title, "Java at a Glance assessment | QuickDevBase");
+    assert.match(assessmentIntro.resumeLabel, /Resume attempt 1/);
+    assert.equal(assessmentIntro.attempts, "2 of 3 attempts available");
+    assert.equal(assessmentIntro.ruleCount, 5);
+    assert.equal(assessmentIntro.noHorizontalOverflow, true);
+    assert.deepEqual(assessmentIntro.errors, []);
+    await capture(screenshots.assessment);
+
+    await evaluate(`showExam(status.activeAttempt)`);
+    await waitFor(`!document.querySelector("#assessmentExam").hidden`);
+    await setViewport(390, 844, false);
+    await delay(120);
+    const assessmentMobile = await evaluate(`(() => ({
+      questionVisible: document.querySelector("#questionTitle").getBoundingClientRect().width > 0,
+      choices: document.querySelectorAll(".answer-choice").length,
+      questionButtons: document.querySelectorAll("#questionMap button").length,
+      narrowLayoutActive: matchMedia("(max-width: 620px)").matches,
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    }))()`);
+    assert.equal(assessmentMobile.questionVisible, true);
+    assert.equal(assessmentMobile.choices, 4);
+    assert.equal(assessmentMobile.questionButtons, 15);
+    assert.equal(assessmentMobile.narrowLayoutActive, true);
+    assert.equal(assessmentMobile.noHorizontalOverflow, true);
+    assert.deepEqual(assessmentMobile.errors, []);
+    await capture(screenshots.assessmentMobile);
+
+    await passAssessment(certificateLearner.cookie, "java", activeAssessment);
+    await navigate(1440, 1000, false, "Avery", "/java?assessment=passed", 18);
     await waitFor(`document.querySelector("#certificateDialog").open`);
 
     const celebration = await evaluate(`(() => {

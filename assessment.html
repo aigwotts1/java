@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="QuickDevBase certificate assessment" />
+    <meta name="theme-color" content="#f5efe4" />
+    <link rel="icon" type="image/png" href="/quickdevbase-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Young+Serif&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assessment.css?v=20260903" />
+    <title>Certificate assessment | QuickDevBase</title>
+  </head>
+  <body>
+    <header class="assessment-header">
+      <a class="assessment-brand" href="/" aria-label="QuickDevBase home">
+        <img src="/quickdevbase-logo.png" alt="" />
+        <span>QuickDev<strong>Base</strong></span>
+      </a>
+      <div class="assessment-header-meta">
+        <span id="courseBadge">Certificate assessment</span>
+        <a id="courseExit" href="/">Return to course</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="assessment-intro" id="assessmentIntro" aria-labelledby="introTitle">
+        <div class="intro-copy">
+          <p class="eyebrow"><span></span> Knowledge check</p>
+          <h1 id="introTitle">One small test.<br /><em>One earned credential.</em></h1>
+          <p id="introDescription">Complete the learning path, then check your at-a-glance understanding before publishing a certificate.</p>
+        </div>
+
+        <div class="rules-card">
+          <div class="rules-topline"><span>Assessment rules</span><strong id="attemptsLabel">Loading…</strong></div>
+          <div class="assessment-facts">
+            <div><strong>15</strong><span>MCQs</span></div>
+            <div><strong>10:00</strong><span>Minutes</span></div>
+            <div><strong>11/15</strong><span>To pass</span></div>
+          </div>
+          <ul>
+            <li>The assessment must remain in fullscreen.</li>
+            <li>Changing tabs, leaving fullscreen, or closing the page records a warning.</li>
+            <li>Two warnings are allowed; the third violation ends the attempt.</li>
+            <li>Copying, cutting, text selection, and the context menu are disabled during the test.</li>
+            <li>Each of your three attempts uses a different set of curriculum questions.</li>
+          </ul>
+          <p class="assessment-note">Browser controls discourage casual cheating but cannot provide fully proctored-exam security.</p>
+          <p class="assessment-error" id="assessmentError" role="alert" hidden></p>
+          <button class="primary-action" id="startAssessment" type="button" disabled>Checking eligibility… <span aria-hidden="true">↗</span></button>
+          <a class="secondary-action" id="introCourseLink" href="/">Review the course first</a>
+        </div>
+      </section>
+
+      <section class="exam-shell" id="assessmentExam" aria-labelledby="questionTitle" hidden>
+        <header class="exam-toolbar">
+          <div>
+            <span id="examAttempt">Attempt 1 of 3</span>
+            <strong id="examCourse">Certificate assessment</strong>
+          </div>
+          <div class="exam-metrics">
+            <div class="warning-meter"><span>Warnings</span><strong id="warningCount">0 / 2</strong></div>
+            <div class="timer" id="timerBox"><span>Time left</span><strong id="timerValue">10:00</strong></div>
+          </div>
+        </header>
+
+        <div class="exam-progress" aria-hidden="true"><span id="examProgressBar"></span></div>
+
+        <div class="exam-layout">
+          <article class="question-card">
+            <div class="question-meta"><span id="questionNumber">Question 01</span><strong id="questionModule">Module</strong></div>
+            <h1 id="questionTitle">Loading question…</h1>
+            <fieldset class="answer-options" id="answerOptions" aria-label="Answer choices"></fieldset>
+            <p class="save-state" id="answerSaveState" aria-live="polite">Choose the best answer.</p>
+            <div class="question-actions">
+              <button id="previousQuestion" type="button">← Previous</button>
+              <button id="nextQuestion" type="button">Next question →</button>
+              <button class="submit-assessment" id="submitAssessment" type="button">Submit assessment ↗</button>
+            </div>
+          </article>
+
+          <aside class="question-map" aria-label="Question navigation">
+            <span>Question map</span>
+            <div id="questionMap"></div>
+            <p><i></i> Answered <i></i> Current</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="assessment-result" id="assessmentResult" aria-labelledby="resultTitle" hidden>
+        <div class="result-mark" id="resultMark" aria-hidden="true">✓</div>
+        <p class="eyebrow"><span></span> Assessment complete</p>
+        <h1 id="resultTitle">You passed.</h1>
+        <p id="resultMessage"></p>
+        <div class="result-score"><strong id="resultScore">0/15</strong><span id="resultStatus">Final score</span></div>
+        <div class="result-actions">
+          <a class="primary-action" id="resultCourseLink" href="/">Continue to your certificate ↗</a>
+          <button class="secondary-action" id="retryAssessment" type="button" hidden>Use another attempt</button>
+        </div>
+      </section>
+    </main>
+
+    <div class="violation-overlay" id="violationOverlay" role="alertdialog" aria-modal="true" aria-labelledby="violationTitle" hidden>
+      <div>
+        <span class="violation-icon" aria-hidden="true">!</span>
+        <p>Assessment paused</p>
+        <h2 id="violationTitle">Return to fullscreen.</h2>
+        <p id="violationMessage">Leaving the assessment window records a warning.</p>
+        <button class="primary-action" id="returnFullscreen" type="button">Return and continue</button>
+      </div>
+    </div>
+
+    <script src="/assessment.js?v=20260903" defer></script>
+  </body>
+</html>
