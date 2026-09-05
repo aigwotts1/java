@@ -565,6 +565,7 @@ function openModule(id) {
   if (!module) return;
 
   activeModuleId = id;
+  const dialogContent = dialog.querySelector(".dialog-content");
   document.querySelector("#dialogIndex").textContent = formatNumber(module.id);
   document.querySelector("#dialogStage").textContent = stageLabels[module.stage];
   document.querySelector("#dialogTitle").textContent = module.title;
@@ -580,6 +581,7 @@ function openModule(id) {
   resetAiGuide();
 
   dialog.showModal();
+  dialogContent.scrollTop = 0;
   document.body.classList.add("dialog-open");
   loadAiStatus();
 }

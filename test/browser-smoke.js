@@ -845,6 +845,18 @@ async function run() {
     assert.equal(dockerLesson.overflowY, "auto");
     await capture(screenshots.dockerLesson);
 
+    await evaluate(`(() => {
+      document.querySelector("#dialogClose").click();
+      document.querySelector('.module-card[data-module-id="12"]').click();
+    })()`);
+    await waitFor(`document.querySelector("#dialogTitle").textContent.trim() === "Runtime Configuration"`);
+    const nextDockerLesson = await evaluate(`({
+      title: document.querySelector("#dialogTitle").textContent.trim(),
+      scrollTop: document.querySelector(".dialog-content").scrollTop
+    })`);
+    assert.equal(nextDockerLesson.title, "Runtime Configuration");
+    assert.equal(nextDockerLesson.scrollTop, 0, "A newly opened module should start at the top");
+
     await navigate(1440, 1000, false, "Sign in", "/python");
     const python = await evaluate(`({
       title: document.title,
