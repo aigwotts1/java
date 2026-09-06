@@ -24,6 +24,8 @@ const screenshots = {
   agenticAi: path.join(process.cwd(), "qa-agentic-ai.png"),
   agentLesson: path.join(process.cwd(), "qa-agent-security.png"),
   home: path.join(process.cwd(), "qa-java-home.png"),
+  javaHistory: path.join(process.cwd(), "qa-java-history.png"),
+  javaHistoryMobile: path.join(process.cwd(), "qa-java-history-mobile.png"),
   docker: path.join(process.cwd(), "qa-docker-home.png"),
   dockerMobile: path.join(process.cwd(), "qa-docker-mobile.png"),
   dockerLesson: path.join(process.cwd(), "qa-docker-compose.png"),
@@ -658,6 +660,32 @@ async function run() {
 
     await evaluate(`document.querySelector("#authClose").click()`);
     await waitFor(`!document.querySelector("#authDialog").open`);
+    await evaluate(`document.querySelector('.module-card[data-module-id="1"]').click()`);
+    await waitFor(`document.querySelector("#lessonDialog").open`);
+    const javaHistory = await evaluate(`(() => {
+      const history = document.querySelector("#dialogHistory");
+      const concepts = document.querySelector("#dialogConcepts");
+      return {
+        visible: !history.hidden,
+        title: history.querySelector("h3").textContent.trim(),
+        milestones: history.querySelectorAll(".module-history-timeline li").length,
+        hasOpenJdk: history.textContent.includes("OpenJDK"),
+        hasJvmFlow: history.querySelector(".module-history-flow").textContent.includes("JVM"),
+        beforeConcepts: Boolean(history.compareDocumentPosition(concepts) & Node.DOCUMENT_POSITION_FOLLOWING),
+        insideContent: history.parentElement.classList.contains("dialog-content")
+      };
+    })()`);
+    assert.equal(javaHistory.visible, true);
+    assert.equal(javaHistory.title, "Java in 60 seconds");
+    assert.equal(javaHistory.milestones, 3);
+    assert.equal(javaHistory.hasOpenJdk, true);
+    assert.equal(javaHistory.hasJvmFlow, true);
+    assert.equal(javaHistory.beforeConcepts, true);
+    assert.equal(javaHistory.insideContent, true);
+    await capture(screenshots.javaHistory);
+
+    await evaluate(`document.querySelector("#dialogClose").click()`);
+    await waitFor(`!document.querySelector("#lessonDialog").open`);
     await evaluate(`document.querySelector('.module-card[data-module-id="6"]').click()`);
     await waitFor(`document.querySelector("#lessonDialog").open`);
     const modernJava = await evaluate(`({
@@ -667,7 +695,8 @@ async function run() {
       hasJava11: document.querySelector("#dialogConcepts").textContent.includes("Java 11: HTTP Client"),
       hasJava17: document.querySelector("#dialogConcepts").textContent.includes("Sealed classes (Java 17)"),
       hasJava21: document.querySelector("#dialogConcepts").textContent.includes("Virtual threads (Java 21)"),
-      marksPreview: document.querySelector("#dialogConcepts").textContent.includes("Java 21 preview")
+      marksPreview: document.querySelector("#dialogConcepts").textContent.includes("Java 21 preview"),
+      historyHidden: document.querySelector("#dialogHistory").hidden
     })`);
     assert.equal(modernJava.title, "Modern Java: 8, 11, 17 & 21");
     assert.equal(modernJava.concepts, 26);
@@ -676,6 +705,7 @@ async function run() {
     assert.equal(modernJava.hasJava17, true);
     assert.equal(modernJava.hasJava21, true);
     assert.equal(modernJava.marksPreview, true);
+    assert.equal(modernJava.historyHidden, true);
 
     await evaluate(`document.querySelector("#dialogClose").click()`);
     await waitFor(`!document.querySelector("#lessonDialog").open`);
@@ -734,6 +764,29 @@ async function run() {
     })`);
     assert.equal(mobile.modules, 18);
     assert.equal(mobile.horizontalScrollPrevented, true);
+    await evaluate(`document.querySelector('.module-card[data-module-id="1"]').click()`);
+    await waitFor(`document.querySelector("#lessonDialog").open`);
+    const javaHistoryMobile = await evaluate(`(() => {
+      const history = document.querySelector("#dialogHistory");
+      const content = document.querySelector(".dialog-content");
+      const historyBounds = history.getBoundingClientRect();
+      const contentBounds = content.getBoundingClientRect();
+      return {
+        visible: !history.hidden,
+        oneColumn: getComputedStyle(document.querySelector(".module-history-timeline")).gridTemplateColumns.split(" ").length === 1,
+        stackedFlow: getComputedStyle(document.querySelector(".module-history-flow")).flexDirection === "column",
+        insideContent: historyBounds.left >= contentBounds.left && historyBounds.right <= contentBounds.right,
+        noHorizontalOverflow: content.scrollWidth <= content.clientWidth
+      };
+    })()`);
+    assert.equal(javaHistoryMobile.visible, true);
+    assert.equal(javaHistoryMobile.oneColumn, true);
+    assert.equal(javaHistoryMobile.stackedFlow, true);
+    assert.equal(javaHistoryMobile.insideContent, true);
+    assert.equal(javaHistoryMobile.noHorizontalOverflow, true);
+    await capture(screenshots.javaHistoryMobile);
+    await evaluate(`document.querySelector("#dialogClose").click()`);
+    await waitFor(`!document.querySelector("#lessonDialog").open`);
     await evaluate(`document.querySelector('.module-card[data-module-id="18"]').click()`);
     await waitFor(`document.querySelector("#lessonDialog").open`);
     const mobileRest = await evaluate(`(() => {
@@ -1428,7 +1481,7 @@ async function run() {
     });
 
     console.log("Browser smoke test passed.");
-    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, modernJava, restLesson, mobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, sql, sqlMobile, sqlLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
+    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, javaHistory, modernJava, restLesson, mobile, javaHistoryMobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, sql, sqlMobile, sqlLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
     if (certificateLearner) {
       try {

@@ -1352,6 +1352,110 @@ footer {
   line-height: 1.7;
 }
 
+.module-history-card {
+  margin: -2px 0 28px;
+  padding: 22px;
+  border: 1px solid #bed0e8;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(36, 88, 166, .12), transparent 34%),
+    linear-gradient(145deg, #f7faff, #eef4fb);
+}
+
+.module-history-heading > span {
+  color: var(--blue);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.module-history-heading h3 {
+  margin: 7px 0 6px;
+  font-family: var(--display);
+  font-size: 25px;
+  font-weight: 400;
+}
+
+.module-history-heading p {
+  margin: 0;
+  color: #5f6f82;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.module-history-timeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.module-history-timeline li {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(36, 88, 166, .14);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .72);
+}
+
+.module-history-timeline time,
+.module-history-timeline strong,
+.module-history-timeline span {
+  display: block;
+}
+
+.module-history-timeline time {
+  color: var(--orange-dark);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.module-history-timeline strong {
+  margin-top: 5px;
+  color: var(--blue-deep);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.module-history-timeline span {
+  margin-top: 5px;
+  color: #66758a;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.module-history-flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding-top: 13px;
+  border-top: 1px solid rgba(36, 88, 166, .14);
+}
+
+.module-history-flow span {
+  flex: 0 0 auto;
+  color: var(--blue);
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.module-history-flow code {
+  min-width: 0;
+  color: #294d78;
+  font-family: var(--mono);
+  font-size: 9px;
+  overflow-wrap: anywhere;
+}
+
 .dialog-block {
   padding: 20px 0;
   border-top: 1px solid var(--line);
@@ -2579,6 +2683,9 @@ html[data-course="agentic-ai"] .dialog-content::-webkit-scrollbar-thumb { backgr
   .dialog-side-line, .dialog-sidebar p { display: none; }
   .dialog-content { padding: 34px 24px; }
   .dialog-content h2 { padding-right: 30px; font-size: 36px; }
+  .module-history-card { padding: 18px; }
+  .module-history-timeline { grid-template-columns: 1fr; }
+  .module-history-flow { align-items: flex-start; flex-direction: column; gap: 5px; }
   .ai-guide-actions { grid-template-columns: 1fr; }
   .ai-guide-actions button { text-align: left; }
   .ai-question-form > div { grid-template-columns: 1fr; }

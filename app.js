@@ -493,6 +493,29 @@ function conceptLessons(module) {
   }).join("");
 }
 
+function moduleHistory(module) {
+  const history = module.history;
+  if (!history) return "";
+
+  return `
+    <div class="module-history-heading">
+      <span>Before the basics</span>
+      <h3>${escapeHtml(history.title)}</h3>
+      <p>${escapeHtml(history.summary)}</p>
+    </div>
+    <ol class="module-history-timeline">
+      ${history.milestones.map((milestone) => `
+        <li>
+          <time>${escapeHtml(milestone.period)}</time>
+          <strong>${escapeHtml(milestone.title)}</strong>
+          <span>${escapeHtml(milestone.description)}</span>
+        </li>
+      `).join("")}
+    </ol>
+    <p class="module-history-flow"><span>Core idea</span><code>${escapeHtml(history.flow)}</code></p>
+  `;
+}
+
 function moduleCard(module) {
   const theme = cardThemes[(module.id - 1) % cardThemes.length];
   const isComplete = completed.has(module.id);
@@ -570,6 +593,9 @@ function openModule(id) {
   document.querySelector("#dialogStage").textContent = stageLabels[module.stage];
   document.querySelector("#dialogTitle").textContent = module.title;
   document.querySelector("#dialogDescription").textContent = module.description;
+  const dialogHistory = document.querySelector("#dialogHistory");
+  dialogHistory.innerHTML = moduleHistory(module);
+  dialogHistory.hidden = !module.history;
   document.querySelector("#dialogConcepts").innerHTML = conceptLessons(module);
   document.querySelector("#dialogChallenge").textContent = module.challenge;
   const officialLink = document.querySelector("#dialogOfficialLink");
@@ -607,6 +633,13 @@ function activeModule() {
 
 function lessonContext(module) {
   const notes = quickNotes[module.id] || [];
+  const historyText = module.history
+    ? [
+        `Brief history: ${module.history.summary}`,
+        ...module.history.milestones.map((milestone) => `${milestone.period} — ${milestone.title}: ${milestone.description}`),
+        `Core idea: ${module.history.flow}`
+      ].join("\n")
+    : "";
   const topicText = module.topics.map((topic, index) => {
     const [plain, fallbackCode] = notes[index] || [courseConfig.fallbackNote, courseConfig.fallbackCode];
     const examples = groupedExamples[topic] || [["Example", fallbackCode]];
@@ -615,7 +648,7 @@ function lessonContext(module) {
     ).join("\n");
     return `${index + 1}. ${topic}\n${plain}\n${exampleText}`;
   }).join("\n\n");
-  return `Module summary: ${module.description}\n\nTopics and examples:\n${topicText}\n\nTiny challenge: ${module.challenge}`.slice(0, 16000);
+  return `${historyText ? `${historyText}\n\n` : ""}Module summary: ${module.description}\n\nTopics and examples:\n${topicText}\n\nTiny challenge: ${module.challenge}`.slice(0, 16000);
 }
 
 function setAiControlsDisabled(disabled) {

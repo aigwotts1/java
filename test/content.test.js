@@ -47,6 +47,17 @@ test("curriculum IDs, topic totals, and Spring backend module limit stay aligned
   assert.match(courseCatalogSource, /"java-basecamp-complete"[\s\S]*?18, 148/);
 });
 
+test("Java Basics starts with a concise history preface", () => {
+  const history = modules[0].history;
+  assert.equal(history.title, "Java in 60 seconds");
+  assert.equal(history.milestones.length, 3);
+  assert.match(history.milestones.map((milestone) => milestone.description).join(" "), /Sun Microsystems/);
+  assert.match(history.milestones.map((milestone) => milestone.title).join(" "), /OpenJDK/);
+  assert.match(history.flow, /source.*bytecode.*JVM.*operating system/);
+  assert.match(indexSource, /id="dialogHistory"/);
+  assert.match(appSource, /function moduleHistory\(module\)/);
+});
+
 test("Docker path covers a complete 18-module, 126-concept official-doc map", () => {
   assert.equal(dockerCourse.modules.length, 18);
   assert.deepEqual(dockerCourse.modules.map((module) => module.id), Array.from({ length: 18 }, (_, index) => index + 1));

@@ -7,6 +7,28 @@
       "title": "Java Basics",
       "stage": "foundation",
       "description": "Build the vocabulary every Java program uses, from variables to exceptions.",
+      "history": {
+        "title": "Java in 60 seconds",
+        "summary": "Java grew from a portable device-language project into a general-purpose platform designed to run the same compiled program across different systems.",
+        "milestones": [
+          {
+            "period": "1992",
+            "title": "Oak & the Green project",
+            "description": "At Sun Microsystems, James Gosling designed the virtual machine behind Oak for portable consumer-device software."
+          },
+          {
+            "period": "1995",
+            "title": "Java debuts",
+            "description": "Oak became Java and brought its platform-independent approach to networked applications."
+          },
+          {
+            "period": "2006–today",
+            "title": "OpenJDK & steady evolution",
+            "description": "The JDK moved into an open-source project and continues to evolve through regular Java releases."
+          }
+        ],
+        "flow": ".java source → .class bytecode → JVM → operating system"
+      },
       "topics": [
         "Syntax, structure & comments",
         "Keywords & identifiers",
