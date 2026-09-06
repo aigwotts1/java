@@ -2,8 +2,8 @@
   "use strict";
 
   const t = (name, note, label, code, examples) => ({ name, note, label, code, examples });
-  const m = (id, title, stage, description, officialUrl, challenge, topics, shortTitle) => ({
-    id, title, stage, description, officialUrl, officialLabel: "Official Docker documentation", challenge, topics, shortTitle
+  const m = (id, title, stage, description, officialUrl, challenge, topics, shortTitle, history) => ({
+    id, title, stage, description, officialUrl, officialLabel: "Official Docker documentation", challenge, topics, shortTitle, history
   });
 
   function dockerExampleComment(item, label, code) {
@@ -50,7 +50,16 @@
         t("Registries", "A registry stores and distributes tagged or digest-addressed images.", "REGISTRY", "docker pull docker.io/library/nginx:alpine"),
         t("Namespaces and cgroups", "Namespaces isolate what a process can see; cgroups limit and account for resources it can use.", "ISOLATION", "docker run --memory 256m --cpus 0.5 alpine"),
         t("OCI and containerd", "OCI defines interoperable image/runtime standards while containerd handles lower-level container lifecycle for Docker.", "RUNTIME", "docker info --format '{{json .DriverStatus}}'")
-      ]),
+      ], undefined, {
+        title: "Docker in 60 seconds",
+        summary: "Docker turned existing Linux isolation features into a practical workflow for packaging, sharing, and running applications consistently.",
+        milestones: [
+          { period: "2013", title: "Docker launches", description: "The open-source Docker Engine made containers much easier for developers to build and run." },
+          { period: "2015", title: "OCI standardization", description: "Docker contributed its image format and runtime foundations to help create open container standards." },
+          { period: "2017-today", title: "containerd & ecosystem", description: "containerd joined the CNCF as containers became a foundation of modern cloud platforms." }
+        ],
+        flow: "Dockerfile -> image -> registry -> container"
+      }),
     m(2, "Install & Configure", "foundation",
       "Set up Docker Desktop or Engine and verify the environment before building.",
       "https://docs.docker.com/engine/install/",

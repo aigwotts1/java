@@ -2,8 +2,8 @@
   "use strict";
 
   const t = (name, note, code, comment) => ({ name, note, code, comment });
-  const m = (id, title, stage, description, officialUrl, challenge, topics, shortTitle) => ({
-    id, title, stage, description, officialUrl, officialLabel: "Official PostgreSQL documentation", challenge, topics, shortTitle
+  const m = (id, title, stage, description, officialUrl, challenge, topics, shortTitle, history) => ({
+    id, title, stage, description, officialUrl, officialLabel: "Official PostgreSQL documentation", challenge, topics, shortTitle, history
   });
 
   const source = [
@@ -19,7 +19,16 @@
         t("Identifiers & keywords", "Identifiers name objects such as tables and columns, while keywords such as SELECT and FROM define SQL grammar.", "SELECT employee_id, display_name\nFROM employees;", "employee_id, display_name, and employees are identifiers; SELECT and FROM tell PostgreSQL how to interpret them."),
         t("Literals & expressions", "A literal is a fixed value, while an expression combines values, columns, operators, or functions to calculate a result.", "SELECT 'SQL' AS topic, 20 * 1.18 AS total;", "The query returns a text literal and evaluates an arithmetic expression, giving both results readable aliases."),
         t("Standard SQL vs PostgreSQL", "Core SQL travels well between databases, but types, functions, quoting rules, and advanced features can differ by product.", "SELECT version(), 'quickdev'::text;", "version() and PostgreSQL's :: cast syntax demonstrate useful behavior that may need changing in another SQL database.")
-      ]),
+      ], undefined, {
+        title: "SQL in 60 seconds",
+        summary: "SQL grew from the relational model into a declarative language: you describe the data you want, and the database decides how to retrieve it.",
+        milestones: [
+          { period: "1970", title: "Relational model", description: "IBM researcher Edgar F. Codd described organizing data as related tables of rows and columns." },
+          { period: "1974", title: "SEQUEL", description: "Donald Chamberlin and Raymond Boyce published SEQUEL, the language that evolved into SQL." },
+          { period: "1986-today", title: "A shared standard", description: "ANSI and ISO standardized SQL, while databases continued adding their own useful dialect features." }
+        ],
+        flow: "SQL statement -> query planner -> database engine -> result"
+      }),
     m(2, "Tables & Data Types", "foundation",
       "Create and evolve tables with types that accurately describe the values your application stores.",
       "https://www.postgresql.org/docs/current/ddl-basics.html",

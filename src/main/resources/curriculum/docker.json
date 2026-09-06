@@ -19,7 +19,29 @@
         "Registries",
         "Namespaces and cgroups",
         "OCI and containerd"
-      ]
+      ],
+      "history": {
+        "title": "Docker in 60 seconds",
+        "summary": "Docker turned existing Linux isolation features into a practical workflow for packaging, sharing, and running applications consistently.",
+        "milestones": [
+          {
+            "period": "2013",
+            "title": "Docker launches",
+            "description": "The open-source Docker Engine made containers much easier for developers to build and run."
+          },
+          {
+            "period": "2015",
+            "title": "OCI standardization",
+            "description": "Docker contributed its image format and runtime foundations to help create open container standards."
+          },
+          {
+            "period": "2017-today",
+            "title": "containerd & ecosystem",
+            "description": "containerd joined the CNCF as containers became a foundation of modern cloud platforms."
+          }
+        ],
+        "flow": "Dockerfile -> image -> registry -> container"
+      }
     },
     {
       "id": 2,

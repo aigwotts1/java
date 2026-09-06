@@ -19,7 +19,29 @@
         "Comments & docstrings",
         "print() & input()",
         "Dynamic typing & identity"
-      ]
+      ],
+      "history": {
+        "title": "Python in 60 seconds",
+        "summary": "Python was created to make programs readable and productive while remaining useful for everything from small scripts to large applications.",
+        "milestones": [
+          {
+            "period": "Early 1990s",
+            "title": "Created at CWI",
+            "description": "Guido van Rossum created Python in the Netherlands as a successor to the ABC language."
+          },
+          {
+            "period": "1991",
+            "title": "First public release",
+            "description": "Python 0.9.0 introduced the language to a wider open-source community."
+          },
+          {
+            "period": "2001-today",
+            "title": "PSF & continued growth",
+            "description": "The Python Software Foundation formed to support a language that continues to evolve through community-led releases."
+          }
+        ],
+        "flow": "Python source -> interpreter/runtime -> executed program"
+      }
     },
     {
       "id": 2,

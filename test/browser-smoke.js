@@ -30,6 +30,7 @@ const screenshots = {
   dockerMobile: path.join(process.cwd(), "qa-docker-mobile.png"),
   dockerLesson: path.join(process.cwd(), "qa-docker-compose.png"),
   python: path.join(process.cwd(), "qa-python-home.png"),
+  pythonHistory: path.join(process.cwd(), "qa-python-history.png"),
   pythonMobile: path.join(process.cwd(), "qa-python-mobile.png"),
   pythonLesson: path.join(process.cwd(), "qa-python-rest.png"),
   sql: path.join(process.cwd(), "qa-sql-home.png"),
@@ -315,6 +316,43 @@ async function run() {
         captureBeyondViewport: false,
       });
       await fs.writeFile(filename, Buffer.from(image.data, "base64"));
+    };
+
+    const historyChecks = {};
+    const verifyCourseHistory = async (key, expectedTitle, screenshot) => {
+      await evaluate(`document.querySelector('.module-card[data-module-id="1"]').click()`);
+      await waitFor(`document.querySelector("#lessonDialog").open`);
+      const result = await evaluate(`(() => {
+        const history = document.querySelector("#dialogHistory");
+        const concepts = document.querySelector("#dialogConcepts");
+        return {
+          visible: !history.hidden,
+          title: history.querySelector("h3")?.textContent.trim(),
+          milestones: history.querySelectorAll(".module-history-timeline li").length,
+          hasFlow: Boolean(history.querySelector(".module-history-flow")),
+          beforeConcepts: Boolean(history.compareDocumentPosition(concepts) & Node.DOCUMENT_POSITION_FOLLOWING),
+          noHorizontalOverflow: document.querySelector(".dialog-content").scrollWidth <= document.querySelector(".dialog-content").clientWidth,
+          errors: window.__qaErrors
+        };
+      })()`);
+      assert.equal(result.visible, true);
+      assert.equal(result.title, expectedTitle);
+      assert.equal(result.milestones, 3);
+      assert.equal(result.hasFlow, true);
+      assert.equal(result.beforeConcepts, true);
+      assert.equal(result.noHorizontalOverflow, true);
+      assert.deepEqual(result.errors, []);
+      if (screenshot) await capture(screenshot);
+
+      await evaluate(`document.querySelector("#dialogClose").click()`);
+      await waitFor(`!document.querySelector("#lessonDialog").open`);
+      await evaluate(`document.querySelector('.module-card[data-module-id="2"]').click()`);
+      await waitFor(`document.querySelector("#lessonDialog").open`);
+      result.laterLessonHistoryHidden = await evaluate(`document.querySelector("#dialogHistory").hidden`);
+      assert.equal(result.laterLessonHistoryHidden, true);
+      await evaluate(`document.querySelector("#dialogClose").click()`);
+      await waitFor(`!document.querySelector("#lessonDialog").open`);
+      historyChecks[key] = result;
     };
 
     await setViewport(1440, 1000, false);
@@ -854,6 +892,7 @@ async function run() {
     assert.equal(docker.horizontalScrollPrevented, true);
     assert.deepEqual(docker.errors, []);
     await capture(screenshots.docker);
+    await verifyCourseHistory("docker", "Docker in 60 seconds");
 
     await navigate(390, 844, false, "Sign in", "/docker");
     const dockerMobile = await evaluate(`({
@@ -935,6 +974,7 @@ async function run() {
     assert.equal(python.noHorizontalOverflow, true);
     assert.deepEqual(python.errors, []);
     await capture(screenshots.python);
+    await verifyCourseHistory("python", "Python in 60 seconds", screenshots.pythonHistory);
 
     await navigate(390, 844, false, "Sign in", "/python");
     const pythonMobile = await evaluate(`({
@@ -1006,6 +1046,7 @@ async function run() {
     assert.equal(sql.noHorizontalOverflow, true);
     assert.deepEqual(sql.errors, []);
     await capture(screenshots.sql);
+    await verifyCourseHistory("sql", "SQL in 60 seconds");
 
     await navigate(390, 844, false, "Sign in", "/sql");
     const sqlMobile = await evaluate(`({
@@ -1116,6 +1157,7 @@ async function run() {
     assert.deepEqual(genAi.filters, ["All 12", "Foundations", "Building Blocks", "Quality & Production"]);
     assert.deepEqual(genAi.errors, []);
     await capture(screenshots.generativeAi);
+    await verifyCourseHistory("generativeAi", "Generative AI in 60 seconds");
 
     await navigate(1440, 1000, false, "Sign in", "/ai/rag", 12);
     const ragPath = await evaluate(`({
@@ -1134,6 +1176,7 @@ async function run() {
     assert.equal(ragPath.hasReranking, true);
     assert.deepEqual(ragPath.errors, []);
     await capture(screenshots.rag);
+    await verifyCourseHistory("rag", "RAG in 60 seconds");
 
     await evaluate(`document.querySelector('.module-card[data-module-id="1"]').click()`);
     await waitFor(`document.querySelector("#lessonDialog").open`);
@@ -1201,6 +1244,7 @@ async function run() {
     assert.equal(agentPath.hasMcp, true);
     assert.deepEqual(agentPath.errors, []);
     await capture(screenshots.agenticAi);
+    await verifyCourseHistory("agenticAi", "Agentic AI in 60 seconds");
 
     await evaluate(`document.querySelector('.module-card[data-module-id="12"]').click()`);
     await waitFor(`document.querySelector("#lessonDialog").open`);
@@ -1481,7 +1525,7 @@ async function run() {
     });
 
     console.log("Browser smoke test passed.");
-    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, javaHistory, modernJava, restLesson, mobile, javaHistoryMobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, sql, sqlMobile, sqlLesson, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
+    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, javaHistory, modernJava, restLesson, mobile, javaHistoryMobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, sql, sqlMobile, sqlLesson, historyChecks, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
     if (certificateLearner) {
       try {

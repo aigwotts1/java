@@ -47,13 +47,30 @@ test("curriculum IDs, topic totals, and Spring backend module limit stay aligned
   assert.match(courseCatalogSource, /"java-basecamp-complete"[\s\S]*?18, 148/);
 });
 
-test("Java Basics starts with a concise history preface", () => {
-  const history = modules[0].history;
-  assert.equal(history.title, "Java in 60 seconds");
-  assert.equal(history.milestones.length, 3);
-  assert.match(history.milestones.map((milestone) => milestone.description).join(" "), /Sun Microsystems/);
-  assert.match(history.milestones.map((milestone) => milestone.title).join(" "), /OpenJDK/);
-  assert.match(history.flow, /source.*bytecode.*JVM.*operating system/);
+test("every technology path starts with a concise history preface", () => {
+  const paths = [
+    [javaCourse, "Java in 60 seconds"],
+    [dockerCourse, "Docker in 60 seconds"],
+    [pythonCourse, "Python in 60 seconds"],
+    [sqlCourse, "SQL in 60 seconds"],
+    [aiCourses["generative-ai"], "Generative AI in 60 seconds"],
+    [aiCourses.rag, "RAG in 60 seconds"],
+    [aiCourses["agentic-ai"], "Agentic AI in 60 seconds"]
+  ];
+
+  for (const [course, expectedTitle] of paths) {
+    const history = course.modules[0].history;
+    assert.equal(history.title, expectedTitle);
+    assert.ok(history.summary.length > 60, `${expectedTitle} needs a useful summary.`);
+    assert.equal(history.milestones.length, 3);
+    assert.ok(history.milestones.every((milestone) => milestone.period && milestone.title && milestone.description));
+    assert.match(history.flow, /(?:->|→)/);
+    assert.ok(course.modules.slice(1).every((module) => !module.history), `${expectedTitle} should appear only once per path.`);
+  }
+
+  assert.match(modules[0].history.milestones.map((milestone) => milestone.description).join(" "), /Sun Microsystems/);
+  assert.match(modules[0].history.milestones.map((milestone) => milestone.title).join(" "), /OpenJDK/);
+  assert.match(modules[0].history.flow, /source.*bytecode.*JVM.*operating system/);
   assert.match(indexSource, /id="dialogHistory"/);
   assert.match(appSource, /function moduleHistory\(module\)/);
 });

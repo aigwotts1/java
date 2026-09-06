@@ -19,7 +19,29 @@
         "Identifiers & keywords",
         "Literals & expressions",
         "Standard SQL vs PostgreSQL"
-      ]
+      ],
+      "history": {
+        "title": "SQL in 60 seconds",
+        "summary": "SQL grew from the relational model into a declarative language: you describe the data you want, and the database decides how to retrieve it.",
+        "milestones": [
+          {
+            "period": "1970",
+            "title": "Relational model",
+            "description": "IBM researcher Edgar F. Codd described organizing data as related tables of rows and columns."
+          },
+          {
+            "period": "1974",
+            "title": "SEQUEL",
+            "description": "Donald Chamberlin and Raymond Boyce published SEQUEL, the language that evolved into SQL."
+          },
+          {
+            "period": "1986-today",
+            "title": "A shared standard",
+            "description": "ANSI and ISO standardized SQL, while databases continued adding their own useful dialect features."
+          }
+        ],
+        "flow": "SQL statement -> query planner -> database engine -> result"
+      }
     },
     {
       "id": 2,

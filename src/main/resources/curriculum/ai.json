@@ -41,6 +41,28 @@
           "Probabilistic output",
           "Capabilities & limitations"
         ],
+        "history": {
+          "title": "Generative AI in 60 seconds",
+          "summary": "Generative AI learns patterns from large datasets and uses them to create new text, images, audio, code, and other content.",
+          "milestones": [
+            {
+              "period": "2014",
+              "title": "GANs arrive",
+              "description": "Generative adversarial networks showed how two competing neural networks could learn to create realistic samples."
+            },
+            {
+              "period": "2017",
+              "title": "Transformers",
+              "description": "The transformer architecture made attention-based training highly scalable and reshaped language AI."
+            },
+            {
+              "period": "2020s",
+              "title": "Foundation models",
+              "description": "Large pretrained and multimodal models made general-purpose generation accessible across many tasks."
+            }
+          ],
+          "flow": "prompt & inputs -> generative model -> sampled output -> human verification"
+        },
         "officialLabel": "Official generative AI documentation"
       },
       {
@@ -1244,6 +1266,28 @@
           "Generator",
           "RAG trade-offs"
         ],
+        "history": {
+          "title": "RAG in 60 seconds",
+          "summary": "Retrieval-Augmented Generation gives a model selected external evidence at answer time instead of relying only on knowledge stored in its weights.",
+          "milestones": [
+            {
+              "period": "Before 2020",
+              "title": "Retrieval meets NLP",
+              "description": "Search systems and neural readers were already finding passages before producing answers."
+            },
+            {
+              "period": "2020",
+              "title": "RAG is formalized",
+              "description": "Lewis and collaborators combined learned retrieval with sequence generation under the name RAG."
+            },
+            {
+              "period": "Today",
+              "title": "Production RAG",
+              "description": "Teams combine semantic and keyword search, reranking, citations, permissions, and evaluation for reliable systems."
+            }
+          ],
+          "flow": "documents -> chunks & embeddings -> retrieve & rerank -> grounded answer"
+        },
         "officialLabel": "Official retrieval and RAG documentation"
       },
       {
@@ -2447,6 +2491,28 @@
           "Goal & success criteria",
           "Agent boundaries"
         ],
+        "history": {
+          "title": "Agentic AI in 60 seconds",
+          "summary": "Agentic systems place a model inside a controlled loop so it can choose tools, observe results, and work through a goal step by step.",
+          "milestones": [
+            {
+              "period": "2022",
+              "title": "ReAct",
+              "description": "The ReAct approach demonstrated how language models can interleave reasoning with actions and observations."
+            },
+            {
+              "period": "2023",
+              "title": "Tool use matures",
+              "description": "Models were increasingly connected to APIs, code, retrieval, and memory through structured tool calls."
+            },
+            {
+              "period": "2024-today",
+              "title": "Shared tool protocols",
+              "description": "Protocols such as MCP began standardizing how AI applications connect to external data and tools."
+            }
+          ],
+          "flow": "goal -> decide -> use tool -> observe -> repeat or stop"
+        },
         "officialLabel": "Official agents documentation"
       },
       {

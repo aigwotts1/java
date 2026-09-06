@@ -2,8 +2,8 @@
   "use strict";
 
   const t = (name, note, label, code, examples) => ({ name, note, label, code, examples });
-  const m = (id, title, stage, description, officialUrl, challenge, topics, shortTitle) => ({
-    id, title, stage, description, officialUrl, officialLabel: "Official Python documentation", challenge, topics, shortTitle
+  const m = (id, title, stage, description, officialUrl, challenge, topics, shortTitle, history) => ({
+    id, title, stage, description, officialUrl, officialLabel: "Official Python documentation", challenge, topics, shortTitle, history
   });
 
   function pythonExampleComment(item, label, code) {
@@ -47,7 +47,16 @@
         t("Comments & docstrings", "A # comment explains code to people; a docstring documents a module, class, or function.", "DOCUMENTATION", "# Explain why this value matters\ndef greet():\n    \"\"\"Return a friendly greeting.\"\"\"\n    return \"Hello\""),
         t("print() & input()", "print writes text to standard output, while input reads one line from standard input as a string.", "CONSOLE I/O", "name = input(\"Name: \")\nprint(\"Hello\", name)"),
         t("Dynamic typing & identity", "A name can be rebound to different object types; id and is concern object identity, not value equality.", "IDENTITY", "value = 42\nvalue = \"forty-two\"\nmissing = None\nprint(missing is None)")
-      ]),
+      ], undefined, {
+        title: "Python in 60 seconds",
+        summary: "Python was created to make programs readable and productive while remaining useful for everything from small scripts to large applications.",
+        milestones: [
+          { period: "Early 1990s", title: "Created at CWI", description: "Guido van Rossum created Python in the Netherlands as a successor to the ABC language." },
+          { period: "1991", title: "First public release", description: "Python 0.9.0 introduced the language to a wider open-source community." },
+          { period: "2001-today", title: "PSF & continued growth", description: "The Python Software Foundation formed to support a language that continues to evolve through community-led releases." }
+        ],
+        flow: "Python source -> interpreter/runtime -> executed program"
+      }),
     m(2, "Values, Types & Expressions", "foundation",
       "Work confidently with Python's core scalar values and expression rules.",
       "https://docs.python.org/3/library/stdtypes.html",

@@ -2,8 +2,8 @@
   "use strict";
 
   const t = (name, note, code, comment) => ({ name, note, code, comment });
-  const m = (id, title, stage, description, officialUrl, challenge, topics, shortTitle) => ({
-    id, title, stage, description, officialUrl, challenge, topics, shortTitle
+  const m = (id, title, stage, description, officialUrl, challenge, topics, shortTitle, history) => ({
+    id, title, stage, description, officialUrl, challenge, topics, shortTitle, history
   });
 
   function defaultExampleComment(item) {
@@ -67,7 +67,16 @@
         t("Model modalities", "Models may accept or produce text, images, audio, video, or combinations of them.", "text + image -> text answer"),
         t("Probabilistic output", "Generation samples from likely continuations, so the same request can produce different valid results.", "temperature=0.2  # more focused sampling"),
         t("Capabilities & limitations", "Models can transform patterns fluently but may hallucinate, inherit bias, or lack current/private facts.", "model answer -> verify facts before use")
-      ]),
+      ], undefined, {
+        title: "Generative AI in 60 seconds",
+        summary: "Generative AI learns patterns from large datasets and uses them to create new text, images, audio, code, and other content.",
+        milestones: [
+          { period: "2014", title: "GANs arrive", description: "Generative adversarial networks showed how two competing neural networks could learn to create realistic samples." },
+          { period: "2017", title: "Transformers", description: "The transformer architecture made attention-based training highly scalable and reshaped language AI." },
+          { period: "2020s", title: "Foundation models", description: "Large pretrained and multimodal models made general-purpose generation accessible across many tasks." }
+        ],
+        flow: "prompt & inputs -> generative model -> sampled output -> human verification"
+      }),
     m(2, "Neural & LLM Foundations", "foundation",
       "Understand the training vocabulary beneath modern language models without diving into the full mathematics.",
       "https://developers.google.com/machine-learning/crash-course/neural-networks",
@@ -226,7 +235,16 @@
         t("Retriever", "The retriever finds candidate passages using vector, keyword, metadata, graph, or combined search.", "retrieve(query, top_k=20)"),
         t("Generator", "The generator synthesizes an answer from instructions, the question, and selected evidence.", "LLM(system + evidence + question)"),
         t("RAG trade-offs", "RAG improves freshness and traceability but adds indexing, retrieval, latency, and evaluation complexity.", "quality depends on source + retrieval + generation")
-      ]),
+      ], undefined, {
+        title: "RAG in 60 seconds",
+        summary: "Retrieval-Augmented Generation gives a model selected external evidence at answer time instead of relying only on knowledge stored in its weights.",
+        milestones: [
+          { period: "Before 2020", title: "Retrieval meets NLP", description: "Search systems and neural readers were already finding passages before producing answers." },
+          { period: "2020", title: "RAG is formalized", description: "Lewis and collaborators combined learned retrieval with sequence generation under the name RAG." },
+          { period: "Today", title: "Production RAG", description: "Teams combine semantic and keyword search, reranking, citations, permissions, and evaluation for reliable systems." }
+        ],
+        flow: "documents -> chunks & embeddings -> retrieve & rerank -> grounded answer"
+      }),
     m(2, "Sources, Loading & Parsing", "foundation",
       "Turn varied source files and systems into clean, permission-aware text and structure.",
       "https://docs.cloud.google.com/document-ai/docs/overview",
@@ -385,7 +403,16 @@
         t("Environment", "The environment is the external state an agent observes or changes through tools.", "environment = files + APIs + browser + database"),
         t("Goal & success criteria", "A useful goal states the desired outcome, constraints, and observable completion conditions.", "\"Resolve ticket with cited policy; never issue refund.\""),
         t("Agent boundaries", "Agent boundaries are explicit limits on time, steps, cost, data, permissions, and tools that keep autonomous behavior within an approved scope.", "max_turns=12, allowed_tools=[search, read]")
-      ]),
+      ], undefined, {
+        title: "Agentic AI in 60 seconds",
+        summary: "Agentic systems place a model inside a controlled loop so it can choose tools, observe results, and work through a goal step by step.",
+        milestones: [
+          { period: "2022", title: "ReAct", description: "The ReAct approach demonstrated how language models can interleave reasoning with actions and observations." },
+          { period: "2023", title: "Tool use matures", description: "Models were increasingly connected to APIs, code, retrieval, and memory through structured tool calls." },
+          { period: "2024-today", title: "Shared tool protocols", description: "Protocols such as MCP began standardizing how AI applications connect to external data and tools." }
+        ],
+        flow: "goal -> decide -> use tool -> observe -> repeat or stop"
+      }),
     m(2, "The Agent Loop", "foundation",
       "Follow the reasoning-action-observation cycle and understand how runs terminate.",
       "https://openai.github.io/openai-agents-js/guides/running-agents/",
