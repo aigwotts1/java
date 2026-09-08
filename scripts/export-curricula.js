@@ -20,4 +20,5 @@ function write(filename, value) {
 write("docker.json", evaluate("docker-data.js", "QUICKDEV_COURSE"));
 write("python.json", evaluate("python-data.js", "QUICKDEV_COURSE"));
 write("sql.json", evaluate("sql-data.js", "QUICKDEV_COURSE"));
+write("git.json", evaluate("git-data.js", "QUICKDEV_COURSE"));
 write("ai.json", evaluate("ai-data.js", "QUICKDEV_AI_COURSES"));

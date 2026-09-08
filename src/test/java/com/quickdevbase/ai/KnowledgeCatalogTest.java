@@ -13,8 +13,8 @@ class KnowledgeCatalogTest {
 
     @Test
     void loadsEveryConceptFromEveryPublishedCourse() {
-        assertEquals(778, catalog.conceptCount());
-        assertEquals(778, catalog.allChunks().stream().map(KnowledgeCatalog.KnowledgeChunk::chunkKey).distinct().count());
+        assertEquals(904, catalog.conceptCount());
+        assertEquals(904, catalog.allChunks().stream().map(KnowledgeCatalog.KnowledgeChunk::chunkKey).distinct().count());
         assertTrue(catalog.allChunks().stream().allMatch(chunk -> chunk.contentHash().length() == 64));
     }
 
@@ -24,6 +24,7 @@ class KnowledgeCatalogTest {
         assertMatch("Explain the Docker Compose application model", "docker", 11, "Compose application model", "/docker?");
         assertMatch("How do Python async and await coroutines work?", "python", 15, "async & await", "/python?");
         assertMatch("Use SQL EXPLAIN ANALYZE for query performance", "sql", 15, "EXPLAIN ANALYZE", "/sql?");
+        assertMatch("How can Git reflog recover a lost commit?", "git", 10, "Reflog", "/git?");
     }
 
     @Test

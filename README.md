@@ -8,11 +8,12 @@ Available paths:
 - **Docker** — 18 modules and 126 concepts.
 - **Python** — 18 modules and 126 concepts.
 - **SQL** — 18 modules and 126 concepts, with PostgreSQL-flavoured examples.
+- **Git** — 18 modules and 126 concepts, from daily version control through recovery, internals, security, and delivery workflows.
 - **Generative AI Foundations** — 12 modules and 84 concepts.
 - **RAG Systems** — 12 modules and 84 concepts.
 - **Agentic AI** — 12 modules and 84 concepts.
 
-The technology library is at `/`. Course paths open at `/java`, `/docker`, `/python`, `/sql`, `/ai/generative-ai`, `/ai/rag`, and `/ai/agents`.
+The technology library is at `/`. Course paths open at `/java`, `/docker`, `/python`, `/sql`, `/git`, `/ai/generative-ai`, `/ai/rag`, and `/ai/agents`.
 
 ## Technology stack
 

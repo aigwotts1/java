@@ -13,6 +13,7 @@ const homeSource = fs.readFileSync(path.join(__dirname, "..", "home.html"), "utf
 const dockerSource = fs.readFileSync(path.join(__dirname, "..", "docker-data.js"), "utf8");
 const pythonSource = fs.readFileSync(path.join(__dirname, "..", "python-data.js"), "utf8");
 const sqlSource = fs.readFileSync(path.join(__dirname, "..", "sql-data.js"), "utf8");
+const gitSource = fs.readFileSync(path.join(__dirname, "..", "git-data.js"), "utf8");
 const aiSource = fs.readFileSync(path.join(__dirname, "..", "ai-data.js"), "utf8");
 const aiHubSource = fs.readFileSync(path.join(__dirname, "..", "ai.html"), "utf8");
 const assessmentSource = fs.readFileSync(path.join(__dirname, "..", "assessment.html"), "utf8");
@@ -23,6 +24,7 @@ const javaCourse = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", 
 const dockerKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "docker.json"), "utf8"));
 const pythonKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "python.json"), "utf8"));
 const sqlKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "sql.json"), "utf8"));
+const gitKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "git.json"), "utf8"));
 const aiKnowledge = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "main", "resources", "curriculum", "ai.json"), "utf8"));
 const modules = javaCourse.modules;
 const quickNotes = javaCourse.quickNotes;
@@ -32,11 +34,13 @@ const aiCourses = Function("window", aiSource + "; return window.QUICKDEV_AI_COU
 const dockerCourse = Function("window", `${dockerSource}; return window.QUICKDEV_COURSE;`)({});
 const pythonCourse = Function("window", `${pythonSource}; return window.QUICKDEV_COURSE;`)({});
 const sqlCourse = Function("window", `${sqlSource}; return window.QUICKDEV_COURSE;`)({});
+const gitCourse = Function("window", `${gitSource}; return window.QUICKDEV_COURSE;`)({});
 
 test("server-side retrieval catalogs stay synchronized with every browser curriculum", () => {
   assert.deepEqual(JSON.parse(JSON.stringify(dockerCourse)), dockerKnowledge);
   assert.deepEqual(JSON.parse(JSON.stringify(pythonCourse)), pythonKnowledge);
   assert.deepEqual(JSON.parse(JSON.stringify(sqlCourse)), sqlKnowledge);
+  assert.deepEqual(JSON.parse(JSON.stringify(gitCourse)), gitKnowledge);
   assert.deepEqual(JSON.parse(JSON.stringify(aiCourses)), aiKnowledge);
 });
 
@@ -53,6 +57,7 @@ test("every technology path starts with a concise history preface", () => {
     [dockerCourse, "Docker in 60 seconds"],
     [pythonCourse, "Python in 60 seconds"],
     [sqlCourse, "SQL in 60 seconds"],
+    [gitCourse, "Git in 60 seconds"],
     [aiCourses["generative-ai"], "Generative AI in 60 seconds"],
     [aiCourses.rag, "RAG in 60 seconds"],
     [aiCourses["agentic-ai"], "Agentic AI in 60 seconds"]
@@ -138,6 +143,22 @@ test("SQL path covers a complete 18-module, 126-concept official-doc map", () =>
   }
 });
 
+test("Git path covers a complete 18-module, 126-concept official-doc map", () => {
+  assert.equal(gitCourse.modules.length, 18);
+  assert.deepEqual(gitCourse.modules.map((module) => module.id), Array.from({ length: 18 }, (_, index) => index + 1));
+  assert.equal(gitCourse.modules.reduce((total, module) => total + module.topics.length, 0), 126);
+  for (const module of gitCourse.modules) {
+    assert.equal(gitCourse.quickNotes[module.id].length, module.topics.length);
+    assert.match(module.officialUrl, /^https:\/\/git-scm\.com\//);
+  }
+  assert.ok(gitCourse.modules.some((module) => module.topics.includes("Partial staging")));
+  assert.ok(gitCourse.modules.some((module) => module.topics.includes("Remote-tracking branches")));
+  assert.ok(gitCourse.modules.some((module) => module.topics.includes("Interactive rebase")));
+  assert.ok(gitCourse.modules.some((module) => module.topics.includes("Reflog")));
+  assert.ok(gitCourse.modules.some((module) => module.topics.includes("Binary search for regressions")));
+  assert.ok(gitCourse.modules.some((module) => module.topics.includes("Signed commits")));
+});
+
 test("AI hub contains three complete, independently trackable 12-module paths", () => {
   assert.deepEqual(Object.keys(aiCourses), ["generative-ai", "rag", "agentic-ai"]);
   for (const [key, course] of Object.entries(aiCourses)) {
@@ -209,6 +230,7 @@ test("topic definitions and code comments remain separate learning layers", () =
   verifyCourse(dockerCourse);
   verifyCourse(pythonCourse);
   verifyCourse(sqlCourse);
+  verifyCourse(gitCourse);
   Object.values(aiCourses).forEach(verifyCourse);
 });
 
@@ -271,6 +293,7 @@ test("image discovery is grounded across every curriculum and deep-links to any 
   assert.match(knowledgeSource, /curriculum\/docker\.json/);
   assert.match(knowledgeSource, /curriculum\/python\.json/);
   assert.match(knowledgeSource, /curriculum\/sql\.json/);
+  assert.match(knowledgeSource, /curriculum\/git\.json/);
   assert.match(knowledgeSource, /curriculum\/ai\.json/);
   assert.doesNotMatch(appSource, /courseConfig\.key !== "java"/);
   assert.match(appSource, /URLSearchParams\(location\.search\)/);
@@ -308,6 +331,7 @@ test("certificate publication is consent-based and assessment-gated", () => {
   assert.match(homeSource, /href="\/docker"/);
   assert.match(homeSource, /href="\/python"/);
   assert.match(homeSource, /href="\/sql"/);
+  assert.match(homeSource, /href="\/git"/);
   assert.match(homeSource, /href="\/ai"/);
   assert.match(homeSource, /class="team-link" href="\/team"/);
   assert.doesNotMatch(homeSource, /Abhinav Vashishth/);

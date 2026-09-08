@@ -66,7 +66,7 @@ class AiDiscoveryServiceTest {
         when(settings.enabled()).thenReturn(true);
         when(settings.ragEnabled()).thenReturn(true);
         when(usage.consume(userId, 20, 200)).thenReturn(1);
-        when(vectors.indexedCount("gemini-embedding-test")).thenReturn(778);
+        when(vectors.indexedCount("gemini-embedding-test")).thenReturn(904);
         var semanticChunk = catalog.rankedSearch("Python async and await", 1).get(0).chunk();
         var embedding = IntStream.range(0, 768).mapToObj(index -> 0.001).toList();
         when(gemini.embedQuery(anyString())).thenReturn(embedding);

@@ -36,6 +36,9 @@ const screenshots = {
   sql: path.join(process.cwd(), "qa-sql-home.png"),
   sqlMobile: path.join(process.cwd(), "qa-sql-mobile.png"),
   sqlLesson: path.join(process.cwd(), "qa-sql-joins.png"),
+  git: path.join(process.cwd(), "qa-git-home.png"),
+  gitMobile: path.join(process.cwd(), "qa-git-mobile.png"),
+  gitLesson: path.join(process.cwd(), "qa-git-recovery.png"),
   auth: path.join(process.cwd(), "qa-auth.png"),
   lesson: path.join(process.cwd(), "qa-rest-methods.png"),
   mobile: path.join(process.cwd(), "qa-mobile-rest.png"),
@@ -357,7 +360,7 @@ async function run() {
 
     await setViewport(1440, 1000, false);
     await client.send("Page.navigate", { url: baseUrl });
-    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 5`);
+    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 6`);
     const library = await evaluate(`({
       title: document.title,
       technologyCards: document.querySelectorAll("[data-course-card]").length,
@@ -365,7 +368,10 @@ async function run() {
       dockerPath: document.querySelector('[data-course-card="docker"]').getAttribute("href"),
       pythonPath: document.querySelector('[data-course-card="python"]').getAttribute("href"),
       sqlPath: document.querySelector('[data-course-card="sql"]').getAttribute("href"),
+      gitPath: document.querySelector('[data-course-card="git"]').getAttribute("href"),
       aiPath: document.querySelector('[data-course-card="ai"]').getAttribute("href"),
+      javaMarkColor: getComputedStyle(document.querySelector(".java-card .tech-mark")).backgroundColor,
+      gitMarkColor: getComputedStyle(document.querySelector(".git-card .tech-mark")).backgroundColor,
       brandLogos: document.querySelectorAll(".brand-logo").length,
       logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
       logoPath: new URL(document.querySelector(".brand-logo").src).pathname,
@@ -382,12 +388,16 @@ async function run() {
       errors: window.__qaErrors
     })`);
     assert.equal(library.title, "QuickDevBase — Developer Knowledge, At a Glance");
-    assert.equal(library.technologyCards, 5);
+    assert.equal(library.technologyCards, 6);
     assert.equal(library.javaPath, "/java");
     assert.equal(library.dockerPath, "/docker");
     assert.equal(library.pythonPath, "/python");
     assert.equal(library.sqlPath, "/sql");
+    assert.equal(library.gitPath, "/git");
     assert.equal(library.aiPath, "/ai");
+    assert.equal(library.javaMarkColor, "rgb(216, 76, 49)");
+    assert.equal(library.gitMarkColor, "rgb(168, 91, 31)");
+    assert.notEqual(library.gitMarkColor, library.javaMarkColor);
     assert.equal(library.brandLogos, 2);
     assert.equal(library.logosLoaded, true);
     assert.equal(library.logoPath, "/quickdevbase-logo.png");
@@ -486,7 +496,7 @@ async function run() {
 
     await setViewport(390, 844, false);
     await client.send("Page.navigate", { url: baseUrl });
-    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 5`);
+    await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 6`);
     const libraryMobile = await evaluate(`({
       cards: document.querySelectorAll("[data-course-card]").length,
       responsiveLayout: matchMedia("(max-width: 680px)").matches,
@@ -517,7 +527,7 @@ async function run() {
       noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
       errors: window.__qaErrors
     })`);
-    assert.equal(libraryMobile.cards, 5);
+    assert.equal(libraryMobile.cards, 6);
     assert.equal(libraryMobile.responsiveLayout, true);
     assert.equal(libraryMobile.logoLoaded, true);
     assert.ok(libraryMobile.logoWidth <= 56);
@@ -555,7 +565,7 @@ async function run() {
     for (const width of [320, 500]) {
       await setViewport(width, 844, false);
       await client.send("Page.navigate", { url: baseUrl });
-      await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 5`);
+      await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-course-card]").length === 6`);
       const metrics = await evaluate(`(() => {
         const visual = document.querySelector(".hero-visual").getBoundingClientRect();
         const notes = [...document.querySelectorAll(".floating-note")].map((item) => item.getBoundingClientRect());
@@ -1090,6 +1100,80 @@ async function run() {
     assert.equal(sqlLesson.overflowY, "auto");
     await capture(screenshots.sqlLesson);
 
+    await navigate(1440, 1000, false, "Sign in", "/git");
+    const git = await evaluate(`({
+      title: document.title,
+      modules: document.querySelectorAll(".module-card").length,
+      concepts: [...document.querySelectorAll(".module-footer > span:first-child")]
+        .reduce((total, item) => total + Number.parseInt(item.textContent, 10), 0),
+      searchPlaceholder: document.querySelector("#searchInput").placeholder,
+      hasBranches: document.documentElement.textContent.includes("Branches, HEAD & Switching"),
+      hasRebase: document.documentElement.textContent.includes("Rebase & Cherry-pick"),
+      hasRecovery: document.documentElement.textContent.includes("Undoing & Recovery"),
+      avatarColor: getComputedStyle(document.querySelector(".auth-avatar")).backgroundColor,
+      navigationAccent: getComputedStyle(document.querySelector(".main-nav .active"), "::after").backgroundColor,
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(git.title, "Git at a Glance | QuickDevBase");
+    assert.equal(git.modules, 18);
+    assert.equal(git.concepts, 126);
+    assert.equal(git.searchPlaceholder, "Search topics, e.g. rebase");
+    assert.equal(git.hasBranches, true);
+    assert.equal(git.hasRebase, true);
+    assert.equal(git.hasRecovery, true);
+    assert.equal(git.avatarColor, "rgb(168, 91, 31)");
+    assert.equal(git.navigationAccent, "rgb(168, 91, 31)");
+    assert.equal(git.noHorizontalOverflow, true);
+    assert.deepEqual(git.errors, []);
+    await capture(screenshots.git);
+    await verifyCourseHistory("git", "Git in 60 seconds");
+
+    await navigate(390, 844, false, "Sign in", "/git");
+    const gitMobile = await evaluate(`({
+      responsiveLayout: matchMedia("(max-width: 700px)").matches,
+      logoLoaded: document.querySelector(".site-header .brand-logo").complete && document.querySelector(".site-header .brand-logo").naturalWidth > 0,
+      noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
+      errors: window.__qaErrors
+    })`);
+    assert.equal(gitMobile.responsiveLayout, true);
+    assert.equal(gitMobile.logoLoaded, true);
+    assert.equal(gitMobile.noHorizontalOverflow, true);
+    assert.deepEqual(gitMobile.errors, []);
+    await capture(screenshots.gitMobile);
+
+    await navigate(1440, 1000, false, "Sign in", "/git");
+    await evaluate(`document.querySelector('.module-card[data-module-id="10"]').click()`);
+    await waitFor(`document.querySelector("#lessonDialog").open`);
+    const gitLesson = await evaluate(`(() => {
+      const content = document.querySelector(".dialog-content");
+      const reflogLesson = [...document.querySelectorAll("#dialogConcepts .concept-item")]
+        .find((item) => item.querySelector("summary strong").textContent.trim() === "Reflog");
+      reflogLesson.open = true;
+      content.scrollTop = reflogLesson.offsetTop - 20;
+      const official = document.querySelector("#dialogOfficialLink");
+      return {
+        title: document.querySelector("#dialogTitle").textContent.trim(),
+        concepts: document.querySelectorAll("#dialogConcepts .concept-item").length,
+        hasReflogCommand: reflogLesson.textContent.includes("git reflog --date=local"),
+        allExamplesCommented: [...document.querySelectorAll("#dialogConcepts .concept-snippet")]
+          .every((item) => item.querySelector(".snippet-comment").textContent.trim().length > 3),
+        officialUrl: official.href,
+        officialLabel: official.textContent.trim(),
+        scrollable: content.scrollHeight > content.clientHeight,
+        overflowY: getComputedStyle(content).overflowY
+      };
+    })()`);
+    assert.equal(gitLesson.title, "Undoing & Recovery");
+    assert.equal(gitLesson.concepts, 7);
+    assert.equal(gitLesson.hasReflogCommand, true);
+    assert.equal(gitLesson.allExamplesCommented, true);
+    assert.match(gitLesson.officialUrl, /^https:\/\/git-scm\.com\/book\/en\/v2\/Git-Basics-Undoing-Things$/);
+    assert.ok(gitLesson.officialLabel.includes("Official Git documentation"));
+    assert.equal(gitLesson.scrollable, true);
+    assert.equal(gitLesson.overflowY, "auto");
+    await capture(screenshots.gitLesson);
+
     await setViewport(1440, 1000, false);
     await client.send("Page.navigate", { url: `${baseUrl}/ai` });
     await waitFor(`document.readyState === "complete" && document.querySelectorAll("[data-ai-path]").length === 3`);
@@ -1525,7 +1609,7 @@ async function run() {
     });
 
     console.log("Browser smoke test passed.");
-    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, javaHistory, modernJava, restLesson, mobile, javaHistoryMobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, sql, sqlMobile, sqlLesson, historyChecks, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
+    console.log(JSON.stringify({ library, teamDesktop, libraryMobile, libraryResponsiveWidths, teamMobile, desktop, auth, javaHistory, modernJava, restLesson, mobile, javaHistoryMobile, mobileRest, docker, dockerLesson, python, pythonMobile, pythonLesson, sql, sqlMobile, sqlLesson, git, gitMobile, gitLesson, historyChecks, accountSettings, celebration, publishedCertificate, publicCertificate, mobileCertificate, privacyPage, screenshots }, null, 2));
   } finally {
     if (certificateLearner) {
       try {

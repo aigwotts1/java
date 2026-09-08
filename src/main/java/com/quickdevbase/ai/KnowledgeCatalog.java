@@ -38,6 +38,7 @@ public class KnowledgeCatalog {
         new CurriculumSource("docker", "curriculum/docker.json", null),
         new CurriculumSource("python", "curriculum/python.json", null),
         new CurriculumSource("sql", "curriculum/sql.json", null),
+        new CurriculumSource("git", "curriculum/git.json", null),
         new CurriculumSource("generative-ai", "curriculum/ai.json", "generative-ai"),
         new CurriculumSource("rag", "curriculum/ai.json", "rag"),
         new CurriculumSource("agentic-ai", "curriculum/ai.json", "agentic-ai")
@@ -135,6 +136,7 @@ public class KnowledgeCatalog {
             case "docker" -> containsPhrase(query, "docker");
             case "python" -> containsPhrase(query, "python");
             case "sql" -> containsPhrase(query, "sql");
+            case "git" -> containsPhrase(query, "git") || containsPhrase(query, "version control");
             case "generative-ai" -> containsPhrase(query, "generative ai") || containsPhrase(query, "genai");
             case "rag" -> containsPhrase(query, "rag") || containsPhrase(query, "retrieval augmented generation");
             case "agentic-ai" -> containsPhrase(query, "agentic ai") || containsPhrase(query, "ai agent")

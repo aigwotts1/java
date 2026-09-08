@@ -23,6 +23,9 @@ public class CourseCatalog {
         add(new Course("sql", "sql-developer-knowledge", "SQL Topics at a Glance", "SQL at a Glance", "SQL", 18, 126, "/sql",
             "SQL foundations, tables, constraints, filtering, joins, aggregates, CTEs, data modification, transactions, functions, indexes, query plans, windows, modeling, and security.",
             "QuickDevBase is an independent educational project and is not affiliated with or endorsed by the PostgreSQL project. PostgreSQL and related marks belong to their respective owners."));
+        add(new Course("git", "git-developer-knowledge", "Git Topics at a Glance", "Git at a Glance", "Git", 18, 126, "/git",
+            "Git foundations, repositories, staging, commits, branches, merges, remotes, rebase, recovery, tags, worktrees, debugging, internals, security, and team delivery workflows.",
+            "Git is a trademark of Software Freedom Conservancy. QuickDevBase is not affiliated with or endorsed by the Git project or Software Freedom Conservancy."));
         add(new Course("generative-ai", "generative-ai-foundations", "Generative AI Topics at a Glance", "Generative AI at a Glance", "G", 12, 84, "/ai/generative-ai",
             "AI foundations, transformers, tokens, embeddings, prompting, structured outputs, multimodality, customization, evaluation, safety, and production trade-offs.",
             independentAiNotice()));

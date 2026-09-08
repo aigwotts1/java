@@ -103,6 +103,11 @@ public class PageController {
         return html(withDataScript(portal, "/sql-data.js", false));
     }
 
+    @GetMapping("/git")
+    ResponseEntity<String> git() {
+        return html(withDataScript(portal, "/git-data.js", false));
+    }
+
     @GetMapping("/ai")
     ResponseEntity<String> ai() {
         return html(aiHub);

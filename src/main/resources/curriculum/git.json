@@ -1,0 +1,1930 @@
+{
+  "key": "git",
+  "name": "Git",
+  "mark": "Git",
+  "modules": [
+    {
+      "id": 1,
+      "title": "Git Foundations",
+      "stage": "foundation",
+      "description": "Understand what Git records, why it is distributed, and how snapshots, objects, and references fit together.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Create a disposable repository, make two snapshots, and explain where the working tree, index, and history differ.",
+      "topics": [
+        "Version control",
+        "Distributed version control",
+        "Repository & working tree",
+        "Snapshot model",
+        "Git objects",
+        "References & HEAD",
+        "Working tree, index & repository"
+      ],
+      "history": {
+        "title": "Git in 60 seconds",
+        "summary": "Git was created for fast, distributed Linux kernel development and grew into the version-control foundation used by projects of every size.",
+        "milestones": [
+          {
+            "period": "1991-2002",
+            "title": "Patches & archives",
+            "description": "Early Linux kernel changes were shared as patches and archived files."
+          },
+          {
+            "period": "2002",
+            "title": "BitKeeper era",
+            "description": "The Linux kernel project adopted the distributed BitKeeper system for its development history."
+          },
+          {
+            "period": "2005-today",
+            "title": "Git is created",
+            "description": "Linus Torvalds created Git after BitKeeper access changed; the open-source system has continued to mature."
+          }
+        ],
+        "flow": "edit files -> stage a snapshot -> commit locally -> share with a remote"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Install, Configure & Get Help",
+      "stage": "foundation",
+      "description": "Set up Git deliberately so new repositories, commits, editors, and credentials behave predictably.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Install Git, set repository-safe identity and defaults, then locate help for an unfamiliar command.",
+      "topics": [
+        "Install & version",
+        "Configuration scopes",
+        "Commit identity",
+        "Default branch name",
+        "Editor & pager",
+        "Aliases",
+        "Built-in help"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Repositories & File States",
+      "stage": "foundation",
+      "description": "Create or copy repositories and read the tracked, untracked, modified, staged, and ignored states correctly.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Initialize a sample project, classify every file state with status, and safely rename and remove tracked files.",
+      "topics": [
+        "git init",
+        "git clone",
+        "Tracked & untracked files",
+        "Modified & staged states",
+        "Ignored files",
+        "Moving tracked files",
+        "Removing tracked files"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Staging & Commits",
+      "stage": "foundation",
+      "description": "Shape small, reviewable snapshots with intentional staging and useful commit messages.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Split mixed edits into two atomic commits and verify the exact staged diff before each commit.",
+      "topics": [
+        "Staging files",
+        "Partial staging",
+        "Reviewing the index",
+        "Creating a commit",
+        "Good commit messages",
+        "Amending the latest commit",
+        "Atomic commits"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Inspect History & Changes",
+      "stage": "core",
+      "description": "Read commit history and compare snapshots without changing repository state.",
+      "officialUrl": "https://git-scm.com/docs/git-log",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Trace when a behavior changed, inspect its patch, and summarize the files affected across a commit range.",
+      "topics": [
+        "Commit log",
+        "Graph view",
+        "Inspecting one object",
+        "Working-tree diff",
+        "Commit & range diff",
+        "File-level summaries",
+        "Path history"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Branches, HEAD & Switching",
+      "stage": "core",
+      "description": "Use lightweight branches confidently and understand exactly what switching changes.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Create a feature branch, make it track a remote branch, inspect divergence, and remove it safely after integration.",
+      "topics": [
+        "Branch references",
+        "HEAD",
+        "Create & switch",
+        "Detached HEAD",
+        "Rename & delete branches",
+        "Upstream branches",
+        "Merge base"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Merging",
+      "stage": "core",
+      "description": "Integrate branch histories and recognize fast-forward, three-way, and explicit merge commits.",
+      "officialUrl": "https://git-scm.com/docs/git-merge",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Merge two sample branches using fast-forward and non-fast-forward cases, then inspect the resulting graph.",
+      "topics": [
+        "Fast-forward merge",
+        "Three-way merge",
+        "Merge commits",
+        "No-fast-forward",
+        "Merge strategy options",
+        "Merge preview",
+        "Abort a merge"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Remotes & Collaboration",
+      "stage": "core",
+      "description": "Exchange commits and references with other repositories while keeping fetch, merge, and push responsibilities clear.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Add a remote, fetch it, compare remote-tracking history, publish a branch, and prune obsolete references.",
+      "topics": [
+        "Remote repositories",
+        "Adding & changing remotes",
+        "Fetch",
+        "Remote-tracking branches",
+        "Pull",
+        "Push & upstream",
+        "Pruning stale references"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Rebase & Cherry-pick",
+      "stage": "core",
+      "description": "Replay commits intentionally to update or refine a branch without confusing shared collaborators.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Git-Branching-Rebasing",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Rebase a private feature branch onto updated main, squash fixups interactively, and move one isolated fix with cherry-pick.",
+      "topics": [
+        "Rebase model",
+        "Rebase onto",
+        "Interactive rebase",
+        "Squash, fixup & reword",
+        "Continue, skip & abort",
+        "Cherry-pick",
+        "Public-history rule"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Undoing & Recovery",
+      "stage": "core",
+      "description": "Choose restore, reset, revert, reflog, or clean according to whether work is staged, committed, shared, or untracked.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Recover a discarded branch in a disposable repository and demonstrate a safe public revert without rewriting shared history.",
+      "topics": [
+        "Restore working-tree changes",
+        "Unstage with restore",
+        "Reset modes",
+        "Revert shared commits",
+        "Reflog",
+        "Recovering a lost commit",
+        "Cleaning untracked files"
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Tags, Releases & Archives",
+      "stage": "backend",
+      "description": "Name release points, verify them, describe nearby builds, and export source snapshots.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Git-Basics-Tagging",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Create an annotated release tag, push only that tag, generate a version string, and export a source archive.",
+      "topics": [
+        "Lightweight tags",
+        "Annotated tags",
+        "List & filter tags",
+        "Inspect a tag",
+        "Push tags deliberately",
+        "Describe builds",
+        "Source archives"
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Ignore Rules, Attributes & Line Endings",
+      "stage": "backend",
+      "description": "Keep generated files out of commits and make path-specific content behavior consistent across platforms.",
+      "officialUrl": "https://git-scm.com/docs/gitignore",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Design project and personal ignore rules, diagnose one ignored path, and normalize text line endings with attributes.",
+      "topics": [
+        ".gitignore patterns",
+        "Negation & directories",
+        "Ignore precedence",
+        "Tracked files are not ignored",
+        "Diagnose ignore rules",
+        ".gitattributes",
+        "Line-ending normalization"
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Stash & Multiple Worktrees",
+      "stage": "backend",
+      "description": "Temporarily set work aside or check out another branch without mixing unrelated changes.",
+      "officialUrl": "https://git-scm.com/docs/git-stash",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Pause an unfinished change, fix an urgent issue in a second worktree, then restore the original work safely.",
+      "topics": [
+        "Create a named stash",
+        "List & inspect stashes",
+        "Apply vs pop",
+        "Include untracked files",
+        "Branch from a stash",
+        "Add a worktree",
+        "Manage worktrees"
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Search, Blame & Bisect",
+      "stage": "backend",
+      "description": "Use repository history as a debugging tool instead of manually scanning files and commits.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Locate when a constant changed, identify the responsible line history, and bisect a reproducible regression.",
+      "topics": [
+        "Search tracked content",
+        "Pickaxe string search",
+        "Regex diff search",
+        "Line attribution",
+        "Binary search for regressions",
+        "Automated bisect",
+        "Compare patch series"
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Conflict Resolution",
+      "stage": "backend",
+      "description": "Resolve content and structural conflicts deliberately during merge, rebase, cherry-pick, and stash operations.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Create a controlled conflict, inspect all three index stages, resolve it, verify the result, and finish the operation.",
+      "topics": [
+        "Why conflicts happen",
+        "Conflict markers",
+        "Index conflict stages",
+        "Ours & theirs context",
+        "Marking resolution",
+        "Continue the operation",
+        "Reuse recorded resolution"
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Submodules, Large Repositories & Portability",
+      "stage": "advanced",
+      "description": "Compose repositories carefully and reduce checkout cost when projects or binary assets become large.",
+      "officialUrl": "https://git-scm.com/docs/gitsubmodules",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Add a pinned library submodule, clone it recursively, and compare submodules with sparse checkout and Git LFS trade-offs.",
+      "topics": [
+        "Submodule model",
+        "Add a submodule",
+        "Clone recursively",
+        "Initialize & update",
+        "Pinned dependency updates",
+        "Sparse checkout",
+        "Git LFS"
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Hooks, Signing & Security",
+      "stage": "advanced",
+      "description": "Automate local checks, verify history, protect credentials, and understand where Git trust ends.",
+      "officialUrl": "https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Create a fast pre-commit check, sign one commit in a disposable repository, and document secret-handling rules for the team.",
+      "topics": [
+        "Client-side hooks",
+        "Server-side hooks",
+        "Hook portability",
+        "Signed commits",
+        "Signed tags",
+        "Verify signatures",
+        "Secrets & credentials"
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Team Workflows & CI/CD",
+      "stage": "advanced",
+      "description": "Turn Git mechanics into a reviewable team workflow with protected integration and reproducible delivery.",
+      "officialUrl": "https://git-scm.com/docs/gitworkflows",
+      "officialLabel": "Official Git documentation",
+      "challenge": "Design a small-team workflow from issue and branch through review, tested merge, immutable release tag, and rollback.",
+      "topics": [
+        "Feature-branch workflow",
+        "Trunk-based development",
+        "Pull requests & code review",
+        "Reviewable commit series",
+        "Protected integration",
+        "CI by commit identity",
+        "Release & rollback"
+      ]
+    }
+  ],
+  "quickNotes": {
+    "1": [
+      [
+        "Version control records meaningful file changes over time so a team can compare, restore, and collaborate safely.",
+        "git --version"
+      ],
+      [
+        "Every normal Git clone contains repository history, so most inspection and commit work happens locally.",
+        "git clone https://example.com/team/app.git"
+      ],
+      [
+        "The repository stores Git history and metadata; the working tree is the checked-out set of files you edit.",
+        "git rev-parse --show-toplevel"
+      ],
+      [
+        "A commit records a snapshot of tracked content plus metadata and parent links rather than merely saving a list of edit commands.",
+        "git show --stat HEAD"
+      ],
+      [
+        "Blobs store file content, trees describe directories, commits point to trees and parents, and annotated tags name objects with metadata.",
+        "git cat-file -t HEAD"
+      ],
+      [
+        "Branches and tags are readable references to objects, while HEAD identifies the currently checked-out branch or commit.",
+        "git symbolic-ref --short HEAD"
+      ],
+      [
+        "Edits begin in the working tree, selected content enters the index, and commit stores that staged snapshot in the repository.",
+        "working tree -> git add -> index -> git commit -> repository"
+      ]
+    ],
+    "2": [
+      [
+        "Check the installed Git version before relying on newer commands or options.",
+        "git --version"
+      ],
+      [
+        "System, global, local, worktree, and command scopes layer configuration from broad defaults to narrow overrides.",
+        "git config --show-origin --list"
+      ],
+      [
+        "user.name and user.email become commit metadata; they are not authentication credentials for a hosting provider.",
+        "git config --global user.name \"Ada Developer\"\ngit config --global user.email \"ada@example.com\""
+      ],
+      [
+        "init.defaultBranch controls the initial branch name used by newly initialized repositories.",
+        "git config --global init.defaultBranch main"
+      ],
+      [
+        "Git can use configured editor and pager programs for commit messages and long command output.",
+        "git config --global core.editor \"code --wait\""
+      ],
+      [
+        "Aliases shorten repeated commands but should remain understandable to teammates and your future self.",
+        "git config --global alias.graph \"log --oneline --graph --decorate --all\""
+      ],
+      [
+        "Git exposes manual pages and concise option summaries directly from the command line.",
+        "git help rebase\ngit rebase -h"
+      ]
+    ],
+    "3": [
+      [
+        "git init creates the .git directory that turns an existing folder into a repository.",
+        "git init"
+      ],
+      [
+        "git clone copies repository data, creates a working tree, and normally configures origin and a remote-tracking branch.",
+        "git clone https://example.com/team/app.git app"
+      ],
+      [
+        "Tracked files belong to a committed or staged snapshot; untracked files have not yet entered Git history.",
+        "git status"
+      ],
+      [
+        "A tracked file can have one version in HEAD, another in the index, and another in the working tree.",
+        "git status --short"
+      ],
+      [
+        "Ignore rules keep generated or local-only untracked paths out of ordinary status and add operations.",
+        "git status --ignored"
+      ],
+      [
+        "git mv stages a delete at the old path and an add at the new path; Git later detects the rename from content similarity.",
+        "git mv old-name.txt new-name.txt"
+      ],
+      [
+        "git rm removes a path from the working tree and stages its removal; --cached keeps the local file.",
+        "git rm --cached local.env"
+      ]
+    ],
+    "4": [
+      [
+        "git add stages the current content of selected paths; later edits remain unstaged until added again.",
+        "git add src/App.java README.md"
+      ],
+      [
+        "Patch mode lets you choose individual change hunks so unrelated edits do not enter the same commit.",
+        "git add -p"
+      ],
+      [
+        "git diff --staged shows the exact patch the next commit would record.",
+        "git diff --staged"
+      ],
+      [
+        "A commit stores the staged tree, author and committer metadata, message, and parent relationship.",
+        "git commit -m \"Add input validation\""
+      ],
+      [
+        "A useful subject states the change as a concise action; a body can explain motivation, constraints, and consequences.",
+        "git commit\n# Add retry limit\n#\n# Prevent repeated provider calls after terminal failures."
+      ],
+      [
+        "Amend replaces the latest commit with a new one containing the current index and optionally a new message.",
+        "git commit --amend --no-edit"
+      ],
+      [
+        "An atomic commit contains one coherent change that can be reviewed, reverted, or moved independently.",
+        "git add -p\ngit commit -m \"Fix timeout handling\""
+      ]
+    ],
+    "5": [
+      [
+        "git log walks reachable commits and can limit results by author, date, message, path, or revision range.",
+        "git log --oneline --decorate -10"
+      ],
+      [
+        "A graph view makes branch, merge, and tag relationships visible alongside abbreviated commits.",
+        "git log --graph --oneline --decorate --all"
+      ],
+      [
+        "git show displays an object; for a commit it includes metadata and the introduced patch.",
+        "git show --stat HEAD"
+      ],
+      [
+        "git diff compares unstaged working-tree content with the index by default.",
+        "git diff"
+      ],
+      [
+        "Two revisions can be compared directly; A..B selects commits reachable from B but not A for log-style traversal.",
+        "git diff main...feature/login\ngit log main..feature/login"
+      ],
+      [
+        "Statistics and name-status views reveal scope before you inspect a full patch.",
+        "git diff --stat main...HEAD\ngit diff --name-status main...HEAD"
+      ],
+      [
+        "Adding -- before a path separates revisions from paths and narrows history to that file or directory.",
+        "git log --follow -- src/UserService.java"
+      ]
+    ],
+    "6": [
+      [
+        "A local branch is a movable reference to a commit, not a separate copy of project files.",
+        "git branch --show-current"
+      ],
+      [
+        "HEAD normally points symbolically to the current branch, whose reference advances when you commit.",
+        "git symbolic-ref HEAD"
+      ],
+      [
+        "git switch -c creates a branch at the chosen start point and checks it out in one step.",
+        "git switch -c feature/login main"
+      ],
+      [
+        "Checking out a commit directly detaches HEAD; new commits remain recoverable but are not kept by a branch unless you create one.",
+        "git switch --detach v1.2.0"
+      ],
+      [
+        "Rename updates a local branch name; safe deletion refuses while commits remain unmerged.",
+        "git branch -m old-name better-name\ngit branch -d merged-branch"
+      ],
+      [
+        "An upstream connects a local branch to the remote-tracking branch used by status, pull, and argument-free push behavior.",
+        "git branch --set-upstream-to=origin/main main"
+      ],
+      [
+        "The merge base is a best common ancestor used to reason about where two lines of development diverged.",
+        "git merge-base main feature/login"
+      ]
+    ],
+    "7": [
+      [
+        "If the current branch is an ancestor of the other branch, Git can advance its reference without creating a merge commit.",
+        "git merge --ff-only feature/docs"
+      ],
+      [
+        "Diverged branches require Git to combine both tips using their common ancestor as the baseline.",
+        "git merge feature/login"
+      ],
+      [
+        "A merge commit has multiple parents and records that histories were integrated at that point.",
+        "git show --no-patch --pretty=raw HEAD"
+      ],
+      [
+        "--no-ff preserves an explicit integration commit even when a fast-forward would be possible.",
+        "git merge --no-ff feature/payments"
+      ],
+      [
+        "Strategy options such as renormalization or favoring one side affect how specific conflicts are resolved; they do not replace review.",
+        "git merge -Xrenormalize feature/line-endings"
+      ],
+      [
+        "Fetch and compare the candidate branch before merging so scope and test expectations are understood.",
+        "git fetch origin\ngit log --oneline HEAD..origin/main\ngit diff --stat HEAD...origin/main"
+      ],
+      [
+        "When a merge cannot be completed safely, --abort attempts to restore the pre-merge state.",
+        "git merge --abort"
+      ]
+    ],
+    "8": [
+      [
+        "A remote is a named set of URLs and refspecs for another repository; origin is only a conventional name.",
+        "git remote -v"
+      ],
+      [
+        "Remote commands manage fetch and push URLs without altering existing commit objects.",
+        "git remote add upstream https://example.com/open/project.git"
+      ],
+      [
+        "git fetch downloads objects and updates configured remote-tracking references without integrating them into your current branch.",
+        "git fetch origin"
+      ],
+      [
+        "A name such as origin/main records the last fetched position of main in the origin repository.",
+        "git log --oneline main..origin/main"
+      ],
+      [
+        "git pull fetches and then integrates according to configuration, usually with merge or rebase; fetch-first is easier to inspect.",
+        "git pull --ff-only"
+      ],
+      [
+        "Push sends objects and updates allowed remote references; -u records the upstream for later status and push commands.",
+        "git push -u origin feature/login"
+      ],
+      [
+        "Pruning removes remote-tracking references whose source branches were deleted from the remote.",
+        "git fetch --prune origin"
+      ]
+    ],
+    "9": [
+      [
+        "Rebase finds commits unique to a branch and reapplies their changes onto a new base, producing new commit IDs.",
+        "git rebase main"
+      ],
+      [
+        "--onto precisely selects a new base, an old base boundary, and the branch whose commits should move.",
+        "git rebase --onto release old-base feature"
+      ],
+      [
+        "Interactive rebase can reorder, edit, combine, relabel, or remove commits before they are shared.",
+        "git rebase -i HEAD~5"
+      ],
+      [
+        "squash combines messages, fixup discards the later message, and reword changes a message while preserving its patch.",
+        "git commit --fixup HEAD~2\ngit rebase -i --autosquash HEAD~5"
+      ],
+      [
+        "After resolving a rebase stop, continue records the resolution; skip omits that patch; abort restores the original branch.",
+        "git rebase --continue\n# or: git rebase --abort"
+      ],
+      [
+        "Cherry-pick applies the change introduced by selected commits onto the current branch as new commits.",
+        "git cherry-pick a1b2c3d"
+      ],
+      [
+        "Avoid rebasing commits others already depend on unless the team coordinates the rewrite and uses force-with-lease safely.",
+        "git push --force-with-lease origin feature/login"
+      ]
+    ],
+    "10": [
+      [
+        "git restore replaces selected working-tree content from the index or another source; uncommitted edits can be lost.",
+        "git restore -- src/App.java"
+      ],
+      [
+        "--staged copies the selected path from HEAD into the index while leaving the working-tree edit intact.",
+        "git restore --staged src/App.java"
+      ],
+      [
+        "--soft moves the branch only, default mixed reset also resets the index, and --hard also replaces working-tree content.",
+        "git reset --soft HEAD~1"
+      ],
+      [
+        "git revert creates a new commit that applies the inverse of an earlier commit, preserving published history.",
+        "git revert a1b2c3d"
+      ],
+      [
+        "Reflogs record recent local reference movements and often reveal commits no longer named by a branch.",
+        "git reflog --date=local"
+      ],
+      [
+        "Once a commit ID is found in the reflog, create a branch immediately to keep it reachable.",
+        "git branch recovery/accidental-reset a1b2c3d"
+      ],
+      [
+        "git clean permanently removes untracked paths; preview with -n and include ignored files only with deliberate scope.",
+        "git clean -nd\n# review before: git clean -fd"
+      ]
+    ],
+    "11": [
+      [
+        "A lightweight tag is a fixed reference directly to an object, useful as a simple private marker.",
+        "git tag v1.2.0-rc1"
+      ],
+      [
+        "An annotated tag is its own object with tagger, date, message, and optional signature; releases usually benefit from this metadata.",
+        "git tag -a v1.2.0 -m \"Release 1.2.0\""
+      ],
+      [
+        "Tag patterns and sorting make version families easier to inspect in a repository with many releases.",
+        "git tag -l \"v1.*\" --sort=-version:refname"
+      ],
+      [
+        "git show reveals annotated-tag metadata and the referenced commit or object.",
+        "git show v1.2.0"
+      ],
+      [
+        "Tags are not automatically pushed with normal branch updates; publish a named tag or intentionally use --follow-tags.",
+        "git push origin v1.2.0"
+      ],
+      [
+        "git describe derives a readable identifier from the nearest reachable annotated tag plus later commit distance.",
+        "git describe --tags --always --dirty"
+      ],
+      [
+        "git archive exports tracked content from a tree without repository metadata or ignored working files.",
+        "git archive --format=zip --output=app-v1.2.0.zip v1.2.0"
+      ]
+    ],
+    "12": [
+      [
+        "A repository .gitignore shares rules for intentionally untracked files such as build output, caches, and local configuration.",
+        "# .gitignore\ntarget/\n*.log\n.env"
+      ],
+      [
+        "A leading ! re-includes a path when its parent directory remains visible; a trailing slash targets directories.",
+        "logs/\n!logs/.gitkeep"
+      ],
+      [
+        "Command-line rules, per-directory .gitignore files, repository excludes, and global excludes apply with defined precedence.",
+        "git config --global core.excludesFile ~/.config/git/ignore"
+      ],
+      [
+        "Ignore rules affect untracked paths; remove an already tracked secret or generated file from the index separately.",
+        "git rm --cached .env"
+      ],
+      [
+        "check-ignore reports the exact pattern and source file responsible for ignoring a path.",
+        "git check-ignore -v build/output.log"
+      ],
+      [
+        "Attributes assign text, diff, merge, export, and filter behavior to path patterns under version control.",
+        "# .gitattributes\n*.java text diff=java\n*.png binary"
+      ],
+      [
+        "A text attribute with an explicit eol keeps repository content normalized while checking out suitable platform line endings.",
+        "# .gitattributes\n* text=auto\n*.sh text eol=lf\n*.bat text eol=crlf"
+      ]
+    ],
+    "13": [
+      [
+        "stash push saves tracked working-tree and index changes as stash commits and resets them from the worktree.",
+        "git stash push -m \"WIP login validation\""
+      ],
+      [
+        "Stashes are reflog entries; inspect their summary or patch before choosing one to restore.",
+        "git stash list\ngit stash show -p stash@{0}"
+      ],
+      [
+        "apply restores a stash without deleting it; pop removes it only after a successful application.",
+        "git stash apply stash@{0}"
+      ],
+      [
+        "-u also stashes untracked files, while ignored files remain unless the stronger --all option is used.",
+        "git stash push -u -m \"WIP with new files\""
+      ],
+      [
+        "stash branch creates a branch at the stash's original base and applies the work where it is least likely to conflict.",
+        "git stash branch recover/login stash@{0}"
+      ],
+      [
+        "A linked worktree checks out another branch in a separate directory while sharing the same repository object database.",
+        "git worktree add ../app-hotfix -b hotfix/session main"
+      ],
+      [
+        "List linked worktrees before removing one; removal refuses when uncommitted work would be lost unless forced.",
+        "git worktree list\ngit worktree remove ../app-hotfix"
+      ]
+    ],
+    "14": [
+      [
+        "git grep searches tracked content quickly and can limit matches by revision, path, context, or pattern type.",
+        "git grep -n \"timeoutSeconds\""
+      ],
+      [
+        "git log -S finds commits where the number of occurrences of an exact string changed.",
+        "git log -S\"MAX_RETRIES\" --oneline -- src/"
+      ],
+      [
+        "git log -G finds commits whose patch contains added or removed lines matching a regular expression.",
+        "git log -G\"timeout.*=\" -p -- src/"
+      ],
+      [
+        "git blame shows the last commit that changed each selected line, providing a starting point rather than assigning personal fault.",
+        "git blame -L 40,65 src/App.java"
+      ],
+      [
+        "git bisect repeatedly checks a midpoint between known good and bad revisions to isolate the first bad commit.",
+        "git bisect start\ngit bisect bad\ngit bisect good v1.1.0"
+      ],
+      [
+        "bisect run executes a deterministic command at each candidate commit and classifies zero as good and nonzero as bad.",
+        "git bisect run ./gradlew test --tests LoginTest"
+      ],
+      [
+        "range-diff compares two versions of a commit series, useful after rebasing or revising a review branch.",
+        "git range-diff origin/main...feature-v1 origin/main...feature-v2"
+      ]
+    ],
+    "15": [
+      [
+        "A conflict occurs when Git cannot safely combine changes, such as overlapping edits or competing delete and modify operations.",
+        "git status"
+      ],
+      [
+        "Text conflicts mark the current side, separator, and incoming side; edit the file into the single intended result.",
+        "<<<<<<< HEAD\ncurrent change\n=======\nincoming change\n>>>>>>> feature"
+      ],
+      [
+        "During a merge conflict the index can hold the common base, ours, and theirs as stages 1, 2, and 3.",
+        "git ls-files -u"
+      ],
+      [
+        "The meaning of ours and theirs depends on the operation, especially during rebase, so confirm before choosing a side wholesale.",
+        "git checkout --ours -- path/to/file\ngit checkout --theirs -- path/to/file"
+      ],
+      [
+        "After editing and testing the final content, git add replaces unmerged index stages with the resolved version.",
+        "git add path/to/file\ngit diff --check"
+      ],
+      [
+        "Merge is completed with commit, while rebase and cherry-pick use their respective --continue commands.",
+        "git commit\n# or: git rebase --continue"
+      ],
+      [
+        "rerere can remember how a conflict was resolved and propose the same resolution when an identical conflict returns.",
+        "git config --global rerere.enabled true"
+      ]
+    ],
+    "16": [
+      [
+        "A submodule entry records a specific commit from another repository, while .gitmodules records its path and URL.",
+        "git submodule status"
+      ],
+      [
+        "submodule add clones the child repository and stages both its gitlink entry and .gitmodules configuration.",
+        "git submodule add https://example.com/team/shared.git libs/shared"
+      ],
+      [
+        "--recurse-submodules initializes and checks out nested repositories at the commits recorded by the parent.",
+        "git clone --recurse-submodules https://example.com/team/app.git"
+      ],
+      [
+        "Existing clones use update --init --recursive to populate missing submodules at the commits selected by the parent repository.",
+        "git submodule update --init --recursive"
+      ],
+      [
+        "Updating a submodule means checking out a newer child commit and committing the changed gitlink in the parent.",
+        "git -C libs/shared fetch\ngit -C libs/shared switch --detach v2.0.0\ngit add libs/shared"
+      ],
+      [
+        "Sparse checkout materializes only selected paths in the working tree while the repository can still contain broader history.",
+        "git sparse-checkout set src docs"
+      ],
+      [
+        "Git LFS stores small pointer files in Git while large content is transferred through separate LFS storage supported by the remote.",
+        "git lfs track \"*.psd\"\ngit add .gitattributes"
+      ]
+    ],
+    "17": [
+      [
+        "Hooks such as pre-commit and commit-msg run locally at lifecycle points but are not copied automatically by clone.",
+        ".git/hooks/pre-commit\n#!/bin/sh\n./gradlew test"
+      ],
+      [
+        "Receiving repositories can use pre-receive, update, and post-receive hooks to enforce or react to pushed reference changes.",
+        "hooks/pre-receive\n#!/bin/sh\n# validate proposed ref updates"
+      ],
+      [
+        "Teams should version hook source in the repository and install it explicitly rather than assuming .git/hooks is shared.",
+        "git config core.hooksPath .githooks"
+      ],
+      [
+        "A signed commit attaches a cryptographic signature that others can verify when they trust the corresponding identity.",
+        "git commit -S -m \"Release security fix\""
+      ],
+      [
+        "Signing an annotated release tag protects tag metadata and the object it references from unnoticed substitution.",
+        "git tag -s v1.2.0 -m \"Release 1.2.0\""
+      ],
+      [
+        "Verification checks signature validity and reports the signing key; trust policy still belongs to the project.",
+        "git verify-commit HEAD\ngit verify-tag v1.2.0"
+      ],
+      [
+        "Never commit passwords, tokens, or private keys; rotation is required even if leaked history is later rewritten.",
+        "git grep -n -I -E \"(api[_-]?key|password|secret)\" --cached"
+      ]
+    ],
+    "18": [
+      [
+        "Short-lived branches isolate one change for review and are deleted after their commits reach the integration branch.",
+        "git switch -c feature/42-session-timeout main"
+      ],
+      [
+        "Trunk-based teams integrate small changes frequently and use tests or feature flags to keep the main branch releasable.",
+        "git fetch origin\ngit rebase origin/main"
+      ],
+      [
+        "Hosting-platform reviews discuss a proposed branch integration; Git itself provides the commits and comparison underneath.",
+        "git push -u origin feature/42-session-timeout"
+      ],
+      [
+        "A clean series orders prerequisite changes first and keeps mechanical refactoring separate from behavior changes.",
+        "git log --reverse --oneline origin/main..HEAD"
+      ],
+      [
+        "Remote branch rules can require review, passing checks, and non-force updates before accepting changes to critical branches.",
+        "git push origin HEAD:refs/heads/main"
+      ],
+      [
+        "CI should build and report against an exact commit SHA so results can be tied to immutable source history.",
+        "git rev-parse HEAD"
+      ],
+      [
+        "Create releases from reviewed commits and prefer a new revert commit or a prior immutable artifact when rolling back shared production history.",
+        "git tag -a v1.2.0 -m \"Release 1.2.0\"\ngit push origin v1.2.0"
+      ]
+    ]
+  },
+  "groupedExamples": {
+    "Version control": [
+      [
+        "Version control",
+        "git --version",
+        "This small example makes version control concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Distributed version control": [
+      [
+        "Distributed version control",
+        "git clone https://example.com/team/app.git",
+        "This creates a usable local repository and prepares its Git metadata and working tree."
+      ]
+    ],
+    "Repository & working tree": [
+      [
+        "Repository & working tree",
+        "git rev-parse --show-toplevel",
+        "This small example makes repository & working tree concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Snapshot model": [
+      [
+        "Snapshot model",
+        "git show --stat HEAD",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Git objects": [
+      [
+        "Git objects",
+        "git cat-file -t HEAD",
+        "This exposes or maintains Git's internal object database rather than changing ordinary source files directly."
+      ]
+    ],
+    "References & HEAD": [
+      [
+        "References & HEAD",
+        "git symbolic-ref --short HEAD",
+        "This small example makes references & head concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Working tree, index & repository": [
+      [
+        "Working tree, index & repository",
+        "working tree -> git add -> index -> git commit -> repository",
+        "This small example makes working tree, index & repository concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Install & version": [
+      [
+        "Install & version",
+        "git --version",
+        "This small example makes install & version concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Configuration scopes": [
+      [
+        "Configuration scopes",
+        "git config --show-origin --list",
+        "This reads or writes Git configuration so the configuration scopes behavior is explicit for the selected scope."
+      ]
+    ],
+    "Commit identity": [
+      [
+        "Commit identity",
+        "git config --global user.name \"Ada Developer\"\ngit config --global user.email \"ada@example.com\"",
+        "This reads or writes Git configuration so the commit identity behavior is explicit for the selected scope."
+      ]
+    ],
+    "Default branch name": [
+      [
+        "Default branch name",
+        "git config --global init.defaultBranch main",
+        "This reads or writes Git configuration so the default branch name behavior is explicit for the selected scope."
+      ]
+    ],
+    "Editor & pager": [
+      [
+        "Editor & pager",
+        "git config --global core.editor \"code --wait\"",
+        "This reads or writes Git configuration so the editor & pager behavior is explicit for the selected scope."
+      ]
+    ],
+    "Aliases": [
+      [
+        "Aliases",
+        "git config --global alias.graph \"log --oneline --graph --decorate --all\"",
+        "This reads or writes Git configuration so the aliases behavior is explicit for the selected scope."
+      ]
+    ],
+    "Built-in help": [
+      [
+        "Built-in help",
+        "git help rebase\ngit rebase -h",
+        "This small example makes built-in help concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "git init": [
+      [
+        "git init",
+        "git init",
+        "This creates a usable local repository and prepares its Git metadata and working tree."
+      ]
+    ],
+    "git clone": [
+      [
+        "git clone",
+        "git clone https://example.com/team/app.git app",
+        "This creates a usable local repository and prepares its Git metadata and working tree."
+      ]
+    ],
+    "Tracked & untracked files": [
+      [
+        "Tracked & untracked files",
+        "git status",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Modified & staged states": [
+      [
+        "Modified & staged states",
+        "git status --short",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Ignored files": [
+      [
+        "Ignored files",
+        "git status --ignored",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Moving tracked files": [
+      [
+        "Moving tracked files",
+        "git mv old-name.txt new-name.txt",
+        "This small example makes moving tracked files concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Removing tracked files": [
+      [
+        "Removing tracked files",
+        "git rm --cached local.env",
+        "This small example makes removing tracked files concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Staging files": [
+      [
+        "Staging files",
+        "git add src/App.java README.md",
+        "This copies selected working-tree content into the index so it can enter the next commit."
+      ]
+    ],
+    "Partial staging": [
+      [
+        "Partial staging",
+        "git add -p",
+        "This copies selected working-tree content into the index so it can enter the next commit."
+      ]
+    ],
+    "Reviewing the index": [
+      [
+        "Reviewing the index",
+        "git diff --staged",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Creating a commit": [
+      [
+        "Creating a commit",
+        "git commit -m \"Add input validation\"",
+        "This records the currently staged snapshot and connects it to the existing commit history."
+      ]
+    ],
+    "Good commit messages": [
+      [
+        "Good commit messages",
+        "git commit\n# Add retry limit\n#\n# Prevent repeated provider calls after terminal failures.",
+        "This records the currently staged snapshot and connects it to the existing commit history."
+      ]
+    ],
+    "Amending the latest commit": [
+      [
+        "Amending the latest commit",
+        "git commit --amend --no-edit",
+        "This records the currently staged snapshot and connects it to the existing commit history."
+      ]
+    ],
+    "Atomic commits": [
+      [
+        "Atomic commits",
+        "git add -p\ngit commit -m \"Fix timeout handling\"",
+        "This copies selected working-tree content into the index so it can enter the next commit."
+      ]
+    ],
+    "Commit log": [
+      [
+        "Commit log",
+        "git log --oneline --decorate -10",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Graph view": [
+      [
+        "Graph view",
+        "git log --graph --oneline --decorate --all",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Inspecting one object": [
+      [
+        "Inspecting one object",
+        "git show --stat HEAD",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Working-tree diff": [
+      [
+        "Working-tree diff",
+        "git diff",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Commit & range diff": [
+      [
+        "Commit & range diff",
+        "git diff main...feature/login\ngit log main..feature/login",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "File-level summaries": [
+      [
+        "File-level summaries",
+        "git diff --stat main...HEAD\ngit diff --name-status main...HEAD",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Path history": [
+      [
+        "Path history",
+        "git log --follow -- src/UserService.java",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Branch references": [
+      [
+        "Branch references",
+        "git branch --show-current",
+        "This changes or inspects the lightweight references used to keep lines of development separate."
+      ]
+    ],
+    "HEAD": [
+      [
+        "HEAD",
+        "git symbolic-ref HEAD",
+        "This small example makes head concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Create & switch": [
+      [
+        "Create & switch",
+        "git switch -c feature/login main",
+        "This changes or inspects the lightweight references used to keep lines of development separate."
+      ]
+    ],
+    "Detached HEAD": [
+      [
+        "Detached HEAD",
+        "git switch --detach v1.2.0",
+        "This changes or inspects the lightweight references used to keep lines of development separate."
+      ]
+    ],
+    "Rename & delete branches": [
+      [
+        "Rename & delete branches",
+        "git branch -m old-name better-name\ngit branch -d merged-branch",
+        "This changes or inspects the lightweight references used to keep lines of development separate."
+      ]
+    ],
+    "Upstream branches": [
+      [
+        "Upstream branches",
+        "git branch --set-upstream-to=origin/main main",
+        "This changes or inspects the lightweight references used to keep lines of development separate."
+      ]
+    ],
+    "Merge base": [
+      [
+        "Merge base",
+        "git merge-base main feature/login",
+        "This integrates the named history into the current branch, stopping for manual resolution if needed."
+      ]
+    ],
+    "Fast-forward merge": [
+      [
+        "Fast-forward merge",
+        "git merge --ff-only feature/docs",
+        "This integrates the named history into the current branch, stopping for manual resolution if needed."
+      ]
+    ],
+    "Three-way merge": [
+      [
+        "Three-way merge",
+        "git merge feature/login",
+        "This integrates the named history into the current branch, stopping for manual resolution if needed."
+      ]
+    ],
+    "Merge commits": [
+      [
+        "Merge commits",
+        "git show --no-patch --pretty=raw HEAD",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "No-fast-forward": [
+      [
+        "No-fast-forward",
+        "git merge --no-ff feature/payments",
+        "This integrates the named history into the current branch, stopping for manual resolution if needed."
+      ]
+    ],
+    "Merge strategy options": [
+      [
+        "Merge strategy options",
+        "git merge -Xrenormalize feature/line-endings",
+        "This integrates the named history into the current branch, stopping for manual resolution if needed."
+      ]
+    ],
+    "Merge preview": [
+      [
+        "Merge preview",
+        "git fetch origin\ngit log --oneline HEAD..origin/main\ngit diff --stat HEAD...origin/main",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Abort a merge": [
+      [
+        "Abort a merge",
+        "git merge --abort",
+        "This integrates the named history into the current branch, stopping for manual resolution if needed."
+      ]
+    ],
+    "Remote repositories": [
+      [
+        "Remote repositories",
+        "git remote -v",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Adding & changing remotes": [
+      [
+        "Adding & changing remotes",
+        "git remote add upstream https://example.com/open/project.git",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Fetch": [
+      [
+        "Fetch",
+        "git fetch origin",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Remote-tracking branches": [
+      [
+        "Remote-tracking branches",
+        "git log --oneline main..origin/main",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Pull": [
+      [
+        "Pull",
+        "git pull --ff-only",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Push & upstream": [
+      [
+        "Push & upstream",
+        "git push -u origin feature/login",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Pruning stale references": [
+      [
+        "Pruning stale references",
+        "git fetch --prune origin",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Rebase model": [
+      [
+        "Rebase model",
+        "git rebase main",
+        "This reapplies selected commits onto a different history, creating new commit identities where necessary."
+      ]
+    ],
+    "Rebase onto": [
+      [
+        "Rebase onto",
+        "git rebase --onto release old-base feature",
+        "This reapplies selected commits onto a different history, creating new commit identities where necessary."
+      ]
+    ],
+    "Interactive rebase": [
+      [
+        "Interactive rebase",
+        "git rebase -i HEAD~5",
+        "This reapplies selected commits onto a different history, creating new commit identities where necessary."
+      ]
+    ],
+    "Squash, fixup & reword": [
+      [
+        "Squash, fixup & reword",
+        "git commit --fixup HEAD~2\ngit rebase -i --autosquash HEAD~5",
+        "This records the currently staged snapshot and connects it to the existing commit history."
+      ]
+    ],
+    "Continue, skip & abort": [
+      [
+        "Continue, skip & abort",
+        "git rebase --continue\n# or: git rebase --abort",
+        "This reapplies selected commits onto a different history, creating new commit identities where necessary."
+      ]
+    ],
+    "Cherry-pick": [
+      [
+        "Cherry-pick",
+        "git cherry-pick a1b2c3d",
+        "This reapplies selected commits onto a different history, creating new commit identities where necessary."
+      ]
+    ],
+    "Public-history rule": [
+      [
+        "Public-history rule",
+        "git push --force-with-lease origin feature/login",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Restore working-tree changes": [
+      [
+        "Restore working-tree changes",
+        "git restore -- src/App.java",
+        "This is a recovery-oriented command; inspect the target and scope before changing repository state."
+      ]
+    ],
+    "Unstage with restore": [
+      [
+        "Unstage with restore",
+        "git restore --staged src/App.java",
+        "This is a recovery-oriented command; inspect the target and scope before changing repository state."
+      ]
+    ],
+    "Reset modes": [
+      [
+        "Reset modes",
+        "git reset --soft HEAD~1",
+        "This is a recovery-oriented command; inspect the target and scope before changing repository state."
+      ]
+    ],
+    "Revert shared commits": [
+      [
+        "Revert shared commits",
+        "git revert a1b2c3d",
+        "This is a recovery-oriented command; inspect the target and scope before changing repository state."
+      ]
+    ],
+    "Reflog": [
+      [
+        "Reflog",
+        "git reflog --date=local",
+        "This is a recovery-oriented command; inspect the target and scope before changing repository state."
+      ]
+    ],
+    "Recovering a lost commit": [
+      [
+        "Recovering a lost commit",
+        "git branch recovery/accidental-reset a1b2c3d",
+        "This changes or inspects the lightweight references used to keep lines of development separate."
+      ]
+    ],
+    "Cleaning untracked files": [
+      [
+        "Cleaning untracked files",
+        "git clean -nd\n# review before: git clean -fd",
+        "This is a recovery-oriented command; inspect the target and scope before changing repository state."
+      ]
+    ],
+    "Lightweight tags": [
+      [
+        "Lightweight tags",
+        "git tag v1.2.0-rc1",
+        "This creates, inspects, or shares a stable name for a specific commit."
+      ]
+    ],
+    "Annotated tags": [
+      [
+        "Annotated tags",
+        "git tag -a v1.2.0 -m \"Release 1.2.0\"",
+        "This creates, inspects, or shares a stable name for a specific commit."
+      ]
+    ],
+    "List & filter tags": [
+      [
+        "List & filter tags",
+        "git tag -l \"v1.*\" --sort=-version:refname",
+        "This creates, inspects, or shares a stable name for a specific commit."
+      ]
+    ],
+    "Inspect a tag": [
+      [
+        "Inspect a tag",
+        "git show v1.2.0",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Push tags deliberately": [
+      [
+        "Push tags deliberately",
+        "git push origin v1.2.0",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Describe builds": [
+      [
+        "Describe builds",
+        "git describe --tags --always --dirty",
+        "This small example makes describe builds concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Source archives": [
+      [
+        "Source archives",
+        "git archive --format=zip --output=app-v1.2.0.zip v1.2.0",
+        "This small example makes source archives concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    ".gitignore patterns": [
+      [
+        ".gitignore patterns",
+        "# .gitignore\ntarget/\n*.log\n.env",
+        "This small example makes .gitignore patterns concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Negation & directories": [
+      [
+        "Negation & directories",
+        "logs/\n!logs/.gitkeep",
+        "This small example makes negation & directories concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Ignore precedence": [
+      [
+        "Ignore precedence",
+        "git config --global core.excludesFile ~/.config/git/ignore",
+        "This reads or writes Git configuration so the ignore precedence behavior is explicit for the selected scope."
+      ]
+    ],
+    "Tracked files are not ignored": [
+      [
+        "Tracked files are not ignored",
+        "git rm --cached .env",
+        "This small example makes tracked files are not ignored concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Diagnose ignore rules": [
+      [
+        "Diagnose ignore rules",
+        "git check-ignore -v build/output.log",
+        "This small example makes diagnose ignore rules concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    ".gitattributes": [
+      [
+        ".gitattributes",
+        "# .gitattributes\n*.java text diff=java\n*.png binary",
+        "This small example makes .gitattributes concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Line-ending normalization": [
+      [
+        "Line-ending normalization",
+        "# .gitattributes\n* text=auto\n*.sh text eol=lf\n*.bat text eol=crlf",
+        "This small example makes line-ending normalization concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Create a named stash": [
+      [
+        "Create a named stash",
+        "git stash push -m \"WIP login validation\"",
+        "This temporarily separates work so another task can proceed without mixing unrelated changes."
+      ]
+    ],
+    "List & inspect stashes": [
+      [
+        "List & inspect stashes",
+        "git stash list\ngit stash show -p stash@{0}",
+        "This temporarily separates work so another task can proceed without mixing unrelated changes."
+      ]
+    ],
+    "Apply vs pop": [
+      [
+        "Apply vs pop",
+        "git stash apply stash@{0}",
+        "This temporarily separates work so another task can proceed without mixing unrelated changes."
+      ]
+    ],
+    "Include untracked files": [
+      [
+        "Include untracked files",
+        "git stash push -u -m \"WIP with new files\"",
+        "This temporarily separates work so another task can proceed without mixing unrelated changes."
+      ]
+    ],
+    "Branch from a stash": [
+      [
+        "Branch from a stash",
+        "git stash branch recover/login stash@{0}",
+        "This temporarily separates work so another task can proceed without mixing unrelated changes."
+      ]
+    ],
+    "Add a worktree": [
+      [
+        "Add a worktree",
+        "git worktree add ../app-hotfix -b hotfix/session main",
+        "This temporarily separates work so another task can proceed without mixing unrelated changes."
+      ]
+    ],
+    "Manage worktrees": [
+      [
+        "Manage worktrees",
+        "git worktree list\ngit worktree remove ../app-hotfix",
+        "This temporarily separates work so another task can proceed without mixing unrelated changes."
+      ]
+    ],
+    "Search tracked content": [
+      [
+        "Search tracked content",
+        "git grep -n \"timeoutSeconds\"",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Pickaxe string search": [
+      [
+        "Pickaxe string search",
+        "git log -S\"MAX_RETRIES\" --oneline -- src/",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Regex diff search": [
+      [
+        "Regex diff search",
+        "git log -G\"timeout.*=\" -p -- src/",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Line attribution": [
+      [
+        "Line attribution",
+        "git blame -L 40,65 src/App.java",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Binary search for regressions": [
+      [
+        "Binary search for regressions",
+        "git bisect start\ngit bisect bad\ngit bisect good v1.1.0",
+        "This uses Git history to narrow a problem or compare how a patch series changed."
+      ]
+    ],
+    "Automated bisect": [
+      [
+        "Automated bisect",
+        "git bisect run ./gradlew test --tests LoginTest",
+        "This uses Git history to narrow a problem or compare how a patch series changed."
+      ]
+    ],
+    "Compare patch series": [
+      [
+        "Compare patch series",
+        "git range-diff origin/main...feature-v1 origin/main...feature-v2",
+        "This uses Git history to narrow a problem or compare how a patch series changed."
+      ]
+    ],
+    "Why conflicts happen": [
+      [
+        "Why conflicts happen",
+        "git status",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Conflict markers": [
+      [
+        "Conflict markers",
+        "<<<<<<< HEAD\ncurrent change\n=======\nincoming change\n>>>>>>> feature",
+        "This small example makes conflict markers concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Index conflict stages": [
+      [
+        "Index conflict stages",
+        "git ls-files -u",
+        "This small example makes index conflict stages concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Ours & theirs context": [
+      [
+        "Ours & theirs context",
+        "git checkout --ours -- path/to/file\ngit checkout --theirs -- path/to/file",
+        "This small example makes ours & theirs context concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Marking resolution": [
+      [
+        "Marking resolution",
+        "git add path/to/file\ngit diff --check",
+        "This copies selected working-tree content into the index so it can enter the next commit."
+      ]
+    ],
+    "Continue the operation": [
+      [
+        "Continue the operation",
+        "git commit\n# or: git rebase --continue",
+        "This records the currently staged snapshot and connects it to the existing commit history."
+      ]
+    ],
+    "Reuse recorded resolution": [
+      [
+        "Reuse recorded resolution",
+        "git config --global rerere.enabled true",
+        "This reads or writes Git configuration so the reuse recorded resolution behavior is explicit for the selected scope."
+      ]
+    ],
+    "Submodule model": [
+      [
+        "Submodule model",
+        "git submodule status",
+        "This manages the recorded relationship between the parent repository and a separately versioned repository."
+      ]
+    ],
+    "Add a submodule": [
+      [
+        "Add a submodule",
+        "git submodule add https://example.com/team/shared.git libs/shared",
+        "This manages the recorded relationship between the parent repository and a separately versioned repository."
+      ]
+    ],
+    "Clone recursively": [
+      [
+        "Clone recursively",
+        "git clone --recurse-submodules https://example.com/team/app.git",
+        "This creates a usable local repository and prepares its Git metadata and working tree."
+      ]
+    ],
+    "Initialize & update": [
+      [
+        "Initialize & update",
+        "git submodule update --init --recursive",
+        "This manages the recorded relationship between the parent repository and a separately versioned repository."
+      ]
+    ],
+    "Pinned dependency updates": [
+      [
+        "Pinned dependency updates",
+        "git -C libs/shared fetch\ngit -C libs/shared switch --detach v2.0.0\ngit add libs/shared",
+        "This small example makes pinned dependency updates concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Sparse checkout": [
+      [
+        "Sparse checkout",
+        "git sparse-checkout set src docs",
+        "This small example makes sparse checkout concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Git LFS": [
+      [
+        "Git LFS",
+        "git lfs track \"*.psd\"\ngit add .gitattributes",
+        "This small example makes git lfs concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Client-side hooks": [
+      [
+        "Client-side hooks",
+        ".git/hooks/pre-commit\n#!/bin/sh\n./gradlew test",
+        "This small example makes client-side hooks concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Server-side hooks": [
+      [
+        "Server-side hooks",
+        "hooks/pre-receive\n#!/bin/sh\n# validate proposed ref updates",
+        "This small example makes server-side hooks concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Hook portability": [
+      [
+        "Hook portability",
+        "git config core.hooksPath .githooks",
+        "This reads or writes Git configuration so the hook portability behavior is explicit for the selected scope."
+      ]
+    ],
+    "Signed commits": [
+      [
+        "Signed commits",
+        "git commit -S -m \"Release security fix\"",
+        "This records the currently staged snapshot and connects it to the existing commit history."
+      ]
+    ],
+    "Signed tags": [
+      [
+        "Signed tags",
+        "git tag -s v1.2.0 -m \"Release 1.2.0\"",
+        "This creates, inspects, or shares a stable name for a specific commit."
+      ]
+    ],
+    "Verify signatures": [
+      [
+        "Verify signatures",
+        "git verify-commit HEAD\ngit verify-tag v1.2.0",
+        "This uses a cryptographic signature to attach or verify authorship evidence for Git history."
+      ]
+    ],
+    "Secrets & credentials": [
+      [
+        "Secrets & credentials",
+        "git grep -n -I -E \"(api[_-]?key|password|secret)\" --cached",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Feature-branch workflow": [
+      [
+        "Feature-branch workflow",
+        "git switch -c feature/42-session-timeout main",
+        "This changes or inspects the lightweight references used to keep lines of development separate."
+      ]
+    ],
+    "Trunk-based development": [
+      [
+        "Trunk-based development",
+        "git fetch origin\ngit rebase origin/main",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Pull requests & code review": [
+      [
+        "Pull requests & code review",
+        "git push -u origin feature/42-session-timeout",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "Reviewable commit series": [
+      [
+        "Reviewable commit series",
+        "git log --reverse --oneline origin/main..HEAD",
+        "This inspects repository state or history without creating a new commit."
+      ]
+    ],
+    "Protected integration": [
+      [
+        "Protected integration",
+        "git push origin HEAD:refs/heads/main",
+        "This communicates with or configures another repository while keeping local and remote references distinct."
+      ]
+    ],
+    "CI by commit identity": [
+      [
+        "CI by commit identity",
+        "git rev-parse HEAD",
+        "This small example makes ci by commit identity concrete; run it in a disposable repository before adapting it to important work."
+      ]
+    ],
+    "Release & rollback": [
+      [
+        "Release & rollback",
+        "git tag -a v1.2.0 -m \"Release 1.2.0\"\ngit push origin v1.2.0",
+        "This creates, inspects, or shares a stable name for a specific commit."
+      ]
+    ]
+  },
+  "exampleComments": {
+    "Version control": "This small example makes version control concrete; run it in a disposable repository before adapting it to important work.",
+    "Distributed version control": "This creates a usable local repository and prepares its Git metadata and working tree.",
+    "Repository & working tree": "This small example makes repository & working tree concrete; run it in a disposable repository before adapting it to important work.",
+    "Snapshot model": "This inspects repository state or history without creating a new commit.",
+    "Git objects": "This exposes or maintains Git's internal object database rather than changing ordinary source files directly.",
+    "References & HEAD": "This small example makes references & head concrete; run it in a disposable repository before adapting it to important work.",
+    "Working tree, index & repository": "This small example makes working tree, index & repository concrete; run it in a disposable repository before adapting it to important work.",
+    "Install & version": "This small example makes install & version concrete; run it in a disposable repository before adapting it to important work.",
+    "Configuration scopes": "This reads or writes Git configuration so the configuration scopes behavior is explicit for the selected scope.",
+    "Commit identity": "This reads or writes Git configuration so the commit identity behavior is explicit for the selected scope.",
+    "Default branch name": "This reads or writes Git configuration so the default branch name behavior is explicit for the selected scope.",
+    "Editor & pager": "This reads or writes Git configuration so the editor & pager behavior is explicit for the selected scope.",
+    "Aliases": "This reads or writes Git configuration so the aliases behavior is explicit for the selected scope.",
+    "Built-in help": "This small example makes built-in help concrete; run it in a disposable repository before adapting it to important work.",
+    "git init": "This creates a usable local repository and prepares its Git metadata and working tree.",
+    "git clone": "This creates a usable local repository and prepares its Git metadata and working tree.",
+    "Tracked & untracked files": "This inspects repository state or history without creating a new commit.",
+    "Modified & staged states": "This inspects repository state or history without creating a new commit.",
+    "Ignored files": "This inspects repository state or history without creating a new commit.",
+    "Moving tracked files": "This small example makes moving tracked files concrete; run it in a disposable repository before adapting it to important work.",
+    "Removing tracked files": "This small example makes removing tracked files concrete; run it in a disposable repository before adapting it to important work.",
+    "Staging files": "This copies selected working-tree content into the index so it can enter the next commit.",
+    "Partial staging": "This copies selected working-tree content into the index so it can enter the next commit.",
+    "Reviewing the index": "This inspects repository state or history without creating a new commit.",
+    "Creating a commit": "This records the currently staged snapshot and connects it to the existing commit history.",
+    "Good commit messages": "This records the currently staged snapshot and connects it to the existing commit history.",
+    "Amending the latest commit": "This records the currently staged snapshot and connects it to the existing commit history.",
+    "Atomic commits": "This copies selected working-tree content into the index so it can enter the next commit.",
+    "Commit log": "This inspects repository state or history without creating a new commit.",
+    "Graph view": "This inspects repository state or history without creating a new commit.",
+    "Inspecting one object": "This inspects repository state or history without creating a new commit.",
+    "Working-tree diff": "This inspects repository state or history without creating a new commit.",
+    "Commit & range diff": "This inspects repository state or history without creating a new commit.",
+    "File-level summaries": "This inspects repository state or history without creating a new commit.",
+    "Path history": "This inspects repository state or history without creating a new commit.",
+    "Branch references": "This changes or inspects the lightweight references used to keep lines of development separate.",
+    "HEAD": "This small example makes head concrete; run it in a disposable repository before adapting it to important work.",
+    "Create & switch": "This changes or inspects the lightweight references used to keep lines of development separate.",
+    "Detached HEAD": "This changes or inspects the lightweight references used to keep lines of development separate.",
+    "Rename & delete branches": "This changes or inspects the lightweight references used to keep lines of development separate.",
+    "Upstream branches": "This changes or inspects the lightweight references used to keep lines of development separate.",
+    "Merge base": "This integrates the named history into the current branch, stopping for manual resolution if needed.",
+    "Fast-forward merge": "This integrates the named history into the current branch, stopping for manual resolution if needed.",
+    "Three-way merge": "This integrates the named history into the current branch, stopping for manual resolution if needed.",
+    "Merge commits": "This inspects repository state or history without creating a new commit.",
+    "No-fast-forward": "This integrates the named history into the current branch, stopping for manual resolution if needed.",
+    "Merge strategy options": "This integrates the named history into the current branch, stopping for manual resolution if needed.",
+    "Merge preview": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Abort a merge": "This integrates the named history into the current branch, stopping for manual resolution if needed.",
+    "Remote repositories": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Adding & changing remotes": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Fetch": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Remote-tracking branches": "This inspects repository state or history without creating a new commit.",
+    "Pull": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Push & upstream": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Pruning stale references": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Rebase model": "This reapplies selected commits onto a different history, creating new commit identities where necessary.",
+    "Rebase onto": "This reapplies selected commits onto a different history, creating new commit identities where necessary.",
+    "Interactive rebase": "This reapplies selected commits onto a different history, creating new commit identities where necessary.",
+    "Squash, fixup & reword": "This records the currently staged snapshot and connects it to the existing commit history.",
+    "Continue, skip & abort": "This reapplies selected commits onto a different history, creating new commit identities where necessary.",
+    "Cherry-pick": "This reapplies selected commits onto a different history, creating new commit identities where necessary.",
+    "Public-history rule": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Restore working-tree changes": "This is a recovery-oriented command; inspect the target and scope before changing repository state.",
+    "Unstage with restore": "This is a recovery-oriented command; inspect the target and scope before changing repository state.",
+    "Reset modes": "This is a recovery-oriented command; inspect the target and scope before changing repository state.",
+    "Revert shared commits": "This is a recovery-oriented command; inspect the target and scope before changing repository state.",
+    "Reflog": "This is a recovery-oriented command; inspect the target and scope before changing repository state.",
+    "Recovering a lost commit": "This changes or inspects the lightweight references used to keep lines of development separate.",
+    "Cleaning untracked files": "This is a recovery-oriented command; inspect the target and scope before changing repository state.",
+    "Lightweight tags": "This creates, inspects, or shares a stable name for a specific commit.",
+    "Annotated tags": "This creates, inspects, or shares a stable name for a specific commit.",
+    "List & filter tags": "This creates, inspects, or shares a stable name for a specific commit.",
+    "Inspect a tag": "This inspects repository state or history without creating a new commit.",
+    "Push tags deliberately": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Describe builds": "This small example makes describe builds concrete; run it in a disposable repository before adapting it to important work.",
+    "Source archives": "This small example makes source archives concrete; run it in a disposable repository before adapting it to important work.",
+    ".gitignore patterns": "This small example makes .gitignore patterns concrete; run it in a disposable repository before adapting it to important work.",
+    "Negation & directories": "This small example makes negation & directories concrete; run it in a disposable repository before adapting it to important work.",
+    "Ignore precedence": "This reads or writes Git configuration so the ignore precedence behavior is explicit for the selected scope.",
+    "Tracked files are not ignored": "This small example makes tracked files are not ignored concrete; run it in a disposable repository before adapting it to important work.",
+    "Diagnose ignore rules": "This small example makes diagnose ignore rules concrete; run it in a disposable repository before adapting it to important work.",
+    ".gitattributes": "This small example makes .gitattributes concrete; run it in a disposable repository before adapting it to important work.",
+    "Line-ending normalization": "This small example makes line-ending normalization concrete; run it in a disposable repository before adapting it to important work.",
+    "Create a named stash": "This temporarily separates work so another task can proceed without mixing unrelated changes.",
+    "List & inspect stashes": "This temporarily separates work so another task can proceed without mixing unrelated changes.",
+    "Apply vs pop": "This temporarily separates work so another task can proceed without mixing unrelated changes.",
+    "Include untracked files": "This temporarily separates work so another task can proceed without mixing unrelated changes.",
+    "Branch from a stash": "This temporarily separates work so another task can proceed without mixing unrelated changes.",
+    "Add a worktree": "This temporarily separates work so another task can proceed without mixing unrelated changes.",
+    "Manage worktrees": "This temporarily separates work so another task can proceed without mixing unrelated changes.",
+    "Search tracked content": "This inspects repository state or history without creating a new commit.",
+    "Pickaxe string search": "This inspects repository state or history without creating a new commit.",
+    "Regex diff search": "This inspects repository state or history without creating a new commit.",
+    "Line attribution": "This inspects repository state or history without creating a new commit.",
+    "Binary search for regressions": "This uses Git history to narrow a problem or compare how a patch series changed.",
+    "Automated bisect": "This uses Git history to narrow a problem or compare how a patch series changed.",
+    "Compare patch series": "This uses Git history to narrow a problem or compare how a patch series changed.",
+    "Why conflicts happen": "This inspects repository state or history without creating a new commit.",
+    "Conflict markers": "This small example makes conflict markers concrete; run it in a disposable repository before adapting it to important work.",
+    "Index conflict stages": "This small example makes index conflict stages concrete; run it in a disposable repository before adapting it to important work.",
+    "Ours & theirs context": "This small example makes ours & theirs context concrete; run it in a disposable repository before adapting it to important work.",
+    "Marking resolution": "This copies selected working-tree content into the index so it can enter the next commit.",
+    "Continue the operation": "This records the currently staged snapshot and connects it to the existing commit history.",
+    "Reuse recorded resolution": "This reads or writes Git configuration so the reuse recorded resolution behavior is explicit for the selected scope.",
+    "Submodule model": "This manages the recorded relationship between the parent repository and a separately versioned repository.",
+    "Add a submodule": "This manages the recorded relationship between the parent repository and a separately versioned repository.",
+    "Clone recursively": "This creates a usable local repository and prepares its Git metadata and working tree.",
+    "Initialize & update": "This manages the recorded relationship between the parent repository and a separately versioned repository.",
+    "Pinned dependency updates": "This small example makes pinned dependency updates concrete; run it in a disposable repository before adapting it to important work.",
+    "Sparse checkout": "This small example makes sparse checkout concrete; run it in a disposable repository before adapting it to important work.",
+    "Git LFS": "This small example makes git lfs concrete; run it in a disposable repository before adapting it to important work.",
+    "Client-side hooks": "This small example makes client-side hooks concrete; run it in a disposable repository before adapting it to important work.",
+    "Server-side hooks": "This small example makes server-side hooks concrete; run it in a disposable repository before adapting it to important work.",
+    "Hook portability": "This reads or writes Git configuration so the hook portability behavior is explicit for the selected scope.",
+    "Signed commits": "This records the currently staged snapshot and connects it to the existing commit history.",
+    "Signed tags": "This creates, inspects, or shares a stable name for a specific commit.",
+    "Verify signatures": "This uses a cryptographic signature to attach or verify authorship evidence for Git history.",
+    "Secrets & credentials": "This inspects repository state or history without creating a new commit.",
+    "Feature-branch workflow": "This changes or inspects the lightweight references used to keep lines of development separate.",
+    "Trunk-based development": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Pull requests & code review": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "Reviewable commit series": "This inspects repository state or history without creating a new commit.",
+    "Protected integration": "This communicates with or configures another repository while keeping local and remote references distinct.",
+    "CI by commit identity": "This small example makes ci by commit identity concrete; run it in a disposable repository before adapting it to important work.",
+    "Release & rollback": "This creates, inspects, or shares a stable name for a specific commit."
+  },
+  "pageTitle": "Git at a Glance | QuickDevBase",
+  "pageDescription": "QuickDevBase Git - concise explanations, practical commands, recovery guidance, team workflows, and links to the official Git documentation.",
+  "heroEyebrow": "Git knowledge, at a glance",
+  "heroTitle": "Git, without<br>the <em>history confusion.</em>",
+  "heroLede": "Scan the path from your first commit through branches, collaboration, recovery, internals, security, and delivery. Every module points to the official Git documentation for depth.",
+  "previewLabel": "GIT.WORKFLOW",
+  "previewCode": "<span><b class=\"code-blue\">git</b> switch -c feature/login</span><span><b class=\"code-blue\">git</b> add -p</span><span><b class=\"code-pink\">git</b> commit -m \"Add login validation\"</span><span><b class=\"code-pink\">git</b> push -u origin feature/login</span>",
+  "chipOne": "126 Git concepts",
+  "chipTwo": "Official docs linked",
+  "curriculumTitle": "One glance. Every Git essential.",
+  "curriculumLede": "Understand the mental model, practise each command in a disposable repository, and use the official documentation for exact options and edge cases.",
+  "searchPlaceholder": "Search topics, e.g. rebase",
+  "certificateTitleHtml": "Git Topics<br>at a Glance",
+  "completionNoun": "Git learner",
+  "trademark": "Git is a trademark of Software Freedom Conservancy. QuickDevBase is not affiliated with or endorsed by the Git project or Software Freedom Conservancy.",
+  "stageLabels": {
+    "foundation": "Foundation",
+    "core": "Daily Git",
+    "backend": "Collaboration",
+    "advanced": "Advanced & Delivery"
+  },
+  "fallbackNote": "A practical Git concept worth understanding before changing shared repository history.",
+  "fallbackCode": "# Practise this command in a disposable repository first."
+}

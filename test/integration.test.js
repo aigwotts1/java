@@ -10,6 +10,7 @@ const assessmentCurricula = {
   docker: JSON.parse(fs.readFileSync(path.join(curriculumRoot, "docker.json"), "utf8")),
   python: JSON.parse(fs.readFileSync(path.join(curriculumRoot, "python.json"), "utf8")),
   sql: JSON.parse(fs.readFileSync(path.join(curriculumRoot, "sql.json"), "utf8")),
+  git: JSON.parse(fs.readFileSync(path.join(curriculumRoot, "git.json"), "utf8")),
 };
 const aiCurricula = JSON.parse(fs.readFileSync(path.join(curriculumRoot, "ai.json"), "utf8"));
 Object.assign(assessmentCurricula, aiCurricula);
@@ -267,7 +268,7 @@ test(
     assert.equal(status.data.remainingToday, status.data.dailyLimit);
     assert.equal(typeof status.data.ragEnabled, "boolean");
     assert.equal(typeof status.data.indexedChunks, "number");
-    assert.equal(status.data.totalChunks, 778);
+    assert.equal(status.data.totalChunks, 904);
     assert.ok(status.data.indexedChunks >= 0 && status.data.indexedChunks <= status.data.totalChunks);
 
     const discoveryForm = new FormData();
@@ -760,6 +761,64 @@ test(
     assert.equal(publicPage.status, 200);
     assert.match(publicPage.data, /SQL Topics at a Glance/);
     assert.match(publicPage.data, /not affiliated with or endorsed by the PostgreSQL project/);
+
+    const cleanup = await request("/api/account", {
+      method: "DELETE",
+      cookie,
+      body: { confirmation: "DELETE", password },
+    });
+    assert.equal(cleanup.status, 204);
+  },
+);
+
+test(
+  "Git completion earns a Git-scoped certificate without changing other progress",
+  { skip: !baseUrl },
+  async () => {
+    const nonce = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const password = "LearnGit!42";
+    const registration = await request("/api/auth/register", {
+      method: "POST",
+      body: { name: "Git Learner", email: `git-${nonce}@example.com`, password },
+    });
+    assert.equal(registration.status, 201);
+    const cookie = registration.cookie;
+
+    for (let moduleId = 1; moduleId <= 18; moduleId += 1) {
+      const saved = await request(`/api/progress/${moduleId}?course=git`, {
+        method: "PUT",
+        cookie,
+        body: { completed: true },
+      });
+      assert.equal(saved.status, 200);
+    }
+
+    assert.deepEqual((await request("/api/progress?course=java", { cookie })).data.completed, []);
+    assert.deepEqual((await request("/api/progress?course=sql", { cookie })).data.completed, []);
+    await passAssessment(cookie, "git");
+    const status = await request("/api/certificate?course=git", { cookie });
+    assert.equal(status.data.eligible, true);
+    assert.equal(status.data.completedCount, 18);
+
+    const claim = await request("/api/certificate/claim?course=git", {
+      method: "POST",
+      cookie,
+      body: {
+        consent: true,
+        consentVersion: status.data.consentVersion,
+        publicName: "Git Learner",
+      },
+    });
+    assert.equal(claim.status, 201);
+    assert.equal(claim.data.certificate.courseKey, "git");
+    assert.equal(claim.data.certificate.courseTitle, "Git Topics at a Glance");
+    assert.equal(claim.data.certificate.conceptCount, 126);
+    assert.match(claim.data.certificate.credentialId, /^QDB-GIT-/);
+
+    const publicPage = await request(`/certificate/${claim.data.certificate.publicId}`);
+    assert.equal(publicPage.status, 200);
+    assert.match(publicPage.data, /Git Topics at a Glance/);
+    assert.match(publicPage.data, /Git is a trademark of Software Freedom Conservancy/);
 
     const cleanup = await request("/api/account", {
       method: "DELETE",
