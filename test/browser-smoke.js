@@ -396,7 +396,7 @@ async function run() {
     assert.equal(library.gitPath, "/git");
     assert.equal(library.aiPath, "/ai");
     assert.equal(library.javaMarkColor, "rgb(216, 76, 49)");
-    assert.equal(library.gitMarkColor, "rgb(168, 91, 31)");
+    assert.equal(library.gitMarkColor, "rgb(232, 117, 0)");
     assert.notEqual(library.gitMarkColor, library.javaMarkColor);
     assert.equal(library.brandLogos, 2);
     assert.equal(library.logosLoaded, true);
@@ -1122,8 +1122,8 @@ async function run() {
     assert.equal(git.hasBranches, true);
     assert.equal(git.hasRebase, true);
     assert.equal(git.hasRecovery, true);
-    assert.equal(git.avatarColor, "rgb(168, 91, 31)");
-    assert.equal(git.navigationAccent, "rgb(168, 91, 31)");
+    assert.equal(git.avatarColor, "rgb(196, 81, 0)");
+    assert.equal(git.navigationAccent, "rgb(196, 81, 0)");
     assert.equal(git.noHorizontalOverflow, true);
     assert.deepEqual(git.errors, []);
     await capture(screenshots.git);

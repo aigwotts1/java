@@ -39,8 +39,8 @@ html[data-course="sql"] {
 }
 
 html[data-course="git"] {
-  --orange: #a85b1f;
-  --orange-dark: #713912;
+  --orange: #c45100;
+  --orange-dark: #7d2d00;
 }
 
 html[data-course="rag"] {
@@ -1830,7 +1830,7 @@ footer {
 html[data-course="docker"] .ai-guide-block { --ai-color: #1684c2; }
 html[data-course="python"] .ai-guide-block { --ai-color: #3776ab; }
 html[data-course="sql"] .ai-guide-block { --ai-color: #2f7d64; }
-html[data-course="git"] .ai-guide-block { --ai-color: #a85b1f; }
+html[data-course="git"] .ai-guide-block { --ai-color: #c45100; }
 html[data-course="generative-ai"] .ai-guide-block { --ai-color: #7358ca; }
 html[data-course="rag"] .ai-guide-block { --ai-color: #2e8f81; }
 html[data-course="agentic-ai"] .ai-guide-block { --ai-color: #d75d48; }
@@ -1946,32 +1946,32 @@ html[data-course="sql"] .dialog-content::-webkit-scrollbar-thumb { background: #
 html[data-course="sql"] .dialog-content::-webkit-scrollbar-thumb:hover { background: #185443; }
 
 html[data-course="git"] .official-doc-link {
-  color: #74400f;
-  background: #fff7e9;
-  border-color: #e3bc83;
+  color: #963900;
+  background: #fff2df;
+  border-color: #f2a24b;
 }
 
 html[data-course="git"] .hero-copy .eyebrow,
 html[data-course="git"] .hero h1 em {
-  color: #a85b1f;
+  color: #c45100;
 }
 
 html[data-course="git"] .hero h1 em::after {
-  background-image: url("data:image/svg+xml,%3Csvg width='250' height='10' viewBox='0 0 250 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 7c40-8 72 2 115-2 46-5 84 2 131-3' fill='none' stroke='%23a85b1f' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='250' height='10' viewBox='0 0 250 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 7c40-8 72 2 115-2 46-5 84 2 131-3' fill='none' stroke='%23c45100' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 html[data-course="git"] .button-primary {
-  background: #a85b1f;
-  box-shadow: 0 6px 0 #713912, 0 14px 24px rgba(113, 57, 18, .22);
+  background: #c45100;
+  box-shadow: 0 6px 0 #7d2d00, 0 14px 24px rgba(125, 45, 0, .24);
 }
 
-html[data-course="git"] .button-primary:active { box-shadow: 0 2px 0 #713912; }
-html[data-course="git"] .cup-body { background: linear-gradient(135deg, #d79042, #92501a); border-color: #6f360e; }
-html[data-course="git"] .cup-body::before { border-color: #6f360e; background: #4c2a13; }
+html[data-course="git"] .button-primary:active { box-shadow: 0 2px 0 #7d2d00; }
+html[data-course="git"] .cup-body { background: linear-gradient(135deg, #ff9c2f, #c45100); border-color: #8d3200; }
+html[data-course="git"] .cup-body::before { border-color: #8d3200; background: #572100; }
 html[data-course="git"] .cup-body span { font: 700 23px var(--mono); letter-spacing: -.08em; }
-html[data-course="git"] .cup-handle { border-color: #92501a; border-left: 0; }
-html[data-course="git"] .dialog-content::-webkit-scrollbar-thumb { background: #a85b1f; }
-html[data-course="git"] .dialog-content::-webkit-scrollbar-thumb:hover { background: #713912; }
+html[data-course="git"] .cup-handle { border-color: #c45100; border-left: 0; }
+html[data-course="git"] .dialog-content::-webkit-scrollbar-thumb { background: #c45100; }
+html[data-course="git"] .dialog-content::-webkit-scrollbar-thumb:hover { background: #7d2d00; }
 
 html[data-course="generative-ai"] .official-doc-link,
 html[data-course="rag"] .official-doc-link,
