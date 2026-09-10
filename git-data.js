@@ -303,7 +303,7 @@
     pageDescription: "QuickDevBase Git - concise explanations, practical commands, recovery guidance, team workflows, and links to the official Git documentation.",
     heroEyebrow: "Git knowledge, at a glance",
     heroTitle: "Git, without<br>the <em>branching confusion.</em>",
-    heroLede: "Scan the path from your first commit through branches, collaboration, recovery, internals, security, and delivery. Every module points to the official Git documentation for depth.",
+    heroLede: "Insights for your first commit through branches, collaboration, recovery, internals, security, and delivery. Every module points to the official Git documentation for depth.",
     previewLabel: "GIT.WORKFLOW",
     previewCode: [
       '<span><b class="code-blue">git</b> switch -c feature/login</span>',
