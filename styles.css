@@ -296,6 +296,7 @@ button {
   display: grid;
   place-items: center;
   border-radius: 50%;
+  color: #fff;
   background: var(--orange);
   font-family: var(--mono);
   font-size: 11px;

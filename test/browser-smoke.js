@@ -1111,6 +1111,7 @@ async function run() {
       hasRebase: document.documentElement.textContent.includes("Rebase & Cherry-pick"),
       hasRecovery: document.documentElement.textContent.includes("Undoing & Recovery"),
       avatarColor: getComputedStyle(document.querySelector(".auth-avatar")).backgroundColor,
+      avatarTextColor: getComputedStyle(document.querySelector(".auth-avatar")).color,
       navigationAccent: getComputedStyle(document.querySelector(".main-nav .active"), "::after").backgroundColor,
       primaryButtonColor: getComputedStyle(document.querySelector(".button-primary")).backgroundColor,
       noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth,
@@ -1124,6 +1125,7 @@ async function run() {
     assert.equal(git.hasRebase, true);
     assert.equal(git.hasRecovery, true);
     assert.equal(git.avatarColor, "rgb(36, 41, 47)");
+    assert.equal(git.avatarTextColor, "rgb(255, 255, 255)");
     assert.equal(git.navigationAccent, "rgb(36, 41, 47)");
     assert.equal(git.primaryButtonColor, "rgb(36, 41, 47)");
     assert.equal(git.noHorizontalOverflow, true);
