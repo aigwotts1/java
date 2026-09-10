@@ -8,7 +8,7 @@
   --docker: #1877b9;
   --python: #3776ab;
   --sql: #2f7d64;
-  --git: #e87500;
+  --git: #24292f;
   --ai: #7157c8;
   --green: #376b4d;
   font-family: "Manrope", sans-serif;
@@ -111,8 +111,8 @@ main { width: min(1440px, calc(100% - 5rem)); margin: 0 auto; }
 .stack-card > span { position: absolute; z-index: 1; top: 1.5rem; left: 1.6rem; display: grid; place-items: center; width: 55px; height: 55px; border-radius: 17px; color: #173a6c; background: #fff; font: 500 1.6rem "DM Mono"; box-shadow: 0 10px 20px rgba(17,28,43,.14); }
 .stack-card strong { position: relative; z-index: 1; font: 400 3.2rem "Young Serif"; }
 .stack-card small { position: relative; z-index: 1; margin-top: .45rem; font: 500 .68rem "DM Mono"; letter-spacing: .14em; opacity: .72; }
-.stack-card-git { background: linear-gradient(145deg,#ff9c2f,#c54f00); transform: translate3d(126px,-92px,-190px) rotateZ(12deg); opacity: .88; }
-.stack-card-git > span { color: #a43f00; font-size: 1rem; }
+.stack-card-git { background: linear-gradient(145deg,#57606a,#0d1117); transform: translate3d(126px,-92px,-190px) rotateZ(12deg); opacity: .9; }
+.stack-card-git > span { color: #24292f; font-size: 1rem; }
 .stack-card-sql { background: linear-gradient(145deg,#388d72,#174b3d); transform: translate3d(108px,-78px,-155px) rotateZ(10deg); opacity: .88; }
 .stack-card-sql > span { color: #205e4b; font-size: 1rem; }
 .stack-card-python { background: linear-gradient(145deg,#4b8cbd,#264f78); transform: translate3d(90px,-62px,-120px) rotateZ(8deg); opacity: .92; }
@@ -210,12 +210,12 @@ a.tech-card:hover { transform: translateY(-7px) rotateX(1deg); box-shadow: 0 13p
 .java-card .card-glow { background: #e45234; }.git-card .card-glow { background: var(--git); }.docker-card .card-glow { background: #168ed4; }.python-card .card-glow { background: #3776ab; }.sql-card .card-glow { background: #2f7d64; }.ai-card .card-glow { background: #856ce0; }
 .card-top { position: relative; display: flex; align-items: center; justify-content: space-between; }
 .tech-mark { display: grid; place-items: center; width: 62px; height: 62px; border-radius: 18px; color: #fff; font: 500 1.5rem "DM Mono"; box-shadow: 0 8px 0 rgba(0,0,0,.18); transform: translateY(-4px); }
-.java-card .tech-mark { background: var(--red); }.git-card .tech-mark { color: #2b190a; background: var(--git); font-size: 1rem; }.docker-card .tech-mark { background: var(--docker); }.python-card .tech-mark { color: #ffd343; background: var(--python); font-size: 1.05rem; }.sql-card .tech-mark { background: var(--sql); font-size: .9rem; }.ai-card .tech-mark { background: var(--ai); font-size: 1.05rem; }.coming-card .tech-mark { color: #5f5d57; background: #e9e2d7; box-shadow: 0 8px 0 #d6cdc0; }
+.java-card .tech-mark { background: var(--red); }.git-card .tech-mark { color: #fff; background: var(--git); font-size: 1rem; }.docker-card .tech-mark { background: var(--docker); }.python-card .tech-mark { color: #ffd343; background: var(--python); font-size: 1.05rem; }.sql-card .tech-mark { background: var(--sql); font-size: .9rem; }.ai-card .tech-mark { background: var(--ai); font-size: 1.05rem; }.coming-card .tech-mark { color: #5f5d57; background: #e9e2d7; box-shadow: 0 8px 0 #d6cdc0; }
 .availability { color: #77756e; font: 500 .63rem "DM Mono"; letter-spacing: .12em; }
 .card-copy { position: relative; margin-top: auto; }
 .card-copy > p { margin: 0 0 .9rem; color: var(--red); font: 500 .66rem "DM Mono"; letter-spacing: .12em; }
 .docker-card .card-copy > p { color: var(--docker); }
-.git-card .card-copy > p { color: #b84900; }
+.git-card .card-copy > p { color: #414a54; }
 .python-card .card-copy > p { color: var(--python); }
 .sql-card .card-copy > p { color: var(--sql); }
 .ai-card .card-copy > p { color: var(--ai); }
