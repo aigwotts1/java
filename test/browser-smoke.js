@@ -377,6 +377,7 @@ async function run() {
       logoPath: new URL(document.querySelector(".brand-logo").src).pathname,
       faviconPath: new URL(document.querySelector('link[rel="icon"]').href).pathname,
       teamPath: document.querySelector('footer a[href="/team"]').getAttribute("href"),
+      footerCopyright: document.querySelector("footer > div > p").textContent.trim(),
       footerLinkColors: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).color),
       footerLinkDecorations: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).textDecorationLine),
       founderOnHomepage: Boolean(document.querySelector("#founderName")),
@@ -403,6 +404,7 @@ async function run() {
     assert.equal(library.logoPath, "/quickdevbase-logo.png");
     assert.equal(library.faviconPath, "/quickdevbase-logo.png");
     assert.equal(library.teamPath, "/team");
+    assert.equal(library.footerCopyright, "© 2026 Abhinav Vashishth. All rights reserved.");
     assert.deepEqual([...new Set(library.footerLinkColors)], ["rgb(36, 88, 166)"]);
     assert.deepEqual([...new Set(library.footerLinkDecorations)], ["none"]);
     assert.equal(library.founderOnHomepage, false);
@@ -473,6 +475,7 @@ async function run() {
         linkedinUrl: section.querySelector('.founder-connect[href*="linkedin.com"]').getAttribute("href"),
         portfolioUrl: section.querySelector('.founder-connect[href*="github.io/portfolio"]').getAttribute("href"),
         founderEmail: section.querySelector('.founder-connect[href^="mailto:"]').getAttribute("href"),
+        footerCopyright: document.querySelector("footer > div > p").textContent.trim(),
         footerLinkColors: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).color),
         footerLinkDecorations: [...document.querySelectorAll("footer nav a")].map((link) => getComputedStyle(link).textDecorationLine),
         visible: bounds.bottom > 0 && bounds.top < innerHeight,
@@ -486,6 +489,7 @@ async function run() {
     assert.equal(teamDesktop.linkedinUrl, "https://www.linkedin.com/in/abhinavvashishth/");
     assert.equal(teamDesktop.portfolioUrl, "https://aigwotts1.github.io/portfolio/");
     assert.equal(teamDesktop.founderEmail, "mailto:vashishthabhinav9@gmail.com");
+    assert.equal(teamDesktop.footerCopyright, "© 2026 Abhinav Vashishth. All rights reserved.");
     assert.deepEqual([...new Set(teamDesktop.footerLinkColors)], ["rgb(36, 88, 166)"]);
     assert.deepEqual([...new Set(teamDesktop.footerLinkDecorations)], ["none"]);
     assert.equal(teamDesktop.visible, true);
@@ -635,6 +639,7 @@ async function run() {
       authLabel: document.querySelector("#authLabel").textContent.trim(),
       brandLogos: document.querySelectorAll(".brand-logo").length,
       logosLoaded: [...document.querySelectorAll(".brand-logo")].every((logo) => logo.complete && logo.naturalWidth > 0),
+      footerCopyright: document.querySelector(".footer-copy > p").textContent.trim(),
       footerLinkColors: [...document.querySelectorAll(".footer-links a")].map((link) => getComputedStyle(link).color),
       footerLinkDecorations: [...document.querySelectorAll(".footer-links a")].map((link) => getComputedStyle(link).textDecorationLine),
       errors: window.__qaErrors,
@@ -645,6 +650,7 @@ async function run() {
     assert.equal(desktop.authLabel, "Sign in");
     assert.equal(desktop.brandLogos, 2);
     assert.equal(desktop.logosLoaded, true);
+    assert.equal(desktop.footerCopyright, "© 2026 Abhinav Vashishth. All rights reserved.");
     assert.deepEqual([...new Set(desktop.footerLinkColors)], ["rgb(36, 88, 166)"]);
     assert.deepEqual([...new Set(desktop.footerLinkDecorations)], ["none"]);
     assert.deepEqual(desktop.errors, []);

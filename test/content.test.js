@@ -334,10 +334,13 @@ test("certificate publication is consent-based and assessment-gated", () => {
   assert.match(homeSource, /href="\/git"/);
   assert.match(homeSource, /href="\/ai"/);
   assert.match(homeSource, /class="team-link" href="\/team"/);
-  assert.doesNotMatch(homeSource, /Abhinav Vashishth/);
+  assert.match(homeSource, /© 2026 Abhinav Vashishth\. All rights reserved\./);
+  assert.match(indexSource, /© 2026 Abhinav Vashishth\. All rights reserved\./);
+  assert.match(aiHubSource, /© 2026 Abhinav Vashishth\. All rights reserved\./);
   assert.match(homeSource, /rel="icon" type="image\/png" href="\/quickdevbase-logo\.png"/);
   const teamSource = fs.readFileSync(path.join(__dirname, "..", "team.html"), "utf8");
   assert.match(teamSource, /Abhinav Vashishth/);
+  assert.match(teamSource, /© 2026 Abhinav Vashishth\. All rights reserved\./);
   assert.match(teamSource, /https:\/\/www\.linkedin\.com\/in\/abhinavvashishth\//);
   assert.match(teamSource, /https:\/\/aigwotts1\.github\.io\/portfolio\//);
   assert.match(teamSource, /mailto:vashishthabhinav9@gmail\.com/);
