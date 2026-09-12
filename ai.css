@@ -134,7 +134,7 @@ main { width: min(1440px, calc(100% - 5rem)); margin: 0 auto; }
 .source-note > a { display: inline-flex; gap: .8rem; padding: .85rem 1rem; color: white; background: var(--purple); border-radius: 9px; font-size: .74rem; font-weight: 800; text-decoration: none; }
 
 footer { width: min(1440px, calc(100% - 5rem)); margin: 0 auto; padding: 2rem 0 3rem; display: grid; grid-template-columns: .7fr 1fr auto; align-items: center; gap: 2rem; border-top: 1px solid var(--line); }
-footer p { margin: 0 0 .3rem; font-weight: 700; }
+footer p { margin: 0 0 .3rem; font-size: .75rem; font-weight: 600; }
 footer small { color: #777178; }
 footer nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 1.2rem; }
 footer nav a { color: #2458a6; font-size: .7rem; font-weight: 700; text-decoration: none; }
