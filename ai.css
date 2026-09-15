@@ -7,6 +7,8 @@
   --purple-dark: #4d358f;
   --mint: #2e8f81;
   --coral: #d75d48;
+  --account-accent: #7358ca;
+  --account-accent-dark: #4d358f;
   font-family: "Manrope", sans-serif;
   color: var(--ink);
   background: var(--paper);

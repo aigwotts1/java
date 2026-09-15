@@ -290,9 +290,14 @@ async function onHomeSignedIn(user) {
   }
 }
 
+function onHomeSignedOut() {
+  homeUser = null;
+  updateDiscoveryAuth();
+}
+
 initializeDiscovery();
 updateDiscoveryAuth();
-initializeLibraryAuth(onHomeSignedIn).then((user) => {
+initializeLibraryAuth(onHomeSignedIn, onHomeSignedOut).then((user) => {
   homeUser = user;
   updateDiscoveryAuth();
 });

@@ -32,16 +32,98 @@ async function libraryApiRequest(url, options = {}) {
   return data;
 }
 
-function showSignedInStatus(firstName) {
+function libraryUserInitials(name) {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "U";
+  return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase();
+}
+
+function showSignedOutStatus() {
   const accountStatus = document.querySelector("#accountStatus");
   if (!accountStatus) return;
+  accountStatus.classList.remove("signed-in");
+  accountStatus.replaceChildren();
+  const loginButton = document.createElement("button");
+  loginButton.className = "header-login";
+  loginButton.id = "headerLoginButton";
+  loginButton.type = "button";
+  loginButton.textContent = "Log in";
+  loginButton.addEventListener("click", () => openLibraryAuth("login"));
+  accountStatus.append(loginButton);
+}
+
+function closeLibraryAccountMenu({ restoreFocus = false } = {}) {
+  const menu = document.querySelector("#libraryAccountMenu");
+  const trigger = document.querySelector("#libraryAccountButton");
+  if (!menu || !trigger || menu.hidden) return;
+  menu.hidden = true;
+  trigger.setAttribute("aria-expanded", "false");
+  if (restoreFocus) trigger.focus();
+}
+
+function showSignedInStatus(user, onSignedOut) {
+  const accountStatus = document.querySelector("#accountStatus");
+  if (!accountStatus) return;
+
+  const fullName = String(user?.name || "User").trim() || "User";
+  const firstName = fullName.split(/\s+/)[0];
+  const email = String(user?.email || "").trim();
+  const initials = libraryUserInitials(fullName);
+
   accountStatus.classList.add("signed-in");
   accountStatus.replaceChildren();
-  const dot = document.createElement("i");
-  dot.setAttribute("aria-hidden", "true");
-  const label = document.createElement("span");
-  label.textContent = "Welcome back, " + firstName;
-  accountStatus.append(dot, label);
+  accountStatus.insertAdjacentHTML("beforeend", `
+    <div class="library-account">
+      <button class="library-account-trigger" id="libraryAccountButton" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="libraryAccountMenu" aria-label="Open account menu for ${escapeLibraryHtml(fullName)}">
+        <span class="library-account-avatar" aria-hidden="true">${escapeLibraryHtml(initials)}</span>
+        <span class="library-account-copy"><small>Welcome back</small><strong>${escapeLibraryHtml(firstName)}</strong></span>
+        <svg class="library-account-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
+      </button>
+      <div class="library-account-menu" id="libraryAccountMenu" role="menu" hidden>
+        <div class="library-account-summary">
+          <span class="library-account-avatar library-account-avatar-large" aria-hidden="true">${escapeLibraryHtml(initials)}</span>
+          <span><small><i aria-hidden="true"></i> Signed in</small><strong>${escapeLibraryHtml(fullName)}</strong>${email ? `<em>${escapeLibraryHtml(email)}</em>` : ""}</span>
+        </div>
+        <p>Your learning progress is synced to this account.</p>
+        <button class="library-logout" id="libraryLogoutButton" type="button" role="menuitem">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 4H5.5A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8M12.5 6.5 16 10l-3.5 3.5M16 10H8" /></svg>
+          <span>Sign out</span>
+        </button>
+      </div>
+    </div>
+  `);
+
+  const trigger = document.querySelector("#libraryAccountButton");
+  const menu = document.querySelector("#libraryAccountMenu");
+  const logoutButton = document.querySelector("#libraryLogoutButton");
+
+  trigger.addEventListener("click", () => {
+    const opening = menu.hidden;
+    menu.hidden = !opening;
+    trigger.setAttribute("aria-expanded", String(opening));
+  });
+
+  logoutButton.addEventListener("click", async () => {
+    logoutButton.disabled = true;
+    logoutButton.querySelector("span").textContent = "Signing out...";
+    try {
+      await libraryApiRequest("/api/auth/logout", { method: "POST" });
+    } catch {
+      // Still clear the local identity if the server session already expired.
+    } finally {
+      showSignedOutStatus();
+      if (onSignedOut) await onSignedOut();
+    }
+  });
+}
+
+function escapeLibraryHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function ensureAuthDialog() {
@@ -138,7 +220,7 @@ function closeLibraryAuth() {
   document.body.classList.remove("dialog-open");
 }
 
-function wireLibraryAuth(onSignedIn) {
+function wireLibraryAuth(onSignedIn, onSignedOut) {
   const authDialog = document.querySelector("#authDialog");
   const authForm = document.querySelector("#authForm");
   const authSubmit = document.querySelector("#authSubmit");
@@ -154,6 +236,12 @@ function wireLibraryAuth(onSignedIn) {
   });
   authSwitchButton.addEventListener("click", () => {
     setLibraryAuthMode(libraryAuthMode === "login" ? "register" : "login");
+  });
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".library-account")) closeLibraryAccountMenu();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeLibraryAccountMenu({ restoreFocus: true });
   });
 
   authForm.addEventListener("submit", async (event) => {
@@ -172,7 +260,7 @@ function wireLibraryAuth(onSignedIn) {
       const endpoint = libraryAuthMode === "register" ? "/api/auth/register" : "/api/auth/login";
       const payload = libraryAuthMode === "register" ? { name, email, password } : { email, password };
       const data = await libraryApiRequest(endpoint, { method: "POST", body: JSON.stringify(payload) });
-      showSignedInStatus(data.user.name.split(" ")[0]);
+      showSignedInStatus(data.user, onSignedOut);
       closeLibraryAuth();
       if (onSignedIn) await onSignedIn(data.user);
     } catch (error) {
@@ -185,9 +273,9 @@ function wireLibraryAuth(onSignedIn) {
   });
 }
 
-async function initializeLibraryAuth(onSignedIn) {
+async function initializeLibraryAuth(onSignedIn, onSignedOut) {
   ensureAuthDialog();
-  wireLibraryAuth(onSignedIn);
+  wireLibraryAuth(onSignedIn, onSignedOut);
 
   const loginButton = document.querySelector("#headerLoginButton");
   if (loginButton) {
@@ -197,7 +285,7 @@ async function initializeLibraryAuth(onSignedIn) {
   try {
     const { user } = await libraryApiRequest("/api/auth/me");
     if (!user) return null;
-    showSignedInStatus(user.name.split(" ")[0]);
+    showSignedInStatus(user, onSignedOut);
     if (onSignedIn) await onSignedIn(user);
     return user;
   } catch {

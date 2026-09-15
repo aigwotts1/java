@@ -33,6 +33,11 @@ function updateCollection(totalCompleted) {
     : totalCompleted + " of " + total + " AI modules complete";
 }
 
+function resetAiProgress() {
+  AI_PATHS.forEach((path) => updatePathCard(path, 0));
+  updateCollection(0);
+}
+
 async function loadAiProgress() {
   const progress = await Promise.all(AI_PATHS.map((path) => readJson("/api/progress?course=" + encodeURIComponent(path))));
   let totalCompleted = 0;
@@ -44,4 +49,4 @@ async function loadAiProgress() {
   updateCollection(totalCompleted);
 }
 
-initializeLibraryAuth(loadAiProgress);
+initializeLibraryAuth(loadAiProgress, resetAiProgress);

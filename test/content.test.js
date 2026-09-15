@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const appSource = fs.readFileSync(path.join(__dirname, "..", "app.js"), "utf8");
+const libraryAuthSource = fs.readFileSync(path.join(__dirname, "..", "library-auth.js"), "utf8");
 const courseCatalogSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "course", "CourseCatalog.java"), "utf8");
 const settingsSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "config", "AppSettings.java"), "utf8");
 const certificateServiceSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "java", "com", "quickdevbase", "certificate", "CertificateService.java"), "utf8");
@@ -361,6 +362,17 @@ test("certificate publication is consent-based and assessment-gated", () => {
     assert.match(legalSource, /OpenAI/);
     assert.match(legalSource, /rel="icon" type="image\/png" href="\/quickdevbase-logo\.png"/);
   }
+});
+
+test("library pages provide an accessible signed-in account menu and logout", () => {
+  assert.match(libraryAuthSource, /id="libraryAccountButton"[\s\S]*?aria-haspopup="menu"[\s\S]*?aria-expanded="false"/);
+  assert.match(libraryAuthSource, /id="libraryAccountMenu" role="menu" hidden/);
+  assert.match(libraryAuthSource, /id="libraryLogoutButton"[\s\S]*?role="menuitem"/);
+  assert.match(libraryAuthSource, /libraryApiRequest\("\/api\/auth\/logout", \{ method: "POST" \}\)/);
+  assert.match(libraryAuthSource, /event\.key === "Escape"/);
+  assert.match(libraryAuthSource, /showSignedOutStatus\(\)/);
+  assert.match(homeSource, /library-auth\.css\?v=20260915-account-menu/);
+  assert.match(aiHubSource, /library-auth\.css\?v=20260915-account-menu/);
 });
 
 test("certificate assessment is randomized, timed, limited, and browser-guarded", () => {
